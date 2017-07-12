@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="start.css" rel="stylesheet" />
+    <script type="text/javascript" src="startService.js"></script>
+    <script type="text/javascript" src="startController.js"></script>
+    <script type="text/javascript" src="start.js"></script>
+</head>
+<body class="win-type-body">
+    <div class="start fragment">
+        <div id="startController" class="data-container">
+            <section aria-label="Main content" role="main" class="animationElement">
+                <div class="contentarea win-type-body">
+                    <div class="startActions-recent-template"
+                         data-win-control="WinJS.Binding.Template" style="display: none">
+                        <div name="recent" class="tile tile-recent">
+                            <div class="header-separator"></div>
+                            <div class="tile-header tile-button-color">
+                                <div class="tile-content-inner">
+                                    <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                                    <span class="win-type-caption win-type-ellipsis start-header-field"
+                                          data-win-bind="textContent: title"></span>
+                                </div>
+                            </div>
+                            <div class="tile-row">
+                                <div class="tile-content-wide">
+                                    <div class="tile-content-inner">
+                                        <button data-win-bind="name: button0.id"
+                                                class="win-button tile-button-wide tile-button-color"
+                                                onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                            <div class="action-image-container-flat"
+                                                 data-win-bind="style.display: button0.showBusinessCard Binding.Converter.toDisplayNone">
+                                                <div class="action-image-recent"
+                                                     data-win-bind="name: button0.svg"></div>
+                                                <span class="list-id-field win-type-caption">
+                                                    <span data-win-bind="textContent: button0.content"></span>
+                                                </span>
+                                            </div>
+                                            <div class="start-contact-fields"
+                                                 data-win-bind="style.display: button0.showBusinessCard Binding.Converter.toDisplayNone">
+                                                <span class="start-company-field" data-win-bind="textContent: button0.Firmenname"></span>
+                                                <div class="list-idAndDate start-div-right win-type-caption"
+                                                     data-win-bind="display: button0.showErfassungsdatum Binding.Converter.toDisplay">
+                                                    <span data-win-bind="textContent: button0.editedOn"></span>
+                                                    <span data-win-bind="textContent: button0.Erfassungsdatum Binding.Converter.toDateString"></span>
+                                                </div>
+                                                <div class="list-idAndDate start-div-right win-type-caption">
+                                                    <span data-win-bind="textContent: button0.modifiedOn; display: button0.showErfassungsdatum Binding.Converter.toDisplay"></span>
+                                                    <span data-win-bind="textContent: button0.ModifiedTS Binding.Converter.toDateString"></span>
+                                                </div>
+                                                <span class="start-name-field win-type-subtitle" data-win-bind="textContent: button0.Name"></span>
+                                                <span class="start-address-field" data-win-bind="textContent: button0.PostAdresse"></span>
+                                                <span class="start-address-field" data-win-bind="textContent: button0.LandTITLE"></span>
+                                                <span class="start-address-field" data-win-bind="textContent: button0.Freitext1"></span>
+                                            </div>
+                                            <div id="businessCardContact"
+                                                 data-win-bind="style.display: button0.showBusinessCard Binding.Converter.toDisplay"
+                                                 class="start-photo-container"></div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="startActions-list-template"
+                         data-win-control="WinJS.Binding.Template" style="display: none">
+                        <div name="list" class="tile tile-backgroundcolor">
+                            <div class="tile-header tile-button-color">
+                                <div class="tile-content-inner">
+                                    <div class="half-circle half-circle-navigationcolor">&nbsp;</div>
+                                    <span class="win-type-caption win-type-ellipsis start-header-field text-lightcolor"
+                                          data-win-bind="textContent: title"></span>
+                                </div>
+                            </div>
+                            <div class="tile-row">
+                                <div class="tile-content">
+                                    <div class="tile-content-inner">
+                                        <button data-win-bind="name: button0.id"
+                                                class="win-button tile-button tile-button-color"
+                                                onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                            <div class="action-image-container">
+                                                <div class="action-image-list"
+                                                     data-win-bind="name: button0.svg"></div>
+                                            </div>
+                                            <div class="action-label">
+                                                <span class="win-type-ellipsis action-label text-lightcolor"
+                                                      data-win-bind="textContent: button0.content"></span>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="tile-content">
+                                    <div class="tile-content-inner tile-separator-left tile-separator-right">
+                                        <button data-win-bind="name: button1.id"
+                                                class="win-button tile-button tile-button-color"
+                                                onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                            <div class="action-image-container">
+                                                <div class="action-image-list"
+                                                     data-win-bind="name: button1.svg"></div>
+                                            </div>
+                                            <div class="action-label">
+                                                <span class="win-type-ellipsis action-label text-lightcolor"
+                                                      data-win-bind="textContent: button1.content"></span>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="tile-content">
+                                    <div class="tile-content-inner">
+                                        <button data-win-bind="name: button2.id"
+                                                class="win-button tile-button tile-button-color"
+                                                onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                            <div class="action-image-container">
+                                                <div class="action-image-list"
+                                                     data-win-bind="name: button2.svg"></div>
+                                            </div>
+                                            <div class="action-label">
+                                                <span class="win-type-ellipsis action-label text-lightcolor"
+                                                      data-win-bind="textContent: button2.content"></span>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="startActions-new-template"
+                         data-win-control="WinJS.Binding.Template" style="display: none">
+                        <div name="new" class="tile tile-navigationcolor">
+                            <div class="tile-header tile-button-color">
+                                <div class="tile-content-inner">
+                                    <div class="half-circle half-circle-lightcolor">&nbsp;</div>
+                                    <span class="win-type-caption win-type-ellipsis start-header-field text-lightcolor"
+                                          data-win-bind="textContent: title"></span>
+                                </div>
+                            </div>
+                            <div class="tile-row">
+                                <div class="tile-content">
+                                    <div class="tile-content-inner">
+                                        <button data-win-bind="name: button0.id"
+                                                class="win-button tile-button tile-button-color"
+                                                onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                            <div class="action-image-container">
+                                                <div class="action-image-new"
+                                                     data-win-bind="name: button0.svg"></div>
+                                            </div>
+                                            <div class="action-label">
+                                                <span class="win-type-ellipsis action-label text-lightcolor"
+                                                      data-win-bind="textContent: button0.content"></span>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="tile-content">
+                                    <div class="tile-content-inner tile-separator-left tile-separator-right">
+                                        <button data-win-bind="name: button1.id"
+                                                class="win-button tile-button tile-button-color"
+                                                onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                            <div class="action-image-container">
+                                                <div class="action-image-new"
+                                                     data-win-bind="name: button1.svg"></div>
+                                            </div>
+                                            <div class="action-label">
+                                                <span class="win-type-ellipsis action-label text-lightcolor"
+                                                      data-win-bind="textContent: button1.content"></span>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="tile-content">
+                                    <div class="tile-content-inner">
+                                        <button data-win-bind="name: button2.id"
+                                                class="win-button tile-button tile-button-color"
+                                                onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                            <div class="action-image-container">
+                                                <div class="action-image-new"
+                                                     data-win-bind="name: button2.svg"></div>
+                                            </div>
+                                            <div class="action-label">
+                                                <span class="win-type-ellipsis action-label text-lightcolor"
+                                                      data-win-bind="textContent: button2.content"></span>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="startActions"
+                         class="listview win-selectionstylefilled"
+                         data-win-control="WinJS.UI.ListView">
+                    </div>
+                    <div class="error-message"
+                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

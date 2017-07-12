@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="register.css" rel="stylesheet" />
+    <script type="text/javascript" src="registerService.js"></script>
+    <script type="text/javascript" src="registerController.js"></script>
+    <script type="text/javascript" src="register.js"></script>
+</head>
+<body class="win-type-body">
+    <div class="register fragment">
+        <div id="registerController" class="data-container">
+            <section aria-label="Main content" role="main" class="animationElement">
+                <div class="contentarea win-type-body">
+                    <div class="header-separator"></div>
+                    <div class="content-header">
+                        <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                        <div class="content-header-line win-type-caption">
+                            <span class="id-field"></span>
+                            <span class="caption-field" data-win-res="{textContent: 'register.title'}"></span>
+                            <span class="date-field"></span>
+                        </div>
+                    </div>
+                    <div class="line-separator register-email"></div>
+                    <div class="field_line field_line_full register-email">
+                        <span class="large_field"
+                              data-win-res="{textContent: 'register.commentEmail'}"></span>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="field_line field_line_odd">
+                        <span class="label win-type-caption portrait_only"
+                              data-win-res="{textContent: 'register.email'}"></span>
+                        <span class="label landscape_only"
+                              data-win-res="{textContent: 'register.email'}"></span>
+                        <input class="input_field win-textbox" type="text"
+                               data-win-bind="value: dataRegister.Email Binding.Mode.twoway; style.display: emailOkFlag Binding.Converter.toDisplayNone" />
+                        <span class="input_field win-type-subtitle"
+                              data-win-bind="textContent: dataRegister.Email; style.display: emailOkFlag Binding.Converter.toDisplay"></span>
+                    </div>
+                    <div class="line-separator register-address"></div>
+                    <div class="field_line field_line_full register-address">
+                        <span class="large_field"
+                              data-win-res="{textContent: 'register.comment'}"></span>
+                    </div>
+                    <div class="line-separator register-address"></div>
+                    <div class="field_line field_line_odd register-address">
+                        <span class="label win-type-caption portrait_only"
+                              data-win-res="{textContent: 'register.firstName'}"></span>
+                        <span class="label landscape_only"
+                              data-win-res="{textContent: 'register.firstName'}"></span>
+                        <input class="input_field win-textbox" type="text"
+                               data-win-bind="value: dataRegister.Vorname Binding.Mode.twoway" />
+                    </div>
+                    <div class="field_line field_line_even register-address">
+                        <span class="label win-type-caption portrait_only"
+                              data-win-res="{textContent: 'register.name'}"></span>
+                        <span class="label landscape_only"
+                              data-win-res="{textContent: 'register.name'}"></span>
+                        <input class="input_field win-textbox" type="text"
+                               data-win-bind="value: dataRegister.Nachname Binding.Mode.twoway" />
+                    </div>
+                    <div class="line-separator register-address"></div>
+                    <div class="field_line field_line_odd register-address">
+                        <span class="label win-type-caption portrait_only"
+                              data-win-res="{textContent: 'register.company'}"></span>
+                        <span class="label landscape_only"
+                              data-win-res="{textContent: 'register.company'}"></span>
+                        <input class="input_field win-textbox" type="text"
+                               data-win-bind="value: dataRegister.Firmenname Binding.Mode.twoway" />
+                    </div>
+                    <div class="line-separator register-address"></div>
+                    <div class="field_line field_line_odd register-address">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'register.address'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'register.address'}"></span>
+                        <input class="input_field win-textbox" type="text" data-win-bind="value: dataRegister.Strasse Binding.Mode.twoway" />
+                    </div>
+                    <div class="field_line field_line_even register-address">
+                        <span class="label win-type-caption portrait_only_left" data-win-res="{textContent: 'register.zip'}"></span>
+                        <span class="label win-type-caption portrait_only_right" data-win-res="{textContent: 'register.city'}"></span>
+                        <div class="label landscape_only"><span data-win-res="{textContent: 'register.zip'}"></span> / <span data-win-res="{textContent: 'register.city'}"></span></div>
+                        <div class="input_group">
+                            <input class="input_small_left win-textbox" type="text" data-win-bind="value: dataRegister.PLZ Binding.Mode.twoway" />
+                            <input class="input_small_right win-textbox" type="text" data-win-bind="value: dataRegister.Stadt Binding.Mode.twoway" />
+                        </div>
+                    </div>
+                    <div class="line-separator register-address"></div>
+                    <div class="field_line field_line_odd register-address">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'register.country'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'register.country'}"></span>
+                        <select id="InitLand"
+                                class="input_field win-dropdown"
+                                data-win-control="WinJS.UI.Repeater"
+                                data-win-bind="value: dataRegister.INITLandID Binding.Mode.twoway">
+                            <option data-win-bind="value: INITLandID; textContent: TITLE"></option>
+                        </select>
+                    </div>
+                    <div class="field_line field_line_even register-address">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'register.phone'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'register.phone'}"></span>
+                        <input class="input_field win-textbox" type="text" data-win-bind="value: dataRegister.Telefon Binding.Mode.twoway" />
+                    </div>
+                    <div class="line-separator register-address"></div>
+                    <div class="field_line field_line_odd register-address">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'register.agreement'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'register.agreement'}"></span>
+                        <label class="input_field">
+                            <input type="checkbox" class="win-checkbox checkbox register-checkbox" value="1"
+                                   data-win-bind="checked: dataRegister.NewsletterflagChecked Binding.Mode.twoway" />
+                            <span data-win-res="{textContent: 'register.agreementText'}"></span>
+                        </label>
+                    </div>
+                    <div class="line-separator register-address"></div>
+                    <div class="field_line field_line_odd register-address">
+                        <span class="label win-type-caption portrait_only"
+                              data-win-res="{textContent: 'register.password'}"></span>
+                        <span class="label landscape_only"
+                              data-win-res="{textContent: 'register.password'}"></span>
+                        <input class="input_field win-textbox" type="password"
+                               data-win-bind="value: dataRegister.Password Binding.Mode.twoway" />
+                    </div>
+                    <div class="field_line field_line_even register-address">
+                        <span class="label win-type-caption portrait_only"
+                              data-win-res="{textContent: 'register.confirmation'}"></span>
+                        <span class="label landscape_only"
+                              data-win-res="{textContent: 'register.confirmation'}"></span>
+                        <input class="input_field win-textbox" type="password"
+                               data-win-bind="value: dataRegister.Password2 Binding.Mode.twoway" />
+                    </div>
+                    <div class="line-separator register-complete"></div>
+                    <div class="field_line field_line_full register-complete">
+                        <span class="large_field"
+                              data-win-res="{textContent: 'register.complete'}"></span>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="error-message"
+                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1013 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="questionnaire.css" rel="stylesheet" />
+    <script type="text/javascript" src="questionnaireService.js"></script>
+    <script type="text/javascript" src="questionnaireController.js"></script>
+    <script type="text/javascript" src="questionnaire.js"></script>
+</head>
+<body class="win-type-body">
+    <div class="questionnaire fragment">
+        <div id="questionnaireController" class="data-container">
+            <section aria-label="Main content" role="main" class="animationElement">
+                <div class="contentarea win-type-body">
+                    <div class="headerFooterPlaceholder">
+                        <div class="list-header">
+                            <div class="header-separator"></div>
+                            <div class="content-header">
+                                <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                                <div class="content-header-line win-type-caption">
+                                    <span class="id-field" data-win-bind="textContent: generalData.globalContactID"></span>
+                                    <span class="caption-field" data-win-res="{textContent: 'questionnaire.title'}"></span>
+                                    <span class="date-field" data-win-bind="textContent: generalData.contactDate Binding.Converter.toDateString"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="listQuestionnaire-single-rating-template"
+                         data-win-control="WinJS.Binding.Template" style="display: none">
+                        <div class="questionnaire-row">
+                            <div class="row-bkg"></div>
+                            <div class="list-fragengruppe-container" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplay">
+                                <div class="header-separator"></div>
+                                <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                                <span class="list-fragengruppe-field win-type-caption window-text-color" data-win-bind="textContent: FRAGENGRUPPE"></span>
+                            </div>
+                            <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
+                            <span class="list-question-field label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
+                            <div class="rating-question-field">
+                                <div data-win-control="WinJS.UI.Rating"
+                                     data-win-bind="winControl.maxRating: SRMax; winControl.userRating: RRANTWORT Binding.Converter.toInteger"></div>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
+                                <textarea class="win-textarea field-text-comment"
+                                          data-win-bind="placeholder: textarea; value: Freitext"></textarea>
+                                <button id="showDateCombobox" class="win-button question-button"
+                                        data-win-bind="style.display: DateComboboxButtonShow Binding.Converter.toDisplay"
+                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                    <div class="question-image-container">
+                                        <div class="question-image" id="calendar_1"></div>
+                                    </div>
+                                </button>
+                                <button id="useDateCombobox" class="win-button question-button"
+                                        data-win-bind="style.display: DateComboboxButtonOk Binding.Converter.toDisplay"
+                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                    <div class="question-image-container">
+                                        <div class="question-image" id="navigate_check"></div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="listQuestionnaire-multi-rating-template"
+                         data-win-control="WinJS.Binding.Template" style="display: none">
+                        <div class="questionnaire-row">
+                            <div class="row-bkg"></div>
+                            <div class="list-fragengruppe-container" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplay">
+                                <div class="header-separator"></div>
+                                <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                                <span class="list-fragengruppe-field win-type-caption window-text-color" data-win-bind="textContent: FRAGENGRUPPE"></span>
+                            </div>
+                            <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
+                            <span class="list-question-multi-rating label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
+                            <div class="multi-rating-div">
+                                <div class="multi-rating">
+                                    <span id="MR01" class="multi-rating-span"
+                                          data-win-bind="textContent: MR01; style.display: MRShow01 Binding.Converter.toDisplay"></span>
+                                    <input class="win-checkbox multi-rating-checkbox" type="checkbox" value="X"
+                                           data-win-bind="checked: MrAntwort01; style.display: MRShow01 Binding.Converter.toDisplay" />
+                                </div>
+                                <div class="multi-rating">
+                                    <span id="MR02" class="multi-rating-span"
+                                          data-win-bind="textContent: MR02; style.display: MRShow02 Binding.Converter.toDisplay"></span>
+                                    <input class="win-checkbox multi-rating-checkbox" type="checkbox" value="X"
+                                           data-win-bind="checked: MrAntwort02; style.display: MRShow02 Binding.Converter.toDisplay" />
+                                </div>
+                                <div class="multi-rating">
+                                    <span id="MR03" class="multi-rating-span"
+                                          data-win-bind="textContent: MR03; style.display: MRShow03 Binding.Converter.toDisplay"></span>
+                                    <input class="win-checkbox multi-rating-checkbox" type="checkbox" value="X"
+                                           data-win-bind="checked: MrAntwort03; style.display: MRShow03 Binding.Converter.toDisplay" />
+                                </div>
+                                <div class="multi-rating">
+                                    <span id="MR04" class="multi-rating-span"
+                                          data-win-bind="textContent: MR04; style.display: MRShow04 Binding.Converter.toDisplay"></span>
+                                    <input class="win-checkbox multi-rating-checkbox" type="checkbox" value="X"
+                                           data-win-bind="checked: MrAntwort04; style.display: MRShow04 Binding.Converter.toDisplay" />
+                                </div>
+                                <div class="multi-rating">
+                                    <span id="MR05" class="multi-rating-span"
+                                          data-win-bind="textContent: MR05; style.display: MRShow05 Binding.Converter.toDisplay"></span>
+                                    <input class="win-checkbox multi-rating-checkbox" type="checkbox" value="X"
+                                           data-win-bind="checked: MrAntwort05; style.display: MRShow05 Binding.Converter.toDisplay" />
+                                </div>
+                                <div class="multi-rating">
+                                    <span id="MR06" class="multi-rating-span"
+                                          data-win-bind="textContent: MR06; style.display: MRShow06 Binding.Converter.toDisplay"></span>
+                                    <input class="win-checkbox multi-rating-checkbox" type="checkbox" value="X"
+                                           data-win-bind="checked: MrAntwort06; style.display: MRShow06 Binding.Converter.toDisplay" />
+                                </div>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
+                                <textarea class="win-textarea field-text-comment"
+                                          data-win-bind="placeholder: textarea; value: Freitext"></textarea>
+                                <button id="showDateCombobox" class="win-button question-button"
+                                        data-win-bind="style.display: DateComboboxButtonShow Binding.Converter.toDisplay"
+                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                    <div class="question-image-container">
+                                        <div class="question-image" id="calendar_1"></div>
+                                    </div>
+                                </button>
+                                <button id="useDateCombobox" class="win-button question-button"
+                                        data-win-bind="style.display: DateComboboxButtonOk Binding.Converter.toDisplay"
+                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                    <div class="question-image-container">
+                                        <div class="question-image" id="navigate_check"></div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="listQuestionnaire-combo-template"
+                         data-win-control="WinJS.Binding.Template" style="display: none">
+                        <div class="questionnaire-row">
+                            <div class="row-bkg"></div>
+                            <div class="list-fragengruppe-container" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplay">
+                                <div class="header-separator"></div>
+                                <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                                <span class="list-fragengruppe-field win-type-caption window-text-color" data-win-bind="textContent: FRAGENGRUPPE"></span>
+                            </div>
+                            <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
+                            <span class="list-question-field label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
+                            <div class="field_line_questionnaire win-type-subtitle">
+                                <select class="input_field win-dropdown"
+                                        data-win-control="WinJS.UI.Repeater">
+                                    <option data-win-bind="value: value; textContent: title"></option>
+                                </select>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
+                                <textarea class="win-textarea field-text-comment"
+                                          data-win-bind="placeholder: textarea; value: Freitext"></textarea>
+                                <button id="showDateCombobox" class="win-button question-button"
+                                        data-win-bind="style.display: DateComboboxButtonShow Binding.Converter.toDisplay"
+                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                    <div class="question-image-container">
+                                        <div class="question-image" id="calendar_1"></div>
+                                    </div>
+                                </button>
+                                <button id="useDateCombobox" class="win-button question-button"
+                                        data-win-bind="style.display: DateComboboxButtonOk Binding.Converter.toDisplay"
+                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                    <div class="question-image-container">
+                                        <div class="question-image" id="navigate_check"></div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="listQuestionnaire-single-template8"
+                         data-win-control="WinJS.Binding.Template" style="display: none">
+                        <div class="questionnaire-row">
+                            <div class="row-bkg"></div>
+                            <div class="list-fragengruppe-container" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplay">
+                                <div class="header-separator"></div>
+                                <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                                <span class="list-fragengruppe-field win-type-caption window-text-color" data-win-bind="textContent: FRAGENGRUPPE"></span>
+                            </div>
+                            <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
+                            <span class="list-question-field label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
+                            <div class="field_line_questionnaire win-type-subtitle">
+                                <div class="field_row_odd">
+                                    <div class="field_line_left">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS01 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT01; checked: SSANTWORT01CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS01"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS02 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT02; checked: SSANTWORT02CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS02"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                                <div class="field_row_even">
+                                    <div class="field_line_left">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS03 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT03; checked: SSANTWORT03CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS03"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS04 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT04; checked: SSANTWORT04CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS04"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div class="field_line_questionnaire win-type-subtitle">
+                                <div class="field_row_odd">
+                                    <div class="field_line_left">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS05 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT05; checked: SSANTWORT05CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS05"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS06 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT06; checked: SSANTWORT06CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS06"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                                <div class="field_row_even">
+                                    <div class="field_line_left">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS07 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT07; checked: SSANTWORT07CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS07"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS08 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT08; checked: SSANTWORT08CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS08"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
+                                <textarea class="win-textarea field-text-comment"
+                                          data-win-bind="placeholder: textarea; value: Freitext"></textarea>
+                                <button id="showDateCombobox" class="win-button question-button"
+                                        data-win-bind="style.display: DateComboboxButtonShow Binding.Converter.toDisplay"
+                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                    <div class="question-image-container">
+                                        <div class="question-image" id="calendar_1"></div>
+                                    </div>
+                                </button>
+                                <button id="useDateCombobox" class="win-button question-button"
+                                        data-win-bind="style.display: DateComboboxButtonOk Binding.Converter.toDisplay"
+                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                    <div class="question-image-container">
+                                        <div class="question-image" id="navigate_check"></div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="listQuestionnaire-single-template28"
+                         data-win-control="WinJS.Binding.Template" style="display: none">
+                        <div class="questionnaire-row">
+                            <div class="row-bkg"></div>
+                            <div class="list-fragengruppe-container" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplay">
+                                <div class="header-separator"></div>
+                                <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                                <span class="list-fragengruppe-field win-type-caption window-text-color" data-win-bind="textContent: FRAGENGRUPPE"></span>
+                            </div>
+                            <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
+                            <span class="list-question-field label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
+                            <div class="field_line_questionnaire win-type-subtitle">
+                                <div class="field_row_odd">
+                                    <div class="field_line_left">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS01 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT01; checked: SSANTWORT01CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS01"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS02 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT02; checked: SSANTWORT02CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS02"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                                <div class="field_row_even">
+                                    <div class="field_line_left">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS03 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT03; checked: SSANTWORT03CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS03"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS04 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT04; checked: SSANTWORT04CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS04"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div class="field_line_questionnaire win-type-subtitle">
+                                <div class="field_row_odd">
+                                    <div class="field_line_left">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS05 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT05; checked: SSANTWORT05CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS05"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS06 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT06; checked: SSANTWORT06CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS06"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                                <div class="field_row_even">
+                                    <div class="field_line_left">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS07 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT07; checked: SSANTWORT07CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS07"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS08 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT08; checked: SSANTWORT08CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS08"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div class="field_line_questionnaire win-type-subtitle">
+                                <div class="field_row_odd">
+                                    <div class="field_line_left">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS09 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT09; checked: SSANTWORT09CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS09"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS10 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT10; checked: SSANTWORT10CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS10"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                                <div class="field_row_even">
+                                    <div class="field_line_left">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS11 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT11; checked: SSANTWORT11CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS11"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS12 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT12; checked: SSANTWORT12CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS12"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div class="field_line_questionnaire win-type-subtitle">
+                                <div class="field_row_odd">
+                                    <div class="field_line_left">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS13 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT13; checked: SSANTWORT13CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS13"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS14 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT14; checked: SSANTWORT14CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS14"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                                <div class="field_row_even">
+                                    <div class="field_line_left">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS15 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT15; checked: SSANTWORT15CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS15"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS16 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT16; checked: SSANTWORT16CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS16"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div class="field_line_questionnaire win-type-subtitle">
+                                <div class="field_row_odd">
+                                    <div class="field_line_left">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS17 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT17; checked: SSANTWORT17CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS17"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS18 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT18; checked: SSANTWORT18CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS18"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                                <div class="field_row_even">
+                                    <div class="field_line_left">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS19 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT19; checked: SSANTWORT19CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS19"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS20 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT20; checked: SSANTWORT20CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS20"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                            </div>
+                            <div class="field_line_questionnaire win-type-subtitle">
+                                <div class="field_row_odd">
+                                    <div class="field_line_left">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS21 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT21; checked: SSANTWORT21CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS21"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS22 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT22; checked: SSANTWORT22CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS22"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                                <div class="field_row_even">
+                                    <div class="field_line_left">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS23 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT23; checked: SSANTWORT23CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS23"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS24 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT24; checked: SSANTWORT24CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS24"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div class="field_line_questionnaire win-type-subtitle">
+                                <div class="field_row_odd">
+                                    <div class="field_line_left">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS25 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT25; checked: SSANTWORT25CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS25"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS26 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT26; checked: SSANTWORT26CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS26"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                                <div class="field_row_even">
+                                    <div class="field_line_left">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS27 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT27; checked: SSANTWORT27CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS27"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="radio list-selection-field" data-win-bind="style.display: SS28 Binding.Converter.toDisplay">
+                                            <input type="radio" class="win-radio radio"
+                                                   data-win-bind="name: SSNAME; value: SSANTWORT28; checked: SSANTWORT28CHECKED" />
+                                            <span class="radio" data-win-bind="textContent: SS28"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
+                                <textarea class="win-textarea field-text-comment"
+                                          data-win-bind="placeholder: textarea; value: Freitext"></textarea>
+                                <button id="showDateCombobox" class="win-button question-button"
+                                        data-win-bind="style.display: DateComboboxButtonShow Binding.Converter.toDisplay"
+                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                    <div class="question-image-container">
+                                        <div class="question-image" id="calendar_1"></div>
+                                    </div>
+                                </button>
+                                <button id="useDateCombobox" class="win-button question-button"
+                                        data-win-bind="style.display: DateComboboxButtonOk Binding.Converter.toDisplay"
+                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                    <div class="question-image-container">
+                                        <div class="question-image" id="navigate_check"></div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="listQuestionnaire-multi-template8"
+                         data-win-control="WinJS.Binding.Template" style="display: none">
+                        <div class="questionnaire-row">
+                            <div class="row-bkg"></div>
+                            <div class="list-fragengruppe-container" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplay">
+                                <div class="header-separator"></div>
+                                <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                                <span class="list-fragengruppe-field win-type-caption window-text-color" data-win-bind="textContent: FRAGENGRUPPE"></span>
+                            </div>
+                            <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
+                            <span class="list-question-field label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
+                            <div class="field_line_questionnaire win-type-subtitle">
+                                <div class="field_row_odd">
+                                    <div class="field_line_left">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS01 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT01" />
+                                            <span class="checkbox" data-win-bind="textContent: MS01"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS02 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT02" />
+                                            <span class="checkbox" data-win-bind="textContent: MS02"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                                <div class="field_row_even">
+                                    <div class="field_line_left">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS03 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT03" />
+                                            <span class="checkbox" data-win-bind="textContent: MS03"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS04 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT04" />
+                                            <span class="checkbox" data-win-bind="textContent: MS04"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div class="field_line_questionnaire win-type-subtitle">
+                                <div class="field_row_odd">
+                                    <div class="field_line_left">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS05 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT05" />
+                                            <span class="checkbox" data-win-bind="textContent: MS05"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS06 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT06" />
+                                            <span class="checkbox" data-win-bind="textContent: MS06"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                                <div class="field_row_even">
+                                    <div class="field_line_left">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS07 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT07" />
+                                            <span class="checkbox" data-win-bind="textContent: MS07"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS08 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT08" />
+                                            <span class="checkbox" data-win-bind="textContent: MS08"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
+                                <textarea class="win-textarea field-text-comment"
+                                          data-win-bind="placeholder: textarea; value: Freitext"></textarea>
+                                <button id="showDateCombobox" class="win-button question-button"
+                                        data-win-bind="style.display: DateComboboxButtonShow Binding.Converter.toDisplay"
+                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                    <div class="question-image-container">
+                                        <div class="question-image" id="calendar_1"></div>
+                                    </div>
+                                </button>
+                                <button id="useDateCombobox" class="win-button question-button"
+                                        data-win-bind="style.display: DateComboboxButtonOk Binding.Converter.toDisplay"
+                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                    <div class="question-image-container">
+                                        <div class="question-image" id="navigate_check"></div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="listQuestionnaire-multi-template28"
+                         data-win-control="WinJS.Binding.Template" style="display: none">
+                        <div class="questionnaire-row">
+                            <div class="row-bkg"></div>
+                            <div class="list-fragengruppe-container" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplay">
+                                <div class="header-separator"></div>
+                                <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                                <span class="list-fragengruppe-field win-type-caption window-text-color" data-win-bind="textContent: FRAGENGRUPPE"></span>
+                            </div>
+                            <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
+                            <span class="list-question-field label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
+                            <div class="field_line_questionnaire win-type-subtitle">
+                                <div class="field_row_odd">
+                                    <div class="field_line_left">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS01 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT01" />
+                                            <span class="checkbox" data-win-bind="textContent: MS01"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS02 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT02" />
+                                            <span class="checkbox" data-win-bind="textContent: MS02"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                                <div class="field_row_even">
+                                    <div class="field_line_left">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS03 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT03" />
+                                            <span class="checkbox" data-win-bind="textContent: MS03"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS04 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT04" />
+                                            <span class="checkbox" data-win-bind="textContent: MS04"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div class="field_line_questionnaire win-type-subtitle">
+                                <div class="field_row_odd">
+                                    <div class="field_line_left">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS05 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT05" />
+                                            <span class="checkbox" data-win-bind="textContent: MS05"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS06 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT06" />
+                                            <span class="checkbox" data-win-bind="textContent: MS06"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                                <div class="field_row_even">
+                                    <div class="field_line_left">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS07 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT07" />
+                                            <span class="checkbox" data-win-bind="textContent: MS07"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS08 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT08" />
+                                            <span class="checkbox" data-win-bind="textContent: MS08"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div class="field_line_questionnaire win-type-subtitle">
+                                <div class="field_row_odd">
+                                    <div class="field_line_left">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS09 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT09" />
+                                            <span class="checkbox" data-win-bind="textContent: MS09"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS10 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT10" />
+                                            <span class="checkbox" data-win-bind="textContent: MS10"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                                <div class="field_row_even">
+                                    <div class="field_line_left">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS11 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT11" />
+                                            <span class="checkbox" data-win-bind="textContent: MS11"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS12 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT12" />
+                                            <span class="checkbox" data-win-bind="textContent: MS12"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div class="field_line_questionnaire win-type-subtitle">
+                                <div class="field_row_odd">
+                                    <div class="field_line_left">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS13 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT13" />
+                                            <span class="checkbox" data-win-bind="textContent: MS13"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS14 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT14" />
+                                            <span class="checkbox" data-win-bind="textContent: MS14"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                                <div class="field_row_even">
+                                    <div class="field_line_left">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS15 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT15" />
+                                            <span class="checkbox" data-win-bind="textContent: MS15"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS16 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT16" />
+                                            <span class="checkbox" data-win-bind="textContent: MS16"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div class="field_line_questionnaire win-type-subtitle">
+                                <div class="field_row_odd">
+                                    <div class="field_line_left">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS17 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT17" />
+                                            <span class="checkbox" data-win-bind="textContent: MS17"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS18 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT18" />
+                                            <span class="checkbox" data-win-bind="textContent: MS18"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                                <div class="field_row_even">
+                                    <div class="field_line_left">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS19 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT19" />
+                                            <span class="checkbox" data-win-bind="textContent: MS19"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS20 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT20" />
+                                            <span class="checkbox" data-win-bind="textContent: MS20"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div class="field_line_questionnaire win-type-subtitle">
+                                <div class="field_row_odd">
+                                    <div class="field_line_left">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS21 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT21" />
+                                            <span class="checkbox" data-win-bind="textContent: MS21"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS22 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT22" />
+                                            <span class="checkbox" data-win-bind="textContent: MS22"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                                <div class="field_row_even">
+                                    <div class="field_line_left">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS23 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT23" />
+                                            <span class="checkbox" data-win-bind="textContent: MS23"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS24 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT24" />
+                                            <span class="checkbox" data-win-bind="textContent: MS24"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div class="field_line_questionnaire win-type-subtitle">
+                                <div class="field_row_odd">
+                                    <div class="field_line_left">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS25 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT25" />
+                                            <span class="checkbox" data-win-bind="textContent: MS25"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS26 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT26" />
+                                            <span class="checkbox" data-win-bind="textContent: MS26"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                                <div class="field_row_even">
+                                    <div class="field_line_left">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS27 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT27" />
+                                            <span class="checkbox" data-win-bind="textContent: MS27"></span>
+                                        </label>
+                                    </div>
+                                    <div class="field_line_right">
+                                        <label class="checkbox list-selection-field" data-win-bind="style.display: MS28 Binding.Converter.toDisplay">
+                                            <input type="checkbox" class="win-checkbox checkbox" value="X"
+                                                   data-win-bind="checked: MSANTWORT28" />
+                                            <span class="checkbox" data-win-bind="textContent: MS28"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="field-separator"></div>
+                            </div>
+                            <div class="line-separator"></div>
+                            <div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
+                                <textarea class="win-textarea field-text-comment"
+                                          data-win-bind="placeholder: textarea; value: Freitext"></textarea>
+                                <button id="showDateCombobox" class="win-button question-button"
+                                        data-win-bind="style.display: DateComboboxButtonShow Binding.Converter.toDisplay"
+                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                    <div class="question-image-container">
+                                        <div class="question-image" id="calendar_1"></div>
+                                    </div>
+                                </button>
+                                <button id="useDateCombobox" class="win-button question-button"
+                                        data-win-bind="style.display: DateComboboxButtonOk Binding.Converter.toDisplay"
+                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                    <div class="question-image-container">
+                                        <div class="question-image" id="navigate_check"></div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="img-list-item" data-win-control="WinJS.Binding.Template" style="display: none">
+                        <div class="overlaid-item-template">
+                            <img class="list-image" data-win-bind="src: picture; alt: title" />
+                            <div class="overlay">
+                                <div class="win-type-subtitle item-title" data-win-bind="textContent: title"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="headerFooterPlaceholder">
+                        <div class="list-footer">
+                            <div class="status">
+                                <progress class="win-progress-bar progress"></progress>
+                                <div class="counter">
+                                    <!--<span data-win-res="{textContent: 'questionnaire.count'}"></span><span>: </span><span data-win-bind="textContent: count"></span>-->
+                                </div>
+                            </div>
+                            <div class="img-list-questionnaire-container">
+                                <div class="header-separator"></div>
+                                <div class="content-header">
+                                    <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                                    <div class="content-header-line win-type-caption">
+                                        <span class="id-field"></span>
+                                        <span class="caption-field" data-win-res="{textContent: 'questionnaire.attachments'}"></span>
+                                        <span class="date-field"></span>
+                                    </div>
+                                </div>
+                                <div id="imgListQuestionnaire"
+                                     class="flipview"
+                                     data-win-control="WinJS.UI.FlipView"
+                                     data-win-options="{
+                                        itemTemplate: select('.img-list-item'),
+                                        itemSpacing : 0
+                                     }">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="listQuestionnaire"
+                         class="listview"
+                         data-win-control="WinJS.UI.ListView"
+                         data-win-options="{
+                             header: select('.list-header'),
+                             footer: select('.list-footer')
+                         }">
+                    </div>
+                    <div class="error-message"
+                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

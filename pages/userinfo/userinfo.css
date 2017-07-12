@@ -1,0 +1,31 @@
+﻿#presentSwitch .win-toggleswitch-header
+{
+    display: none;
+}
+
+.userState_field{
+    float:left;
+    width: calc(100% - 4px);
+    min-width: calc(100% - 4px);
+    height: 35px;
+    padding-bottom:5px;
+}
+
+@media (max-width:899px) {
+    .userState_field{
+        float: right;
+        width: calc(100% - 124px);
+        min-width: calc(100% - 124px);
+        margin-right:16px;
+    }
+   
+}
+
+@media (max-width:499px) {
+   .userState_field{
+        float: left;
+        width: calc(100% - 4px);
+        min-width: calc(100% - 4px);
+    }
+   
+}

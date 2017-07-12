@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="photo.css" rel="stylesheet"/>
+    <script type="text/javascript" src="photoService.js"></script>
+    <script type="text/javascript" src="photoController.js"></script>
+    <script type="text/javascript" src="photo.js"></script>
+</head>
+<body class="win-type-body">
+    <div class="contact fragment">
+        <div id="contactController" class="data-container">
+            <section aria-label="Main content" role="main" class="animationElement">
+                <div class="contentarea win-type-body">
+                    <div class="header-separator"></div>
+                    <div class="content-header">
+                        <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                        <div class="content-header-line win-type-caption">
+                            <span class="id-field" data-win-bind="textContent: generalData.globalContactID"></span>
+                            <span class="caption-field" data-win-res="{textContent: 'photo.title'}"></span>
+                            <span class="date-field" data-win-bind="textContent: generalData.contactDate Binding.Converter.toDateString"></span>
+                        </div>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="photo-fullwidth photo-container"
+                         onclick="AppBar.handleEvent('click', 'clickRotate', event)"></div>
+                    <div class="line-separator"></div>
+                    <div class="error-message"
+                            data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+ </body>
+</html>

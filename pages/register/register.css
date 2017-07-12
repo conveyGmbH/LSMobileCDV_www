@@ -1,0 +1,16 @@
+﻿.register-email {
+    visibility: visible;
+}
+
+.register-complete, .register-address {
+    visibility: hidden;
+    display: none;
+}
+
+.register-message {
+    color: red;
+}
+
+.register-checkbox {
+    margin-bottom: 0;
+}

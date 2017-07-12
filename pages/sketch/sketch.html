@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="sketch.css" rel="stylesheet" />
+    <script type="text/javascript" src="svg.js"></script>
+    <script type="text/javascript" src="svgeditor.js"></script>
+    <script type="text/javascript" src="sketchService.js"></script>
+    <script type="text/javascript" src="sketchController.js"></script>
+    <script type="text/javascript" src="sketch.js"></script>
+</head>
+<body class="win-type-body">
+    <div class="sketch fragment">
+        <div id="sketchController" class="data-container">
+            <section aria-label="Main content" role="main" class="animationElement">
+                <div class="contentarea win-type-body">
+                    <div class="header-separator"></div>
+                    <div class="content-header">
+                        <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                        <div class="content-header-line win-type-caption">
+                            <span class="id-field" data-win-bind="textContent: generalData.globalContactID"></span>
+                            <span class="caption-field" data-win-res="{textContent: 'sketch.title'}"></span>
+                            <span class="date-field" data-win-bind="textContent: generalData.contactDate Binding.Converter.toDateString"></span>
+                        </div>
+                    </div>
+                    <div id="sketch" class="feature">
+                        <div id="svgsketch" class="svgdiv">
+                        </div>
+                        <div id="shapesToolbar" class="tool-box">
+                            <button id="tool0" class="win-button shape"
+                                    onclick="AppBar.handleEvent('click', 'clickTool', event)">
+                                <div id="tool_freehand" class="tool-image"></div>
+                            </button>
+                            <button id="tool1" class="win-button shape"
+                                    onclick="AppBar.handleEvent('click', 'clickTool', event)">
+                                <div id="tool_line" class="tool-image"></div>
+                            </button>
+                            <button id="tool2" class="win-button shape"
+                                    onclick="AppBar.handleEvent('click', 'clickTool', event)">
+                                <div id="tool_square" class="tool-image"></div>
+                            </button>
+                            <button id="tool3" class="win-button shape"
+                                    onclick="AppBar.handleEvent('click', 'clickTool', event)">
+                                <div id="tool_circle" class="tool-image"></div>
+                            </button>
+                            <button id="tool4" class="win-button shape"
+                                    onclick="AppBar.handleEvent('click', 'clickTool', event)">
+                                <div id="tool_ellipse" class="tool-image"></div>
+                            </button>
+                        </div>
+                        <div id="colorsToolbar" class="tool-box">
+                            <button id="tool_empty0" class="win-button shape"
+                                    onclick="AppBar.handleEvent('click', 'clickColor', event)"
+                                    style="background-color:black">
+                                <div id="tool_black"></div>
+                            </button>
+                            <button id="tool_empty1" class="win-button shape"
+                                    onclick="AppBar.handleEvent('click', 'clickColor', event)"
+                                    style="background-color:blue">
+                                <div id="tool_blue"></div>
+                            </button>
+                            <button id="tool_empty2" class="win-button shape"
+                                    onclick="AppBar.handleEvent('click', 'clickColor', event)"
+                                    style="background-color:red">
+                                <div id="tool_red"></div>
+                            </button>
+                            <button id="tool_empty3" class="win-button shape"
+                                    onclick="AppBar.handleEvent('click', 'clickColor', event)"
+                                    style="background-color:yellow">
+                                <div id="tool_yellow"></div>
+                            </button>
+                            <button id="tool_empty4" class="win-button shape"
+                                    onclick="AppBar.handleEvent('click', 'clickColor', event)"
+                                    style="background-color:green">
+                                <div id="tool_green"></div>
+                            </button>
+                            <button id="tool_empty5" class="win-button shape"
+                                    onclick="AppBar.handleEvent('click', 'clickColor', event)"
+                                    style="background-color:gray">
+                                <div id="tool_gray"></div>
+                            </button>
+                        </div>
+                        <div id="widthsToolbar" class="tool-box">
+                            <div class="tool-box-width"
+                                 data-win-bind="style.borderBottomWidth: width; style.borderBottomColor: color">
+                                <input id="swidth" type="range" min="1" max="10" step="1"
+                                       data-win-bind="value: width Binding.Mode.twoway">
+                            </div>
+                            <div class="line-separator"></div>
+                            <button id="clickWidth" class="win-button tool-ok"
+                                    onclick="AppBar.handleEvent('click', 'clickWidth', event)">OK</button>
+                        </div>
+                        <div>
+                            <input id="fill" type="hidden" value="none" />
+                            <input id="stroke" type="hidden" value="black" />
+                            <input id="shape" type="hidden" value="polyline" />
+                        </div>
+                    </div>
+                    <div class="error-message"
+                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

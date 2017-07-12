@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="appHeader.css" rel="stylesheet"/>
+    <script type="text/javascript" src="appHeaderService.js"></script>
+    <script type="text/javascript" src="appHeaderController.js"></script>
+    <script type="text/javascript" src="appHeader.js"></script>
+</head>
+<body class="win-type-body">
+    <div class="appHeader fragment">
+        <div id="appHeaderController" class="data-container">
+            <header aria-label="Header content" role="banner">
+                <div class="bkg-splitviewpanetoggle tile-navigationcolor"></div>
+                <div class="titlearea">
+                    <div class="event-line">
+                        <div class="app-logo-container">
+                            <div class="app-logo" id="leadsuccess"></div>
+                        </div>
+                        <div class="event-field">
+                            <span class="win-type-subtitle event-name event-name-static win-type-ellipsis"
+                                  data-win-bind="textContent: generalData.eventName; style.display: generalData.publishFlag Binding.Converter.toDisplayNone"></span>
+                        </div>
+                    </div>
+                    <button class="win-button status-on-off"
+                            data-win-bind="style.visibility: generalData.userName Binding.Converter.emptyToHidden"
+                            onclick="AppBar.handleEvent('click', 'clickChangeUserState', event)">
+                        <div class="user-name-container">
+                            <span class="win-type-subtitle user-name-field win-type-ellipsis"
+                                  data-win-bind="textContent: generalData.userName"></span>
+                        </div>
+                        <div class="user-image-container">
+                            <div class="onsite-offsite win-type-caption">
+                                <span class="onsite-offsite-symbol statusOn"
+                                      data-win-bind="style.display: generalData.userPresent Binding.Converter.toDisplay">&#xe10b;</span>
+                                <span class="onsite-offsite-symbol statusOff"
+                                      data-win-bind="style.display: generalData.userPresent Binding.Converter.toDisplayNone">&#xe108;</span>
+                            </div>
+                            <div class="user-image" id="user"></div>
+                        </div>
+                    </button>
+                </div>
+            </header>
+        </div>
+    </div>
+ </body>
+</html>

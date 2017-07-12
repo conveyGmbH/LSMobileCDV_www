@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="contactRemote.css" rel="stylesheet"/>
+    <script type="text/javascript" src="contactRemoteService.js"></script>
+    <script type="text/javascript" src="contactRemoteController.js"></script>
+    <script type="text/javascript" src="contactRemote.js"></script>
+</head>
+<body class="win-type-body">
+    <div class="contact fragment">
+        <div id="contactController" class="data-container">
+            <section aria-label="Main content" role="main" class="animationElement">
+                <div class="contentarea win-type-body">
+                    <div class="header-separator"></div>
+                    <div class="content-header">
+                        <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                        <div class="content-header-line win-type-caption">
+                            <span class="id-field"
+                                  data-win-bind="style.display: dataContact.CreatorRecID  Binding.Converter.toDisplay">
+                                <span data-win-bind="textContent: dataContact.CreatorSiteID"></span>/<span data-win-bind="textContent: dataContact.CreatorRecID"></span>
+                            </span>
+                            <span class="id-field"
+                                  data-win-bind="style.display: dataContact.CreatorRecID  Binding.Converter.toDisplayNone">
+                                &nbsp;
+                            </span>
+                            <span class="caption-field" data-win-res="{textContent: 'contactRemote.title'}"></span>
+                            <span class="date-field" data-win-bind="textContent: dataContact.Erfassungsdatum Binding.Converter.toRemoteDateString"></span>
+                        </div>
+                    </div>
+                    <div class="line-separator"
+                         data-win-bind="style.display: showModified Binding.Converter.toDisplay"></div>
+                    <div class="field_line field_line_even"
+                         data-win-bind="style.display: showModified Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.modifiedOn'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'contact.modifiedOn'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.ModifiedTS Binding.Converter.toRemoteDateString"></span>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="field_line field_line_odd">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.company'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'contact.company'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.Firmenname"></span>
+                    </div>
+                    <div class="field_line field_line_even">
+                        <span class="label win-type-caption portrait_only_left" data-win-res="{textContent: 'contact.formOf'}"></span>
+                        <span class="label win-type-caption portrait_only_right" data-win-res="{textContent: 'contact.academicTitle'}"></span>
+                        <div class="label landscape_only"><span data-win-res="{textContent: 'contact.formOf'}"></span> / <span data-win-res="{textContent: 'contact.academicTitle'}"></span></div>
+                        <div class="input_group">
+                            <span class="input_small_left win-type-subtitle" data-win-bind="textContent: InitAnredeItem.TITLE"></span>
+                            <span class="input_small_right win-type-subtitle" data-win-bind="textContent: dataContact.Titel"></span>
+                        </div>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="field_line field_line_odd">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.firstName'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'contact.firstName'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.Vorname"></span>
+                    </div>
+                    <div class="field_line field_line_even">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.name'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'contact.name'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.Name"></span>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="field_line field_line_odd">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.email'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'contact.email'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.EMail"></span>
+                    </div>
+                    <div class="field_line field_line_even">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.phone'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'contact.phone'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.TelefonFestnetz"></span>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="field_line field_line_odd">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.mobile'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'contact.mobile'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.TelefonMobil"></span>
+                    </div>
+                    <div class="field_line field_line_even">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.fax'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'contact.fax'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.Fax"></span>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="field_line field_line_odd">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.address'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'contact.address'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.Strasse"></span>
+                    </div>
+                    <div class="field_line field_line_even">
+                        <span class="label win-type-caption portrait_only_left" data-win-res="{textContent: 'contact.zip'}"></span>
+                        <span class="label win-type-caption portrait_only_right" data-win-res="{textContent: 'contact.city'}"></span>
+                        <div class="label landscape_only"><span data-win-res="{textContent: 'contact.zip'}"></span> / <span data-win-res="{textContent: 'contact.city'}"></span></div>
+                        <div class="input_group">
+                            <span class="input_small_left win-type-subtitle" data-win-bind="textContent: dataContact.PLZ"></span>
+                            <span class="input_small_right win-type-subtitle" data-win-bind="textContent: dataContact.Stadt"></span>
+                        </div>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="field_line field_line_odd">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.country'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'contact.country'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: InitLandItem.TITLE"></span>
+                    </div>
+                    <div class="field_line field_line_even">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.memo'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'contact.memo'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.Freitext1"></span>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div id="businessCardContact" 
+                         class="field_line field_line_odd photo-container"
+                         onclick="AppBar.handleEvent('click', 'clickOpen', event)"></div>
+                    <div class="line-separator"></div>
+                    <div class="error-message"
+                            data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+ </body>
+</html>
