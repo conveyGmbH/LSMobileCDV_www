@@ -74,6 +74,7 @@
             };
 
             var insertCameradata = function (imageData, width, height) {
+                var err = null;
                 Log.call(Log.l.trace, "Camera.Controller.");
                 var ret = new WinJS.Promise.as().then(function () {
                     var newContact = {
@@ -123,16 +124,31 @@
                             that.binding.cardscan = json.d;
                             AppData.generalData.setRecordId("IMPORT_CARDSCAN", that.binding.cardscan.IMPORT_CARDSCANVIEWID);
                         } else {
-                            AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
+                            err = { status: 404, statusText: "no data found" };
+                            AppData.setErrorMsg(that.binding, err);
                         }
                     }, function (errorResponse) {
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
-                        AppData.setErrorMsg(that.binding, errorResponse);
+                        err = errorResponse
+                        AppData.setErrorMsg(that.binding, err);
                     }, newCardscan);
                 }).then(function () {
-                    if (!AppData.generalData.getRecordId("IMPORT_CARDSCAN")) {
-                        Log.print(Log.l.error, "no IMPORT_CARDSCANVIEWID");
+                    if (err) {
+                        return WinJS.Promise.as();
+                    }
+                    return Colors.resizeImageBase64(imageData, "image/jpeg", 2560);
+                }).then(function (resizeData) {
+                    if (err) {
+                        return WinJS.Promise.as();
+                    }
+                    if (resizeData) {
+                        Log.print(Log.l.trace, "resized");
+                        imageData = resizeData;
+                    }
+                    return Colors.resizeImageBase64(imageData, "image/jpeg", 150);
+                }).then(function (ovwData) {
+                    if (err) {
                         return WinJS.Promise.as();
                     }
 
@@ -151,10 +167,24 @@
                         ulHeight: height,
                         ulDpm: 0,
                         szOriFileNameDOC1: "Visitenkarte.jpg",
-                        DocContentDOCCNT1:
-                        "Content-Type: image/jpegAccept-Ranges: bytes\x0D\x0ALast-Modified: " + dateStringUtc + "\x0D\x0AContent-Length: " + contentLength + "\x0D\x0A\x0D\x0A" + imageData,
+                        DocContentDOCCNT1: "Content-Type: image/jpegAccept-Ranges: bytes\x0D\x0ALast-Modified: " +
+                            dateStringUtc +
+                            "\x0D\x0AContent-Length: " +
+                            contentLength +
+                            "\x0D\x0A\x0D\x0A" +
+                            imageData,
                         ContentEncoding: 4096
                     };
+                    if (ovwData) {
+                        var contentLengthOvw = Math.floor(ovwData.length * 3 / 4);
+                        newPicture.OvwContentDOCCNT3 =
+                            "Content-Type: image/jpegAccept-Ranges: bytes\x0D\x0ALast-Modified: " +
+                            dateStringUtc +
+                            "\x0D\x0AContent-Length: " +
+                            contentLengthOvw +
+                            "\x0D\x0A\x0D\x0A" +
+                            ovwData;
+                    }
                     //load of format relation record data
                     Log.print(Log.l.trace, "insert new cameraData for DOC1IMPORT_CARDSCANVIEWID=" + newPicture.DOC1IMPORT_CARDSCANVIEWID);
                     return Camera.doc1cardscanView.insert(function (json) {

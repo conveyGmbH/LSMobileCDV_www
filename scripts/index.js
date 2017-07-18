@@ -20,6 +20,7 @@
         showAppBkg: false,
         cameraQuality: 50,
         cameraUseGrayscale: true,
+        cameraMaxSize: 2560,
         logEnabled: false,
         logLevel: 3,
         logGroup: false,
