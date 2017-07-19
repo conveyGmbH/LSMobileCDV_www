@@ -158,12 +158,7 @@
                             if (json && json.d) {
                                 that.binding.dataPhoto = json.d;
                                 Log.print(Log.l.info, "DOC1MitarbeiterVIEWID=" + json.d.DOC1MitarbeiterVIEWID);
-                                var docContent;
-                                if (json.d.wFormat === 1) {
-                                    docContent = json.d.PrevContentDOCCNT2;
-                                } else {
-                                    docContent = json.d.DocContentDOCCNT1;
-                                }
+                                var docContent = json.d.DocContentDOCCNT1;
                                 if (docContent) {
                                     var sub = docContent.search("\r\n\r\n");
                                     if (sub >= 0) {
@@ -243,6 +238,14 @@
                 AppBar.busy = true;
                 Log.call(Log.l.trace, "UserInfo.Controller.");
                 var ret = new WinJS.Promise.as().then(function () {
+                    return Colors.resizeImageBase64(imageData, "image/jpeg", 2560);
+                }).then(function (resizeData) {
+                    if (resizeData) {
+                        Log.print(Log.l.trace, "resized");
+                        imageData = resizeData;
+                    }
+                    return Colors.resizeImageBase64(imageData, "image/jpeg", 150);
+                }).then(function (ovwData) {
                     // UTC-Zeit in Klartext
                     var now = new Date();
                     var dateStringUtc = now.toUTCString();
@@ -266,6 +269,16 @@
                         szPrevPathDOC4: null,
                         ContentEncoding: 4096
                     };
+                    if (ovwData) {
+                        var contentLengthOvw = Math.floor(ovwData.length * 3 / 4);
+                        newPicture.OvwContentDOCCNT3 =
+                            "Content-Type: image/jpegAccept-Ranges: bytes\x0D\x0ALast-Modified: " +
+                            dateStringUtc +
+                            "\x0D\x0AContent-Length: " +
+                            contentLengthOvw +
+                            "\x0D\x0A\x0D\x0A" +
+                            ovwData;
+                    }
                     if (that.binding.dataPhoto &&
                         that.binding.dataPhoto.DOC1MitarbeiterVIEWID === newPicture.DOC1MitarbeiterVIEWID) {
                         Log.print(Log.l.trace, "update cameraData for DOC1MitarbeiterVIEWID=" + newPicture.DOC1MitarbeiterVIEWID);
@@ -294,12 +307,7 @@
                             if (json && json.d) {
                                 that.binding.dataPhoto = json.d;
                                 Log.print(Log.l.info, "DOC1MitarbeiterVIEWID=" + json.d.DOC1MitarbeiterVIEWID);
-                                var docContent;
-                                if (that.binding.dataPhoto.wFormat === 1) {
-                                    docContent = that.binding.dataPhoto.PrevContentDOCCNT2;
-                                } else {
-                                    docContent = that.binding.dataPhoto.DocContentDOCCNT1;
-                                }
+                                var docContent = that.binding.dataPhoto.DocContentDOCCNT1;
                                 if (docContent) {
                                     var sub = docContent.search("\r\n\r\n");
                                     if (sub >= 0) {

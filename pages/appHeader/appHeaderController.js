@@ -63,12 +63,9 @@
                         return AppHeader.userPhotoView.select(function (json) {
                             Log.print(Log.l.trace, "userPhotoView: success!");
                             if (json && json.d) {
-                                var docContent;
-                                if (json.d.wFormat === 1) {
-                                    docContent = json.d.PrevContentDOCCNT2;
-                                } else {
-                                    docContent = json.d.DocContentDOCCNT1;
-                                }
+                                var docContent = json.d.OvwContentDOCCNT3
+                                    ? json.d.OvwContentDOCCNT3
+                                    : json.d.DocContentDOCCNT1;
                                 if (docContent) {
                                     var sub = docContent.search("\r\n\r\n");
                                     if (sub >= 0) {

@@ -1,6 +1,7 @@
 ﻿// controller for page: settings
 /// <reference path="~/www/lib/WinJS/scripts/base.js" />
 /// <reference path="~/www/lib/WinJS/scripts/ui.js" />
+/// <reference path="~/www/lib/convey/scripts/strings.js" />
 /// <reference path="~/www/lib/convey/scripts/appSettings.js" />
 /// <reference path="~/www/lib/convey/scripts/dataService.js" />
 /// <reference path="~/www/lib/convey/scripts/appbar.js" />
@@ -54,6 +55,78 @@
                 Log.ret(Log.l.trace);
             };
             this.createColorPicker = createColorPicker;
+
+            var changeColorSetting = function (colorProperty, color) {
+                Log.call(Log.l.trace, "Settings.Controller.", "colorProperty=" + colorProperty + " color=" + color);
+                var pValue = color.replace("#", "");
+                var pOptionTypeId = null;
+                switch (colorProperty) { //event.currentTarget.id
+                    case "accentColor":
+                        pOptionTypeId = 11;
+                        break;
+                    case "backgroundColor":
+                        pOptionTypeId = 12;
+                        break;
+                    case "navigationColor":
+                        pOptionTypeId = 13;
+                        break;
+                    case "textColor":
+                        pOptionTypeId = 14;
+                        break;
+                    case "labelColor":
+                        pOptionTypeId = 15;
+                        break;
+                    case "tileTextColor":
+                        pOptionTypeId = 16;
+                        break;
+                    case "tileBackgroundColor":
+                        pOptionTypeId = 17;
+                        break;
+                    default:
+                        // defaultvalues
+                }
+                if (pOptionTypeId) {
+                    AppData.call("PRC_SETVERANSTOPTION",
+                        {
+                            pVeranstaltungID: AppData.getRecordId("Veranstaltung"),
+                            pOptionTypeID: pOptionTypeId,
+                            pValue: pValue
+                        },
+                        function (json) {
+                            Log.print(Log.l.info, "call success! ");
+                        },
+                        function (error) {
+                            Log.print(Log.l.error, "call error");
+                        });
+                    that.applyColorSetting(colorProperty, color);
+                    //Colors.updateColors();
+                }
+            }
+            this.changeColorSetting = changeColorSetting;
+
+            var applyColorSetting = function (colorProperty, color) {
+                Log.call(Log.l.trace, "Settings.Controller.", "colorProperty=" + colorProperty + " color=" + color);
+
+                Colors[colorProperty] = color;
+                that.binding.generalData[colorProperty] = color;
+                switch (colorProperty) {
+                    case "accentColor":
+                        that.createColorPicker("backgroundColor");
+                        that.createColorPicker("textColor");
+                        that.createColorPicker("labelColor");
+                        that.createColorPicker("tileTextColor");
+                        that.createColorPicker("tileBackgroundColor");
+                        that.createColorPicker("navigationColor");
+                        // fall through...
+                    case "navigationColor":
+                        AppBar.loadIcons();
+                        NavigationBar.groups = Application.navigationBarGroups;
+                        break;
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.applyColorSetting = applyColorSetting;
+
             // create all color pickers!
             this.createColorPicker("accentColor", true);
             this.createColorPicker("backgroundColor");
@@ -112,8 +185,9 @@
                         }
                         AppData._persistentStates.individualColors = that.binding.generalData.individualColors;
                         if (restoreDefault) {
-                            AppData._persistentStates.colorSettings = AppData.persistentStatesDefaults.colorSettings;
                             WinJS.Promise.timeout(0).then(function () {
+                                AppData._persistentStates.individualColors = false;
+                                AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
                                 var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
                                 that.createColorPicker("accentColor", true);
                                 that.createColorPicker("backgroundColor");
@@ -122,6 +196,8 @@
                                 that.createColorPicker("tileTextColor");
                                 that.createColorPicker("tileBackgroundColor");
                                 that.createColorPicker("navigationColor");
+                                AppBar.loadIcons();
+                                NavigationBar.groups = Application.navigationBarGroups;
                             });
                         }
                         Application.pageframe.savePersistentStates();
@@ -171,11 +247,87 @@
                 }
             }
 
+            var resultConverter = function (item, index) {
+                if (item.INITOptionTypeID > 10) {
+                    switch (item.INITOptionTypeID) {
+                        case 11:
+                            item.colorPickerId = "accentColor";
+                            break;
+                        case 12:
+                            item.colorPickerId = "backgroundColor";
+                            break;
+                        case 13:
+                            item.colorPickerId = "navigationColor";
+                            break;
+                        case 14:
+                            item.colorPickerId = "textColor";
+                            break;
+                        case 15:
+                            item.colorPickerId = "labelColor";
+                            break;
+                        case 16:
+                            item.colorPickerId = "tileTextColor";
+                            break;
+                        case 17:
+                            item.colorPickerId = "tileBackgroundColor";
+                            break;
+                        default:
+                            // defaultvalues
+                    }
+                    if (item.colorPickerId) {
+                        item.colorValue = "#" + item.LocalValue;
+                        var childElement = pageElement.querySelector("#" + item.colorPickerId);
+                        if (childElement) {
+                            childElement.value = item.colorValue;
+                        }
+                        var pickerParent = pageElement.querySelector("#" + item.colorPickerId + "_picker");
+                        if (pickerParent) {
+                            var colorcontainer = pickerParent.querySelector(".color_container");
+                            if (colorcontainer) {
+                                var colorPicker = colorcontainer.colorPicker;
+                                if (colorPicker) {
+                                    colorPicker.color = item.colorValue;
+                                }
+                            }
+                        }
+                        that.applyColorSetting(item.colorPickerId, item.colorValue);
+                    }
+                }
+            }
+            this.resultConverter = resultConverter;
+
+            var loadData = function (complete, error) {
+                return Settings.CR_VERANSTOPTION_ODataView.select(function (json) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    Log.print(Log.l.trace, "Reporting: success!");
+                    // CR_VERANSTOPTION_ODataView returns object already parsed from json file in response
+
+                    if (json && json.d) {
+                        var results = json.d.results;
+                        results.forEach(function (item, index) {
+                            that.resultConverter(item, index);
+                        });
+
+                    }
+                }, function (errorResponse) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    AppData.setErrorMsg(that.binding, errorResponse);
+                }).then(function () {
+                    Colors.updateColors();
+                    return WinJS.Promise.as();
+                });
+
+            };
+            this.loadData = loadData;
             AppData.setErrorMsg(this.binding);
 
             that.processAll().then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Binding wireup page complete");
+            }).then(function () {
+                return that.loadData();
             });
             Log.ret(Log.l.trace);
         }),
