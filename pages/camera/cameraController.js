@@ -130,14 +130,18 @@
                     }, function (errorResponse) {
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
-                        err = errorResponse
+                        err = errorResponse;
                         AppData.setErrorMsg(that.binding, err);
                     }, newCardscan);
                 }).then(function () {
                     if (err) {
                         return WinJS.Promise.as();
                     }
-                    return Colors.resizeImageBase64(imageData, "image/jpeg", 2560);
+                    if (imageData.length < 500000) {
+                        // keep original 
+                        return WinJS.Promise.as();
+                    }
+                    return Colors.resizeImageBase64(imageData, "image/jpeg", 2560, AppData.generalData.cameraQuality, 0.25);
                 }).then(function (resizeData) {
                     if (err) {
                         return WinJS.Promise.as();
@@ -146,7 +150,7 @@
                         Log.print(Log.l.trace, "resized");
                         imageData = resizeData;
                     }
-                    return Colors.resizeImageBase64(imageData, "image/jpeg", 150);
+                    return Colors.resizeImageBase64(imageData, "image/jpeg", 256, AppData.generalData.cameraQuality);
                 }).then(function (ovwData) {
                     if (err) {
                         return WinJS.Promise.as();

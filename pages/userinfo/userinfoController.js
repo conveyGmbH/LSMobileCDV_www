@@ -244,7 +244,7 @@
                         Log.print(Log.l.trace, "resized");
                         imageData = resizeData;
                     }
-                    return Colors.resizeImageBase64(imageData, "image/jpeg", 150);
+                    return Colors.resizeImageBase64(imageData, "image/jpeg", 256);
                 }).then(function (ovwData) {
                     // UTC-Zeit in Klartext
                     var now = new Date();
