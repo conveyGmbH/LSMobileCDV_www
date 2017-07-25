@@ -121,7 +121,18 @@
                 },
                 clickLogoff: function (event) {
                     Log.call(Log.l.trace, "Account.Controller.");
-                    Application.navigateById("login", event);
+                    //that.binding.doEdit -> hat sich was geändert?
+                    confirm("Beachten sie bitte, das alle von der App lokal auf dem Gerät \n gespeicherten Daten gelöscht werden, wenn Sie sich abmelden oder mit einem anderen Konto anmelden!",
+                        function (result) {
+                            Log.print(Log.l.trace, "clickLogoff: user choice OK");
+                            if (result) {
+                                Application.navigateById("login", event);
+                            } else {
+                                Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");
+                            }
+                        });
+
+
                     Log.ret(Log.l.trace);
                 },
                 clickChangeUserState: function (event) {
