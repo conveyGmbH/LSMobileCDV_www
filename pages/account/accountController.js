@@ -101,12 +101,25 @@
                         case 17:
                             item.colorPickerId = "tileBackgroundColor";
                             break;
+                        case 20:
+                            item.pageProperty = "questionnaire";
+                            break;
+                        case 21:
+                            item.pageProperty = "sketch";
+                            break;
                         default:
                             // defaultvalues
                     }
                     if (item.colorPickerId) {
                         item.colorValue = "#" + item.LocalValue;
                         that.applyColorSetting(item.colorPickerId, item.colorValue);
+                    }
+                    if (item.pageProperty) {
+                        if (item.LocalValue === "1") {
+                            NavigationBar.enablePage(item.pageProperty);
+                        } else if (item.LocalValue === "0") {
+                            NavigationBar.disablePage(item.pageProperty);
+                        }
                     }
                 }
             }

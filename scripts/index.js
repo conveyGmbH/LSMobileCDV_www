@@ -97,6 +97,23 @@
             Application.prevNavigateNewId = id;
         } else if (id === "newAccount") {
             id = "account";
+        } else if (id === "questionnaire") {
+            for (var i = 0; i < Application.navigationBarPages.length; i++) {
+                if (Application.navigationBarPages[i].id === id) {
+                    if (Application.navigationBarPages[i].disabled === true) {
+                        id = "sketch";
+                        return Application.navigateByIdOverride(id);
+                    }
+                }
+            }  
+        } else if (id === "sketch") {
+            for (var y = 0; y < Application.navigationBarPages.length; y++) {
+                if (Application.navigationBarPages[y].id === id) {
+                    if (Application.navigationBarPages[y].disabled === true) {
+                        id = "start";
+                    }
+                }
+            }
         }
         Log.ret(Log.l.trace);
         return id;
