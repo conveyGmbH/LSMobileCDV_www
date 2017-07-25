@@ -292,6 +292,17 @@
                         }
                         that.applyColorSetting(item.colorPickerId, item.colorValue);
                     }
+                } else if (item.INITOptionTypeID === 10) {
+                    item.colorPickerId = "individualColors";
+                    // var childElement = pageElement.querySelector("#" + item.colorPickerId);
+                    if (item.LocalValue === "1") {
+                        //wird zwar umgestzt, muss aber einmal seite wechseln von x auf gestaltung
+                        //that.binding.generalData.individualColors = true;
+                        that.binding.showSettingsFlag = false;
+                    } else {
+                        that.binding.showSettingsFlag = true;
+                        that.binding.generalData.individualColors = false;
+                    }
                 }
             }
             this.resultConverter = resultConverter;
@@ -308,7 +319,11 @@
                         results.forEach(function (item, index) {
                             that.resultConverter(item, index);
                         });
+                        //set showSettingsFlag
+                        
 
+                    } else {
+                        
                     }
                 }, function (errorResponse) {
                     // called asynchronously if an error occurs

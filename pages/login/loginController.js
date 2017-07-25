@@ -95,9 +95,18 @@
                         default:
                             // defaultvalues
                     }
-                    if (item.colorPickerId) {
+                    if (item.colorPickerId !== "individualColors") {
                         item.colorValue = "#" + item.LocalValue;
                         that.applyColorSetting(item.colorPickerId, item.colorValue);
+                    } else {
+                        // item.colorValue = "#" + item.LocalValue;
+                        if (item.LocalValue === "1") {
+                            that.binding.generalData.individualColors = true;
+                            that.binding.showSettingsFlag = false;
+                        } else {
+                            that.binding.generalData.individualColors = false;
+                        }
+                        //that.applyColorSetting(item.colorPickerId, item.LocalValue);
                     }
                 }
             }
@@ -305,7 +314,7 @@
                             // when the response is available
                             Log.print(Log.l.trace, "Login: success!");
                             // CR_VERANSTOPTION_ODataView returns object already parsed from json file in response
-                            if (json && json.d && json.d.results && json.d.results.length > 0) {
+                            if (json && json.d && json.d.results && json.d.results.length > 1) {
                                 var results = json.d.results;
                                 results.forEach(function (item, index) {
                                     that.resultConverter(item, index);
