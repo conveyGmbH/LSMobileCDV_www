@@ -77,13 +77,22 @@
             if (element && !that.inResize) {
                 that.inResize = 1;
                 ret = WinJS.Promise.timeout(0).then(function () {
+                    var docContainer = element.querySelector(".doc-container");
                     var listRemoteContacts = element.querySelector("#listRemoteContacts.listview");
                     if (listRemoteContacts && listRemoteContacts.style) {
                         var contentarea = element.querySelector(".contentarea");
                         if (contentarea) {
                             var width = contentarea.clientWidth;
                             var height = contentarea.clientHeight - 8;
-
+                            if (that.controller.hasDoc()) {
+                                if (docContainer.style) {
+                                    docContainer.style.display = "inline";
+                                }
+                            } else {
+                                if (docContainer.style) {
+                                    docContainer.style.display = "none";
+                                }
+                            }
                             if (width !== that.prevWidth) {
                                 that.prevWidth = width;
                                 listRemoteContacts.style.width = width.toString() + "px";

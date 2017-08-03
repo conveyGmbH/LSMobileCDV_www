@@ -44,8 +44,12 @@
             var maxTrailingPages = 0;
 
 
-            var svgFromContact = function(id) {
-                if (id === 3) {
+            var svgFromContact = function (id, visitenkarte, barcode) {
+                if (visitenkarte) {
+                    return "id_card";
+                } else if (barcode) {
+                    return "barcode";
+                } else if (id === 3) {
                     return "office_building";
                 } else if (id === 2) {
                     return "businesswoman";
@@ -79,7 +83,7 @@
                     }
                 }
                 item.index = index;
-                item.svg = svgFromContact(item.INITAnredeID);
+                item.svg = svgFromContact(item.INITAnredeID, item.SHOW_Visitenkarte, item.SHOW_Barcode);
                 item.company = ((item.Firmenname ? (item.Firmenname + " ") : ""));
                 item.fullName =
                     ((item.Title ? (item.Title + " ") : "") +

@@ -20,11 +20,13 @@
             this.nextUrl = null;
             this.loading = false;
             this.contacts = null;
+            this.importCardScanIds = null;
 
             var that = this;
 
             // ListView control
             var listView = pageElement.querySelector("#listRemoteContacts.listview");
+            var photoview = pageElement.querySelector("#contactPhoto.photoview");
 
             this.dispose = function () {
                 if (listView && listView.winControl) {
@@ -42,9 +44,44 @@
             var maxLeadingPages = 0;
             var maxTrailingPages = 0;
 
+            var hasDoc = function () {
+                return (typeof AppData._photoData === "string" && AppData._photoData !== null);
+            }
+            this.hasDoc = hasDoc;
 
-            var svgFromContact = function(id) {
-                if (id === 3) {
+            var showPhoto = function () {
+                if (photoview) {
+                    var photoItemBox = pageElement.querySelector("#contactPhoto .win-itembox");
+                    var reviewPic = pageElement.querySelector("#reviewPic");
+                    if (photoItemBox) {
+                        if (photoItemBox.style) {
+                            photoItemBox.style.visibility = "hidden";
+                        }
+                        if (AppData._photoData) {
+                            that.img = new Image();
+                            photoItemBox.appendChild(that.img);
+                            WinJS.Utilities.addClass(that.img, "active");
+                            that.img.src = "data:image/jpeg;base64," + AppData._photoData;
+
+                            WinJS.Promise.timeout(0).then(function () {
+                                var pageControl = pageElement.winControl;
+                                if (pageControl && pageControl.updateLayout) {
+                                    pageControl.updateLayout.call(pageControl, pageElement);
+                                    if (photoItemBox.style) {
+                                        photoItemBox.style.visibility = "";
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+            var svgFromContact = function (id, visitenkarte, barcode) {
+                if (visitenkarte) {
+                    return "id_card";
+                } else if (barcode) {
+                    return "barcode";
+                } else if (id === 3) {
                     return "office_building";
                 } else if (id === 2) {
                     return "businesswoman";
@@ -56,7 +93,7 @@
             }
             this.svgFromContact = svgFromContact;
 
-            var background = function(index) {
+            var background = function (index) {
                 if (index % 2 === 0) {
                     return 1;
                 } else {
@@ -78,7 +115,7 @@
                     }
                 }
                 item.index = index;
-                item.svg = svgFromContact(item.INITAnredeID);
+                item.svg = svgFromContact(item.INITAnredeID, item.SHOW_Visitenkarte, item.SHOW_Barcode);
                 item.company = ((item.Firmenname ? (item.Firmenname + " ") : ""));
                 item.fullName =
                     ((item.Title ? (item.Title + " ") : "") +
@@ -94,12 +131,19 @@
                     (item.EMail ? item.EMail : ""))) +
                     (item.Freitext1 ? "\r\n" + item.Freitext1 : "");
                 item.globalContactId = item.CreatorSiteID + "/" + item.CreatorRecID;
+                item.imgsrc = "data:image/jpeg;base64," + AppData._photoData;
             }
             this.resultConverter = resultConverter;
 
+            var convertToReviewPic = function (item) {
+                if (item.svg === "id_card")
+                    item.name = "data:image/jpeg;base64," + AppData._photoData;
+            }
+            this.convertToReviewPic = convertToReviewPic;
+
             // define handlers
             this.eventHandlers = {
-                clickBack: function(event) {
+                clickBack: function (event) {
                     Log.call(Log.l.trace, "ListRemote.Controller.");
                     if (WinJS.Navigation.canGoBack === true) {
                         WinJS.Navigation.back(1).done( /* Your success and error handlers */);
@@ -116,12 +160,12 @@
                     Application.navigateById("userinfo", event);
                     Log.ret(Log.l.trace);
                 },
-                clickForward: function(event) {
+                clickForward: function (event) {
                     Log.call(Log.l.trace, "ListRemote.Controller.");
                     Application.navigateById("search", event);
                     Log.ret(Log.l.trace);
                 },
-                onSelectionChanged: function(eventInfo) {
+                onSelectionChanged: function (eventInfo) {
                     Log.call(Log.l.trace, "ListRemote.Controller.");
                     if (listView && listView.winControl) {
                         var listControl = listView.winControl;
@@ -129,7 +173,7 @@
                             var selectionCount = listControl.selection.count();
                             if (selectionCount === 1) {
                                 // Only one item is selected, show the page
-                                listControl.selection.getItems().done(function(items) {
+                                listControl.selection.getItems().done(function (items) {
                                     var item = items[0];
                                     if (item.data && item.data.KontaktVIEWID) {
                                         var contactPage;
@@ -150,7 +194,7 @@
                     }
                     Log.ret(Log.l.trace);
                 },
-                onLoadingStateChanged: function(eventInfo) {
+                onLoadingStateChanged: function (eventInfo) {
                     Log.call(Log.l.trace, "ListRemote.Controller.");
                     if (listView && listView.winControl) {
                         Log.print(Log.l.trace, "loadingState=" + listView.winControl.loadingState);
@@ -213,7 +257,7 @@
                     }
                     Log.ret(Log.l.trace);
                 },
-                onFooterVisibilityChanged: function(eventInfo) {
+                onFooterVisibilityChanged: function (eventInfo) {
                     Log.call(Log.l.trace, "ListRemote.Controller.");
                     if (eventInfo && eventInfo.detail) {
                         progress = listView.querySelector(".list-footer .progress");
@@ -229,7 +273,7 @@
                             }
                             AppData.setErrorMsg(that.binding);
                             Log.print(Log.l.trace, "calling select ListRemote.contactView...");
-                            ListRemote.contactView.selectNext(function(json) {
+                            ListRemote.contactView.selectNext(function (json) {
                                 // this callback will be called asynchronously
                                 // when the response is available
                                 Log.print(Log.l.trace, "ListRemote.contactView: success!");
@@ -237,14 +281,14 @@
                                 if (json && json.d) {
                                     that.nextUrl = ListRemote.contactView.getNextUrl(json);
                                     var results = json.d.results;
-                                    results.forEach(function(item, index) {
+                                    results.forEach(function (item, index) {
                                         that.resultConverter(item, index);
                                         that.binding.count = that.contacts.push(item);
                                     });
                                 } else {
                                     that.nextUrl = null;
                                 }
-                            }, function(errorResponse) {
+                            }, function (errorResponse) {
                                 // called asynchronously if an error occurs
                                 // or server returns response with an error status.
                                 AppData.setErrorMsg(that.binding, errorResponse);
@@ -311,15 +355,17 @@
                             // this callback will be called asynchronously
                             // when the response is available
                             Log.print(Log.l.trace, "initLandView: success!");
-                        }, function (errorResponse) {
-                            // called asynchronously if an error occurs
-                            // or server returns response with an error status.
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                        });
+                        },
+                            function (errorResponse) {
+                                // called asynchronously if an error occurs
+                                // or server returns response with an error status.
+                                AppData.setErrorMsg(that.binding, errorResponse);
+                            });
                     } else {
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
+                    Log.print(Log.l.trace, "calling select contactView...");
                     return ListRemote.contactView.select(function (json) {
                         // this callback will be called asynchronously
                         // when the response is available
@@ -364,27 +410,82 @@
                             }
                             that.loading = false;
                         }
-                    }, function (errorResponse) {
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                        AppData.setErrorMsg(that.binding, errorResponse);
-                        progress = listView.querySelector(".list-footer .progress");
-                        counter = listView.querySelector(".list-footer .counter");
-                        if (progress && progress.style) {
-                            progress.style.display = "none";
+                    },
+                        function (errorResponse) {
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                            progress = listView.querySelector(".list-footer .progress");
+                            counter = listView.querySelector(".list-footer .counter");
+                            if (progress && progress.style) {
+                                progress.style.display = "none";
+                            }
+                            if (counter && counter.style) {
+                                counter.style.display = "inline";
+                            }
+                            that.loading = false;
+                        },
+                        restriction);
+                }).then(function () {
+                    Log.print(Log.l.trace, "calling select contactView20498...");
+                    return ListRemote.contactView20498.select(function (json) {
+                        AppData.setErrorMsg(that.binding);
+                        Log.print(Log.l.trace, "contactView: success!");
+                        if (json && json.d) {
+                            var results = json.d.results;
+                            //verschachtelte schleife funktioniert nicht so wie ich mir das vorstelle 
+                            that.contacts.forEach(function (item, index, array) {
+                                //console.log(array);
+                                var zähler = 0;
+                                var contact = item;
+                                if (contact.svg === "id_card") {
+                                    results.forEach(function (item) {
+                                        if (contact.KontaktVIEWID === item.KontaktVIEWID) {
+                                            var docContent = item.OvwContentDOCCNT3;
+                                            if (docContent) {
+                                                var sub = docContent.search("\r\n\r\n");
+                                                AppData._photoData = docContent.substr(sub + 4);
+                                                //console.log(AppData._photoData);
+                                                contact.imgsrc = "data:image/jpeg;base64," + AppData._photoData;
+                                                that.contacts.setAt(index, contact);
+                                            } else {
+                                                AppData._photoData = null;
+                                            }
+                                            //showPhoto();
+                                            return false;
+                                        } else {
+                                            return true;
+                                        }
+
+                                    });
+                                } 
+                            });
                         }
-                        if (counter && counter.style) {
-                            counter.style.display = "inline";
-                        }
-                        that.loading = false;
-                    }, restriction);
+                        listView.winControl.itemDataSource = that.contacts.dataSource;
+                        WinJS.Promise.timeout(0).then(function () {
+                            var photoItemBox = pageElement.querySelector("#contactPhoto .win-itembox");
+                            var pageControl = pageElement.winControl;
+                            if (pageControl && pageControl.updateLayout) {
+                                pageControl.updateLayout.call(pageControl, pageElement);
+                                if (photoItemBox.style) {
+                                    photoItemBox.style.visibility = "";
+                                }
+                            }
+                        });
+
+                    },
+                        function (errorResponse) {
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        });
                 });
                 Log.ret(Log.l.trace);
                 return ret;
             };
             this.loadData = loadData;
 
-            that.processAll().then(function() {
+            that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 return that.loadData();
             }).then(function () {
