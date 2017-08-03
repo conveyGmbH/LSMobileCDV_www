@@ -111,6 +111,7 @@
                 if (Application.navigationBarPages[y].id === id) {
                     if (Application.navigationBarPages[y].disabled === true) {
                         id = "start";
+                        break;
                     }
                 }
             }
