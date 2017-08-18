@@ -37,9 +37,11 @@
             // show business card photo
             var userPhotoContainer = pageElement.querySelector("#user");
             var showPhoto = function () {
+                var userPhotoContainer = pageElement.querySelector("#user");
                 if (that.binding.photoData) {
                     if (userPhotoContainer) {
                         var userImg = new Image();
+                        userImg.id = "userImg";
                         userPhotoContainer.appendChild(userImg);
                         WinJS.Utilities.addClass(userImg, "user-photo");
                         userImg.src = "data:image/jpeg;base64," + that.binding.photoData;
@@ -50,11 +52,27 @@
                         }
                     }
                     AppBar.triggerDisableHandlers();
+                } else {
+                    var userimg = pageElement.querySelector("#userImg");
+                    if (userimg) {
+                        userimg.parentNode.removeChild(userimg);
+                    }
                 }
             }
 
             var loadData = function () {
                 Log.call(Log.l.trace, "AppHeader.Controller.");
+                var usernamefield = pageElement.querySelector(".user-name-field");
+                if (AppHeader.controller.binding.generalData.userName) {
+                    if (AppHeader.controller.binding.generalData.userName.length > 8) {
+                        usernamefield.style.fontSize = "15px";
+                        if (document.body.clientWidth >= 360 && document.body.clientWidth <= 499) {
+                            usernamefield.style.fontSize = "10px";
+                        }
+                    } else {
+                        usernamefield.style.fontSize = "15px";
+                    }
+                }
                 var ret = new WinJS.Promise.as().then(function () {
                     var employeeId = AppData.getRecordId("Mitarbeiter");
                     if (employeeId) {
@@ -76,12 +94,23 @@
                                             showPhoto();
                                         }
                                     }
+                                } else {
+                                    that.binding.photoData = "";
+                                    showPhoto();
                                 }
+                            } else {
+                                that.binding.photoData = "";
+                                showPhoto();
                             }
+
                         }, function (errorResponse) {
+                            that.binding.photoData = "";
+                            showPhoto();
                             // ignore that
                         }, employeeId);
                     } else {
+                        AppHeader.controller.binding.generalData.userName = undefined;
+                        AppHeader.controller.binding.generalData.eventName = "";
                         return WinJS.Promise.as();
                     }
                 });
@@ -93,7 +122,7 @@
             // Finally, wire up binding
             WinJS.Resources.processAll(that.element).then(function () {
                 return WinJS.Binding.processAll(that.element, that.binding);
-            }).then(function() {
+            }).then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 return that.loadData();
             }).then(function () {

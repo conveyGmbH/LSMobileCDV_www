@@ -38,6 +38,51 @@
                 Log.ret(Log.l.trace);
                 return ret;
             }
+        },
+        _contactView20498: {
+            get: function () {
+                return AppData.getFormatView("Kontakt", 20498, false);
+            }
+        },
+        contactView20498: {
+            select: function (complete, error) {
+                Log.call(Log.l.trace, "ListRemote.");
+                var ret = ListRemote._contactView20498.select(complete, error);
+                // this will return a promise to controller
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+        },
+        _contactDocView: {
+            get: function () {
+                return AppData.getFormatView("Kontakt", 20500, false);
+            }
+        },
+        contactDocView: {
+            select: function (complete, error, restriction) {
+                Log.call(Log.l.trace, "ContactList.");
+                var ret = ListRemote._contactDocView.select(complete, error, restriction, {
+                    ordered: true,
+                    orderAttribute: "Erfassungsdatum",
+                    desc: true
+                });
+                // this will return a promise to controller
+                Log.ret(Log.l.trace);
+                return ret;
+            },
+            getNextUrl: function (response) {
+                Log.call(Log.l.trace, "ContactList.");
+                var ret = ListRemote._contactDocView.getNextUrl(response);
+                Log.ret(Log.l.trace);
+                return ret;
+            },
+            selectNext: function (complete, error, response, nextUrl) {
+                Log.call(Log.l.trace, "ContactList.");
+                var ret = ListRemote._contactDocView.selectNext(complete, error, response, nextUrl);
+                // this will return a promise to controller
+                Log.ret(Log.l.trace);
+                return ret;
+            }
         }
     });
 })();

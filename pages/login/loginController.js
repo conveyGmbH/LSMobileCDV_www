@@ -359,6 +359,9 @@
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 Application.pageframe.hideSplashScreen();
+            }).then(function () {
+                Log.print(Log.l.trace, "Appheader refresh");
+                AppHeader.controller.loadData();
             });
             Log.ret(Log.l.trace);
         })

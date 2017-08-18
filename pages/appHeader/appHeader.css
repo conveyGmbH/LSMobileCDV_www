@@ -94,6 +94,14 @@
     max-width: 120px;
 }
 
+.namefieldsizebig {
+    font-size: 18px;
+}
+
+.user-name-field {
+    font-size: 15px;
+}
+
 .user-image-container {
     float: right;
     background-color: gray;
@@ -171,7 +179,7 @@
 
 @media (max-width:499px) {
     .status-on-off {
-        max-width: 128px;
+        max-width: 160px;
     }
     .user-name-container {
         padding-top: 10px;
@@ -192,5 +200,39 @@
     }
     .user-name-field {
         font-size: 15px;
+    }
+    .user-name-field-big {
+        font-size: 15px;
+    }
+}
+
+@media (max-width:380px) {
+    .status-on-off {
+        max-width: 160px;
+    }
+
+    .user-name-container {
+        padding-top: 10px;
+    }
+
+    .event-line {
+        width: calc(100% - 180px);
+        display: block;
+        position: absolute;
+        top: 15px;
+        left: 0;
+    }
+
+    .event-name {
+        font-size: 15px;
+    }
+
+    .event-name-static {
+        position: relative;
+        top: -5px;
+    }
+
+    .user-name-field {
+        font-size: 10px;
     }
 }

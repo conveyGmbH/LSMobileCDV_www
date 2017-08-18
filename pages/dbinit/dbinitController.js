@@ -113,6 +113,24 @@
                         }
                     }
                 }
+                if (item.INITOptionTypeID === 10) {
+                    if (item.LocalValue === "0") {
+                        WinJS.Promise.timeout(0).then(function () {
+                            AppData._persistentStates.individualColors = false;
+                            AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
+                            var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
+                         /*   that.createColorPicker("accentColor", true);
+                            that.createColorPicker("backgroundColor");
+                            that.createColorPicker("textColor");
+                            that.createColorPicker("labelColor");
+                            that.createColorPicker("tileTextColor");
+                            that.createColorPicker("tileBackgroundColor");
+                            that.createColorPicker("navigationColor");*/
+                            AppBar.loadIcons();
+                            NavigationBar.groups = Application.navigationBarGroups;
+                        });
+                    }
+                }
             }
             this.resultConverter = resultConverter;
 

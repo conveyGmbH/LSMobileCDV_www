@@ -25,7 +25,7 @@
                     <button class="win-button status-on-off"
                             data-win-bind="style.visibility: generalData.userName Binding.Converter.emptyToHidden"
                             onclick="AppBar.handleEvent('click', 'clickChangeUserState', event)">
-                        <div class="user-name-container">
+                        <div id="username" class="user-name-container">
                             <span class="win-type-subtitle user-name-field win-type-ellipsis"
                                   data-win-bind="textContent: generalData.userName"></span>
                         </div>

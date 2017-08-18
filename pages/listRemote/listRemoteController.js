@@ -18,8 +18,14 @@
                 count: 0
             }]);
             this.nextUrl = null;
+            this.nextDocUrl = null;
             this.loading = false;
             this.contacts = null;
+            this.importCardScanIds = null;
+            this.docs = null;
+
+            this.firstDocsIndex = 0;
+            this.firstContactsIndex = 0;
 
             var that = this;
 
@@ -42,9 +48,17 @@
             var maxLeadingPages = 0;
             var maxTrailingPages = 0;
 
+            var hasDoc = function () {
+                return (typeof AppData._photoData === "string" && AppData._photoData !== null);
+            }
+            this.hasDoc = hasDoc;
 
-            var svgFromContact = function(id) {
-                if (id === 3) {
+            var svgFromContact = function (id, visitenkarte, barcode) {
+                if (visitenkarte) {
+                    return "id_card";
+                } else if (barcode) {
+                    return "barcode";
+                } else if (id === 3) {
                     return "office_building";
                 } else if (id === 2) {
                     return "businesswoman";
@@ -56,7 +70,7 @@
             }
             this.svgFromContact = svgFromContact;
 
-            var background = function(index) {
+            var background = function (index) {
                 if (index % 2 === 0) {
                     return 1;
                 } else {
@@ -78,7 +92,7 @@
                     }
                 }
                 item.index = index;
-                item.svg = svgFromContact(item.INITAnredeID);
+                item.svg = svgFromContact(item.INITAnredeID, item.SHOW_Visitenkarte, item.SHOW_Barcode);
                 item.company = ((item.Firmenname ? (item.Firmenname + " ") : ""));
                 item.fullName =
                     ((item.Title ? (item.Title + " ") : "") +
@@ -94,12 +108,48 @@
                     (item.EMail ? item.EMail : ""))) +
                     (item.Freitext1 ? "\r\n" + item.Freitext1 : "");
                 item.globalContactId = item.CreatorSiteID + "/" + item.CreatorRecID;
+                item.OvwContentDOCCNT3 = null;
+                if (that.docs) {
+                    for (var i = that.firstDocsIndex; i < that.docs.length; i++) {
+                        var doc = that.docs[i];
+                        if (doc.KontaktVIEWID === item.KontaktVIEWID) {
+                            var docContent = doc.OvwContentDOCCNT3;
+                            if (docContent) {
+                                var sub = docContent.search("\r\n\r\n");
+                                item.OvwContentDOCCNT3 = "data:image/jpeg;base64," + docContent.substr(sub + 4);
+                            }
+                            that.firstDocsIndex = i + 1;
+                            break;
+                        }
+                    }
+                }
             }
             this.resultConverter = resultConverter;
 
+            var resultDocConverter = function (item, index) {
+                if (that.contacts) {
+                    for (var i = that.firstDocsIndex; i < that.contacts.length; i++) {
+                        var contact = that.contacts.getAt(i);
+                        if (contact.KontaktVIEWID === item.KontaktVIEWID) {
+                            var docContent = item.OvwContentDOCCNT3;
+                            if (docContent) {
+                                var sub = docContent.search("\r\n\r\n");
+                                contact.OvwContentDOCCNT3 = "data:image/jpeg;base64," + docContent.substr(sub + 4);
+                            } else {
+                                contact.OvwContentDOCCNT3 = null;
+                            }
+                            that.contacts.setAt(i, contact);
+                            that.firstContactsIndex = i + 1;
+                            break;
+                        }
+                    }
+                }
+            }
+            this.resultDocConverter = resultDocConverter;
+
             // define handlers
             this.eventHandlers = {
-                clickBack: function(event) {
+                clickBack: function (event) {
                     Log.call(Log.l.trace, "ListRemote.Controller.");
                     if (WinJS.Navigation.canGoBack === true) {
                         WinJS.Navigation.back(1).done( /* Your success and error handlers */);
@@ -320,6 +370,7 @@
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
+                    Log.print(Log.l.trace, "calling select contactView...");
                     return ListRemote.contactView.select(function (json) {
                         // this callback will be called asynchronously
                         // when the response is available
@@ -364,20 +415,48 @@
                             }
                             that.loading = false;
                         }
-                    }, function (errorResponse) {
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                        AppData.setErrorMsg(that.binding, errorResponse);
-                        progress = listView.querySelector(".list-footer .progress");
-                        counter = listView.querySelector(".list-footer .counter");
-                        if (progress && progress.style) {
-                            progress.style.display = "none";
-                        }
-                        if (counter && counter.style) {
-                            counter.style.display = "inline";
-                        }
-                        that.loading = false;
-                    }, restriction);
+                    },
+                        function (errorResponse) {
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                            progress = listView.querySelector(".list-footer .progress");
+                            counter = listView.querySelector(".list-footer .counter");
+                            if (progress && progress.style) {
+                                progress.style.display = "none";
+                            }
+                            if (counter && counter.style) {
+                                counter.style.display = "inline";
+                            }
+                            that.loading = false;
+                        },
+                        restriction);
+                }).then(function () {
+                    WinJS.Promise.timeout(250).then(function () {
+                        ListRemote.contactDocView.select(function (json) {
+                            // this callback will be called asynchronously
+                            // when the response is available
+                            Log.print(Log.l.trace, "contactDocView: success!");
+                            // startContact returns object already parsed from json file in response
+                            if (json && json.d && json.d.results && json.d.results.length) {
+                                that.binding.doccount = json.d.results.length;
+                                that.nextDocUrl = ListRemote.contactDocView.getNextUrl(json);
+                                var results = json.d.results;
+                                results.forEach(function (item, index) {
+                                    that.resultDocConverter(item, index);
+                                });
+                                that.docs = results;
+                            } else {
+                                Log.print(Log.l.trace, "contactDocView: no data found!");
+                            }
+                        }, function (errorResponse) {
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            Log.print(Log.l.error, "ContactList.contactDocView: error!");
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        },
+                        restriction);
+                    });
                 });
                 Log.ret(Log.l.trace);
                 return ret;

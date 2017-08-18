@@ -19,8 +19,14 @@
                 count: 0
             }]);
             this.nextUrl = null;
+            this.nextDocUrl = null;
             this.loading = false;
             this.contacts = null;
+            this.importCardScanIds = null;
+            this.docs = null;
+
+            this.firstDocsIndex = 0;
+            this.firstContactsIndex = 0;
 
             var that = this;
 
@@ -44,8 +50,12 @@
             var maxTrailingPages = 0;
 
 
-            var svgFromContact = function(id) {
-                if (id === 3) {
+            var svgFromContact = function (id, visitenkarte, barcode) {
+                if (visitenkarte) {
+                    return "id_card";
+                } else if (barcode) {
+                    return "barcode";
+                } else if (id === 3) {
                     return "office_building";
                 } else if (id === 2) {
                     return "businesswoman";
@@ -57,7 +67,7 @@
             }
             this.svgFromContact = svgFromContact;
 
-            var background = function(index) {
+            var background = function (index) {
                 if (index % 2 === 0) {
                     return 1;
                 } else {
@@ -79,7 +89,7 @@
                     }
                 }
                 item.index = index;
-                item.svg = svgFromContact(item.INITAnredeID);
+                item.svg = svgFromContact(item.INITAnredeID, item.SHOW_Visitenkarte, item.SHOW_Barcode);
                 item.company = ((item.Firmenname ? (item.Firmenname + " ") : ""));
                 item.fullName =
                     ((item.Title ? (item.Title + " ") : "") +
@@ -114,12 +124,48 @@
                         item.Sent = null;
                     }
                 }
+                item.OvwContentDOCCNT3 = null;
+                if (that.docs) {
+                    for (var i = that.firstDocsIndex; i < that.docs.length; i++) {
+                        var doc = that.docs[i];
+                        if (doc.KontaktVIEWID === item.KontaktVIEWID) {
+                            var docContent = doc.OvwContentDOCCNT3;
+                            if (docContent) {
+                                var sub = docContent.search("\r\n\r\n");
+                                item.OvwContentDOCCNT3 = "data:image/jpeg;base64," + docContent.substr(sub + 4);
+                            }
+                            that.firstDocsIndex = i + 1;
+                            break;
+                        }
+                    }
+                }
             }
             this.resultConverter = resultConverter;
 
+            var resultDocConverter = function (item, index) {
+                if (that.contacts) {
+                    for (var i = that.firstDocsIndex; i < that.contacts.length; i++) {
+                        var contact = that.contacts.getAt(i);
+                        if ((contact.CreatorSiteID === item.CreatorSiteID) && (contact.CreatorRecID === item.CreatorRecID)) {
+                            var docContent = item.OvwContentDOCCNT3;
+                            if (docContent) {
+                                var sub = docContent.search("\r\n\r\n");
+                                contact.OvwContentDOCCNT3 = "data:image/jpeg;base64," + docContent.substr(sub + 4);
+                            } else {
+                                contact.OvwContentDOCCNT3 = null;
+                            }
+                            that.contacts.setAt(i, contact);
+                            that.firstContactsIndex = i + 1;
+                            break;
+                        }
+                    }
+                }
+            }
+            this.resultDocConverter = resultDocConverter;
+
             // define handlers
             this.eventHandlers = {
-                clickBack: function(event) {
+                clickBack: function (event) {
                     Log.call(Log.l.trace, "ListLocal.Controller.");
                     if (WinJS.Navigation.canGoBack === true) {
                         WinJS.Navigation.back(1).done( /* Your success and error handlers */);
@@ -136,7 +182,7 @@
                     Application.navigateById("userinfo", event);
                     Log.ret(Log.l.trace);
                 },
-                onSelectionChanged: function(eventInfo) {
+                onSelectionChanged: function (eventInfo) {
                     Log.call(Log.l.trace, "ListLocal.Controller.");
                     if (listView && listView.winControl) {
                         var listControl = listView.winControl;
@@ -144,11 +190,11 @@
                             var selectionCount = listControl.selection.count();
                             if (selectionCount === 1) {
                                 // Only one item is selected, show the page
-                                listControl.selection.getItems().done(function(items) {
+                                listControl.selection.getItems().done(function (items) {
                                     var item = items[0];
                                     if (item.data && item.data.KontaktVIEWID) {
                                         AppData.generalData.setRecordId("Kontakt", item.data.KontaktVIEWID);
-                                        WinJS.Promise.timeout(0).then(function() {
+                                        WinJS.Promise.timeout(0).then(function () {
                                             Application.navigateById("contact", eventInfo);
                                         });
                                     }
@@ -158,7 +204,7 @@
                     }
                     Log.ret(Log.l.trace);
                 },
-                onLoadingStateChanged: function(eventInfo) {
+                onLoadingStateChanged: function (eventInfo) {
                     Log.call(Log.l.trace, "ListLocal.Controller.");
                     if (listView && listView.winControl) {
                         Log.print(Log.l.trace, "loadingState=" + listView.winControl.loadingState);
@@ -379,6 +425,33 @@
                         that.loading = false;
                     }, {
                         MitarbeiterID: AppData.generalData.getRecordId("Mitarbeiter")
+                    }).then(function () {
+                        WinJS.Promise.timeout(250).then(function () {
+                            ListLocal.contactDocView.select(function (json) {
+                                // this callback will be called asynchronously
+                                // when the response is available
+                                Log.print(Log.l.trace, "contactDocView: success!");
+                                // startContact returns object already parsed from json file in response
+                                if (json && json.d && json.d.results && json.d.results.length) {
+                                    that.binding.doccount = json.d.results.length;
+                                    that.nextDocUrl = ListLocal.contactDocView.getNextUrl(json);
+                                    var results = json.d.results;
+                                    results.forEach(function (item, index) {
+                                        that.resultDocConverter(item, index);
+                                    });
+                                    that.docs = results;
+                                } else {
+                                    Log.print(Log.l.trace, "contactDocView: no data found!");
+                                }
+                            }, function (errorResponse) {
+                                // called asynchronously if an error occurs
+                                // or server returns response with an error status.
+                                Log.print(Log.l.error, "ContactList.contactDocView: error!");
+                                AppData.setErrorMsg(that.binding, errorResponse);
+                            }, {
+                                MitarbeiterID: AppData.generalData.getRecordId("Mitarbeiter")
+                            });
+                        });
                     });
                 });
                 Log.ret(Log.l.trace);
@@ -386,7 +459,7 @@
             };
             this.loadData = loadData;
 
-            that.processAll().then(function() {
+            that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 return that.loadData();
             }).then(function () {

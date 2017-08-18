@@ -98,8 +98,13 @@
                                     <span class="list-compressed-title win-type-subtitle win-type-ellipsis"
                                           data-win-bind="textContent: fullName">
                                     </span>
-                                    <span class="list-compressed-content"
-                                          data-win-bind="textContent: address"></span>
+                                    <div class="list-compressed-content-container">
+                                        <span class="list-compressed-content"
+                                              data-win-bind="textContent: address"></span>
+                                        <div class="list-compressed-doc-container" data-win-bind="style.display: OvwContentDOCCNT3 Binding.Converter.toDisplay">
+                                            <img class="list-compressed-doc" data-win-bind="src: OvwContentDOCCNT3">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="list-div-right win-type-caption">

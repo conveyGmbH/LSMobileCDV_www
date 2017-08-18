@@ -21,6 +21,8 @@
 
             var that = this;
 
+            var individualColorToggle = pageElement.querySelector(".individualColor");
+
             var createColorPicker = function (colorProperty, doRecreate) {
                 Log.call(Log.l.trace, "Settings.Controller.");
                 var id = "#" + colorProperty + "_picker";
@@ -304,10 +306,46 @@
                     if (item.LocalValue === "1") {
                         //wird zwar umgestzt, muss aber einmal seite wechseln von x auf gestaltung
                         //that.binding.generalData.individualColors = true;
-                        that.binding.showSettingsFlag = false;
+                        //that.binding.showSettingsFlag = "none";
+                        individualColorToggle.style.display = "none";
+                        // console.log(individualColorToggle.checked);
                     } else {
-                        that.binding.showSettingsFlag = true;
-                        that.binding.generalData.individualColors = false;
+                        //that.binding.showSettingsFlag = "";
+
+                        var restoreDefault = true;
+                        Log.call(Log.l.trace, "Settings.Controller.");
+                        //  if (event.currentTarget && AppBar.notifyModified) {
+                        //var toggle = event.currentTarget.winControl;
+                       /* if (individualColorToggle) {
+                            if (!individualColorToggle.checked) {
+                                restoreDefault = true;
+                            }
+                            that.binding.generalData.individualColors = individualColorToggle.checked;
+                        }
+                        AppData._persistentStates.individualColors = that.binding.generalData.individualColors;*/
+                        if (restoreDefault) {
+                            WinJS.Promise.timeout(0).then(function () {
+                                AppData._persistentStates.individualColors = false;
+                                AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
+                                var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
+                                that.createColorPicker("accentColor", true);
+                                that.createColorPicker("backgroundColor");
+                                that.createColorPicker("textColor");
+                                that.createColorPicker("labelColor");
+                                that.createColorPicker("tileTextColor");
+                                that.createColorPicker("tileBackgroundColor");
+                                that.createColorPicker("navigationColor");
+                                AppBar.loadIcons();
+                                NavigationBar.groups = Application.navigationBarGroups;
+                            });
+                        }
+                        Application.pageframe.savePersistentStates();
+                        //    }
+                        that.binding.showSettingsFlag = "";
+                        Log.ret(Log.l.trace);
+                        individualColorToggle.style.display = "";
+                        //that.binding.generalData.individualColors = true;
+                        //that.binding.generalData.individualColors = false;
                     }
                 }
                 if (item.pageProperty) {

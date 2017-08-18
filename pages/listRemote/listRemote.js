@@ -83,7 +83,8 @@
                         if (contentarea) {
                             var width = contentarea.clientWidth;
                             var height = contentarea.clientHeight - 8;
-
+                            if (that.controller.hasDoc()) {
+                            }
                             if (width !== that.prevWidth) {
                                 that.prevWidth = width;
                                 listRemoteContacts.style.width = width.toString() + "px";

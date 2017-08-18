@@ -185,6 +185,12 @@
                     item["DateComboboxButtonShow"] = false;
                     item["DateComboboxButtonOk"] = false;
                 }
+
+                // Für Pflichtfeld analog zu DateCombobox
+                if (item.PflichtFeld) {
+                    item["RequiredFieldShow"] = true;
+                }else
+                    item["RequiredFieldShow"] = false;
             }
             this.resultConverter = resultConverter;
 

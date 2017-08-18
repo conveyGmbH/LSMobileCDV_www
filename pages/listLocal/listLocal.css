@@ -101,3 +101,20 @@
         padding-bottom: 4px;
     }
 }
+
+ .list-compressed-content-container {
+    width: 100%;
+}
+
+.list-compressed-doc-container {
+    width: 150px;
+    margin-left: calc(100% - 70px);
+    margin-top: 44px;
+    display: block;
+}
+
+.list-compressed-doc {
+    width: 100%;
+    height: auto;
+    display: inline;
+}

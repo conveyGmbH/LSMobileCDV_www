@@ -135,7 +135,7 @@
                 clickLogoff: function (event) {
                     Log.call(Log.l.trace, "Account.Controller.");
                     //that.binding.doEdit -> hat sich was geändert?
-                    var confirmTitle = getResourceText("account.comment");
+                    var confirmTitle = getResourceText("account.confirmLogOff");
                     confirm(confirmTitle,
                         function (result) {
                             Log.print(Log.l.trace, "clickLogoff: user choice OK");
