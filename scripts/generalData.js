@@ -380,6 +380,26 @@
                                      prevContactData !== AppData._contactData)) {
                                     AppBar.scope.updateActions(true);
                                 }
+                                if (AppData._contactData.CreatorSiteID === AppData.appSettings.odata.dbSiteId) {
+                                    NavigationBar.enablePage("sketch");
+                                } else {
+                                    var sketchView = AppData.getFormatView("KontaktNotiz", 0);
+                                    if (sketchView) {
+                                        sketchView.select(function(jsonSketch) {
+                                            Log.print(Log.l.trace, "sketchView: success!");
+                                            if (jsonSketch.d && jsonSketch.d.results && jsonSketch.d.results.length > 0) {
+                                                NavigationBar.enablePage("sketch");
+                                            } else {
+                                                NavigationBar.disablePage("sketch");
+                                            }
+                                        }, function () {
+                                            Log.print(Log.l.error, "sketchView: error!");
+                                            NavigationBar.disablePage("sketch");
+                                        }, {
+                                            KontaktID: AppData._contactData.KontaktVIEWID
+                                        });
+                                    }
+                                }
                             }
                         }
                         AppData._curGetContactDataId = 0;
