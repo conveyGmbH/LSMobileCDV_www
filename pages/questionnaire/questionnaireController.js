@@ -1159,8 +1159,9 @@
                                         var comboInputFocus = element.querySelector(".win-dropdown:focus");
                                         if (!comboInputFocus) {
                                             try {
+                                                var focusElement;
                                                 if (typeof element.setActive === "function") {
-                                                    var focusElement = getTextareaForFocus(element);
+                                                    focusElement = getTextareaForFocus(element);
                                                     element.setActive();
                                                     if (focusElement && focusElement !== element) {
                                                         focusElement.focus();
@@ -1169,9 +1170,9 @@
                                                     // check for existence of WinRT
                                                     var resources = Resources.get();
                                                     if (resources) {
-                                                        var focusElement = getTextareaForFocus(element);
+                                                        focusElement = getTextareaForFocus(element);
                                                         if (focusElement && focusElement !== element) {
-                                                            WinJS.Promise.timeout(0).then(function () {
+                                                            WinJS.Promise.timeout(0).then(function() {
                                                                 focusElement.focus();
                                                             });
                                                         }
