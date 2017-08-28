@@ -628,10 +628,10 @@
                              if (freitextInput) {
                                  console.log(freitextInput.value);
                              }
- 
+
                          }
- 
-                  
+
+
                     var freitextInput = event.target.querySelector(".field-text-comment");
                     if (freitextInput) {
                         console.log(freitextInput.value);
@@ -674,7 +674,7 @@
                         }
 
                     }
-                    
+
                 },
                 activateEnterKey: function(event) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
@@ -686,8 +686,8 @@
                 deactivateEnterKey: function(event) {
                     for (var i = 0; i < AppBar.commandList.length; i++) {
                         if (AppBar.commandList[i].id === "clickForward")
-                            AppBar.commandList[i].key = "undefined";
-                    } 
+                            AppBar.commandList[i].key = null;
+                    }
                 },
                 onPointerDown: function (e) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
@@ -928,7 +928,7 @@
                                        /* Log.call(Log.l.trace, "Questionnaire.Controller.");
                                         for (var i = 0; i < AppBar.commandList.length; i++) {
                                             if (AppBar.commandList[i].id === "clickForward")
-                                                AppBar.commandList[i].key = undefined;
+                                                AppBar.commandList[i].key = null;
                                         }*/
                                     } else {
                                         /* Log.call(Log.l.trace, "Questionnaire.Controller.");

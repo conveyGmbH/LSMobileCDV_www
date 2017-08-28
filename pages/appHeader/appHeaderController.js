@@ -109,7 +109,7 @@
                             // ignore that
                         }, employeeId);
                     } else {
-                        AppHeader.controller.binding.generalData.userName = undefined;
+                        AppHeader.controller.binding.generalData.userName = "";
                         AppHeader.controller.binding.generalData.eventName = "";
                         return WinJS.Promise.as();
                     }
