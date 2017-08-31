@@ -318,23 +318,36 @@ section[role=main] {
 }
 .id-field {
     width: 100px;
-    float: left;
+    display: block;
+    position: relative;
+    left: 0;
+    top: 0;
     height: 12px;
     vertical-align: top;
 }
 .caption-field {
-    display: inline-block;
+    display: block;
+    position: relative;
+    left: 0;
+    top: -12px;
+    /*
     width: calc(100% - 200px);
+    */
+    width: 100%;
     height: 12px;
     vertical-align: top;
     text-align: center;
     text-transform: uppercase;
     font-weight: 600;
+    white-space: nowrap;
 }
 
 .date-field {
     width: 100px;
-    float: right;
+    display: block;
+    position: relative;
+    left: calc(100% - 100px);
+    top: -24px;
     height: 12px;
     vertical-align: top;
     text-align: right;
