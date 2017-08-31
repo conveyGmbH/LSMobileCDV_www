@@ -527,7 +527,7 @@
         generalData: {
             get: function () {
                 return {
-                    newContactPageId: AppData._persistentStates.newContactPageId,
+                    newContactPageId: AppData._persistentStates.prevNavigateNewId,
                     setRecordId: AppData.setRecordId,
                     getRecordId: AppData.getRecordId,
                     setRestriction: AppData.setRestriction,
