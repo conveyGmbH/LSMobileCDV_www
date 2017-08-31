@@ -673,7 +673,7 @@ input.input_small_right {
 }
 .list-compressed-content {
     min-height: 20px;
-    width:  100%;
+    width:  calc(100% - 70px);
     white-space: pre-line;
     float: left;
 }
