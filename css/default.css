@@ -1010,3 +1010,15 @@ input.input_small_right {
     font-size: 15px;
 }
 
+.view-size-small .list-compressed-content,
+.view-size-small .list-compressed-title,
+.view-size-small .counter {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.167;
+}
+.view-size-small .list-compressed-title.win-type-subtitle {
+    font-size: 15px;
+    line-height: 1.333;
+}
+
