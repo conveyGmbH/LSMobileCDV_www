@@ -18,10 +18,12 @@
     border-right-color: transparent;
     */
 }
+/*
 .win-selectionstylefilled.win-listview .win-selected {
     background-color: #e0e0e0;
     color: HighlightText;
 }
+*/
 
 .navigationbar-container-horizontal {
     height: 48px;
@@ -98,11 +100,24 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 #navigationbar_vertical {
     margin: 0;
     padding: 0;
-    width: 242px;
+    width: calc(100% - 2px);
     height: 100%;
     border-right-style: solid;
     border-right-width: 2px;
     border-right-color: transparent;
+}
+
+#navigationbar_horizontal .win-selectionbackground {
+    height: 4px;
+    top: 36px;
+    left: 20%;
+    right: 20%;
+}
+#navigationbar_vertical .win-selectionbackground {
+    width: 4px;
+    top: 4px;
+    bottom: 4px;
+    left: 16px;
 }
 
 .navigationbar-horizontal-template,
@@ -204,5 +219,8 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     .win-splitviewcommand-label {
         font-size: 15px;
         margin-top: 16px;
+    }
+    #navigationbar_horizontal .win-selectionbackground {
+        top: 32px;
     }
 }    
