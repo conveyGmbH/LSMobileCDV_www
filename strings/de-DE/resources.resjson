@@ -77,7 +77,7 @@
     "start.info"            : "Wichtige Hinweise",
     "start.language"        : "Sprache",
 
-    "contact.title"         : "Kontakt",
+    "contact.title"         : "Geben Sie Kontaktdaten ein",
     "contact.comment"       : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
     "contact.questionDelete": "Wollen Sie den aktuellen Kontakt löschen?",
     "contact.name"          : "Name",
@@ -112,22 +112,24 @@
 
     "contact.useRestriction": "verwenden",
 
+    "contactRemote.title"   : "Bereits hochgeladene Kontakte",
+
     "photo.title"           : "Visitenkarte",
     "photo.comment"         : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
 
-    "questionnaire.title"   : "Fragebogen",
+    "questionnaire.title"   : "Beantworten Sie die Fragen",
     "questionnaire.comment" : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
     "questionnaire.textarea": "Bitte geben Sie hier Ihren Kommentar ein ",
     "questionnaire.count"   : "Anzahl",
     "questionnaire.attachments" : "Anhänge",
 
-    "sketch.title"          : "Skizze",
+    "sketch.title"          : "Zeichenen Sie eine Skizze",
     "sketch.comment"        : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
     "sketch.shape"          : "Zeichenform",
     "sketch.color"          : "Farbe",
     "sketch.width"          : "Stiftbreite",
 
-    "search.title"          : "Suche",
+    "search.title"          : "Geben Sie Kriterien zur Suche an",
     "search.comment"        : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
 	"search.ID"				: "ID",
 	"search.company"		: "Firma",
@@ -148,11 +150,11 @@
 	"search.edited"			: "Bearbeitet",
 	"search.notEdited"		: "Unbearbeitet",
 
-    "listLocal.title"       : "Lokal",
+    "listLocal.title"       : "Liste Lokaler Kontakte",
     "listLocal.comment"     : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
     "listLocal.count"       : "Anzahl",
 
-    "listRemote.title"      : "Hochgeladen",
+    "listRemote.title"      : "Liste Hochgeladener Kontakte",
     "listRemote.comment"    : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
     "listRemote.count"      : "Anzahl",
 
@@ -182,7 +184,7 @@
     "barcode.barcode"       : "Barcode",
     "barcode.placement"     : "Plazieren Sie den Barcode innerhalb des Scan-Feldes",
 
-    "settings.title"        : "Gestaltung",
+    "settings.title"        : "Einstellungen zur Gestaltung",
     "settings.comment"      : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
     "settings.accentcolor"  : "Akzentfarbe",
     "settings.textcolor"    : "Textfarbe",
@@ -239,7 +241,7 @@
     "register.confirmation" : "Bestätigung",
     "register.complete"     : "Vielen Dank für Ihre Registrierung! Sie erhalten in Kürze eine Email zur Bestätigung an die oben angegebene Adresse.",
      
-    "account.title"         : "Konto",
+    "account.title"         : "Angaben zu Ihrer Anmeldung",
     "account.comment"       : "Beachten Sie bitte, daß alle von der App lokal auf dem Gerät gespeicherten Daten gelöscht werden, wenn Sie sich abmelden oder mit einem anderen Konto anmelden!",
     "account.hostName"      : "Servername",
     "account.https"         : "HTTPS",
@@ -264,7 +266,7 @@
     "account.unknown"       : "Angegebener Benutzer nicht gefunden!",
     "account.inactive"      : "Der Dienst ist zur Zeit inaktiv!",
      
-    "info.title"            : "Information",
+    "info.title"            : "Informationen über die App",
     "info.comment"          : "&copy; convey Information Systems GmbH 2015-2017",
     "info.homepage"         : "www.convey.de",
     "info.logOptions"       : "Protokolloptionen",
