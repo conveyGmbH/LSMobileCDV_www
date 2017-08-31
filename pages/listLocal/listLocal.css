@@ -118,3 +118,7 @@
     height: auto;
     display: inline;
 }
+
+.status-image {
+    opacity: 0.6;
+}

@@ -658,8 +658,11 @@ input.input_small_right {
     height:100%;
 }
 .list-id-field {
-    /*padding-left:5px;*/
-    padding-left:0;
+    display: block;
+    position: relative;
+    left: 0;
+    top: -6px;
+    opacity: 0.6;
 }
 .list-compressed {
     float: right;
@@ -671,11 +674,17 @@ input.input_small_right {
     width: 100%;
     float: left;
 }
+
+.list-compressed-title.win-type-subtitle {
+    font-weight: 500;
+}
+
 .list-compressed-content {
     min-height: 20px;
     width:  calc(100% - 70px);
     white-space: pre-line;
     float: left;
+    opacity: 0.6;
 }
 
 .list-div-right {
@@ -1014,7 +1023,6 @@ input.input_small_right {
 .view-size-small .list-compressed-title,
 .view-size-small .counter {
     font-size: 12px;
-    font-weight: 400;
     line-height: 1.167;
 }
 .view-size-small .list-compressed-title.win-type-subtitle {

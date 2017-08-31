@@ -120,7 +120,7 @@
         return id;
     };
 
-    NavigationBar._vertWidth = 180;
+    NavigationBar._vertWidth = 188;
 
     // initiate the page frame class
     var pageframe = new Application.PageFrame();

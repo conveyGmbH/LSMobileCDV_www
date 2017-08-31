@@ -110,8 +110,8 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 #navigationbar_horizontal .win-selectionbackground {
     height: 4px;
     top: 36px;
-    left: 20%;
-    right: 20%;
+    left: 16px;
+    right: 16px;
 }
 #navigationbar_vertical .win-selectionbackground {
     width: 4px;

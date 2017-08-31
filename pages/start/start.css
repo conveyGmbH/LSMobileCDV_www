@@ -256,8 +256,9 @@
      float: right;
  }
  .start-name-field {
-     width: calc(100% - 60px);
+     width: calc(100% - 120px);
      float: left;
+     font-weight: 500;
  }
  .start-company-field {
      width: calc(100% - 120px);
@@ -266,13 +267,21 @@
  .start-address-field {
      width: 100%;
      float: left;
+     opacity: 0.6;
  }
  .start-div-right{
-    float:right;
-    width:60px;
+    float: right;
+    width: 60px;
  }
  .start-idAndDate {
     text-align: right;
+ }
+ .list-date-label {
+     float: left;
+     opacity: 0.6;
+ }
+ .list-date-value {
+     float: left;
  }
 
 /*
@@ -320,4 +329,15 @@
     .tile {
         height: 140px;
     }    
+}
+
+.view-size-small .start-company-field,
+.view-size-small .start-address-field {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.167;
+}
+.view-size-small .start-name-field {
+    font-size: 15px;
+    line-height: 1.333;
 }
