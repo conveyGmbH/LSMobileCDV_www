@@ -15,7 +15,7 @@
     WinJS.Namespace.define("AppData", {
         __generalUserRemoteView: null,
         _generalUserRemoteView: {
-            get: function () {
+            get: function() {
                 if (!AppData.__generalUserRemoteView) {
                     // create remote view here always!
                     AppData.__generalUserRemoteView = new AppData.formatViewData("Mitarbeiter", 20431, false);
@@ -24,7 +24,7 @@
             }
         },
         generalUserRemoteView: {
-            select: function (complete, error, recordId) {
+            select: function(complete, error, recordId) {
                 Log.call(Log.l.trace, "AppData.generalUserRemoteView.", "recordId=" + recordId);
                 var ret = AppData._generalUserRemoteView.selectById(complete, error, recordId);
                 // this will return a promise to controller
@@ -32,18 +32,18 @@
                 return ret;
             },
             isLocal: {
-                get: function () {
+                get: function() {
                     return AppData._generalUserRemoteView.isLocal;
                 }
             }
         },
         _generalUserView: {
-            get: function () {
+            get: function() {
                 return AppData.getFormatView("Mitarbeiter", 20431);
             }
         },
         generalUserView: {
-            select: function (complete, error, recordId) {
+            select: function(complete, error, recordId) {
                 Log.call(Log.l.trace, "AppData.generalUserView.", "recordId=" + recordId);
                 var ret = AppData._generalUserView.selectById(complete, error, recordId);
                 // this will return a promise to controller
@@ -51,18 +51,18 @@
                 return ret;
             },
             isLocal: {
-                get: function () {
+                get: function() {
                     return AppData._generalUserView.isLocal;
                 }
             }
         },
         _generalContactView: {
-            get: function () {
+            get: function() {
                 return AppData.getFormatView("Kontakt", 20434);
             }
         },
         generalContactView: {
-            select: function (complete, error, recordId) {
+            select: function(complete, error, recordId) {
                 Log.call(Log.l.trace, "AppData.generalContactView.", "recordId=" + recordId);
                 var ret = AppData._generalContactView.selectById(complete, error, recordId);
                 // this will return a promise to controller
@@ -74,7 +74,11 @@
         _curGetRemoteUserDataId: 0,
         _curGetContactDataId: 0,
         _contactData: {},
-        _userData: {},
+        _userData: {
+            VeranstaltungName: "",
+            Login: "",
+            Present: 0
+        },
         _userRemoteData: {},
         _photoData: null,
         _barcodeType: null,
@@ -207,19 +211,11 @@
                                 }
                                 if (typeof AppHeader === "object" &&
                                     AppHeader.controller && AppHeader.controller.binding) {
-                                    var generalData = AppHeader.controller.binding.generalData;
-                                    if (generalData) {
-                                        generalData.eventName = AppData._userData.VeranstaltungName;
-                                        Log.print(Log.l.trace, "eventName=" + generalData.eventName);
-                                        generalData.userName = AppData._userData.Login;
-                                        Log.print(Log.l.trace, "userName=" + generalData.userName);
-                                        generalData.userPresent = AppData._userData.Present;
-                                        Log.print(Log.l.trace, "userPresent=" + generalData.userPresent);
-                                        AppData.appSettings.odata.timeZoneAdjustment = AppData._userData.TimeZoneAdjustment;
-                                        Log.print(Log.l.info, "timeZoneAdjustment=" + AppData.appSettings.odata.timeZoneAdjustment);
-                                        AppHeader.controller.loadData();
-                                    }
+                                    AppHeader.controller.binding.userData = AppData._userData;
+                                    AppHeader.controller.loadData();
                                 }
+                                AppData.appSettings.odata.timeZoneAdjustment = AppData._userData.TimeZoneAdjustment;
+                                Log.print(Log.l.info, "timeZoneAdjustment=" + AppData.appSettings.odata.timeZoneAdjustment);
                             }
                             AppData._curGetUserDataId = 0;
                         }, function (errorResponse) {
@@ -463,43 +459,6 @@
             Log.ret(Log.l.u1, ret);
             return ret;
         },
-        getEventName: function () {
-            Log.call(Log.l.u1, "AppData.");
-            var ret;
-            if (AppData._userData &&
-                AppData._userData.VeranstaltungName) {
-                ret = AppData._userData.VeranstaltungName;
-            } else {
-                ret = "";
-            }
-            Log.ret(Log.l.u1, ret);
-            return ret;
-        },
-        getUserPresent: function () {
-            Log.call(Log.l.u1, "AppData.");
-            var ret;
-            if (AppData._userData &&
-                (AppData._userData.Present === 0 ||
-                 AppData._userData.Present === 1)) {
-                ret = AppData._userData.Present;
-            } else {
-                ret = "";
-            }
-            Log.ret(Log.l.u1, ret);
-            return ret;
-        },
-        getUserName: function () {
-            Log.call(Log.l.u1, "AppData.");
-            var ret;
-            if (AppData._userData &&
-                AppData._userData.Login) {
-                ret = AppData._userData.Login;
-            } else {
-                ret = "";
-            }
-            Log.ret(Log.l.u1, ret);
-            return ret;
-        },
         getCountLocal: function () {
             Log.call(Log.l.u1, "AppData.");
             var ret;
@@ -546,9 +505,9 @@
                     logTarget: Log.targets.console,
                     cameraQuality: AppData._persistentStates.cameraQuality,
                     cameraUseGrayscale: AppData._persistentStates.cameraUseGrayscale,
-                    eventName: AppData.getEventName(),
-                    userName: AppData.getUserName(),
-                    userPresent: AppData.getUserPresent(),
+                    eventName: AppData._userData.VeranstaltungName,
+                    userName: AppData._userData.Login,
+                    userPresent: AppData._userData.Present,
                     contactDate: (AppData._contactData && AppData._contactData.Erfassungsdatum),
                     contactId: (AppData._contactData && AppData._contactData.KontaktVIEWID),
                     globalContactID: ((AppData._contactData && AppData._contactData.CreatorRecID) ?

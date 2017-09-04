@@ -21,6 +21,7 @@
             if (this.element) {
                 this.element.winControl = this;
             }
+            this.pageData.userData = AppData._userData;
             this.pageData.generalData = AppData.generalData;
             this.pageData.appSettings = AppData.appSettings;
             this.pageData.photoData = null;
@@ -63,16 +64,6 @@
             var loadData = function () {
                 Log.call(Log.l.trace, "AppHeader.Controller.");
                 var usernamefield = pageElement.querySelector(".user-name-field");
-                if (AppHeader.controller.binding.generalData.userName) {
-                    if (AppHeader.controller.binding.generalData.userName.length > 8) {
-                        usernamefield.style.fontSize = "15px";
-                        if (document.body.clientWidth >= 360 && document.body.clientWidth <= 499) {
-                            usernamefield.style.fontSize = "10px";
-                        }
-                    } else {
-                        usernamefield.style.fontSize = "15px";
-                    }
-                }
                 var ret = new WinJS.Promise.as().then(function () {
                     var employeeId = AppData.getRecordId("Mitarbeiter");
                     if (employeeId) {

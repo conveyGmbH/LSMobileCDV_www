@@ -19,22 +19,22 @@
                         </div>
                         <div class="event-field">
                             <span class="win-type-subtitle event-name event-name-static win-type-ellipsis"
-                                  data-win-bind="textContent: generalData.eventName; style.display: generalData.publishFlag Binding.Converter.toDisplayNone"></span>
+                                  data-win-bind="textContent: userData.VeranstaltungName"></span>
                         </div>
                     </div>
                     <button class="win-button status-on-off"
-                            data-win-bind="style.visibility: generalData.userName Binding.Converter.emptyToHidden"
+                            data-win-bind="style.visibility: userData.Login Binding.Converter.emptyToHidden"
                             onclick="AppBar.handleEvent('click', 'clickChangeUserState', event)">
                         <div id="username" class="user-name-container">
                             <span class="win-type-subtitle user-name-field win-type-ellipsis"
-                                  data-win-bind="textContent: generalData.userName"></span>
+                                  data-win-bind="textContent: userData.Login"></span>
                         </div>
                         <div class="user-image-container">
                             <div class="onsite-offsite win-type-caption">
                                 <span class="onsite-offsite-symbol statusOn"
-                                      data-win-bind="style.display: generalData.userPresent Binding.Converter.toDisplay">&#xe10b;</span>
+                                      data-win-bind="style.display: userData.Present Binding.Converter.toDisplay">&#xe10b;</span>
                                 <span class="onsite-offsite-symbol statusOff"
-                                      data-win-bind="style.display: generalData.userPresent Binding.Converter.toDisplayNone">&#xe108;</span>
+                                      data-win-bind="style.display: userData.Present Binding.Converter.toDisplayNone">&#xe108;</span>
                             </div>
                             <div class="user-image" id="user"></div>
                         </div>
