@@ -22,8 +22,6 @@
                 this.element.winControl = this;
             }
             this.pageData.userData = AppData._userData;
-            this.pageData.generalData = AppData.generalData;
-            this.pageData.appSettings = AppData.appSettings;
             this.pageData.photoData = null;
 
             AppHeader.controller = this;
@@ -38,7 +36,6 @@
             // show business card photo
             var userPhotoContainer = pageElement.querySelector("#user");
             var showPhoto = function () {
-                var userPhotoContainer = pageElement.querySelector("#user");
                 if (that.binding.photoData) {
                     if (userPhotoContainer) {
                         var userImg = new Image();
@@ -100,8 +97,6 @@
                             // ignore that
                         }, employeeId);
                     } else {
-                        AppHeader.controller.binding.generalData.userName = "";
-                        AppHeader.controller.binding.generalData.eventName = "";
                         return WinJS.Promise.as();
                     }
                 });
