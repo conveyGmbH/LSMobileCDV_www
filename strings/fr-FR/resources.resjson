@@ -240,6 +240,7 @@
      
     "account.title"         : "Compte",
     "account.comment"       : "Attention, tout les données sauvgarder sur l'application peut'il supprimée si vous disconnester ou connecter avec un autre compte!",
+    "account.confirmLogOff" : "Attention, tout les données sauvgarder sur \nl'application peut'il supprimée si vous disconnester \nou connecter avec un autre compte!",
     "account.hostName"      : "Nom du serveur",
     "account.https"         : "HTTPS",
     "account.onlinePort"    : "Port en ligne",

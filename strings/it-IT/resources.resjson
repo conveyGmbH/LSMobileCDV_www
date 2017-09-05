@@ -240,6 +240,7 @@
      
     "account.title"         : "Login",
     "account.comment"       : "Please, pay attention to the fact, that all data of the app stored locally on the deviced will be deleted if you logoff or login with another account!",
+	  "account.confirmLogOff" : "Please, pay attention to the fact, that all data of \nthe app stored locally on the deviced will be  \ndeleted if you logoff or login with another account!",
     "account.hostName"      : "Nome server",
     "account.https"         : "HTTPS",
     "account.onlinePort"    : "Online-Port",
