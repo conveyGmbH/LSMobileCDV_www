@@ -36,7 +36,7 @@
                             </div>
                             <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
                             <span class="list-question-field label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
-                            <span class="list-question-field label-color"  data-win-bind="style.display: RequiredFieldShow" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
+                            <span class="list-question-field label-color"  data-win-bind="style.display: RequiredFieldShow Binding.Converter.toDisplay" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
                             <div data-win-bind="style.display: RequiredFieldShow Binding.Converter.toDisplay">
                                 <span data-win-bind="textContent: PflichtFeld"></span>
                             </div>
@@ -45,24 +45,6 @@
                                      data-win-bind="winControl.maxRating: SRMax; winControl.userRating: RRANTWORT Binding.Converter.toInteger"></div>
                             </div>
                             <div class="line-separator"></div>
-                            <!--<div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
-                                <textarea class="win-textarea field-text-comment"
-                                          data-win-bind="placeholder: textarea; value: Freitext" onkeydown="AppBar.handleEvent('keydown', 'pressEnterKey', event)"></textarea>
-                                <button id="showDateCombobox" class="win-button question-button"
-                                        data-win-bind="style.display: DateComboboxButtonShow Binding.Converter.toDisplay"
-                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
-                                    <div class="question-image-container">
-                                        <div class="question-image" id="calendar_1"></div>
-                                    </div>
-                                </button>
-                                <button id="useDateCombobox" class="win-button question-button"
-                                        data-win-bind="style.display: DateComboboxButtonOk Binding.Converter.toDisplay"
-                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
-                                    <div class="question-image-container">
-                                        <div class="question-image" id="navigate_check"></div>
-                                    </div>
-                                </button>
-                            </div>-->
                             <div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
                                 <textarea class="win-textarea field-text-comment"
                                           data-win-bind="placeholder: textarea; value: Freitext" onblur="AppBar.handleEvent('blur', 'activateEnterKey', event)" onfocus="AppBar.handleEvent('focus', 'deactivateEnterKey', event)" onkeydown="AppBar.handleEvent('keydown', 'pressEnterKey', event)"></textarea>
@@ -96,7 +78,7 @@
                             </div>
                             <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
                             <span class="list-question-multi-rating label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
-                            <span class="list-question-field label-color" data-win-bind="style.display: RequiredFieldShow" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
+                            <span class="list-question-field label-color" data-win-bind="style.display: RequiredFieldShow Binding.Converter.toDisplay" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
                             <div class="multi-rating-div">
                                 <div class="multi-rating">
                                     <span id="MR01" class="multi-rating-span"
@@ -136,24 +118,6 @@
                                 </div>
                             </div>
                             <div class="line-separator"></div>
-                            <!--<div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
-                                <textarea class="win-textarea field-text-comment"
-                                          data-win-bind="placeholder: textarea; value: Freitext" onkeydown="AppBar.handleEvent('keydown', 'pressEnterKey', event)"></textarea>
-                                <button id="showDateCombobox" class="win-button question-button"
-                                        data-win-bind="style.display: DateComboboxButtonShow Binding.Converter.toDisplay"
-                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
-                                    <div class="question-image-container">
-                                        <div class="question-image" id="calendar_1"></div>
-                                    </div>
-                                </button>
-                                <button id="useDateCombobox" class="win-button question-button"
-                                        data-win-bind="style.display: DateComboboxButtonOk Binding.Converter.toDisplay"
-                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
-                                    <div class="question-image-container">
-                                        <div class="question-image" id="navigate_check"></div>
-                                    </div>
-                                </button>
-                            </div>-->
                             <div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
                                 <textarea class="win-textarea field-text-comment"
                                           data-win-bind="placeholder: textarea; value: Freitext" onblur="AppBar.handleEvent('blur', 'activateEnterKey', event)" onfocus="AppBar.handleEvent('focus', 'deactivateEnterKey', event)" onkeydown="AppBar.handleEvent('keydown', 'pressEnterKey', event)"></textarea>
@@ -187,7 +151,7 @@
                             </div>
                             <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
                             <span class="list-question-field label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
-                            <span class="list-question-field label-color" data-win-bind="style.display: RequiredFieldShow" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
+                            <span class="list-question-field label-color" data-win-bind="style.display: RequiredFieldShow Binding.Converter.toDisplay" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
                             <div class="field_line_questionnaire win-type-subtitle">
                                 <select class="input_field win-dropdown"
                                         data-win-control="WinJS.UI.Repeater">
@@ -226,7 +190,7 @@
                             </div>
                             <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
                             <span class="list-question-field label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
-                            <span class="list-question-field label-color" data-win-bind="style.display: RequiredFieldShow" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
+                            <span class="list-question-field label-color" data-win-bind="style.display: RequiredFieldShow Binding.Converter.toDisplay" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
                             <div class="field_line_questionnaire win-type-subtitle">
                                 <div class="field_row_odd">
                                     <div class="field_line_left">
@@ -301,26 +265,6 @@
                                 <div class="field-separator"></div>
                             </div>
                             <div class="line-separator"></div>
-                            <!--<div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
-                                <textarea class="win-textarea field-text-comment"
-                                          data-win-bind="placeholder: textarea; value: Freitext"></textarea>
-                                <div data-win-bind="style.display: DateComboboxButtonShow Binding.Converter.toDisplay">
-                                    <button id="showDateCombobox" class="win-button question-button"
-                                            onclick="AppBar.handleEvent('click', 'clickButton', event)">
-                                        <div class="question-image-container">
-                                            <div class="question-image" id="calendar_1"></div>
-                                        </div>
-                                    </button>
-                                </div>
-                                <div data-win-bind="style.display: DateComboboxButtonOk Binding.Converter.toDisplay">
-                                    <button id="useDateCombobox" class="win-button question-button"
-                                            onclick="AppBar.handleEvent('click', 'clickButton', event)">
-                                        <div class="question-image-container">
-                                            <div class="question-image" id="navigate_check"></div>
-                                        </div>
-                                    </button>
-                                </div>
-                            </div>-->
                             <div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
                                 <textarea class="win-textarea field-text-comment"
                                           data-win-bind="placeholder: textarea; value: Freitext" onblur="AppBar.handleEvent('blur', 'activateEnterKey', event)" onfocus="AppBar.handleEvent('focus', 'deactivateEnterKey', event)" onkeydown="AppBar.handleEvent('keydown', 'pressEnterKey', event)"></textarea>
@@ -354,7 +298,7 @@
                             </div>
                             <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
                         <span class="list-question-field label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
-                            <span class="list-question-field label-color" data-win-bind="style.display: RequiredFieldShow" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
+                            <span class="list-question-field label-color" data-win-bind="style.display: RequiredFieldShow Binding.Converter.toDisplay" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
                             <div class="field_line_questionnaire win-type-subtitle">
                                 <div class="field_row_odd">
                                     <div class="field_line_left">
@@ -613,24 +557,6 @@
                                 <div class="field-separator"></div>
                             </div>
                             <div class="line-separator"></div>
-                        <!--<div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
-                            <textarea class="win-textarea field-text-comment"
-                                          data-win-bind="placeholder: textarea; value: Freitext" onkeydown="AppBar.handleEvent('keydown', 'pressEnterKey', event)"></textarea>
-                            <button id="showDateCombobox" class="win-button question-button"
-                                    data-win-bind="style.display: DateComboboxButtonShow Binding.Converter.toDisplay"
-                                    onclick="AppBar.handleEvent('click', 'clickButton', event)">
-                                <div class="question-image-container">
-                                    <div class="question-image" id="calendar_1"></div>
-                                </div>
-                            </button>
-                            <button id="useDateCombobox" class="win-button question-button"
-                                    data-win-bind="style.display: DateComboboxButtonOk Binding.Converter.toDisplay"
-                                    onclick="AppBar.handleEvent('click', 'clickButton', event)">
-                                <div class="question-image-container">
-                                    <div class="question-image" id="navigate_check"></div>
-                                </div>
-                            </button>
-                        </div>-->
                             <div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
                                 <textarea class="win-textarea field-text-comment"
                                           data-win-bind="placeholder: textarea; value: Freitext" onblur="AppBar.handleEvent('blur', 'activateEnterKey', event)" onfocus="AppBar.handleEvent('focus', 'deactivateEnterKey', event)" onkeydown="AppBar.handleEvent('keydown', 'pressEnterKey', event)"></textarea>
@@ -664,7 +590,7 @@
                             </div>
                             <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
                             <span class="list-question-field label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
-                            <span class="list-question-field label-color" data-win-bind="style.display: RequiredFieldShow" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
+                            <span class="list-question-field label-color" data-win-bind="style.display: RequiredFieldShow Binding.Converter.toDisplay" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
                             <div class="field_line_questionnaire win-type-subtitle">
                                 <div class="field_row_odd">
                                     <div class="field_line_left">
@@ -739,24 +665,6 @@
                                 <div class="field-separator"></div>
                             </div>
                             <div class="line-separator"></div>
-                            <!--<div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
-                                <textarea class="win-textarea field-text-comment"
-                                          data-win-bind="placeholder: textarea; value: Freitext" onkeydown="AppBar.handleEvent('keydown', 'pressEnterKey', event)"></textarea>
-                                <button id="showDateCombobox" class="win-button question-button"
-                                        data-win-bind="style.display: DateComboboxButtonShow Binding.Converter.toDisplay"
-                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
-                                    <div class="question-image-container">
-                                        <div class="question-image" id="calendar_1"></div>
-                                    </div>
-                                </button>
-                                <button id="useDateCombobox" class="win-button question-button"
-                                        data-win-bind="style.display: DateComboboxButtonOk Binding.Converter.toDisplay"
-                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
-                                    <div class="question-image-container">
-                                        <div class="question-image" id="navigate_check"></div>
-                                    </div>
-                                </button>
-                            </div>-->
                             <div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
                                 <textarea class="win-textarea field-text-comment"
                                           data-win-bind="placeholder: textarea; value: Freitext" onblur="AppBar.handleEvent('blur', 'activateEnterKey', event)"onfocus="AppBar.handleEvent('focus', 'deactivateEnterKey', event)" onkeydown="AppBar.handleEvent('keydown', 'pressEnterKey', event)"></textarea>
@@ -790,7 +698,7 @@
                             </div>
                             <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
                         <span class="list-question-field label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
-                            <span class="list-question-field label-color" data-win-bind="style.display: RequiredFieldShow" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
+                            <span class="list-question-field label-color" data-win-bind="style.display: RequiredFieldShow Binding.Converter.toDisplay" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
                             <div class="field_line_questionnaire win-type-subtitle">
                                 <div class="field_row_odd">
                                     <div class="field_line_left">
@@ -1050,24 +958,6 @@
                                 <div class="field-separator"></div>
                             </div>
                             <div class="line-separator"></div>
-                        <!--<div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
-                            <textarea class="win-textarea field-text-comment"
-                                          data-win-bind="placeholder: textarea;value: Freitext" onkeydown="AppBar.handleEvent('keydown', 'pressEnterKey', event)"></textarea>
-                            <button id="showDateCombobox" class="win-button question-button"
-                                    data-win-bind="style.display: DateComboboxButtonShow Binding.Converter.toDisplay"
-                                    onclick="AppBar.handleEvent('click', 'clickButton', event)">
-                                <div class="question-image-container">
-                                    <div class="question-image" id="calendar_1"></div>
-                                </div>
-                            </button>
-                            <button id="useDateCombobox" class="win-button question-button"
-                                    data-win-bind="style.display: DateComboboxButtonOk Binding.Converter.toDisplay"
-                                    onclick="AppBar.handleEvent('click', 'clickButton', event)">
-                                <div class="question-image-container">
-                                    <div class="question-image" id="navigate_check"></div>
-                                </div>
-                            </button>
-                        </div>-->
                             <div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
                                 <textarea class="win-textarea field-text-comment"
                                           data-win-bind="placeholder: textarea; value: Freitext" onblur="AppBar.handleEvent('blur', 'activateEnterKey', event)" onfocus="AppBar.handleEvent('focus', 'deactivateEnterKey', event)" onkeydown="AppBar.handleEvent('keydown', 'pressEnterKey', event)"></textarea>

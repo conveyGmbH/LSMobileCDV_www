@@ -115,25 +115,33 @@
                         Log.print(Log.l.trace, "calling select contactView...");
                         return Sketch.sketchView.select(function (json) {
                             AppData.setErrorMsg(that.binding);
-                            Log.print(Log.l.trace, "contactView: success!");
+                            Log.print(Log.l.trace, "sketchView: success!");
                             if (json && json.d) {
                                 if (restriction) {
                                     if (json.d.results && json.d.results.length > 0) {
                                         that.binding.dataSketch = json.d.results[0];
-                                        that.setRecordId(that.binding.dataSketch.KontaktNotizVIEWID);
                                     } else {
                                         that.binding.dataSketch = {};
                                     }
                                 } else {
                                     that.binding.dataSketch = json.d;
                                 }
-                                if (typeof that.binding.dataSketch.Quelltext !== "undefined" &&
-                                    that.binding.dataSketch.Quelltext) {
-                                    Log.print(Log.l.trace, "SVG Element: " + that.binding.dataSketch.Quelltext.substr(0,100) + "...");
+                                that.setRecordId(that.binding.dataSketch.KontaktNotizVIEWID);
+                                if (that.binding.dataSketch.KontaktNotizVIEWID ||
+                                    AppData._contactData.CreatorSiteID === AppData.appSettings.odata.dbSiteId) {
+                                    if (typeof that.binding.dataSketch.Quelltext !== "undefined" &&
+                                        that.binding.dataSketch.Quelltext) {
+                                        Log.print(Log.l.trace,
+                                            "SVG Element: " + that.binding.dataSketch.Quelltext.substr(0, 100) + "...");
+                                    }
+                                    WinJS.Promise.timeout(0).then(function() {
+                                        that.svgEditor.fnLoadSVG(that.binding.dataSketch.Quelltext);
+                                    });
+                                } else {
+                                    WinJS.Promise.timeout(0).then(function() {
+                                        Application.navigateById("start");
+                                    });
                                 }
-                                WinJS.Promise.timeout(0).then(function () {
-                                    that.svgEditor.fnLoadSVG(that.binding.dataSketch.Quelltext);
-                                });
                             }
                         }, function (errorResponse) {
                             AppData.setErrorMsg(that.binding, errorResponse);

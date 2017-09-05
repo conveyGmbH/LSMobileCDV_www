@@ -25,7 +25,7 @@
         logLevel: 3,
         logGroup: false,
         logNoStack: true,
-        newContactPageId: "newContact",
+        prevNavigateNewId: "newContact",
         inputBorder: 1,
         odata: {
             https: true,
@@ -90,9 +90,12 @@
             Application.prevNavigateNewId = id;
             Log.print(Log.l.trace, "reset contact Id");
             AppData.setRecordId("Kontakt", 0);
-            AppData.generalData.newContactPageId = id;
             id = "contact";
             Log.print(Log.l.trace, "new page id=" + id);
+            if (Application.navigator._lastPage === Application.getPagePath(id)) {
+                Log.print(Log.l.trace, "force navigation to " + id + " page!");
+                Application.navigator._lastPage = "";
+            }
         } else if (id === "camera" || id === "barcode") {
             Application.prevNavigateNewId = id;
         } else if (id === "newAccount") {
@@ -119,6 +122,8 @@
         Log.ret(Log.l.trace);
         return id;
     };
+
+    NavigationBar._vertWidth = 188;
 
     // initiate the page frame class
     var pageframe = new Application.PageFrame();

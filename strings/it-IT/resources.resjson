@@ -77,7 +77,7 @@
     "start.info"            : "Informazioni importanti",
     "start.language"        : "Lingua",
 
-    "contact.title"         : "Contatto",
+    "contact.title"         : "Immettere i dati di contatto",
     "contact.comment"       : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "contact.questionDelete": "Vuoi eliminare questo contatto?",
     "contact.name"          : "Cognome",
@@ -111,22 +111,24 @@
 
     "contact.useRestriction": "Utilizza",
 
+    "contactRemote.title"   : "Contatto già caricato",
+
     "photo.title"           : "Biglietto da visita",
     "photo.comment"         : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
 
-    "questionnaire.title"   : "Questionario",
+    "questionnaire.title"   : "Rispondere alle domande",
     "questionnaire.comment" : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "questionnaire.textarea": "Inserite eventuali commenti in questo spazio",
     "questionnaire.count"   : "Totale",
     "questionnaire.attachments" : "Allegati",
 
-    "sketch.title"          : "Schizzo",
+    "sketch.title"          : "Disegnare uno schizzo",
     "sketch.comment"        : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "sketch.shape"          : "Tipo forma",
     "sketch.color"          : "Colore",
     "sketch.width"          : "Larghezza",
 
-    "search.title"          : "Ricerca",
+    "search.title"          : "Immettere i criteri di ricerca",
     "search.comment"        : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
 	"search.ID"				: "ID",
 	"search.company"		: "Azienda",
@@ -147,15 +149,15 @@
 	"search.edited"			: "Bearbeitet",
 	"search.notEdited"		: "Unbearbeitet",
 
-    "listLocal.title"       : "Locale",
+    "listLocal.title"       : "Lista dei contatti locali",
     "listLocal.comment"     : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "listLocal.count"       : "Totale",
 
-    "listRemote.title"      : "Caricato",
+    "listRemote.title"      : "Elenco dei contatti caricati",
     "listRemote.comment"    : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "listRemote.count"      : "Totale",
 	
-	"contactList.title"     : "Contatti",
+	"contactList.title"     : "Lista dei contatti",
     "contactList.comment"   : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "contactList.count"     : "Totale",
 	"contactList.editedOn"	: "Registrato il",
@@ -181,7 +183,7 @@
     "barcode.barcode"       : "Barcode",
     "barcode.placement"     : "Posiziona un barcode all'interno dell'area di scansione",
 
-    "settings.title"        : "Impostazioni",
+    "settings.title"        : "Impostazioni di progettazione",
     "settings.comment"      : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "settings.accentcolor"  : "Colore principale",
     "settings.textcolor"    : "Colore testo",
@@ -238,7 +240,7 @@
     "register.confirmation" : "Conferma",
     "register.complete"     : "Grazie per esserti registrato! A breve riceverai una E-Mail di conferma all'indirizzo immesso prima.",
      
-    "account.title"         : "Login",
+    "account.title"         : "Impostazioni di login",
     "account.comment"       : "Please, pay attention to the fact, that all data of the app stored locally on the deviced will be deleted if you logoff or login with another account!",
 	  "account.confirmLogOff" : "Please, pay attention to the fact, that all data of \nthe app stored locally on the deviced will be  \ndeleted if you logoff or login with another account!",
     "account.hostName"      : "Nome server",
@@ -264,7 +266,7 @@
     "account.unknown"       : "Nome utente specificato non trovato!",
     "account.inactive"      : "Il servizio è attualmente inattivo!",
      
-    "info.title"            : "Informazione",
+    "info.title"            : "informazioni sull'applicazione",
     "info.comment"          : "&copy; convey Information Systems GmbH 2015-2017",
     "info.homepage"         : "www.convey.de",
     "info.logOptions"       : "Opzioni di Login",

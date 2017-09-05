@@ -21,8 +21,7 @@
             if (this.element) {
                 this.element.winControl = this;
             }
-            this.pageData.generalData = AppData.generalData;
-            this.pageData.appSettings = AppData.appSettings;
+            this.pageData.userData = AppData._userData;
             this.pageData.photoData = null;
 
             AppHeader.controller = this;
@@ -37,7 +36,6 @@
             // show business card photo
             var userPhotoContainer = pageElement.querySelector("#user");
             var showPhoto = function () {
-                var userPhotoContainer = pageElement.querySelector("#user");
                 if (that.binding.photoData) {
                     if (userPhotoContainer) {
                         var userImg = new Image();
@@ -63,16 +61,6 @@
             var loadData = function () {
                 Log.call(Log.l.trace, "AppHeader.Controller.");
                 var usernamefield = pageElement.querySelector(".user-name-field");
-                if (AppHeader.controller.binding.generalData.userName) {
-                    if (AppHeader.controller.binding.generalData.userName.length > 8) {
-                        usernamefield.style.fontSize = "15px";
-                        if (document.body.clientWidth >= 360 && document.body.clientWidth <= 499) {
-                            usernamefield.style.fontSize = "10px";
-                        }
-                    } else {
-                        usernamefield.style.fontSize = "15px";
-                    }
-                }
                 var ret = new WinJS.Promise.as().then(function () {
                     var employeeId = AppData.getRecordId("Mitarbeiter");
                     if (employeeId) {
@@ -109,8 +97,6 @@
                             // ignore that
                         }, employeeId);
                     } else {
-                        AppHeader.controller.binding.generalData.userName = undefined;
-                        AppHeader.controller.binding.generalData.eventName = "";
                         return WinJS.Promise.as();
                     }
                 });

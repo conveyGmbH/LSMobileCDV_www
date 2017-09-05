@@ -77,7 +77,7 @@
     "start.info"            : "Instructions importantes",
     "start.language"        : "Langue",
 
-    "contact.title"         : "Contact",
+    "contact.title"         : "Entrez les données de Contact",
     "contact.comment"       : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "contact.questionDelete": "êtes -vous s\u00FBr de vouloir supprimer le contact?",
     "contact.name"          : "Nom",
@@ -111,22 +111,24 @@
 
     "contact.useRestriction": "utiliser",
 
+    "contactRemote.title"   : "Contact déjà téléchargé",
+
     "photo.title"           : "Carte de visite",
     "photo.comment"         : "Utilisez le bouton Retour sur cette page pour y retourner!",
 
-    "questionnaire.title"   : "Questionnaire",
+    "questionnaire.title"   : "Répondre aux questions",
     "questionnaire.comment" : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "questionnaire.textarea": "S'il vous plaît entrer votre commentaire ici",
     "questionnaire.count"   : "Nombre",
     "questionnaire.attachments" : "Pièce détachée",
 
-    "sketch.title"          : "Esquisse",
+    "sketch.title"          : "Dessiner un croquis",
     "sketch.comment"        : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "sketch.shape"          : "Forme",
     "sketch.color"          : "Couleur",
     "sketch.width"          : "Largeur du crayon",
 
-    "search.title"          : "Rechercher",
+    "search.title"          : "Entrez les critères de recherche",
     "search.comment"        : "Utilisez le bouton Retour sur cette page pour y retourner!",
 	"search.ID"				: "ID",
 	"search.company"		: "Société",
@@ -147,15 +149,15 @@
 	"search.edited"			: "Modifié",
 	"search.notEdited"		: "Non modifié",
 
-    "listLocal.title"       : "Locale",
+    "listLocal.title"       : "Liste de contacts locaux",
     "listLocal.comment"     : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "listLocal.count"       : "Nombre",
 
-    "listRemote.title"      : "Téléchargé",
+    "listRemote.title"      : "Liste de contacts téléchargés",
     "listRemote.comment"    : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "listRemote.count"      : "Nombre",
 
-    "contactList.title"     : "Contacts",
+    "contactList.title"     : "Liste de contacts",
     "contactList.comment"   : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "contactList.count"     : "Nombre",
 	"contactList.editedOn"	: "Créer en",
@@ -181,7 +183,7 @@
     "barcode.barcode"       : "Code barre",
     "barcode.placement"     : "Placer svp le code barre dans la case de scan",
 
-    "settings.title"        : "Design",
+    "settings.title"        : "Paramètres de conception",
     "settings.comment"      : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "settings.accentcolor"  : "Couleur d'accents",
     "settings.textcolor"    : "Couleur du texte",
@@ -238,7 +240,7 @@
     "register.confirmation" : "Confirmation",
     "register.complete"     : "Merci pour votre inscription! Vous recevrez bientôt un email de confirmation. Il sera envoyé à l'adresse indiquée ci-dessus.",
      
-    "account.title"         : "Compte",
+    "account.title"         : "Paramètres de connexion",
     "account.comment"       : "Attention, tout les données sauvgarder sur l'application peut'il supprimée si vous disconnester ou connecter avec un autre compte!",
     "account.confirmLogOff" : "Attention, tout les données sauvgarder sur \nl'application peut'il supprimée si vous disconnester \nou connecter avec un autre compte!",
     "account.hostName"      : "Nom du serveur",
@@ -264,7 +266,7 @@
     "account.unknown"       : "Utilisateur spécifié introuvable!",
     "account.inactive"      : "Le service est actuellement inactif!",
     
-    "info.title"            : "Information",
+    "info.title"            : "Informations sur l’application",
     "info.comment"          : "&copy; convey Information Systems GmbH 2015-2017",
     "info.homepage"         : "www.convey.de",
     "info.logOptions"       : "Paramètres de protocol",

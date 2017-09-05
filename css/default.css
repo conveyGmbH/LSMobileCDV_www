@@ -73,6 +73,10 @@ img .field_line {
     visibility: hidden;
 }
 
+.data-container {
+    background-color: Window;
+}
+
 .row-bkg {
     display: inline-block;
     position: absolute;
@@ -318,23 +322,36 @@ section[role=main] {
 }
 .id-field {
     width: 100px;
-    float: left;
+    display: block;
+    position: relative;
+    left: 0;
+    top: 0;
     height: 12px;
     vertical-align: top;
 }
 .caption-field {
-    display: inline-block;
+    display: block;
+    position: relative;
+    left: 0;
+    top: -12px;
+    /*
     width: calc(100% - 200px);
+    */
+    width: 100%;
     height: 12px;
     vertical-align: top;
     text-align: center;
     text-transform: uppercase;
     font-weight: 600;
+    white-space: nowrap;
 }
 
 .date-field {
     width: 100px;
-    float: right;
+    display: block;
+    position: relative;
+    left: calc(100% - 100px);
+    top: -24px;
     height: 12px;
     vertical-align: top;
     text-align: right;
@@ -658,8 +675,11 @@ input.input_small_right {
     height:100%;
 }
 .list-id-field {
-    /*padding-left:5px;*/
-    padding-left:0;
+    display: block;
+    position: relative;
+    left: 0;
+    top: -6px;
+    opacity: 0.6;
 }
 .list-compressed {
     float: right;
@@ -671,11 +691,17 @@ input.input_small_right {
     width: 100%;
     float: left;
 }
+
+.list-compressed-title.win-type-subtitle {
+    font-weight: 500;
+}
+
 .list-compressed-content {
     min-height: 20px;
-    width:  100%;
+    width:  calc(100% - 70px);
     white-space: pre-line;
     float: left;
+    opacity: 0.6;
 }
 
 .list-div-right {
@@ -1008,5 +1034,16 @@ input.input_small_right {
 
 .view-size-small .list-selection-field {
     font-size: 15px;
+}
+
+.view-size-small .list-compressed-content,
+.view-size-small .list-compressed-title,
+.view-size-small .counter {
+    font-size: 12px;
+    line-height: 1.167;
+}
+.view-size-small .list-compressed-title.win-type-subtitle {
+    font-size: 15px;
+    line-height: 1.333;
 }
 

@@ -35,7 +35,7 @@
     event name
 */
 .event-line {
-    width: calc(100% - 244px);
+    width: calc(100% - 284px);
     margin-left: 40px;
     margin-top: 0;
     padding-top: 4px;
@@ -50,7 +50,7 @@
     display: inline;
 }
 .event-field {
-    width: calc(100% - 238px);
+    width: calc(100% - 278px);
     float: right;
 }
 .event-name-static {
@@ -78,7 +78,8 @@
     padding-right: 4px;
     padding-bottom: 2px;
     padding-left: 2px;
-    max-width: 196px;
+    max-width: 236px;
+    height: 48px;
     visibility: hidden;
     display: block;
     position: absolute;
@@ -87,11 +88,11 @@
 }
 .user-name-container {
     float: left;
-    padding: 8px 4px 4px 4px;
+    padding: 4px 40px 4px 4px;
     text-align: right;
     white-space: nowrap;
     color: gray;
-    max-width: 120px;
+    max-width: 196px;
 }
 
 .namefieldsizebig {
@@ -103,7 +104,10 @@
 }
 
 .user-image-container {
-    float: right;
+    display: block;
+    position: absolute;
+    top: 2px;
+    left: calc(100% - 40px);
     background-color: gray;
     width: 40px;
     height: 40px;
@@ -179,10 +183,10 @@
 
 @media (max-width:499px) {
     .status-on-off {
-        max-width: 160px;
+        max-width: 200px;
     }
     .user-name-container {
-        padding-top: 10px;
+        padding-top: 4px;
     }
     .event-line {
         width: calc(100% - 180px);
@@ -199,40 +203,8 @@
         top: -5px;
     }
     .user-name-field {
-        font-size: 15px;
-    }
-    .user-name-field-big {
-        font-size: 15px;
+        font-size: 12px;
+        line-height: 1.167;
     }
 }
 
-@media (max-width:380px) {
-    .status-on-off {
-        max-width: 160px;
-    }
-
-    .user-name-container {
-        padding-top: 10px;
-    }
-
-    .event-line {
-        width: calc(100% - 180px);
-        display: block;
-        position: absolute;
-        top: 15px;
-        left: 0;
-    }
-
-    .event-name {
-        font-size: 15px;
-    }
-
-    .event-name-static {
-        position: relative;
-        top: -5px;
-    }
-
-    .user-name-field {
-        font-size: 10px;
-    }
-}

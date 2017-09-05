@@ -628,10 +628,10 @@
                              if (freitextInput) {
                                  console.log(freitextInput.value);
                              }
- 
+
                          }
- 
-                  
+
+
                     var freitextInput = event.target.querySelector(".field-text-comment");
                     if (freitextInput) {
                         console.log(freitextInput.value);
@@ -674,7 +674,7 @@
                         }
 
                     }
-                    
+
                 },
                 activateEnterKey: function(event) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
@@ -686,8 +686,8 @@
                 deactivateEnterKey: function(event) {
                     for (var i = 0; i < AppBar.commandList.length; i++) {
                         if (AppBar.commandList[i].id === "clickForward")
-                            AppBar.commandList[i].key = "undefined";
-                    } 
+                            AppBar.commandList[i].key = null;
+                    }
                 },
                 onPointerDown: function (e) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
@@ -928,7 +928,7 @@
                                        /* Log.call(Log.l.trace, "Questionnaire.Controller.");
                                         for (var i = 0; i < AppBar.commandList.length; i++) {
                                             if (AppBar.commandList[i].id === "clickForward")
-                                                AppBar.commandList[i].key = undefined;
+                                                AppBar.commandList[i].key = null;
                                         }*/
                                     } else {
                                         /* Log.call(Log.l.trace, "Questionnaire.Controller.");
@@ -1159,8 +1159,9 @@
                                         var comboInputFocus = element.querySelector(".win-dropdown:focus");
                                         if (!comboInputFocus) {
                                             try {
+                                                var focusElement;
                                                 if (typeof element.setActive === "function") {
-                                                    var focusElement = getTextareaForFocus(element);
+                                                    focusElement = getTextareaForFocus(element);
                                                     element.setActive();
                                                     if (focusElement && focusElement !== element) {
                                                         focusElement.focus();
@@ -1169,9 +1170,9 @@
                                                     // check for existence of WinRT
                                                     var resources = Resources.get();
                                                     if (resources) {
-                                                        var focusElement = getTextareaForFocus(element);
+                                                        focusElement = getTextareaForFocus(element);
                                                         if (focusElement && focusElement !== element) {
-                                                            WinJS.Promise.timeout(0).then(function () {
+                                                            WinJS.Promise.timeout(0).then(function() {
                                                                 focusElement.focus();
                                                             });
                                                         }
