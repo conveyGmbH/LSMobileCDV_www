@@ -92,7 +92,18 @@
                     }
                     Log.ret(Log.l.trace);
                 },
-                clickCameraUseGrayscale: function (event) {
+                clickUseClippingCamera: function (event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var toggle = event.currentTarget.winControl;
+                        if (toggle) {
+                            that.binding.generalData.useClippingCamera = toggle.checked;
+                            AppData._persistentStates.useClippingCamera = that.binding.generalData.useClippingCamera;
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                                clickCameraUseGrayscale: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
                     if (event.currentTarget && AppBar.notifyModified) {
                         var toggle = event.currentTarget.winControl;

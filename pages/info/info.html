@@ -60,6 +60,18 @@
                         </div>
                     </div>
                     <div class="line-separator"></div>
+                    <div class="field_line field_line_even">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.useClippingCamera'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.useClippingCamera'}"></span>
+                        <div class="input_field toggle-switch-parent">
+                            <div id="useClippingCamera" class="input_field"
+                                 data-win-control="WinJS.UI.ToggleSwitch"
+                                 data-win-bind="winControl.checked: generalData.useClippingCamera; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
+                                 onchange="AppBar.handleEvent('change', 'clickUseClippingCamera', event)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line-separator"></div>
                     <div class="field_line field_line_full">
                         &nbsp;
                     </div>
@@ -143,7 +155,7 @@
                         <input id="logLevel" class="input_field win-range"
                                type="range" min="1" max="6" step="1"
                                data-win-bind="value: generalData.logLevel"
-                               onchange="AppBar.handleEvent('change', 'changedLogLevel', event)"/>
+                               onchange="AppBar.handleEvent('change', 'changedLogLevel', event)" />
                     </div>
                     <div class="line-separator"></div>
                     <div class="field_line field_line_odd" data-win-bind="style.display: generalData.logEnabled Binding.Converter.toDisplay">

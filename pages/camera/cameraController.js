@@ -264,29 +264,39 @@
             AppData.setErrorMsg(that.binding);
             var takePhoto = function() {
                 Log.call(Log.l.trace, "Camera.Controller.");
-                if (navigator.camera &&
-                    typeof navigator.camera.getPicture === "function") {
-                    // shortcuts for camera definitions
-                    //pictureSource: navigator.camera.PictureSourceType,   // picture source
-                    //destinationType: navigator.camera.DestinationType, // sets the format of returned value
-                    Log.print(Log.l.trace, "calling camera.getPicture...");
-                    // Take picture using device camera and retrieve image as base64-encoded string
-                    navigator.camera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
-                        destinationType: Camera.DestinationType.DATA_URL,
-                        sourceType: Camera.PictureSourceType.CAMERA,
-                        allowEdit: true,
-                        quality: AppData.generalData.cameraQuality,
-                        targetWidth: -1,
-                        targetHeight: -1,
-                        encodingType: Camera.EncodingType.JPEG,
-                        saveToPhotoAlbum: false,
-                        cameraDirection: Camera.Direction.BACK,
-                        convertToGrayscale: AppData.generalData.cameraUseGrayscale,
-                        variableEditRect: true
-                    });
+                if (that.binding.generalData.useClippingCamera) {
+                    if (navigator.clippingCamera &&
+                        typeof navigator.clippingCamera.getPicture === "function") {
+                        navigator.clippingCamera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
+                            quality: AppData.generalData.cameraQuality,
+                            convertToGrayscale: AppData.generalData.cameraUseGrayscale
+                        });
+                    }
                 } else {
-                    Log.print(Log.l.error, "camera.getPicture not supported...");
-                    that.updateStates({ errorMessage: "Camera plugin not supported" });
+                    if (navigator.camera &&
+                        typeof navigator.camera.getPicture === "function") {
+                        // shortcuts for camera definitions
+                        //pictureSource: navigator.camera.PictureSourceType,   // picture source
+                        //destinationType: navigator.camera.DestinationType, // sets the format of returned value
+                        Log.print(Log.l.trace, "calling camera.getPicture...");
+                        // Take picture using device camera and retrieve image as base64-encoded string
+                        navigator.camera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
+                            destinationType: Camera.DestinationType.DATA_URL,
+                            sourceType: Camera.PictureSourceType.CAMERA,
+                            allowEdit: true,
+                            quality: AppData.generalData.cameraQuality,
+                            targetWidth: -1,
+                            targetHeight: -1,
+                            encodingType: Camera.EncodingType.JPEG,
+                            saveToPhotoAlbum: false,
+                            cameraDirection: Camera.Direction.BACK,
+                            convertToGrayscale: AppData.generalData.cameraUseGrayscale,
+                            variableEditRect: true
+                        });
+                    } else {
+                        Log.print(Log.l.error, "camera.getPicture not supported...");
+                        that.updateStates({ errorMessage: "Camera plugin not supported" });
+                    }
                 }
                 Log.ret(Log.l.trace);
             }

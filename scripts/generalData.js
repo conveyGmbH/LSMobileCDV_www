@@ -505,6 +505,7 @@
                     logTarget: Log.targets.console,
                     cameraQuality: AppData._persistentStates.cameraQuality,
                     cameraUseGrayscale: AppData._persistentStates.cameraUseGrayscale,
+                    useClippingCamera: AppData._persistentStates.useClippingCamera,
                     eventName: AppData._userData.VeranstaltungName,
                     userName: AppData._userData.Login,
                     userPresent: AppData._userData.Present,

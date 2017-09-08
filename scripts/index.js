@@ -21,6 +21,7 @@
         cameraQuality: 50,
         cameraUseGrayscale: true,
         cameraMaxSize: 2560,
+        useClippingCamera: false,
         logEnabled: false,
         logLevel: 3,
         logGroup: false,
