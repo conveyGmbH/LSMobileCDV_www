@@ -109,7 +109,7 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 
 #navigationbar_horizontal .win-selectionbackground {
     height: 4px;
-    top: 36px;
+    top: 44px;
     left: 16px;
     right: 16px;
 }
@@ -117,7 +117,7 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     width: 4px;
     top: 4px;
     bottom: 4px;
-    left: 16px;
+    left: 0;
 }
 
 .navigationbar-horizontal-template,
@@ -219,8 +219,5 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     .win-splitviewcommand-label {
         font-size: 15px;
         margin-top: 16px;
-    }
-    #navigationbar_horizontal .win-selectionbackground {
-        top: 32px;
     }
 }    
