@@ -27,8 +27,8 @@
                     </div>
                     <div class="listQuestionnaire-single-rating-template"
                          data-win-control="WinJS.Binding.Template" style="display: none">
-                        <div class="questionnaire-row">
-                            <div class="row-bkg"></div>
+                        <div class="questionnaire-row" >
+                            <div class="row-bkg" data-win-bind="style.background: mandatoryColor"></div>
                             <div class="list-fragengruppe-container" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplay">
                                 <div class="header-separator"></div>
                                 <div class="half-circle half-circle-textcolor">&nbsp;</div>
@@ -36,10 +36,6 @@
                             </div>
                             <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
                             <span class="list-question-field label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
-                            <span class="list-question-field label-color"  data-win-bind="style.display: RequiredFieldShow Binding.Converter.toDisplay" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
-                            <div data-win-bind="style.display: RequiredFieldShow Binding.Converter.toDisplay">
-                                <span data-win-bind="textContent: PflichtFeld"></span>
-                            </div>
                             <div class="rating-question-field">
                                 <div data-win-control="WinJS.UI.Rating"
                                      data-win-bind="winControl.maxRating: SRMax; winControl.userRating: RRANTWORT Binding.Converter.toInteger"></div>
@@ -69,8 +65,8 @@
                     </div>
                     <div class="listQuestionnaire-multi-rating-template"
                          data-win-control="WinJS.Binding.Template" style="display: none">
-                        <div class="questionnaire-row">
-                            <div class="row-bkg"></div>
+                        <div class="questionnaire-row" >
+                            <div class="row-bkg" data-win-bind="style.background: mandatoryColor"></div>
                             <div class="list-fragengruppe-container" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplay">
                                 <div class="header-separator"></div>
                                 <div class="half-circle half-circle-textcolor">&nbsp;</div>
@@ -78,7 +74,6 @@
                             </div>
                             <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
                             <span class="list-question-multi-rating label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
-                            <span class="list-question-field label-color" data-win-bind="style.display: RequiredFieldShow Binding.Converter.toDisplay" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
                             <div class="multi-rating-div">
                                 <div class="multi-rating">
                                     <span id="MR01" class="multi-rating-span"
@@ -142,8 +137,8 @@
                     </div>
                     <div class="listQuestionnaire-combo-template"
                          data-win-control="WinJS.Binding.Template" style="display: none">
-                        <div class="questionnaire-row">
-                            <div class="row-bkg"></div>
+                        <div class="questionnaire-row" >
+                            <div class="row-bkg" data-win-bind="style.background: mandatoryColor"></div>
                             <div class="list-fragengruppe-container" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplay">
                                 <div class="header-separator"></div>
                                 <div class="half-circle half-circle-textcolor">&nbsp;</div>
@@ -151,7 +146,6 @@
                             </div>
                             <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
                             <span class="list-question-field label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
-                            <span class="list-question-field label-color" data-win-bind="style.display: RequiredFieldShow Binding.Converter.toDisplay" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
                             <div class="field_line_questionnaire win-type-subtitle">
                                 <select class="input_field win-dropdown"
                                         data-win-control="WinJS.UI.Repeater">
@@ -182,7 +176,7 @@
                     <div class="listQuestionnaire-single-template8"
                          data-win-control="WinJS.Binding.Template" style="display: none">
                         <div class="questionnaire-row">
-                            <div class="row-bkg"></div>
+                            <div class="row-bkg" data-win-bind="style.background: mandatoryColor "></div>
                             <div class="list-fragengruppe-container" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplay">
                                 <div class="header-separator"></div>
                                 <div class="half-circle half-circle-textcolor">&nbsp;</div>
@@ -190,7 +184,6 @@
                             </div>
                             <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
                             <span class="list-question-field label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
-                            <span class="list-question-field label-color" data-win-bind="style.display: RequiredFieldShow Binding.Converter.toDisplay" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
                             <div class="field_line_questionnaire win-type-subtitle">
                                 <div class="field_row_odd">
                                     <div class="field_line_left">
@@ -289,8 +282,8 @@
                     </div>
                     <div class="listQuestionnaire-single-template28"
                          data-win-control="WinJS.Binding.Template" style="display: none">
-                        <div class="questionnaire-row">
-                            <div class="row-bkg"></div>
+                        <div class="questionnaire-row" >
+                            <div class="row-bkg" data-win-bind="style.background: mandatoryColor "></div>
                             <div class="list-fragengruppe-container" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplay">
                                 <div class="header-separator"></div>
                                 <div class="half-circle half-circle-textcolor">&nbsp;</div>
@@ -298,7 +291,6 @@
                             </div>
                             <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
                         <span class="list-question-field label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
-                            <span class="list-question-field label-color" data-win-bind="style.display: RequiredFieldShow Binding.Converter.toDisplay" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
                             <div class="field_line_questionnaire win-type-subtitle">
                                 <div class="field_row_odd">
                                     <div class="field_line_left">
@@ -581,8 +573,8 @@
                     </div>
                     <div class="listQuestionnaire-multi-template8"
                          data-win-control="WinJS.Binding.Template" style="display: none">
-                        <div class="questionnaire-row">
-                            <div class="row-bkg"></div>
+                        <div class="questionnaire-row" >
+                            <div class="row-bkg" data-win-bind="style.background: mandatoryColor"></div>
                             <div class="list-fragengruppe-container" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplay">
                                 <div class="header-separator"></div>
                                 <div class="half-circle half-circle-textcolor">&nbsp;</div>
@@ -590,7 +582,6 @@
                             </div>
                             <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
                             <span class="list-question-field label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
-                            <span class="list-question-field label-color" data-win-bind="style.display: RequiredFieldShow Binding.Converter.toDisplay" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
                             <div class="field_line_questionnaire win-type-subtitle">
                                 <div class="field_row_odd">
                                     <div class="field_line_left">
@@ -689,8 +680,8 @@
                     </div>
                     <div class="listQuestionnaire-multi-template28"
                          data-win-control="WinJS.Binding.Template" style="display: none">
-                        <div class="questionnaire-row">
-                            <div class="row-bkg"></div>
+                        <div class="questionnaire-row" >
+                            <div class="row-bkg" data-win-bind="style.background: mandatoryColor "></div>
                             <div class="list-fragengruppe-container" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplay">
                                 <div class="header-separator"></div>
                                 <div class="half-circle half-circle-textcolor">&nbsp;</div>
@@ -698,7 +689,6 @@
                             </div>
                             <div class="row-separator" data-win-bind="style.display: FLAG_Trennlinie Binding.Converter.toDisplayNone"></div>
                         <span class="list-question-field label-color" data-win-bind="textContent: FRAGESTELLUNG"></span>
-                            <span class="list-question-field label-color" data-win-bind="style.display: RequiredFieldShow Binding.Converter.toDisplay" data-win-res="{textContent:'questionnaire.requiredmarker'}"></span>
                             <div class="field_line_questionnaire win-type-subtitle">
                                 <div class="field_row_odd">
                                     <div class="field_line_left">

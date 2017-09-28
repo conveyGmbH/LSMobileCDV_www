@@ -23,6 +23,7 @@
             this.nextUrl = null;
             this.loading = false;
             this.questions = null;
+            this.actualquestion = null;
             this.images = null;
             this.docIds = null;
 
@@ -42,6 +43,9 @@
                 if (that.questions) {
                     that.questions = null;
                 }
+                if (that.actualquestion) {
+                    that.actualquestion = null;
+                }
                 if (that.images) {
                     that.images = null;
                 }
@@ -49,6 +53,48 @@
                     that.docIds = null;
                 }
             };
+
+            var scrollToRecordId = function (recordId) {
+                Log.call(Log.l.trace, "QuestionList.Controller.", "recordId=" + recordId);
+                if (that.loading) {
+                    WinJS.Promise.timeout(50).then(function () {
+                        that.scrollToRecordId(recordId);
+                    });
+                } else {
+                    if (recordId && listView && listView.winControl) {
+                        for (var i = 0; i < that.questions.length; i++) {
+                            var question = that.questions.getAt(i);
+                            if (question && typeof question === "object" &&
+                                question.ZeilenantwortVIEWID === recordId) {
+                                listView.winControl.indexOfFirstVisible = i;
+                                break;
+                            }
+                        }
+                    }
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.scrollToRecordId = scrollToRecordId;
+
+            var selectRecordId = function (recordId) {
+                Log.call(Log.l.trace, "QuestionList.Controller.", "recordId=" + recordId);
+                if (recordId && listView && listView.winControl && listView.winControl.selection) {
+                    for (var i = 0; i < that.questions.length; i++) {
+                        var question = that.questions.getAt(i);
+                        if (question && typeof question === "object" &&
+                            question.ZeilenantwortVIEWID === recordId) {
+                            listView.winControl.selection.set(i).done(function () {
+                                WinJS.Promise.timeout(50).then(function () {
+                                    that.scrollToRecordId(recordId);
+                                });
+                            });
+                            break;
+                        }
+                    }
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.selectRecordId = selectRecordId;
 
             var singleRatingTemplate = null, multiRatingTemplate = null, comboTemplate = null, singleTemplate8 = null, multiTemplate8 = null, singleTemplate28 = null, multiTemplate28 = null;
             // Conditional renderer that chooses between templates
@@ -106,7 +152,7 @@
             var maxLeadingPages = 0;
             var maxTrailingPages = 0;
 
-            var resultConverter = function (item) {
+            var resultConverter = function (item, index) {
                 if (item.SRMax) {
                     item.type = "single-rating";
                 } else if (item.MRShow01) {
@@ -140,11 +186,14 @@
                                 }
                             } else {
                                 var checked = keyValue + "CHECKED";
-                                if (item[keyValue] === item.SSANTWORT) {
-                                    item[checked] = true;
-                                } else {
-                                    item[checked] = false;
+                                if (item[keyValue] !== null) {
+                                    if (item[keyValue] === item.SSANTWORT) {
+                                        item[checked] = true;
+                                    } else {
+                                        item[checked] = false;
+                                    }
                                 }
+                                
                             }
                         }
                         var name = "SSANTWORT" + item.ZeilenantwortVIEWID.toString();
@@ -185,14 +234,26 @@
                     item["DateComboboxButtonShow"] = false;
                     item["DateComboboxButtonOk"] = false;
                 }
-
-                // Für Pflichtfeld analog zu DateCombobox
                 if (item.PflichtFeld) {
-                    item["RequiredFieldShow"] = true;
-                }else
-                    item["RequiredFieldShow"] = false;
+                    if (Colors.isDarkTheme) {
+                        item["mandatoryColor"] = "#8b4513";
+                    } else {
+                        item["mandatoryColor"] = "lightyellow";
+                    } 
+                }
             }
             this.resultConverter = resultConverter;
+
+            var resultMandatoryConverter = function (item) {
+                if (item.INITOptionTypeID === 22) {
+                    if (item.LocalValue === "1") {
+                        AppData._persistentStates.showConfirmQuestion = true;
+                    } else {
+                        AppData._persistentStates.showConfirmQuestion = false;
+                    }
+                }
+            }
+            this.resultMandatoryConverter = resultMandatoryConverter;
 
             // get field entries
             var getFieldEntries = function (index, type) {
@@ -256,12 +317,12 @@
                             }
                         } else if (type === "combo") {
                             field = element.querySelector(".win-dropdown");
-                            if (field) {
+                            if (field && field.value !== "null") {
                                 ret["SSANTWORT"] = field.value;
                             }
                         }
                         field = element.querySelector("textarea");
-                        if (field) {
+                        if (field && field.value !== "null") {
                             ret["Freitext"] = field.value;
                         }
                     }
@@ -334,6 +395,55 @@
                 return ret;
             };
             this.saveData = saveData;
+
+            var showConfirmBoxMandatory = function () {
+                var ret = null;
+                var i;
+                var curScope = null;
+                
+                for (i = 0; i < that.questions.length; i++) {
+                    ret = false;
+                    var question = that.questions.getAt(i);
+                    if (question &&
+                        typeof question === "object" &&
+                        question.PflichtFeld &&
+                        AppData._persistentStates.showConfirmQuestion) {
+
+                        curScope = question;
+                        that.actualquestion = question;
+                        var newRecord = that.getFieldEntries(i, curScope.type);
+
+                        for (var prop in newRecord) {
+                            if (newRecord.hasOwnProperty(prop) && Object.keys(newRecord).length > 1) {
+                                if (prop !== "Freitext") {
+                                    if (newRecord[prop] === "" ||
+                                        newRecord[prop] === null ||
+                                        newRecord[prop] === "null" ||
+                                        newRecord[prop] === "00") {
+                                        Log.call(Log.l
+                                            .u1,
+                                            "Questionnaire.Controller. Answer is empty" + newRecord.prop);
+                                        ret = true;
+                                    } else {
+                                        Log.call(Log.l.u1,
+                                            "Questionnaire.Controller. Answer not empty" + newRecord.prop);
+                                        ret = false;
+                                    }
+                                }
+                            } else {
+                                ret = true;
+                            }
+                        }
+                    } 
+                    if (ret) {
+                        break;
+                    }
+                }
+
+                Log.ret(Log.l.u1);
+                return ret;
+            };
+            this.showConfirmBoxMandatory = showConfirmBoxMandatory;
 
             var getNextDocId = function () {
                 var ret = null;
@@ -586,7 +696,19 @@
                 },
                 clickForward: function (event) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
-                    Application.navigateById('sketch', event);
+                    var showconfirmbox = that.showConfirmBoxMandatory();
+                    if (showconfirmbox) {
+                        confirm("Pflichtfrage nicht ausgefüllt: \n" + that.actualquestion.FRAGESTELLUNG, function (result) {
+                           if (result) {
+                               Application.navigateById('sketch', event);
+                           } else {
+                               that.selectRecordId(that.actualquestion.ZeilenantwortVIEWID);
+                           }
+                        });   
+                    } else {
+                        Application.navigateById('sketch', event);
+                    }
+                    //Vielleicht hier showconfirmbox?
                     Log.ret(Log.l.trace);
                 },
                 clickRating: function (event) {
@@ -676,14 +798,14 @@
                     }
 
                 },
-                activateEnterKey: function(event) {
+                activateEnterKey: function (event) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
                     for (var i = 0; i < AppBar.commandList.length; i++) {
                         if (AppBar.commandList[i].id === "clickForward")
                             AppBar.commandList[i].key = WinJS.Utilities.Key.enter;
                     }
                 },
-                deactivateEnterKey: function(event) {
+                deactivateEnterKey: function (event) {
                     for (var i = 0; i < AppBar.commandList.length; i++) {
                         if (AppBar.commandList[i].id === "clickForward")
                             AppBar.commandList[i].key = null;
@@ -925,11 +1047,11 @@
                                             // set focus async!
                                             freitextInput.focus();
                                         });
-                                       /* Log.call(Log.l.trace, "Questionnaire.Controller.");
-                                        for (var i = 0; i < AppBar.commandList.length; i++) {
-                                            if (AppBar.commandList[i].id === "clickForward")
-                                                AppBar.commandList[i].key = null;
-                                        }*/
+                                        /* Log.call(Log.l.trace, "Questionnaire.Controller.");
+                                         for (var i = 0; i < AppBar.commandList.length; i++) {
+                                             if (AppBar.commandList[i].id === "clickForward")
+                                                 AppBar.commandList[i].key = null;
+                                         }*/
                                     } else {
                                         /* Log.call(Log.l.trace, "Questionnaire.Controller.");
                                          for (var j = 0; j < AppBar.commandList.length; j++) {
@@ -1115,15 +1237,15 @@
                                 that.nextUrl = Questionnaire.questionnaireView.getNextUrl(json);
                                 var results = json.d.results;
                                 if (!that.questions) {
-                                    results.forEach(function (item) {
-                                        that.resultConverter(item);
+                                    results.forEach(function (item, index) {
+                                        that.resultConverter(item, index);
                                     });
                                     // Now, we call WinJS.Binding.List to get the bindable list
                                     that.questions = new WinJS.Binding.List(results);
                                     that.binding.count = that.questions.length;
                                 } else {
-                                    results.forEach(function (item) {
-                                        that.resultConverter(item);
+                                    results.forEach(function (item, index) {
+                                        that.resultConverter(item, index);
                                         that.binding.count = that.questions.push(item);
                                     });
                                 }
@@ -1172,7 +1294,7 @@
                                                     if (resources) {
                                                         focusElement = getTextareaForFocus(element);
                                                         if (focusElement && focusElement !== element) {
-                                                            WinJS.Promise.timeout(0).then(function() {
+                                                            WinJS.Promise.timeout(0).then(function () {
                                                                 focusElement.focus();
                                                             });
                                                         }
@@ -1259,6 +1381,21 @@
                             KontaktID: contactId
                         });
                     }
+                }).then(function () {
+                    ret = Questionnaire.CR_VERANSTOPTION_ODataView.select(function (json) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                        Log.print(Log.l.trace, "Login: success!");
+                        // CR_VERANSTOPTION_ODataView returns object already parsed from json file in response
+                        if (json && json.d && json.d.results && json.d.results.length > 1) {
+                            var results = json.d.results;
+                            results.forEach(function (item) {
+                                that.resultMandatoryConverter(item);
+                            });
+                        } else {
+                            AppData._persistentStates.showConfirmQuestion = false;
+                        }
+                    });
                 }).then(function () {
                     AppBar.triggerDisableHandlers();
                     return WinJS.Promise.as();
