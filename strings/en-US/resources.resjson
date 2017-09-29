@@ -41,6 +41,7 @@
     "tooltip.redo"          : "Redo last action",
     "tooltip.undo"          : "Undo last action",
     "tooltip.delete"        : "Delete current record",
+    "tooltip.new"           : "Add new contact",
     "tooltip.deleteEmployee": "Delete Employee",
     "tooltip.deleteSkill"   : "Delete Skill",
     "tooltip.deleteQuestiongroup": "Delete Questiongroup",
@@ -91,7 +92,7 @@
     "start.info"            : "Important informations",
     "start.language"        : "Language",
 
-    "contact.title"         : "Contact",
+    "contact.title"         : "Enter Contact Data",
     "contact.comment"       : "On this page, use the Back button to go back!",
     "contact.questionDelete": "Do you want to delete the current contact?",
     "contact.name"          : "Last name",
@@ -121,30 +122,32 @@
     "contact.closeImage"    : "Close",
 
     "contact.ID"            : "ID",
-    "contact.editedOn"      : "Edited on",
-    "contact.modifiedOn"    : "Modified on",
+    "contact.editedOn"      : "Edited",
+    "contact.modifiedOn"    : "Modified",
 
     "contact.mr"            : "Mr",
     "contact.mrs"           : "Mrs",
 
     "contact.useRestriction": "use",
 
+    "contactRemote.title"   : "Already uploaded Contact",
+
     "photo.title"           : "Business card",
     "photo.comment"         : "On this page, use the Back button to go back!",
 
-    "questionnaire.title"   : "Questionnaire",
+    "questionnaire.title"   : "Answer the questions",
     "questionnaire.comment" : "On this page, use the Back button to go back!",
     "questionnaire.textarea": "Please enter you notes here ",
     "questionnaire.count"   : "Count",
     "questionnaire.attachments" : "Attachments",
 
-    "sketch.title"          : "Sketch",
+    "sketch.title"          : "Edit notes",
     "sketch.comment"        : "On this page, use the Back button to go back!",
     "sketch.shape"          : "Drawing shape",
     "sketch.color"          : "Color",
     "sketch.width"          : "Pen width",
 
-    "search.title"          : "Search",
+    "search.title"          : "Enter search criteria",
     "search.comment"        : "On this page, use the Back button to go back!",
     "search.ID"             : "ID",
     "search.deviceID"       : "Device number",
@@ -166,11 +169,11 @@
     "search.edited"         : "Edited",
    "search.notEdited"       : "Not Edited",
 
-    "listLocal.title"       : "Local",
+    "listLocal.title"       : "List of local contacts",
     "listLocal.comment"     : "On this page, use the Back button to go back!",
     "listLocal.count"       : "Count",
 
-    "listRemote.title"      : "Uploaded",
+    "listRemote.title"      : "Already uploaded contacts",
     "listRemote.comment"    : "On this page, use the Back button to go back!",
     "listRemote.count"      : "Count",
 
@@ -200,7 +203,7 @@
     "barcode.barcode"       : "Barcode",
     "barcode.placement"     : "Place a barcode inside the scan area",
 
-    "settings.title"        : "Design",
+    "settings.title"        : "Design Settings",
     "settings.comment"      : "On this page, use the Back button to go back!",
     "settings.accentcolor"  : "Accent color",
     "settings.textcolor"    : "Text color",
@@ -257,7 +260,7 @@
     "register.confirmation" : "Confirmation",
     "register.complete"     : "Thank you very much for your registration! You will receive an email for confirmation soon. It will be send to the address written above.",
      
-    "account.title"         : "Account",
+    "account.title"         : "Logon Settings",
     "account.comment"       : "Please, pay attention to the fact, that all data of the app stored locally on the deviced will be deleted if you logoff or login with another account!",
     "account.hostName"      : "Hostname",
     "account.https"         : "HTTPS",
@@ -282,7 +285,7 @@
     "account.unknown"       : "Specified user not found!",
     "account.inactive"      : "The service is currently inactive!",
     
-    "info.title"            : "Information",
+    "info.title"            : "Information about the app",
     "info.comment"          : "&copy; convey Information Systems GmbH 2015-2017",
     "info.homepage"         : "www.convey.de",
     "info.logOptions"       : "Logging options",
@@ -301,6 +304,7 @@
     "info.cameraOptions"    : "Camera options",
     "info.cameraQuality"    : "Quality",
     "info.cameraUseGrayscale" : "Grayscale",
+    "info.useClippingCamera": "Automatic recognition",
     "info.replication"      : "Synchronisation options",
     "info.replActive"       : "Synchronisation",
     "info.replInterval"     : "Interval in s",
@@ -435,6 +439,9 @@
 
     "mandatory.title"       : "Mandatory fields",
     "mandatory.contact"     : "Mandatory fields in Contact",
-    "mandatory.doMandatory" : "Show mandatory fields in questionnaire"
+    "mandatory.doMandatory" : "Show mandatory fields in questionnaire",
 
+    "productlist.title"     : "Product selection",
+    "productlist.comment"   : "On this page, use the Back button to go back!",
+    "productlist.count"     : "Count"
 }

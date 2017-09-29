@@ -41,6 +41,7 @@
     "tooltip.redo"          : "Ripristina ultima azione",
     "tooltip.undo"          : "Annulla ultima azione",
     "tooltip.delete"        : "Elimina record attuale",
+    "tooltip.new"           : "Aggiungi nuovo contatto",
     "tooltip.deleteEmployee": "Elimina Employee",
     "tooltip.deleteSkill"   : "Elimina Ruolo",
     "tooltip.deleteQuestiongroup": "Elimina Gruppo domande",
@@ -79,7 +80,7 @@
     "start.off"             : "Off",
     "start.onSite"          : "Presente",
     "start.notOnSite"       : "Assente",
-    "start.buttonAll"       : "Alle",
+    "start.buttonAll"       : "Tutti",
     "start.buttonEdited"    : "Modificato",
     "start.buttonNotEdited" : "Non modificato",
     "start.recent"          : "Ultimo contatto",
@@ -90,7 +91,7 @@
     "start.info"            : "Informazioni importanti",
     "start.language"        : "Lingua",
 
-    "contact.title"         : "Contatto",
+    "contact.title"         : "Immettere i dati di contatto",
     "contact.comment"       : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "contact.questionDelete": "Vuoi eliminare questo contatto?",
     "contact.name"          : "Cognome",
@@ -125,22 +126,24 @@
     "contact.mrs"           : "Sig.ra",
     "contact.useRestriction": "Utilizza",
 
+    "contactRemote.title"   : "Contatto già caricato",
+
     "photo.title"           : "Biglietto da visita",
     "photo.comment"         : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
 
-    "questionnaire.title"   : "Questionario",
+    "questionnaire.title"   : "Rispondere alle domande",
     "questionnaire.comment" : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "questionnaire.textarea": "Inserite eventuali commenti in questo spazio",
     "questionnaire.count"   : "Totale",
     "questionnaire.attachments" : "Allegati",
 
-    "sketch.title"          : "Schizzo",
+    "sketch.title"          : "Disegnare schizzi",
     "sketch.comment"        : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "sketch.shape"          : "Tipo forma",
     "sketch.color"          : "Colore",
     "sketch.width"          : "Larghezza",
 
-    "search.title"          : "Ricerca",
+    "search.title"          : "Immettere i criteri di ricerca",
     "search.comment"        : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "search.ID"             : "ID",
     "search.deviceID"       : "numero di dispositivo",
@@ -162,11 +165,11 @@
     "search.edited"         : "Bearbeitet",
     "search.notEdited"      : "Unbearbeitet",
 
-    "listLocal.title"       : "Locale",
+    "listLocal.title"       : "Lista dei contatti locali",
     "listLocal.comment"     : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "listLocal.count"       : "Totale",
 
-    "listRemote.title"      : "Caricato",
+    "listRemote.title"      : "Elenco dei contatti caricati",
     "listRemote.comment"    : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "listRemote.count"      : "Totale",
   
@@ -196,7 +199,7 @@
     "barcode.barcode"       : "Barcode",
     "barcode.placement"     : "Posiziona un barcode all'interno dell'area di scansione",
 
-    "settings.title"        : "Impostazioni",
+    "settings.title"        : "Impostazioni di progettazione",
     "settings.comment"      : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "settings.accentcolor"  : "Colore principale",
     "settings.textcolor"    : "Colore testo",
@@ -253,7 +256,7 @@
     "register.confirmation" : "Conferma",
     "register.complete"     : "Grazie per esserti registrato! A breve riceverai una E-Mail di conferma all'indirizzo immesso prima.",
      
-    "account.title"         : "Login",
+    "account.title"         : "Impostazioni di login",
     "account.comment"       : "Please, pay attention to the fact, that all data of the app stored locally on the deviced will be deleted if you logoff or login with another account!",
     "account.hostName"      : "Nome server",
     "account.https"         : "HTTPS",
@@ -278,7 +281,7 @@
     "account.unknown"       : "Nome utente specificato non trovato!",
     "account.inactive"      : "Il servizio è attualmente inattivo!",
      
-    "info.title"            : "Informazione",
+    "info.title"            : "Informazioni sull'applicazione",
     "info.comment"          : "&copy; convey Information Systems GmbH 2015-2017",
     "info.homepage"         : "www.convey.de",
     "info.logOptions"       : "Opzioni di Login",
@@ -297,6 +300,7 @@
     "info.cameraOptions"    : "Opzioni fotocamera",
     "info.cameraQuality"    : "Qualità",
     "info.cameraUseGrayscale" : "Scala di grigi",
+    "info.useClippingCamera": "Riconoscimento automatico",
     "info.replication"      : "Opzioni di sincronizzazione",
     "info.replActive"       : "Sincronizzazione",
     "info.replInterval"     : "Intervallo in s",
