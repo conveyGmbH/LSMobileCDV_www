@@ -124,7 +124,7 @@
                         item.Sent = null;
                     }
                 }
-                item.OvwContentDOCCNT3 = null;
+                item.OvwContentDOCCNT3 = "";
                 if (that.docs) {
                     for (var i = that.firstDocsIndex; i < that.docs.length; i++) {
                         var doc = that.docs[i];
@@ -152,7 +152,7 @@
                                 var sub = docContent.search("\r\n\r\n");
                                 contact.OvwContentDOCCNT3 = "data:image/jpeg;base64," + docContent.substr(sub + 4);
                             } else {
-                                contact.OvwContentDOCCNT3 = null;
+                                contact.OvwContentDOCCNT3 = "";
                             }
                             that.contacts.setAt(i, contact);
                             that.firstContactsIndex = i + 1;
