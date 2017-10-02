@@ -85,6 +85,10 @@
             var setDataContact = function(newDataContact) {
                 var prevNotifyModified = AppBar.notifyModified;
                 AppBar.notifyModified = false;
+                // Bug: textarea control shows 'null' string on null value in Internet Explorer!
+                if (newDataContact.Bemerkungen === null) {
+                    newDataContact.Bemerkungen = "";
+                }
                 that.binding.dataContact = newDataContact;
                 if (!that.binding.dataContact.KontaktVIEWID) {
                     that.binding.dataContact.Nachbearbeitet = 1;
@@ -172,6 +176,25 @@
             };
             this.deleteData = deleteData;
 
+            var resultMandatoryConverter = function (item, index) {
+                var inputfield = pageElement.querySelector("#" + item.AttributeName);
+                if (inputfield === null) {
+                    if (item.AttributeName === "AnredeID")
+                        inputfield = pageElement.querySelector("#InitAnrede");
+                    if (item.AttributeName === "LandID")
+                        inputfield = pageElement.querySelector("#InitLand");
+
+                }
+                if (item.FieldFlag) {
+                    if (inputfield !== null && inputfield !== undefined)
+                        if (Colors.isDarkTheme) {
+                            inputfield.style.backgroundColor = "#8b4513";
+                        } else {
+                            inputfield.style.backgroundColor = "lightyellow";
+                        }
+                }
+            };
+            this.resultMandatoryConverter = resultMandatoryConverter;
 
             // define handlers
             this.eventHandlers = {
@@ -352,6 +375,33 @@
                         }
                         return WinJS.Promise.as();
                     }
+                }).then(function () {
+                    return Contact.mandatoryView.select(function (json) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                        Log.print(Log.l.trace, "MandatoryList.mandatoryView: success!");
+                        // select returns object already parsed from json file in response
+                        if (json && json.d) {
+                            //that.nextUrl = MandatoryList.mandatoryView.getNextUrl(json);
+                            var results = json.d.results;
+                            results.forEach(function (item, index) {
+                                that.resultMandatoryConverter(item, index);
+                            });
+                            // Now, we call WinJS.Binding.List to get the bindable list
+                            //that.fields = new WinJS.Binding.List(results);
+                            /*if (listView.winControl) {
+                                // add ListView dataSource
+                                listView.winControl.itemDataSource = that.fields.dataSource;
+                            }*/
+                        }
+                    }, function (errorResponse) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        AppData.setErrorMsg(that.binding, errorResponse);
+                    }, {
+                        LanguageSpecID: AppData.getLanguageId()
+                    });
+
                 }).then(function () {
                     var recordId = getRecordId();
                     if (recordId) {

@@ -239,7 +239,7 @@
                         item["mandatoryColor"] = "#8b4513";
                     } else {
                         item["mandatoryColor"] = "lightyellow";
-                    } 
+                    }
                 }
             }
             this.resultConverter = resultConverter;
@@ -402,7 +402,7 @@
                 var curScope = null;
                 
                 for (i = 0; i < that.questions.length; i++) {
-                    ret = false;
+                    ret = true;
                     var question = that.questions.getAt(i);
                     if (question &&
                         typeof question === "object" &&
@@ -412,34 +412,52 @@
                         curScope = question;
                         that.actualquestion = question;
                         var newRecord = that.getFieldEntries(i, curScope.type);
-
-                        for (var prop in newRecord) {
-                            if (newRecord.hasOwnProperty(prop) && Object.keys(newRecord).length > 1) {
-                                if (prop !== "Freitext") {
-                                    if (newRecord[prop] === "" ||
-                                        newRecord[prop] === null ||
-                                        newRecord[prop] === "null" ||
-                                        newRecord[prop] === "00") {
-                                        Log.call(Log.l
-                                            .u1,
-                                            "Questionnaire.Controller. Answer is empty" + newRecord.prop);
-                                        ret = true;
-                                    } else {
-                                        Log.call(Log.l.u1,
-                                            "Questionnaire.Controller. Answer not empty" + newRecord.prop);
-                                        ret = false;
-                                    }
+                        var prop;
+                        
+                        if (curScope.type === "multi-rating") {
+                            var counter = 0;
+                            for (prop in newRecord) {
+                                if (newRecord.hasOwnProperty(prop)) {
+                                    if (prop !== "Freitext") {
+                                        if (newRecord[prop] === "X") {
+                                            counter++;
+                                            break;
+                                        }
+                                    }    
                                 }
+                            }
+                            if (counter > 0) {
+                                //ret = false;
+                                ret = false;
                             } else {
-                                ret = true;
+                                //ret = true;
+                                return true;
+                            }
+                        } else {
+                            for (prop in newRecord) {
+                                if (newRecord.hasOwnProperty(prop)) {
+                                    if (prop !== "Freitext") {
+                                        if (newRecord[prop] === "" ||
+                                            newRecord[prop] === null ||
+                                            newRecord[prop] === "null" ||
+                                            newRecord[prop] === "00" ||
+                                            newRecord[prop].length === 0) {
+                                            Log.call(Log.l.u1,"Questionnaire.Controller. Answer is empty" + newRecord.prop);
+                                            ret = true;
+                                            break;
+                                        } else {
+                                            Log.call(Log.l.u1,"Questionnaire.Controller. Answer not empty" + newRecord.prop);
+                                            ret = false;
+                                        }
+                                    } 
+                                }
+                            }
+                            if (ret) {
+                                return true;
                             }
                         }
-                    } 
-                    if (ret) {
-                        break;
                     }
                 }
-
                 Log.ret(Log.l.u1);
                 return ret;
             };

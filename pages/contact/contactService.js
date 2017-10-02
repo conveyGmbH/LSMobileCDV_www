@@ -76,6 +76,23 @@
                 Log.ret(Log.l.trace);
                 return ret;
             }
+        },
+        _mandatoryView: {
+            get: function () {
+                return AppData.getFormatView("PflichtFelder", 20503, false);
+            }
+        },
+        mandatoryView: {
+            select: function (complete, error, restriction) {
+                Log.call(Log.l.trace, "MandatoryList.");
+                var ret = Contact._mandatoryView.select(complete, error, restriction, {
+                    ordered: true,
+                    orderAttribute: "PflichtFelderVIEWID"
+                });
+                // this will return a promise to controller
+                Log.ret(Log.l.trace);
+                return ret;
+            }
         }
     });
 })();
