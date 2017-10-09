@@ -455,6 +455,20 @@ select {
     position: relative;
     top: 4px;
 }
+.portrait_only_quarter {
+    display: block;
+    position: relative;
+    left: 25%;
+    top: -16px;
+    height: 0;
+}
+.portrait_only_half {
+    display: block;
+    position: relative;
+    left: 50%;
+    top: -16px;
+    height: 4px;
+}
 .portrait_only_right {
     display: block;
     position: relative;
@@ -491,10 +505,12 @@ select {
 .field_line_odd {
     float: left;
     width: calc(50% - 52px);
+    overflow-y: hidden
 }
 .field_line_even {
     float: right;
     width: calc(50% - 52px);
+    overflow-y: hidden
 }
 /*
 .input_field, .large_field, .input_small_left, .input_small_right {
@@ -505,7 +521,7 @@ span.input_field, span.input_small_right, span.large_field, span.input_small_lef
 }
 */
 select.input_field, select.input_small_left{
-    height: 31px;
+    height: 32px;
 }
 .progress_field, .input_field, .large_field {
     margin-top: 0;
@@ -514,13 +530,55 @@ select.input_field,
 select.large_field,
 select.input_small_left,
 select.input_small_right,
+select.input_half_left,
+select.input_half_right,
 input.input_field,
 input.large_field,
+input.input_half_left,
+input.input_half_right,
 input.input_small_left,
 input.input_small_right {
     border-width: 2px;
 }
+.input_text_comment {
+    height: 32px;
+}
+.input_text_comment:focus{
+    height: 196px;
+}
+.input_text_comment_big {
+    height: 196px;
+}
+.input_quarter_left {
+    min-height: 32px;
+    float: left;
+    width: calc(25% - 25px);
+    margin-top: 0;
+    margin-right: 4px;
+}
+.input_half_left {
+    min-height: 32px;
+    float: left;
+    width: 49%;
 
+    margin-top: 0;
+}
+.input_quarter_right {
+    min-height: 32px;
+    float: left;
+    width: calc(25% - 25px);
+    margin-top: 0;
+    margin-left: 0;
+}
+.input_half_right {
+    min-height: 32px;
+    margin-right: -2px;
+    float: right;
+    width: 50%;
+   /* margin-left: 1em;*/
+    margin-top: 0;
+    margin-left: 0px;
+}
 .input_small_left {
     min-height: 32px;
     float:left;
@@ -682,9 +740,21 @@ input.input_small_right {
     opacity: 0.6;
 }
 .list-compressed {
-    float: right;
+    float: left;
+    width:calc(100% - 65px); 
+    height:100%;
+}
+.list-compressed-gray {
+    float: left;
+    width:calc(100% - 65px); 
+    height:100%;
+    color: gray
+}
+.list-compressed-green {
+    float: left;
     width:calc(100% - 65px);
     height:100%;
+    color: green
 }
 .list-compressed-title {
     min-height: 20px;
@@ -814,6 +884,8 @@ input.input_small_right {
     margin-right: 16px;
     margin-bottom: 0;
 }
+.view-size-medium .portrait_only_quarter,
+.view-size-medium .portrait_only_half,
 .view-size-medium .portrait_only, 
 .view-size-medium .portrait_only_left, 
 .view-size-medium .portrait_only_right {
@@ -979,6 +1051,12 @@ input.input_small_right {
 }
 .view-size-small .portrait_only {
     display: inline;
+}
+.view-size-small .portrait_only_quarter {
+    display: block;
+}
+.view-size-small .portrait_only_half {
+    display: block;
 }
 .view-size-small .portrait_only_left {
     display: block;
