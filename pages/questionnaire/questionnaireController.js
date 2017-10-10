@@ -991,6 +991,8 @@
                                 }
                                 AppData.setErrorMsg(that.binding);
                                 Log.print(Log.l.trace, "calling select ListLocal.contactView...");
+                                var nextUrl = that.nextUrl;
+                                that.nextUrl = null;
                                 Questionnaire.questionnaireView.selectNext(function (json) {
                                     // this callback will be called asynchronously
                                     // when the response is available
@@ -1026,7 +1028,7 @@
                                     }
                                     that.loading = false;
                                     that.showFlipView();
-                                }, null, that.nextUrl);
+                                }, null, nextUrl);
                             } else {
                                 if (progress && progress.style) {
                                     progress.style.display = "none";

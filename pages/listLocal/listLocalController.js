@@ -294,7 +294,9 @@
                             }
                             AppData.setErrorMsg(that.binding);
                             Log.print(Log.l.trace, "calling select ListLocal.contactView...");
-                            ListLocal.contactView.selectNext(function(json) {
+                            var nextUrl = that.nextUrl;
+                            that.nextUrl = null;
+                            ListLocal.contactView.selectNext(function (json) {
                                 // this callback will be called asynchronously
                                 // when the response is available
                                 Log.print(Log.l.trace, "ListLocal.contactView: success!");
@@ -309,8 +311,10 @@
                                 } else {
                                     that.nextUrl = null;
                                 }
-                                if (that.nextDocUrl) {
-                                    WinJS.Promise.timeout(250).then(function () {
+                                WinJS.Promise.timeout(250).then(function () {
+                                    if (that.nextDocUrl) {
+                                        var nextDocUrl = that.nextDocUrl;
+                                        that.nextDocUrl = null;
                                         Log.print(Log.l.trace, "calling select ContactList.contactDocView...");
                                         ListLocal.contactDocView.selectNext(function (json) { //json is undefined
                                             // this callback will be called asynchronously
@@ -332,9 +336,9 @@
                                             // or server returns response with an error status.
                                             Log.print(Log.l.error, "ContactList.contactDocView: error!");
                                             AppData.setErrorMsg(that.binding, errorResponse);
-                                        }, null, that.nextDocUrl);
-                                    });
-                                }
+                                        }, null, nextDocUrl);
+                                    }
+                                });
                             }, function (errorResponse) {
                                 // called asynchronously if an error occurs
                                 // or server returns response with an error status.
@@ -346,7 +350,7 @@
                                     counter.style.display = "inline";
                                 }
                                 that.loading = false;
-                            }, null, that.nextUrl);
+                            }, null, nextUrl);
                         } else {
                             if (progress && progress.style) {
                                 progress.style.display = "none";
