@@ -109,7 +109,7 @@
                     (item.Freitext1 ? "\r\n" + item.Freitext1 : "");
                 item.globalContactId = item.CreatorSiteID + "/" + item.CreatorRecID;
                 item.OvwContentDOCCNT3 = "";
-                if (that.docs) {
+                if (that.docs && index >= that.firstContactsIndex) {
                     for (var i = that.firstDocsIndex; i < that.docs.length; i++) {
                         var doc = that.docs[i];
                         if (doc.KontaktVIEWID === item.KontaktVIEWID) {
@@ -119,6 +119,7 @@
                                 item.OvwContentDOCCNT3 = "data:image/jpeg;base64," + docContent.substr(sub + 4);
                             }
                             that.firstDocsIndex = i + 1;
+                            that.firstContactsIndex = index + 1;
                             break;
                         }
                     }
@@ -127,7 +128,7 @@
             this.resultConverter = resultConverter;
 
             var resultDocConverter = function (item, index) {
-                if (that.contacts) {
+                if (that.contacts && index >= that.firstDocsIndex) {
                     for (var i = that.firstDocsIndex; i < that.contacts.length; i++) {
                         var contact = that.contacts.getAt(i);
                         if (contact.KontaktVIEWID === item.KontaktVIEWID) {
@@ -138,8 +139,17 @@
                             } else {
                                 contact.OvwContentDOCCNT3 = "";
                             }
+                            // preserve scroll position on change of row data!
+                            var indexOfFirstVisible = -1;
+                            if (listView && listView.winControl) {
+                                indexOfFirstVisible = listView.winControl.indexOfFirstVisible;
+                            }
                             that.contacts.setAt(i, contact);
+                            if (indexOfFirstVisible >= 0 && listView && listView.winControl) {
+                                listView.winControl.indexOfFirstVisible = indexOfFirstVisible;
+                            }
                             that.firstContactsIndex = i + 1;
+                            that.firstDocsIndex = index + 1;
                             break;
                         }
                     }
@@ -288,13 +298,39 @@
                                     that.nextUrl = ListRemote.contactView.getNextUrl(json);
                                     var results = json.d.results;
                                     results.forEach(function(item, index) {
-                                        that.resultConverter(item, index);
+                                        that.resultConverter(item, that.binding.count);
                                         that.binding.count = that.contacts.push(item);
                                     });
                                 } else {
                                     that.nextUrl = null;
                                 }
-                            }, function(errorResponse) {
+                                if (that.nextDocUrl) {
+                                    WinJS.Promise.timeout(250).then(function () {
+                                        Log.print(Log.l.trace, "calling select ContactList.contactDocView...");
+                                        ListRemote.contactDocView.selectNext(function (json) { //json is undefined
+                                            // this callback will be called asynchronously
+                                            // when the response is available
+                                            Log.print(Log.l.trace, "ContactList.contactDocView: success!");
+                                            // startContact returns object already parsed from json file in response
+                                            if (json && json.d) {
+                                                that.nextDocUrl = ListRemote.contactDocView.getNextUrl(json);
+                                                var results = json.d.results;
+                                                results.forEach(function (item, index) {
+                                                    that.resultDocConverter(item, that.binding.doccount);
+                                                    that.binding.doccount = that.docs.push(item);
+                                                });
+                                            } else {
+                                                that.nextDocUrl = null;
+                                            }
+                                        }, function (errorResponse) {
+                                            // called asynchronously if an error occurs
+                                            // or server returns response with an error status.
+                                            Log.print(Log.l.error, "ContactList.contactDocView: error!");
+                                            AppData.setErrorMsg(that.binding, errorResponse);
+                                        }, null, that.nextDocUrl);
+                                    });
+                                }
+                            }, function (errorResponse) {
                                 // called asynchronously if an error occurs
                                 // or server returns response with an error status.
                                 AppData.setErrorMsg(that.binding, errorResponse);
