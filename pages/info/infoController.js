@@ -18,7 +18,8 @@
                 "\/Date(" + AppData.appSettings.odata.replPrevPostMs + ")\/" : null),
                 downloadTS: (AppData.appSettings.odata.replPrevSelectMs ?
                 "\/Date(" + AppData.appSettings.odata.replPrevSelectMs + ")\/" : null),
-                version: Application.version
+                version: Application.version,
+                environment: "Platform: " + navigator.appVersion
             }]);
 
             var that = this;
