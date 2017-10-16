@@ -16,7 +16,7 @@
     "use strict";
 
     WinJS.Namespace.define("Barcode", {
-        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
+        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Barcode.Controller.");
             Application.Controller.apply(this, [pageElement, {
                 states: {
@@ -24,7 +24,7 @@
                     barcode: null
                 },
                 contact: { KontaktVIEWID: 0 }
-            }]);
+            }, commandList]);
 
             var that = this;
 

@@ -20,7 +20,7 @@
     "use strict";
 
     WinJS.Namespace.define("Camera", {
-        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
+        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Camera.Controller.");
             Application.Controller.apply(this, [pageElement, {
                 states: {
@@ -28,7 +28,7 @@
                 },
                 contact: { KontaktVIEWID: 0 },
                 cardscan: { IMPORT_CARDSCANVIEWID: 0 }
-            }]);
+            }, commandList]);
 
             var that = this;
 

@@ -15,11 +15,11 @@
     "use strict";
 
     WinJS.Namespace.define("Questionnaire", {
-        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
+        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Questionnaire.Controller.");
             Application.Controller.apply(this, [pageElement, {
                 count: 0
-            }]);
+            }, commandList]);
             this.nextUrl = null;
             this.loading = false;
             this.questions = null;
@@ -356,7 +356,6 @@
                 if (!recordId) {
                     // called via canUnload
                     recordId = that.curRecId;
-                    that.curRecId = 0;
                 }
                 that.prevRecId = 0;
                 if (recordId) {
@@ -397,63 +396,50 @@
             this.saveData = saveData;
 
             var showConfirmBoxMandatory = function () {
-                var ret = null;
+                var ret = false;
                 var i;
-                var curScope = null;
                 
                 for (i = 0; i < that.questions.length; i++) {
-                    ret = true;
                     var question = that.questions.getAt(i);
                     if (question &&
                         typeof question === "object" &&
                         question.PflichtFeld &&
                         AppData._persistentStates.showConfirmQuestion) {
 
-                        curScope = question;
+                        var curScope = question;
                         that.actualquestion = question;
                         var newRecord = that.getFieldEntries(i, curScope.type);
                         var prop;
                         
+                        ret = true;
                         if (curScope.type === "multi-rating") {
-                            var counter = 0;
                             for (prop in newRecord) {
                                 if (newRecord.hasOwnProperty(prop)) {
                                     if (prop !== "Freitext") {
                                         if (newRecord[prop] === "X") {
-                                            counter++;
+                                            ret = false;
                                             break;
                                         }
                                     }    
                                 }
                             }
-                            if (counter > 0) {
-                                //ret = false;
-                                ret = false;
-                            } else {
-                                //ret = true;
-                                return true;
+                            if (ret) {
+                                break;
                             }
                         } else {
                             for (prop in newRecord) {
                                 if (newRecord.hasOwnProperty(prop)) {
                                     if (prop !== "Freitext") {
-                                        if (newRecord[prop] === "" ||
-                                            newRecord[prop] === null ||
-                                            newRecord[prop] === "null" ||
-                                            newRecord[prop] === "00" ||
-                                            newRecord[prop].length === 0) {
-                                            Log.call(Log.l.u1,"Questionnaire.Controller. Answer is empty" + newRecord.prop);
-                                            ret = true;
-                                            break;
-                                        } else {
+                                        if (newRecord[prop].length > 0 && newRecord[prop] !== "0" && newRecord[prop] !== "00") {
                                             Log.call(Log.l.u1,"Questionnaire.Controller. Answer not empty" + newRecord.prop);
                                             ret = false;
+                                            break;
                                         }
                                     } 
                                 }
                             }
                             if (ret) {
-                                return true;
+                                break;
                             }
                         }
                     }

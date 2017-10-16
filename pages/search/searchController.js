@@ -11,7 +11,7 @@
 (function () {
     "use strict";
     WinJS.Namespace.define("Search", {
-        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
+        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Search.Controller.");
             Application.Controller.apply(this, [pageElement, {
                 restriction: {
@@ -26,7 +26,7 @@
                     useErfassungsdatum: false,
                     usemodifiedTS: false
                 }
-            }]);
+            }, commandList]);
 
             var Erfassungsdatum = pageElement.querySelector("#Erfassungsdatum.win-datepicker");
             var modifiedTS = pageElement.querySelector("#modifiedTS.win-datepicker");

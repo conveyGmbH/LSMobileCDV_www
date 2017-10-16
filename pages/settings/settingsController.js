@@ -14,10 +14,10 @@
 (function () {
     "use strict";
     WinJS.Namespace.define("Settings", {
-        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
+        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Settings.Controller.");
             Application.Controller.apply(this, [pageElement, {
-            }]);
+            }, commandList]);
 
             var that = this;
 

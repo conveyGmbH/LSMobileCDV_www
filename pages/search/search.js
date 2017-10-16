@@ -19,13 +19,13 @@
             Log.call(Log.l.trace, pageName + ".");
             // TODO: Initialize the page here.
             // add page specific commands to AppBar
-            AppBar.commandList = [
+            var commandList = [
                 { id: 'clickBack', label: getResourceText('command.backward'), tooltip: getResourceText('tooltip.backward'), section: 'primary', svg: 'navigate_left' },
                 { id: "clickNew", label: getResourceText("command.new"), tooltip: getResourceText("tooltip.new"), section: "primary", svg: "user_plus" },
                 { id: 'clickForward', label: getResourceText('command.search'), tooltip: getResourceText('tooltip.search'), section: 'primary', svg: 'magnifying_glass', key: WinJS.Utilities.Key.enter }
             ];
 
-            this.controller = new Search.Controller(element);
+            this.controller = new Search.Controller(element, commandList);
             if (this.controller.eventHandlers) {
                 // general event listener for hardware back button, too!
                 this.controller.addRemovableEventListener(document, "backbutton", this.controller.eventHandlers.clickBack.bind(this.controller));

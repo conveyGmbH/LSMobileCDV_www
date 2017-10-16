@@ -16,7 +16,7 @@
         getClassNameOffline: function (useOffline) {
             return (useOffline ? "field_line field_line_even" : "hide-element");
         },
-        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
+        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Sketch.Controller.");
             // instanciate SVGEditor class
             var svgEditor = new SVGEditor.SVGEditorClass();
@@ -28,7 +28,7 @@
                 dataSketch: {},
                 color: svgEditor.drawcolor && svgEditor.drawcolor[0],
                 width: 0
-            }]);
+            }, commandList]);
             this.svgEditor = svgEditor;
 
             var that = this;

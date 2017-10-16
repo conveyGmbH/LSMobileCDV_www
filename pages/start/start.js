@@ -51,9 +51,9 @@
             this.prevTileHeight = 0;
 
             // add page specific commands to AppBar
-            AppBar.commandList = [];
+            var commandList = [];
 
-            this.controller = new Start.Controller(element);
+            this.controller = new Start.Controller(element, commandList);
             if (this.controller.eventHandlers) {
                 // general event listener for hardware back button, too!
                 this.controller.addRemovableEventListener(document, "backbutton", this.controller.eventHandlers.clickBack.bind(this.controller));

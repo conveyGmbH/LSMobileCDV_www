@@ -13,10 +13,10 @@
     "use strict";
 
     WinJS.Namespace.define("Photo", {
-        Controller: WinJS.Class.derive(Application.Controller ,function Controller(pageElement) {
+        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Photo.Controller.");
             Application.Controller.apply(this, [pageElement, {
-            }]);
+            }, commandList]);
             this.angle = 0;
             this.img = null;
 

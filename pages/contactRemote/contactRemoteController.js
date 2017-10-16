@@ -13,7 +13,7 @@
     "use strict";
 
     WinJS.Namespace.define("ContactRemote", {
-        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
+        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "ContactRemote.Controller.");
             Application.Controller.apply(this, [pageElement, {
                 dataContact: getEmptyDefaultValue(ContactRemote.contactView.defaultValue),
@@ -21,7 +21,7 @@
                 InitAnredeItem: { InitAnredeID: 0, TITLE: "" },
                 InitLandItem: { InitLandID: 0, TITLE: "" },
                 showModified: false
-            }]);
+            }, commandList]);
 
             var that = this;
             

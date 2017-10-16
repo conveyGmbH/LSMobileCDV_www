@@ -13,16 +13,15 @@
     "use strict";
 
     WinJS.Namespace.define("Contact", {
-        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
+        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Contact.Controller.");
-            Application.Controller.apply(this, [pageElement,
-                {
+            Application.Controller.apply(this, [pageElement, {
                 dataContact: getEmptyDefaultValue(Contact.contactView.defaultValue),
                 InitAnredeItem: { InitAnredeID: 0, TITLE: "" },
                 InitLandItem: { InitLandID: 0, TITLE: "" },
                 showPhoto: false,
                 showModified: false
-            }]);
+            }, commandList]);
             this.img = null;
 
             var that = this;

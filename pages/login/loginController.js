@@ -15,7 +15,7 @@
     "use strict";
 
     WinJS.Namespace.define("Login", {
-        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
+        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Login.Controller.");
             // delete login data first
             AppData.appSettings.odata.login = null;
@@ -41,7 +41,7 @@
                     text: "",
                     show: null
                 }
-            }]);
+            }, commandList]);
 
             var that = this;
 

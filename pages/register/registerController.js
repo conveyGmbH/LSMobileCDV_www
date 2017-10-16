@@ -13,14 +13,14 @@
     "use strict";
 
     WinJS.Namespace.define("Register", {
-        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
+        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Register.Controller.");
             Application.Controller.apply(this, [pageElement, {
                 dataRegister: Register.registerView && Register.registerView.defaultValue,
                 InitLandItem: { InitLandID: 0, TITLE: "" },
                 emailOkFlag: null,
                 registerOkFlag: null
-            }]);
+            }, commandList]);
 
             var that = this;
 

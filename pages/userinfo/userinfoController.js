@@ -15,13 +15,13 @@
     "use strict";
 
     WinJS.Namespace.define("UserInfo", {
-        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
+        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "UserInfo.Controller.");
             Application.Controller.apply(this, [pageElement, {
                 dataBenutzer: UserInfo.benutzerView && UserInfo.benutzerView.defaultValue,
                 dataPhoto: {},
                 photoData: null
-            }]);
+            }, commandList]);
             this.img = null;
 
             var that = this;

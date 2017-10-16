@@ -12,11 +12,11 @@
     "use strict";
 
     WinJS.Namespace.define("ListRemote", {
-        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
+        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "ListRemote.Controller.");
             Application.Controller.apply(this, [pageElement, {
                 count: 0
-            }]);
+            }, commandList]);
             this.nextUrl = null;
             this.nextDocUrl = null;
             this.loading = false;

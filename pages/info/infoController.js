@@ -11,7 +11,7 @@
 (function () {
     "use strict";
     WinJS.Namespace.define("Info", {
-        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
+        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Info.Controller.");
             Application.Controller.apply(this, [pageElement, {
                 uploadTS: (AppData.appSettings.odata.replPrevPostMs ?
@@ -20,7 +20,7 @@
                 "\/Date(" + AppData.appSettings.odata.replPrevSelectMs + ")\/" : null),
                 version: Application.version,
                 environment: "Platform: " + navigator.appVersion
-            }]);
+            }, commandList]);
 
             var that = this;
 

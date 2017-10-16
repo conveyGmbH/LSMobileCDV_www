@@ -20,12 +20,12 @@
             Log.call(Log.l.trace, pageName + ".");
             // TODO: Initialize the page here.
             // add page specific commands to AppBar
-            AppBar.commandList = [
+            var commandList = [
                 { id: "clickBack", label: getResourceText("command.backward"), tooltip: getResourceText("tooltip.backward"), section: "primary", svg: "navigate_left" },
                 { id: "clickEdit", label: getResourceText("command.edit"), tooltip: getResourceText("tooltip.edit"), section: "primary", svg: "edit" }
             ];
 
-            this.controller = new ContactRemote.Controller(element);
+            this.controller = new ContactRemote.Controller(element, commandList);
             if (this.controller.eventHandlers) {
                 // general event listener for hardware back button, too!
                 this.controller.addRemovableEventListener(document, "backbutton", this.controller.eventHandlers.clickBack.bind(this.controller));

@@ -13,11 +13,11 @@
     "use strict";
 
     WinJS.Namespace.define("ListLocal", {
-        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
+        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "ListLocal.Controller.");
             Application.Controller.apply(this, [pageElement, {
                 count: 0
-            }]);
+            }, commandList]);
             this.nextUrl = null;
             this.nextDocUrl = null;
             this.loading = false;

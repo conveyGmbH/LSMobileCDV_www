@@ -18,7 +18,7 @@
         getClassNameOffline: function (useOffline) {
             return useOffline ? "field_line field_line_even" : "hide-element";
         },
-        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
+        Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Account.Controller.");
             Application.Controller.apply(this, [pageElement, {
                 dataLogin: {
@@ -32,7 +32,7 @@
                     text: "",
                     show: null
                 }
-            } ]);
+            }, commandList]);
 
             var prevLogin = AppData._persistentStates.odata.login;
             var prevPassword = AppData._persistentStates.odata.password;
