@@ -263,6 +263,7 @@
      
     "account.title"         : "Angaben zu Ihrer Anmeldung",
     "account.comment"       : "Beachten Sie bitte, daß alle von der App lokal auf dem Gerät gespeicherten Daten gelöscht werden, wenn Sie sich abmelden oder mit einem anderen Konto anmelden!",
+    "account.confirmLogOff" : "Beachten Sie bitte, daß alle von der App lokal auf \ndem Gerät gespeicherten Daten gelöscht werden, \nwenn Sie sich abmelden oder mit einem anderen \nKonto anmelden!",
     "account.hostName"      : "Servername",
     "account.https"         : "HTTPS",
     "account.onlinePort"    : "Online-Port",
@@ -404,7 +405,7 @@
     "reporting.progress"    : "Fortschritt",
     "reporting.progressMsg" : "Erzeuge Excel Datei",
     "reporting.dateofentry" : "Erfassungsdatum",
-     "reporting.changedate" : "Änderungsdatum",
+    "reporting.changedate" : "Änderungsdatum",
     "reporting.country"     : "Land",
     "reporting.employee"    : "Mitarbeiter",
     "reporting.employeechart"  : "Mitarbeiterstatistik (Einträge pro Mitarbeiter)",

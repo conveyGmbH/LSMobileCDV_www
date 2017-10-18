@@ -40,6 +40,7 @@
     "tooltip.ok"            : "Save changes and go on",
     "tooltip.redo"          : "Redo last action",
     "tooltip.undo"          : "Undo last action",
+    "tooltip.new"           : "Add new contact",
     "tooltip.delete"        : "Delete current record",
     "tooltip.new"           : "Add new contact",
     "tooltip.deleteEmployee": "Delete Employee",
@@ -262,6 +263,7 @@
      
     "account.title"         : "Logon Settings",
     "account.comment"       : "Please, pay attention to the fact, that all data of the app stored locally on the deviced will be deleted if you logoff or login with another account!",
+    "account.confirmLogOff" : "Please, pay attention to the fact, that all data of \nthe app stored locally on the deviced will be  \ndeleted if you logoff or login with another account!",
     "account.hostName"      : "Hostname",
     "account.https"         : "HTTPS",
     "account.onlinePort"    : "Online port",

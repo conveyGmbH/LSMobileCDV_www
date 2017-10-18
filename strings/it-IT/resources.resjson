@@ -257,7 +257,8 @@
     "register.complete"     : "Grazie per esserti registrato! A breve riceverai una E-Mail di conferma all'indirizzo immesso prima.",
      
     "account.title"         : "Impostazioni di login",
-    "account.comment"       : "Please, pay attention to the fact, that all data of the app stored locally on the deviced will be deleted if you logoff or login with another account!",
+    "account.comment"       : "Attenzione: al momento del log-out o connettendosi con un altro utente, tutti i dati salvati solo localmente verranno cancellati",
+    "account.confirmLogOff" : "Attenzione: al momento del log-out o connettendosi con un altro utente, tutti i dati salvati solo localmente verranno cancellati",
     "account.hostName"      : "Nome server",
     "account.https"         : "HTTPS",
     "account.onlinePort"    : "Online-Port",
