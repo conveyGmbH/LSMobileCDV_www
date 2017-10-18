@@ -77,6 +77,9 @@
             var setDataBenutzer = function(newDataBenutzer) {
                 var prevNotifyModified = AppBar.notifyModified;
                 AppBar.notifyModified = false;
+                if (newDataBenutzer.Info1 === null) {
+                    newDataBenutzer.Info1 = "";
+                }
                 that.binding.dataBenutzer = newDataBenutzer;
                 AppBar.modified = false;
                 AppBar.notifyModified = prevNotifyModified;

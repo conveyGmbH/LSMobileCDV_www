@@ -147,7 +147,7 @@
             };
 
             this.disableHandlers = {
-                clickOk: function() {
+                clickOk: function () {
                     if (AppBar.busy) {
                         NavigationBar.disablePage("start");
                     } else {
@@ -242,7 +242,7 @@
                             Password: that.binding.dataLogin.Password,
                             LanguageID: AppData.getLanguageId()
                         };
-                        return Login.loginView.insert(function(json) {
+                        return Login.loginView.insert(function (json) {
                             // this callback will be called asynchronously
                             // when the response is available
                             Log.call(Log.l.trace, "loginData: success!");
@@ -309,7 +309,7 @@
                                 error(err);
                                 return WinJS.Promise.as();
                             }
-                        }, function(errorResponse) {
+                        }, function (errorResponse) {
                             AppBar.busy = false;
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
