@@ -322,8 +322,8 @@
                                 if (json && json.d) {
                                     dataLogin = json.d;
                                     if (dataLogin.OK_Flag === "X" && dataLogin.MitarbeiterID) {
-                                        that.binding._persistentStates.odata.login = that.binding.dataLogin.Login;
-                                        that.binding._persistentStates.odata.password = that.binding.dataLogin.Password;
+                                        AppData._persistentStates.odata.login = that.binding.dataLogin.Login;
+                                        AppData._persistentStates.odata.password = that.binding.dataLogin.Password;
                                         NavigationBar.enablePage("settings");
                                         NavigationBar.enablePage("info");
                                         NavigationBar.enablePage("search");

@@ -215,8 +215,8 @@
                         } else {
                             var location = json.d.ODataLocation;
                             if (location !== that.binding.appSettings.odata.onlinePath) {
-                                that.binding._persistentStates.odata.onlinePath = location + AppData._persistentStatesDefaults.odata.onlinePath;
-                                that.binding._persistentStates.odata.registerPath = location + AppData._persistentStatesDefaults.odata.registerPath;
+                                that.binding.appSettings.odata.onlinePath = location + AppData._persistentStatesDefaults.odata.onlinePath;
+                                that.binding.appSettings.odata.registerPath = location + AppData._persistentStatesDefaults.odata.registerPath;
                             }
                             Application.pageframe.savePersistentStates();
                         }
@@ -250,8 +250,8 @@
                             if (json && json.d) {
                                 dataLogin = json.d;
                                 if (dataLogin.OK_Flag === "X" && dataLogin.MitarbeiterID) {
-                                    that.binding.appSettings.odata.login = that.binding.dataLogin.Login;
-                                    that.binding.appSettings.odata.password = that.binding.dataLogin.Password;
+                                    AppData._persistentStates.odata.login = that.binding.dataLogin.Login;
+                                    AppData._persistentStates.odata.password = that.binding.dataLogin.Password;
                                     AppData.setRecordId("Mitarbeiter", dataLogin.MitarbeiterID);
                                     NavigationBar.enablePage("settings");
                                     NavigationBar.enablePage("info");
