@@ -18,8 +18,8 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Login.Controller.");
             // delete login data first
-            AppData.appSettings.odata.login = null;
-            AppData.appSettings.odata.password = null;
+            AppData._persistentStates.odata.login = null;
+            AppData._persistentStates.odata.password = null;
             AppData._persistentStates.odata.dbSiteId = 0;
             AppData._persistentStates.allRestrictions = {};
             AppData._persistentStates.allRecIds = {};
@@ -215,8 +215,8 @@
                         } else {
                             var location = json.d.ODataLocation;
                             if (location !== that.binding.appSettings.odata.onlinePath) {
-                                that.binding.appSettings.odata.onlinePath = location + AppData._persistentStatesDefaults.odata.onlinePath;
-                                that.binding.appSettings.odata.registerPath = location + AppData._persistentStatesDefaults.odata.registerPath;
+                                that.binding._persistentStates.odata.onlinePath = location + AppData._persistentStatesDefaults.odata.onlinePath;
+                                that.binding._persistentStates.odata.registerPath = location + AppData._persistentStatesDefaults.odata.registerPath;
                             }
                             Application.pageframe.savePersistentStates();
                         }
