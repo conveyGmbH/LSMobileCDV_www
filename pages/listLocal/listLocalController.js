@@ -308,8 +308,6 @@
                                         that.resultConverter(item, that.binding.count);
                                         that.binding.count = that.contacts.push(item);
                                     });
-                                } else {
-                                    that.nextUrl = null;
                                 }
                                 WinJS.Promise.timeout(250).then(function () {
                                     if (that.nextDocUrl) {
@@ -328,8 +326,6 @@
                                                     that.resultDocConverter(item, that.binding.doccount);
                                                     that.binding.doccount = that.docs.push(item);
                                                 });
-                                            } else {
-                                                that.nextDocUrl = null;
                                             }
                                         }, function (errorResponse) {
                                             // called asynchronously if an error occurs

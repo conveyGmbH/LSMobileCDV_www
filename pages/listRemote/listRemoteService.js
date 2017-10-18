@@ -10,7 +10,9 @@
     WinJS.Namespace.define("ListRemote", {
         _contactView: {
             get: function () {
-                return AppData.getFormatView("Kontakt", 20432, false);
+                var ret = AppData.getFormatView("Kontakt", 20432, false);
+                ret.maxPageSize = 20;
+                return ret;
             }
         },
         contactView: {

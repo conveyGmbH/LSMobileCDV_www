@@ -303,28 +303,24 @@
                                         that.resultConverter(item, that.binding.count);
                                         that.binding.count = that.contacts.push(item);
                                     });
-                                } else {
-                                    that.nextUrl = null;
                                 }
                                 WinJS.Promise.timeout(250).then(function () {
                                     if (that.nextDocUrl) {
                                         var nextDocUrl = that.nextDocUrl;
                                         that.nextDocUrl = null;
                                         Log.print(Log.l.trace, "calling select ContactList.contactDocView...");
-                                        ListRemote.contactDocView.selectNext(function (json) { //json is undefined
+                                        ListRemote.contactDocView.selectNext(function (jsonDoc) { 
                                             // this callback will be called asynchronously
                                             // when the response is available
                                             Log.print(Log.l.trace, "ContactList.contactDocView: success!");
-                                            // startContact returns object already parsed from json file in response
-                                            if (json && json.d) {
-                                                that.nextDocUrl = ListRemote.contactDocView.getNextUrl(json);
-                                                var results = json.d.results;
-                                                results.forEach(function (item, index) {
+                                            // startContact returns object already parsed from jsonDoc file in response
+                                            if (jsonDoc && jsonDoc.d) {
+                                                that.nextDocUrl = ListRemote.contactDocView.getNextUrl(jsonDoc);
+                                                var resultsDoc = jsonDoc.d.results;
+                                                resultsDoc.forEach(function (item, index) {
                                                     that.resultDocConverter(item, that.binding.doccount);
                                                     that.binding.doccount = that.docs.push(item);
                                                 });
-                                            } else {
-                                                that.nextDocUrl = null;
                                             }
                                         }, function (errorResponse) {
                                             // called asynchronously if an error occurs

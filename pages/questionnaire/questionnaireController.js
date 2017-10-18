@@ -999,7 +999,6 @@
                                             counter.style.display = "inline";
                                         }
                                         that.loading = false;
-                                        that.nextUrl = null;
                                         showFlipView();
                                     }
                                 }, function (errorResponse) {

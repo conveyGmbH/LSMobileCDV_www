@@ -10,7 +10,9 @@
     WinJS.Namespace.define("ListLocal", {
         _contactView: {
             get: function () {
-                return AppData.getFormatView("Kontakt", 20429);
+                var ret = AppData.getFormatView("Kontakt", 20429);
+                ret.maxPageSize = 20;
+                return ret;
             }
         },
         contactView: {
