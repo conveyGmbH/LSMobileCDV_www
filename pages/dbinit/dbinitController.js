@@ -143,7 +143,7 @@
                     AppRepl.replicator.state === "running") {
                     Log.print(Log.l.info, "replicator still running - try later!");
                     ret = WinJS.Promise.timeout(500).then(function () {
-                        that.openDb();
+                        return that.openDb();
                     });
                 } else {
                     ret = AppData.openDB(function () {
