@@ -46,7 +46,9 @@
             defaultValue: {
                 Titel: "",
                 Vorname: "",
+                Vorname2: "",
                 Name: "",
+                Position: "",
                 Firmenname: "",
                 Strasse: "",
                 PLZ: "",
@@ -55,6 +57,7 @@
                 TelefonMobil: "",
                 Fax: "",
                 EMail: "",
+                WebAdresse: "",
                 Bemerkungen: "",
                 Freitext1: "",
                 HostName: (window.device && window.device.uuid),
