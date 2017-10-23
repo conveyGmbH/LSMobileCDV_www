@@ -20,6 +20,5 @@
             useErfassungsdatum: false,
             usemodifiedTS: false
         }
-        //empty
     });
 })();
