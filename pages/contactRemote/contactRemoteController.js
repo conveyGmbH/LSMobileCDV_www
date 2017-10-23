@@ -1,4 +1,4 @@
-﻿// controller for page: contactRemote
+﻿// controller for page: contact
 /// <reference path="~/www/lib/WinJS/scripts/base.js" />
 /// <reference path="~/www/lib/WinJS/scripts/ui.js" />
 /// <reference path="~/www/lib/convey/scripts/appSettings.js" />
@@ -17,18 +17,82 @@
             Log.call(Log.l.trace, "ContactRemote.Controller.");
             Application.Controller.apply(this, [pageElement, {
                 dataContact: getEmptyDefaultValue(ContactRemote.contactView.defaultValue),
-                rinfContact: {},
                 InitAnredeItem: { InitAnredeID: 0, TITLE: "" },
                 InitLandItem: { InitLandID: 0, TITLE: "" },
+                showPhoto: false,
                 showModified: false
             }, commandList]);
+            this.img = null;
 
             var that = this;
-            
+
+            // select combo
+            var initAnrede = pageElement.querySelector("#InitAnrede");
+            var initLand = pageElement.querySelector("#InitLand");
+
+            // show business card photo
+            var photoContainer = pageElement.querySelector(".photo-container");
+
+            var removePhoto = function () {
+                if (photoContainer) {
+                    var oldElement = photoContainer.firstElementChild || photoContainer.firstChild;
+                    if (oldElement) {
+                        oldElement.parentNode.removeChild(oldElement);
+                        oldElement.innerHTML = "";
+                    }
+                }
+            }
+
+            this.dispose = function () {
+                if (initAnrede && initAnrede.winControl) {
+                    initAnrede.winControl.data = null;
+                }
+                if (initLand && initLand.winControl) {
+                    initLand.winControl.data = null;
+                }
+                if (that.img) {
+                    removePhoto();
+                    that.img.src = "";
+                    that.img = null;
+                }
+            }
+
+            var showPhoto = function () {
+                if (photoContainer) {
+                    if (AppData._remotePhotoData) {
+                        that.binding.showPhoto = true;
+                        that.img = new Image();
+                        that.img.id = "pagePhoto";
+                        photoContainer.appendChild(that.img);
+                        WinJS.Utilities.addClass(that.img, "page-photo");
+                        that.img.src = "data:image/jpeg;base64," + AppData._remotePhotoData;
+                        if (photoContainer.childElementCount > 1) {
+                            var oldElement = photoContainer.firstElementChild || photoContainer.firstChild;
+                            if (oldElement) {
+                                oldElement.parentNode.removeChild(oldElement);
+                                oldElement.innerHTML = "";
+                            }
+                        }
+                    } else {
+                        that.binding.showPhoto = false;
+                        removePhoto();
+                    }
+                }
+                AppBar.triggerDisableHandlers();
+            }
+
             var setDataContact = function(newDataContact) {
                 var prevNotifyModified = AppBar.notifyModified;
                 AppBar.notifyModified = false;
+                // Bug: textarea control shows 'null' string on null value in Internet Explorer!
+                if (newDataContact.Bemerkungen === null) {
+                    newDataContact.Bemerkungen = "";
+                }
                 that.binding.dataContact = newDataContact;
+                AppData._remoteContactData = newDataContact;
+                if (!that.binding.dataContact.KontaktVIEWID) {
+                    that.binding.dataContact.Nachbearbeitet = 1;
+                }
                 if (that.binding.dataContact.Erfassungsdatum === that.binding.dataContact.ModifiedTS) {
                     that.binding.showModified = false;
                 } else {
@@ -36,7 +100,6 @@
                 }
                 AppBar.modified = false;
                 AppBar.notifyModified = prevNotifyModified;
-                AppBar.triggerDisableHandlers();
             }
             this.setDataContact = setDataContact;
 
@@ -60,7 +123,7 @@
 
             var getRecordId = function () {
                 Log.call(Log.l.trace, "ContactRemote.Controller.");
-                var recordId = AppData.generalData.getRecordId("ContactRemote");
+                var recordId = AppData.generalData.getRecordId("Kontakt_Remote");
                 if (!recordId) {
                     that.setDataContact(getEmptyDefaultValue(ContactRemote.contactView.defaultValue));
                 }
@@ -69,90 +132,25 @@
             }
             this.getRecordId = getRecordId;
 
-            var setRecordId = function (recordId) {
-                Log.call(Log.l.trace, "ContactRemote.Controller.", "recordId=" + recordId);
-                AppData.generalData.setRecordId("ContactRemote", recordId);
-                if (!recordId) {
-                    that.setDataContact(getEmptyDefaultValue(ContactRemote.contactView.defaultValue));
-                }
-                Log.ret(Log.l.trace);
-            }
-            this.setRecordId = setRecordId;
+            var resultMandatoryConverter = function (item, index) {
+                var inputfield = pageElement.querySelector("#" + item.AttributeName);
+                if (inputfield === null) {
+                    if (item.AttributeName === "AnredeID")
+                        inputfield = pageElement.querySelector("#InitAnrede");
+                    if (item.AttributeName === "LandID")
+                        inputfield = pageElement.querySelector("#InitLand");
 
-            var checkDownloadProgress = function () {
-                if (AppBar.busy) {
-                    if (AppRepl.replicator &&
-                        AppRepl.replicator.state === "running") {
-                        WinJS.Promise.timeout(500).then(function() {
-                            that.checkDownloadProgress();
-                        });
-                    } else {
-                        var restriction = {
-                            CreatorSiteID: that.binding.rinfContact.CreatorSiteID,
-                            CreatorRecID: that.binding.rinfContact.CreatorRecID
-                        }
-                        ContactRemote.rinfContactView.select(function (json) {
-                            if (json && json.d && json.d.results && json.d.results.length > 0) {
-                                var row = json.d.results[0];
-                                Log.print(Log.l.trace, "rinfContactView: success! RINFKontaktID=" + row.RINFKontaktVIEWID);
-                                AppData.generalData.setRecordId("Kontakt", row.RINFKontaktVIEWID);
-                                Application.navigateById("contact", event);
-                            } else {
-                                var err = { status: 0, statusText: "no record selected" };
-                                AppData.setErrorMsg(that.binding, err);
-                            }
-                            AppBar.busy = false;
-                        }, function (errorResponse) {
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                            AppBar.busy = false;
-                        }, restriction);
-                    }
                 }
-            }
-            this.checkDownloadProgress = checkDownloadProgress;
-
-            var downloadRemoteContact = function () {
-                if (!AppRepl.replicator) {
-                    Log.print(Log.l.error, "contactDownloadView: no replicator!");
-                    return WinJS.Promise.as();
-                }
-                if (AppRepl.replicator.state === "running") {
-                    Log.print(Log.l.info, "contactDownloadView: replicator state=" + AppRepl.replicator.state + " - try later!");
-                    return WinJS.Promise.timeout(250).then(function() {
-                        return that.downloadRemoteContact();
-                    });
-                }
-                AppRepl.replicator._state = "running";
-                AppRepl.replicator._fetchRequests = [];
-                AppRepl.replicator._fetchRequestsDone = -1;
-                AppRepl.replicator._fetchRequestsCurrent = 0;
-                AppBar.busy = true;
-                checkDownloadProgress();
-                return ContactRemote.contactDownloadView.select(function (obj) {
-                    // this callback will be called asynchronously
-                    // when the response is available
-                    Log.print(Log.l.trace, "contactDownloadView: success!");
-                    if (obj && obj.d) {
-                        if (obj.d.results && obj.d.results.length > 0) {
-                            Log.print(Log.l.info, "contactDownloadView: returned results.length=" + obj.d.results.length);
-                            AppRepl.replicator.createReplicationDataRestriction(obj.d.results);
-                            AppRepl.replicator.selectNextRemoteReplicationFlowSpec();
+                if (item.FieldFlag) {
+                    if (inputfield !== null && inputfield !== undefined)
+                        if (Colors.isDarkTheme) {
+                            inputfield.style.backgroundColor = "#8b4513";
                         } else {
-                            Log.print(Log.l.error, "contactDownloadView: returned results.length=0");
-                            AppRepl.replicator._fetchRequestsDone = 0;
+                            inputfield.style.backgroundColor = "lightyellow";
                         }
-                    } else {
-                        Log.print(Log.l.error, "contactDownloadView: returned no data");
-                        AppRepl.replicator._fetchRequestsDone = 0;
-                    }
-                }, function (errorResponse) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
-                    AppData.setErrorMsg(that.binding, errorResponse);
-                    AppRepl.replicator._fetchRequestsDone = 0;
-                }, that.getRecordId());
-            }
-            this.downloadRemoteContact = downloadRemoteContact;
+                }
+            };
+            this.resultMandatoryConverter = resultMandatoryConverter;
 
             // define handlers
             this.eventHandlers = {
@@ -163,30 +161,20 @@
                     }
                     Log.ret(Log.l.trace);
                 },
-                clickEdit: function(event){
+                clickNew: function(event){
                     Log.call(Log.l.trace, "ContactRemote.Controller.");
-                    if (that.binding.rinfContact.RINFKontaktVIEWID === that.getRecordId() &&
-                        that.binding.rinfContact.CreatorSiteID === AppData._persistentStates.odata.dbSiteId) {
-                        AppData.generalData.setRecordId("Kontakt", that.binding.rinfContact.CreatorRecID);
-                        Application.navigateById("contact", event);
-                    } else {
-                        var restriction = {
-                            CreatorSiteID: that.binding.rinfContact.CreatorSiteID,
-                            CreatorRecID: that.binding.rinfContact.CreatorRecID
-                        }
-                        ContactRemote.rinfContactView.select(function (json) {
-                            if (json && json.d && json.d.results && json.d.results.length > 0) {
-                                var row = json.d.results[0];
-                                Log.print(Log.l.trace, "rinfContactView: success!");
-                                AppData.generalData.setRecordId("Kontakt", row.RINFKontaktVIEWID);
-                                Application.navigateById("contact", event);
-                            } else {
-                                that.downloadRemoteContact();
-                            }
-                        }, function (errorResponse) {
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                        }, restriction);
-                    }
+                    Application.navigateById(Application.navigateNewId, event);
+                    Log.ret(Log.l.trace);
+                },
+                clickForward: function (event) {
+                    Log.call(Log.l.trace, "ContactRemote.Controller.");
+                    Application.navigateById("questionnaireRemote", event);
+                    Log.ret(Log.l.trace);
+                },
+                clickOpen: function (event) {
+                    Log.call(Log.l.trace, "ContactRemote.Controller.");
+                    Application.navigateById("photoRemote", event);
+                    Log.ret(Log.l.trace);
                 },
                 clickChangeUserState: function (event) {
                     Log.call(Log.l.trace, "ContactRemote.Controller.");
@@ -203,13 +191,28 @@
                         return true;
                     }
                 },
-                clickEdit: function() {
-                    //if (that.binding.rinfContact.RINFKontaktVIEWID === getRecordId() &&
-                    //    that.binding.rinfContact.CreatorSiteID === AppData._persistentStates.odata.dbSiteId) {
-                    //    return false;
-                    //} else {
-                    //    return true;
-                    //}
+                clickNew: function() {
+                    if (that.binding.dataContact && that.binding.dataContact.KontaktVIEWID) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                clickDelete: function() {
+                    if (that.binding.dataContact && that.binding.dataContact.KontaktVIEWID && !AppBar.busy) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                clickOpen: function () {
+                    if (AppData._remotePhotoData) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                clickForward: function () {
                     return AppBar.busy;
                 }
             }
@@ -255,12 +258,21 @@
                         //@nedra:25.09.2015: load the list of INITAnrede for Combobox
                         return AppData.initAnredeView.select(function (json) {
                             Log.print(Log.l.trace, "initAnredeView: success!");
+                            if (json && json.d && json.d.results) {
+                                // Now, we call WinJS.Binding.List to get the bindable list
+                                if (initAnrede && initAnrede.winControl) {
+                                    initAnrede.winControl.data = new WinJS.Binding.List(json.d.results);
+                                }
+                            }
                         }, function (errorResponse) {
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
                             AppData.setErrorMsg(that.binding, errorResponse);
                         });
                     } else {
+                        if (initAnrede && initAnrede.winControl) {
+                            initAnrede.winControl.data = new WinJS.Binding.List(AppData.initAnredeView.getResults());
+                        }
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
@@ -271,14 +283,49 @@
                             // this callback will be called asynchronously
                             // when the response is available
                             Log.print(Log.l.trace, "initLandView: success!");
+                            if (json && json.d && json.d.results) {
+                                // Now, we call WinJS.Binding.List to get the bindable list
+                                if (initLand && initLand.winControl) {
+                                    initLand.winControl.data = new WinJS.Binding.List(json.d.results);
+                                }
+                            }
                         }, function (errorResponse) {
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
                             AppData.setErrorMsg(that.binding, errorResponse);
                         });
                     } else {
+                        if (initLand && initLand.winControl) {
+                            initLand.winControl.data = new WinJS.Binding.List(AppData.initLandView.getResults());
+                        }
                         return WinJS.Promise.as();
                     }
+                }).then(function () {
+                    return ContactRemote.mandatoryView.select(function (json) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                        Log.print(Log.l.trace, "MandatoryList.mandatoryView: success!");
+                        // select returns object already parsed from json file in response
+                        if (json && json.d) {
+                            //that.nextUrl = MandatoryList.mandatoryView.getNextUrl(json);
+                            var results = json.d.results;
+                            results.forEach(function (item, index) {
+                                that.resultMandatoryConverter(item, index);
+                            });
+                            // Now, we call WinJS.Binding.List to get the bindable list
+                            //that.fields = new WinJS.Binding.List(results);
+                            /*if (listView.winControl) {
+                                // add ListView dataSource
+                                listView.winControl.itemDataSource = that.fields.dataSource;
+                            }*/
+                        }
+                    }, function (errorResponse) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        AppData.setErrorMsg(that.binding, errorResponse);
+                    }, {
+                        LanguageSpecID: AppData.getLanguageId()
+                    });
                 }).then(function () {
                     var recordId = getRecordId();
                     if (recordId) {
@@ -288,9 +335,10 @@
                             AppData.setErrorMsg(that.binding);
                             Log.print(Log.l.trace, "contactView: success!");
                             if (json && json.d) {
-                                // now always deny edit!
-                                json.d.Flag_NoEdit = 1;
+                                // now always edit!
+                                json.d.Flag_NoEdit = AppRepl.replicator && AppRepl.replicator.inFastRepl;
                                 that.setDataContact(json.d);
+                                AppData.generalData.setRecordId("DOC1IMPORT_CARDSCAN_Remote", json.d.DOC1Import_CardscanID);
                                 loadInitSelection();
                             }
                         }, function (errorResponse) {
@@ -302,35 +350,117 @@
                 }).then(function () {
                     var recordId = getRecordId();
                     if (recordId) {
-                        //load of format relation record data
-                        Log.print(Log.l.trace, "calling select contactView...");
-                        return ContactRemote.rinfContactView.selectById(function (json) {
-                            AppData.setErrorMsg(that.binding);
-                            Log.print(Log.l.trace, "rinfContactView: success!");
-                            if (json && json.d) {
-                                // now always deny edit!
-                                that.binding.rinfContact = json.d;
-                                AppBar.triggerDisableHandlers();
+                        return ContactRemote.sketchView.select(function (jsonSketch) {
+                            Log.print(Log.l.trace, "sketchView: success!");
+                            if (jsonSketch.d && jsonSketch.d.results && jsonSketch.d.results.length > 0) {
+                                NavigationBar.enablePage("sketchRemote");
+                            } else {
+                                NavigationBar.disablePage("sketchRemote");
                             }
-                        }, function (errorResponse) {
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                        }, recordId);
+                        }, function () {
+                            Log.print(Log.l.error, "sketchView: error!");
+                            NavigationBar.disablePage("sketchRemote");
+                        }, {
+                            KontaktID: recordId
+                        });
                     } else {
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
-                    AppBar.notifyModified = true;
-                    return WinJS.Promise.as();
+                    if (!AppData._remotePhotoData) {
+                        var importCardscanId = AppData.generalData.getRecordId("DOC1IMPORT_CARDSCAN_Remote");
+                        if (importCardscanId) {
+                            // todo: load image data and set src of img-element
+                            Log.print(Log.l.trace, "calling select contactView...");
+                            return ContactRemote.cardScanView.select(function (json) {
+                                AppData.setErrorMsg(that.binding);
+                                Log.print(Log.l.trace, "cardScanData: success!");
+                                if (json && json.d) {
+                                    var docContent;
+                                    if (json.d.wFormat === 1) {
+                                        docContent = json.d.PrevContentDOCCNT2;
+                                    } else {
+                                        docContent = json.d.DocContentDOCCNT1;
+                                    }
+                                    if (docContent) {
+                                        var sub = docContent.search("\r\n\r\n");
+                                        AppData._remotePhotoData = docContent.substr(sub + 4);
+                                        showPhoto();
+                                    }
+                                }
+                            }, function(errorResponse) {
+                                AppData.setErrorMsg(that.binding, errorResponse);
+                            }, importCardscanId);
+                        } else {
+                            return WinJS.Promise.as();
+                        }
+                    } else {
+                        showPhoto();
+                        return WinJS.Promise.as();
+                    }
                 });
                 Log.ret(Log.l.trace);
                 return ret;
             }
             this.loadData = loadData;
 
+            // save data
+            var saveData = function (complete, error) {
+                Log.call(Log.l.trace, "ContactRemote.Controller.");
+                AppData.setErrorMsg(that.binding);
+                var ret;
+                var dataContact = that.binding.dataContact;
+                // set Nachbearbeitet empty!
+                if (!dataContact.Nachbearbeitet) {
+                    dataContact.Nachbearbeitet = null;
+                } else {
+                    dataContact.Nachbearbeitet = 1;
+                }
+                if (dataContact && AppBar.modified && !AppBar.busy) {
+                    var recordId = getRecordId();
+                    if (recordId) {
+                        AppBar.busy = true;
+                        ret = ContactRemote.contactView.update(function (response) {
+                            AppBar.busy = false;
+                            // called asynchronously if ok
+                            Log.print(Log.l.info, "contactData update: success!");
+                            AppBar.modified = false;
+                            complete(response);
+                        }, function (errorResponse) {
+                            AppBar.busy = false;
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                            error(errorResponse);
+                        }, recordId, dataContact);
+                    } else {
+                        var err = { status: 0, statusText: "no record selected" };
+                        error(err);
+                        ret = WinJS.Promise.as();
+                    }
+                } else if (AppBar.busy) {
+                    ret = WinJS.Promise.timeout(100).then(function() {
+                        return that.saveData(complete, error);
+                    });
+                } else {
+                    ret = new WinJS.Promise.as().then(function () {
+                        complete(dataContact);
+                    });
+                }
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+            this.saveData = saveData;
+
+
+            // set  Nachbearbeitet
+            this.binding.dataContact.Nachbearbeitet = 1;
+
             that.processAll().then(function() {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 return that.loadData();
             }).then(function () {
+                AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Data loaded");
             });
             Log.ret(Log.l.trace);

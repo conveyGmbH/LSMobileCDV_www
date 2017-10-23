@@ -193,12 +193,12 @@
                                     var item = items[0];
                                     if (item.data && item.data.KontaktVIEWID) {
                                         var contactPage;
-                                        if (AppData.generalUserView.isLocal) {
-                                            AppData.generalData.setRecordId("ContactRemote", item.data.KontaktVIEWID);
-                                            contactPage = "contactRemote";
-                                        } else {
-                                            AppData.generalData.setRecordId("Kontakt", item.data.KontaktVIEWID);
+                                        if (item.data.CreatorSiteID === AppData._persistentStates.odata.dbSiteId) {
+                                            AppData.generalData.setRecordId("Kontakt", item.data.CreatorRecID);
                                             contactPage = "contact";
+                                        } else {
+                                            AppData.generalData.setRecordId("Kontakt_Remote", item.data.KontaktVIEWID);
+                                            contactPage = "contactRemote";
                                         }
                                         WinJS.Promise.timeout(0).then(function () {
                                             Application.navigateById(contactPage, eventInfo);

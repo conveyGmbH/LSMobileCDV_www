@@ -386,12 +386,6 @@
                             results.forEach(function (item, index) {
                                 that.resultMandatoryConverter(item, index);
                             });
-                            // Now, we call WinJS.Binding.List to get the bindable list
-                            //that.fields = new WinJS.Binding.List(results);
-                            /*if (listView.winControl) {
-                                // add ListView dataSource
-                                listView.winControl.itemDataSource = that.fields.dataSource;
-                            }*/
                         }
                     }, function (errorResponse) {
                         // called asynchronously if an error occurs

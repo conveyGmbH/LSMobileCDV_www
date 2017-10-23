@@ -82,7 +82,7 @@
         },
         _mandatoryView: {
             get: function () {
-                return AppData.getFormatView("PflichtFelder", 20503, false);
+                return AppData.getFormatView("PflichtFelder", 20503);
             }
         },
         mandatoryView: {

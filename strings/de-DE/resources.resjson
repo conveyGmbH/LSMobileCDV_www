@@ -361,6 +361,9 @@
     "label.mailing"         : "Mail",
     "label.infodesk"        : "Infodesk",
     "label.mandatory"       : "Pflichtfelder",
+    "label.contactRemote"   : "Kontakt",
+    "label.questionnaireRemote" : "Fragebogen",
+    "label.sketchRemote"    : "Skizze",
 
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Abbrechen",

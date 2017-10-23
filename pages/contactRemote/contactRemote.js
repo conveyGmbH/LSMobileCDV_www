@@ -22,7 +22,9 @@
             // add page specific commands to AppBar
             var commandList = [
                 { id: "clickBack", label: getResourceText("command.backward"), tooltip: getResourceText("tooltip.backward"), section: "primary", svg: "navigate_left" },
-                { id: "clickEdit", label: getResourceText("command.edit"), tooltip: getResourceText("tooltip.edit"), section: "primary", svg: "edit" }
+                { id: "clickNew", label: getResourceText("command.new"), tooltip: getResourceText("tooltip.new"), section: "primary", svg: "user_plus" },
+                { id: "clickForward", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check", key: WinJS.Utilities.Key.enter },
+                { id: "clickOpen", label: getResourceText("command.open"), tooltip: getResourceText("tooltip.open"), section: "primary", svg: "id_card" }
             ];
 
             this.controller = new ContactRemote.Controller(element, commandList);
@@ -33,6 +35,26 @@
             Log.ret(Log.l.trace);
         },
 
+        canUnload: function (complete, error) {
+            Log.call(Log.l.trace, pageName + ".");
+            var ret;
+            if (this.controller) {
+                ret = this.controller.saveData(function (response) {
+                    // called asynchronously if ok
+                    complete(response);
+                }, function(errorResponse) {
+                    error(errorResponse);
+                });
+            } else {
+                ret = WinJS.Promise.as().then(function () {
+                    var err = { status: 500, statusText: "fatal: page already deleted!" };
+                    error(err);
+                });
+            }
+            Log.ret(Log.l.trace);
+            return ret;
+        },
+
         unload: function () {
             Log.call(Log.l.trace, pageName + ".");
             // TODO: Respond to navigations away from this page.
@@ -40,6 +62,7 @@
         },
 
         updateLayout: function (element, viewState, lastViewState) {
+            Log.call(Log.l.u1, pageName + ".");
             /// <param name="element" domElement="true" />
             // TODO: Respond to changes in viewState.
         }

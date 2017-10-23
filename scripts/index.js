@@ -63,7 +63,7 @@
 
     // static array of pages for the navigation bar 
     Application.navigationBarPages = [
-        { id: "start", group: -5, disabled: false },
+        { id: "start", group: -6, disabled: false },
         { id: "contact", group: 1, disabled: false },
         { id: "questionnaire", group: 1, disabled: false },
         { id: "sketch", group: 1, disabled: false },
@@ -74,7 +74,10 @@
         { id: "settings", group: 3, disabled: false },
         { id: "account", group: 3, disabled: false },
         { id: "login", group: 4, disabled: false },
-        { id: "register", group: 4, disabled: false }
+        { id: "register", group: 4, disabled: false },
+        { id: "contactRemote", group: 5, disabled: false },
+        { id: "questionnaireRemote", group: 5, disabled: true },
+        { id: "sketchRemote", group: 5, disabled: true }
     ];
 
     // init page for app startup

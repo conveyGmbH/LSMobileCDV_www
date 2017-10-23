@@ -1,4 +1,4 @@
-﻿// services for page: contactRemote
+﻿// services for page: contact
 /// <reference path="~/www/lib/convey/scripts/strings.js" />
 /// <reference path="~/www/lib/convey/scripts/logging.js" />
 /// <reference path="~/www/lib/convey/scripts/dataService.js" />
@@ -7,46 +7,48 @@
     "use strict";
 
     WinJS.Namespace.define("ContactRemote", {
-        _rinfContactRemoteView: {
-            get: function() {
-                return AppData.getFormatView("RINFKontakt", 0, false);
-            }
-        },
-        _rinfContactView: {
+        _contactView: {
             get: function () {
-                return AppData.getFormatView("RINFKontakt", 0, true);
+                return AppData.getFormatView("Kontakt", 0, false);
             }
         },
-        rinfContactView: {
-            selectById: function (complete, error, recordId) {
-                Log.call(Log.l.trace, "contactView.");
-                var ret = ContactRemote._rinfContactRemoteView.selectById(complete, error, recordId);
-                Log.ret(Log.l.trace);
-                return ret;
-            },
-            select: function (complete, error, restriction) {
-                Log.call(Log.l.trace, "contactView.");
-                var ret = ContactRemote._rinfContactView.select(complete, error, restriction);
-                Log.ret(Log.l.trace);
-                return ret;
-            }
-        },
-        _contactView20451: {
+        _contactView20434: {
             get: function () {
-                return AppData.getFormatView("Kontakt", 20451, false);
+                return AppData.getFormatView("Kontakt", 20434, false);
             }
         },
         contactView: {
             select: function (complete, error, recordId) {
                 Log.call(Log.l.trace, "contactView.");
-                var ret = ContactRemote._contactView20451.selectById(complete, error, recordId);
+                var ret = ContactRemote._contactView20434.selectById(complete, error, recordId);
+                Log.ret(Log.l.trace);
+                return ret;
+
+            },
+            deleteRecord: function (complete, error, recordId) {
+                Log.call(Log.l.trace, "contactView.");
+                var ret = ContactRemote._contactView.deleteRecord(complete, error, recordId);
+                Log.ret(Log.l.trace);
+                return ret;
+            },
+            update: function (complete, error, recordId, viewResponse) {
+                Log.call(Log.l.trace, "contactView.");
+                var ret = ContactRemote._contactView.update(complete, error, recordId, viewResponse);
+                Log.ret(Log.l.trace);
+                return ret;
+            },
+            insert: function (complete, error, viewResponse) {
+                Log.call(Log.l.trace, "contactView.");
+                var ret = ContactRemote._contactView.insert(complete, error, viewResponse);
                 Log.ret(Log.l.trace);
                 return ret;
             },
             defaultValue: {
                 Titel: "",
                 Vorname: "",
+                Vorname2: "",
                 Name: "",
+                Position: "",
                 Firmenname: "",
                 Strasse: "",
                 PLZ: "",
@@ -55,24 +57,55 @@
                 TelefonMobil: "",
                 Fax: "",
                 EMail: "",
+                WebAdresse: "",
                 Bemerkungen: "",
                 Freitext1: "",
+                HostName: (window.device && window.device.uuid),
                 INITAnredeID: 0,
                 INITLandID: 0,
-                Flag_NoEdit: 1,
                 CreatorSiteID: "",
                 CreatorRecID: ""
             }
         },
-        _contactView20452: {
+        _cardScanView: {
             get: function () {
-                return AppData.getFormatView("Kontakt", 20452, false);
+                return AppData.getFormatView("DOC1IMPORT_CARDSCAN", 0, false);
             }
         },
-        contactDownloadView: {
+        cardScanView: {
             select: function (complete, error, recordId) {
-                Log.call(Log.l.trace, "ListRemote.", "recordId=" + recordId);
-                var ret = ContactRemote._contactView20452.select(complete, error, { KontaktID: recordId }, { ordered: true, orderAttribute: "Sortierung" });
+                Log.call(Log.l.trace, "cardScanView.");
+                var ret = ContactRemote._cardScanView.selectById(complete, error, recordId);
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+        },
+        _sketchView: {
+            get: function () {
+                return AppData.getFormatView("KontaktNotiz", 0, false);
+            }
+        },
+        sketchView: {
+            select: function (complete, error, restriction) {
+                Log.call(Log.l.trace, "sketchView.");
+                var ret = ContactRemote._sketchView.select(complete, error, restriction);
+                // this will return a promise to controller
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+        },
+        _mandatoryView: {
+            get: function () {
+                return AppData.getFormatView("PflichtFelder", 20503, false);
+            }
+        },
+        mandatoryView: {
+            select: function (complete, error, restriction) {
+                Log.call(Log.l.trace, "MandatoryList.");
+                var ret = ContactRemote._mandatoryView.select(complete, error, restriction, {
+                    ordered: true,
+                    orderAttribute: "PflichtFelderVIEWID"
+                });
                 // this will return a promise to controller
                 Log.ret(Log.l.trace);
                 return ret;

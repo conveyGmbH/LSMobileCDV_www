@@ -40,7 +40,6 @@
     "tooltip.ok"            : "Save changes and go on",
     "tooltip.redo"          : "Redo last action",
     "tooltip.undo"          : "Undo last action",
-    "tooltip.new"           : "Add new contact",
     "tooltip.delete"        : "Delete current record",
     "tooltip.new"           : "Add new contact",
     "tooltip.deleteEmployee": "Delete Employee",
@@ -360,6 +359,9 @@
     "label.mailing"         : "Mail",
     "label.infodesk"        : "Infodesk",
     "label.mandatory"       : "Mandatory Fields",
+    "label.contactRemote"   : "Contact",
+    "label.questionnaireRemote" : "Questionnaire",
+    "label.sketchRemote"    : "Sketch",
 
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Cancel",

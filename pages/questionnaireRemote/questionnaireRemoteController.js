@@ -6,7 +6,7 @@
 /// <reference path="~/www/lib/convey/scripts/appbar.js" />
 /// <reference path="~/www/lib/convey/scripts/pageController.js" />
 /// <reference path="~/www/scripts/generalData.js" />
-/// <reference path="~/www/pages/questionnaire/questionnaireService.js" />
+/// <reference path="~/www/pages/questionnaireRemote/questionnaireRemoteService.js" />
 /// <reference path="~/plugins/cordova-plugin-camera/www/CameraConstants.js" />
 /// <reference path="~/plugins/cordova-plugin-camera/www/Camera.js" />
 /// <reference path="~/plugins/cordova-plugin-device/www/device.js" />
@@ -14,9 +14,9 @@
 (function () {
     "use strict";
 
-    WinJS.Namespace.define("Questionnaire", {
+    WinJS.Namespace.define("QuestionnaireRemote", {
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
-            Log.call(Log.l.trace, "Questionnaire.Controller.");
+            Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
             Application.Controller.apply(this, [pageElement, {
                 count: 0
             }, commandList]);
@@ -349,7 +349,7 @@
 
             var saveData = function (complete, error) {
                 var ret = null;
-                Log.call(Log.l.trace, "Questionnaire.Controller.");
+                Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                 AppData.setErrorMsg(that.binding);
                 // standard call via modify
                 var recordId = that.prevRecId;
@@ -373,7 +373,7 @@
                         var newRecord = that.getFieldEntries(i, curScope.type);
                         if (that.mergeRecord(curScope, newRecord)) {
                             Log.print(Log.l.trace, "save changes of recordId:" + recordId);
-                            ret = Questionnaire.questionnaireView.update(function (response) {
+                            ret = QuestionnaireRemote.questionnaireView.update(function (response) {
                                 // called asynchronously if ok
                                 complete(response);
                             }, function (errorResponse) {
@@ -431,7 +431,7 @@
                                 if (newRecord.hasOwnProperty(prop)) {
                                     if (prop !== "Freitext") {
                                         if (newRecord[prop].length > 0 && newRecord[prop] !== "0" && newRecord[prop] !== "00") {
-                                            Log.call(Log.l.u1,"Questionnaire.Controller. Answer not empty" + newRecord.prop);
+                                            Log.call(Log.l.u1, "QuestionnaireRemote.Controller. Answer not empty" + newRecord.prop);
                                             ret = false;
                                             break;
                                         }
@@ -451,7 +451,7 @@
 
             var getNextDocId = function () {
                 var ret = null;
-                Log.call(Log.l.u1, "Questionnaire.Controller.");
+                Log.call(Log.l.u1, "QuestionnaireRemote.Controller.");
                 if (that.docIds && that.docIds.length > 0) {
                     for (var i = 0; i < that.docIds.length; i++) {
                         var curId = that.docIds[i];
@@ -467,7 +467,7 @@
             this.getNextDocId = getNextDocId;
 
             var setNextDocId = function (docId) {
-                Log.call(Log.l.u1, "Questionnaire.Controller.");
+                Log.call(Log.l.u1, "QuestionnaireRemote.Controller.");
                 if (that.docIds && that.docIds.length > 0) {
                     for (var i = 0; i < that.docIds.length; i++) {
                         var curId = that.docIds[i];
@@ -482,92 +482,8 @@
             };
             that.setNextDocId = setNextDocId;
 
-            var insertCameradata = function (imageData, width, height) {
-                Log.call(Log.l.trace, "Questionnaire.Controller.");
-                var ret = new WinJS.Promise.as().then(function () {
-                    // UTC-Zeit in Klartext
-                    var now = new Date();
-                    var dateStringUtc = now.toUTCString();
-
-                    // decodierte Dateigröße
-                    var contentLength = Math.floor(imageData.length * 3 / 4);
-
-                    var newPicture = {
-                        DOC1ZeilenantwortVIEWID: that.getNextDocId(),
-                        wFormat: 3,
-                        ColorType: 11,
-                        ulWidth: width,
-                        ulHeight: height,
-                        ulDpm: 0,
-                        szOriFileNameDOC1: "Question.jpg",
-                        DocContentDOCCNT1:
-                        "Content-Type: image/jpegAccept-Ranges: bytes\x0D\x0ALast-Modified: " + dateStringUtc + "\x0D\x0AContent-Length: " + contentLength + "\x0D\x0A\x0D\x0A" + imageData,
-                        PrevContentDOCCNT2: null,
-                        OvwContentDOCCNT3: null,
-                        szOvwPathDOC3: null,
-                        szPrevPathDOC4: null,
-                        ContentEncoding: 4096
-                    };
-                    //load of format relation record data
-                    Log.print(Log.l.trace, "insert new cameraData for DOC1ZeilenantwortVIEWID=" + newPicture.DOC1ZeilenantwortVIEWID);
-                    return Questionnaire.questionnaireDocView.insert(function (json) {
-                        // this callback will be called asynchronously
-                        // when the response is available
-                        Log.print(Log.l.trace, "questionnaireDocView: success!");
-                        // contactData returns object already parsed from json file in response
-                        if (json && json.d) {
-                            that.setNextDocId(json.d.DOC1ZeilenantwortVIEWID);
-                            Log.print(Log.l.info, "DOC1ZeilenantwortVIEWID=" + json.d.DOC1ZeilenantwortVIEWID);
-                            that.docCount++;
-                            WinJS.Promise.timeout(50).then(function () {
-                                that.loadPicture(json.d.DOC1ZeilenantwortVIEWID);
-                            });
-                        } else {
-                            AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
-                        }
-                        AppBar.busy = false;
-                        return WinJS.Promise.as();
-                    }, function (errorResponse) {
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                        AppData.setErrorMsg(that.binding, errorResponse);
-                        AppBar.busy = false;
-                    }, newPicture);
-                });
-                Log.ret(Log.l.trace);
-                return ret;
-            };
-            this.insertCameradata = insertCameradata;
-
-            var onPhotoDataSuccess = function (imageData) {
-                Log.call(Log.l.trace, "Questionnaire.Controller.");
-                // Get image handle
-                //
-                var cameraImage = new Image();
-                // Show the captured photo
-                // The inline CSS rules are used to resize the image
-                //
-                cameraImage.src = "data:image/jpeg;base64," + imageData;
-
-                var width = cameraImage.width;
-                var height = cameraImage.height;
-                Log.print(Log.l.trace, "width=" + width + " height=" + height);
-
-                // todo: create preview from imageData
-                that.insertCameradata(imageData, width, height);
-                Log.ret(Log.l.trace);
-            };
-
-            var onPhotoDataFail = function (message) {
-                Log.call(Log.l.error, "Questionnaire.Controller.");
-                //message: The message is provided by the device's native code
-                //AppData.setErrorMsg(that.binding, message);
-                AppBar.busy = false;
-                Log.ret(Log.l.error);
-            };
-
             var textFromDateCombobox = function (id, element) {
-                Log.call(Log.l.error, "Questionnaire.Controller.");
+                Log.call(Log.l.error, "QuestionnaireRemote.Controller.");
                 if (element && element.parentElement) {
                     var recordId = that.curRecId;
                     var curScope = null;
@@ -614,40 +530,8 @@
             };
             this.textFromDateCombobox = textFromDateCombobox;
 
-            //start native Camera async
-            AppData.setErrorMsg(that.binding);
-            var takePhoto = function () {
-                Log.call(Log.l.trace, "Questionnaire.Controller.");
-                if (navigator.camera &&
-                    typeof navigator.camera.getPicture === "function") {
-                    // shortcuts for camera definitions
-                    //pictureSource: navigator.camera.PictureSourceType,   // picture source
-                    //destinationType: navigator.camera.DestinationType, // sets the format of returned value
-                    Log.print(Log.l.trace, "calling camera.getPicture...");
-                    // Take picture using device camera and retrieve image as base64-encoded string
-                    AppBar.busy = true;
-                    navigator.camera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
-                        destinationType: Camera.DestinationType.DATA_URL,
-                        sourceType: Camera.PictureSourceType.CAMERA,
-                        allowEdit: true,
-                        quality: AppData.generalData.cameraQuality,
-                        targetWidth: -1,
-                        targetHeight: -1,
-                        encodingType: Camera.EncodingType.JPEG,
-                        saveToPhotoAlbum: false,
-                        cameraDirection: Camera.Direction.BACK,
-                        variableEditRect: true
-                    });
-                } else {
-                    Log.print(Log.l.error, "camera.getPicture not supported...");
-                    that.updateStates({ errorMessage: "Camera plugin not supported" });
-                }
-                Log.ret(Log.l.trace);
-            }
-            this.takePhoto = takePhoto;
-
             var showFlipView = function () {
-                Log.call(Log.l.trace, "Questionnaire.Controller.");
+                Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                 flipview = pageElement.querySelector("#imgListQuestionnaire.flipview");
                 if (flipview && flipview.winControl) {
                     if (that.images && that.images.length > 0) {
@@ -682,41 +566,36 @@
             // define handlers
             this.eventHandlers = {
                 clickBack: function (event) {
-                    Log.call(Log.l.trace, "Questionnaire.Controller.");
+                    Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                     if (WinJS.Navigation.canGoBack === true) {
                         WinJS.Navigation.back(1).done( /* Your success and error handlers */);
                     }
                     Log.ret(Log.l.trace);
                 },
                 clickNew: function (event) {
-                    Log.call(Log.l.trace, "Questionnaire.Controller.");
+                    Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                     Application.navigateById(Application.navigateNewId, event);
                     Log.ret(Log.l.trace);
                 },
-                clickPhoto: function (event) {
-                    Log.call(Log.l.trace, "Questionnaire.Controller.");
-                    that.takePhoto();
-                    Log.ret(Log.l.trace);
-                },
                 clickForward: function (event) {
-                    Log.call(Log.l.trace, "Questionnaire.Controller.");
+                    Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                     var showconfirmbox = that.showConfirmBoxMandatory();
                     if (showconfirmbox) {
                         confirm("Pflichtfrage nicht ausgefüllt: \n" + that.actualquestion.FRAGESTELLUNG, function (result) {
                            if (result) {
-                               Application.navigateById('sketch', event);
+                               Application.navigateById('sketchRemote', event);
                            } else {
                                that.selectRecordId(that.actualquestion.ZeilenantwortVIEWID);
                            }
                         });   
                     } else {
-                        Application.navigateById('sketch', event);
+                        Application.navigateById('sketchRemote', event);
                     }
                     //Vielleicht hier showconfirmbox?
                     Log.ret(Log.l.trace);
                 },
                 clickRating: function (event) {
-                    Log.call(Log.l.trace, "Questionnaire.Controller.");
+                    Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                     WinJS.Promise.timeout(0).then(function () {
                         var recordId = that.curRecId;
                         if (recordId) {
@@ -726,12 +605,12 @@
                     Log.ret(Log.l.trace);
                 },
                 clickChangeUserState: function (event) {
-                    Log.call(Log.l.trace, "Questionnaire.Controller.");
+                    Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                     Application.navigateById("userinfo", event);
                     Log.ret(Log.l.trace);
                 },
                 clickButton: function (event) {
-                    Log.call(Log.l.trace, "Questionnaire.Controller.");
+                    Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                     if (event.currentTarget) {
                         var id = event.currentTarget.id;
                         var element = event.currentTarget;
@@ -742,7 +621,7 @@
                     Log.ret(Log.l.trace);
                 },
                 pressEnterKey: function (event) {
-                    Log.call(Log.l.trace, "Questionnaire.Controller.");
+                    Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
 
                     /* if (event && event.target) {
                          var comboInputFocus = event.target.querySelector(".win-dropdown:focus");
@@ -774,7 +653,7 @@
 
 
                             } else {
-                                Log.call(Log.l.trace, "Questionnaire.Controller.");
+                                Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                                 for (var j = 0; j < AppBar.commandList.length; j++) {
                                     if (AppBar.commandList[j].id === "clickForward")
                                         AppBar.commandList[j].key = WinJS.Utilities.Key.enter;
@@ -803,7 +682,7 @@
 
                 },
                 activateEnterKey: function (event) {
-                    Log.call(Log.l.trace, "Questionnaire.Controller.");
+                    Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                     for (var i = 0; i < AppBar.commandList.length; i++) {
                         if (AppBar.commandList[i].id === "clickForward")
                             AppBar.commandList[i].key = WinJS.Utilities.Key.enter;
@@ -816,17 +695,17 @@
                     }
                 },
                 onPointerDown: function (e) {
-                    Log.call(Log.l.trace, "Questionnaire.Controller.");
+                    Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                     that.cursorPos = { x: e.pageX, y: e.pageY };
                     Log.ret(Log.l.trace);
                 },
                 onMouseDown: function (e) {
-                    Log.call(Log.l.trace, "Questionnaire.Controller.");
+                    Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                     that.cursorPos = { x: e.pageX, y: e.pageY };
                     Log.ret(Log.l.trace);
                 },
                 onSelectionChanged: function (eventInfo) {
-                    Log.call(Log.l.trace, "Questionnaire.Controller.");
+                    Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                     if (listView && listView.winControl) {
                         var listControl = listView.winControl;
                         if (listControl.selection) {
@@ -860,7 +739,7 @@
                     Log.ret(Log.l.trace);
                 },
                 onLoadingStateChanged: function (eventInfo) {
-                    Log.call(Log.l.trace, "Questionnaire.Controller.");
+                    Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                     if (listView && listView.winControl) {
                         Log.print(Log.l.trace, "loadingState=" + listView.winControl.loadingState);
                         // single list selection
@@ -882,7 +761,7 @@
                         }
                         if (listView.winControl.loadingState === "itemsLoading") {
                             if (!layout) {
-                                layout = Application.QuestionnaireLayout.QuestionsLayout;
+                                layout = Application.QuestionnaireRemoteLayout.QuestionsLayout;
                                 listView.winControl.layout = { type: layout };
                             }
                         } else if (listView.winControl.loadingState === "complete") {
@@ -942,7 +821,7 @@
                     Log.ret(Log.l.trace);
                 },
                 onHeaderVisibilityChanged: function (eventInfo) {
-                    Log.call(Log.l.trace, "Questionnaire.Controller.");
+                    Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                     if (eventInfo && eventInfo.detail) {
                         var visible = eventInfo.detail.visible;
                         if (visible) {
@@ -961,7 +840,7 @@
                     Log.ret(Log.l.trace);
                 },
                 onFooterVisibilityChanged: function (eventInfo) {
-                    Log.call(Log.l.trace, "Questionnaire.Controller.");
+                    Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                     if (eventInfo && eventInfo.detail) {
                         progress = listView.querySelector(".list-footer .progress");
                         counter = listView.querySelector(".list-footer .counter");
@@ -976,16 +855,16 @@
                                     counter.style.display = "none";
                                 }
                                 AppData.setErrorMsg(that.binding);
-                                Log.print(Log.l.trace, "calling select Questionnaire.questionnaireView...");
+                                Log.print(Log.l.trace, "calling select QuestionnaireRemote.questionnaireView...");
                                 var nextUrl = that.nextUrl;
                                 that.nextUrl = null;
-                                Questionnaire.questionnaireView.selectNext(function (json) {
+                                QuestionnaireRemote.questionnaireView.selectNext(function (json) {
                                     // this callback will be called asynchronously
                                     // when the response is available
-                                    Log.print(Log.l.trace, "Questionnaire.questionnaireView: success!");
+                                    Log.print(Log.l.trace, "QuestionnaireRemote.questionnaireView: success!");
                                     // startContact returns object already parsed from json file in response
                                     if (json && json.d) {
-                                        that.nextUrl = Questionnaire.questionnaireView.getNextUrl(json);
+                                        that.nextUrl = QuestionnaireRemote.questionnaireView.getNextUrl(json);
                                         var results = json.d.results;
                                         results.forEach(function (item) {
                                             that.resultConverter(item);
@@ -1029,7 +908,7 @@
                     Log.ret(Log.l.trace);
                 },
                 onItemInvoked: function (eventInfo) {
-                    Log.call(Log.l.trace, "Questionnaire.Controller.");
+                    Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                     if (eventInfo && eventInfo.target) {
                         var comboInputFocus = eventInfo.target.querySelector(".win-dropdown:focus");
                         if (comboInputFocus) {
@@ -1052,13 +931,13 @@
                                             // set focus async!
                                             freitextInput.focus();
                                         });
-                                        /* Log.call(Log.l.trace, "Questionnaire.Controller.");
+                                        /* Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                                          for (var i = 0; i < AppBar.commandList.length; i++) {
                                              if (AppBar.commandList[i].id === "clickForward")
                                                  AppBar.commandList[i].key = null;
                                          }*/
                                     } else {
-                                        /* Log.call(Log.l.trace, "Questionnaire.Controller.");
+                                        /* Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                                          for (var j = 0; j < AppBar.commandList.length; j++) {
                                              if (AppBar.commandList[j].id === "clickForward")
                                                  AppBar.commandList[j].key = WinJS.Utilities.Key.enter;
@@ -1128,7 +1007,7 @@
             }
 
             var loadPicture = function (pictureId) {
-                Log.call(Log.l.trace, "Questionnaire.Controller.", "pictureId=" + pictureId);
+                Log.call(Log.l.trace, "QuestionnaireRemote.Controller.", "pictureId=" + pictureId);
                 var ret = null;
                 if (that.images && that.images.length > 0) {
                     for (var i = 0; i < that.images.length; i++) {
@@ -1146,7 +1025,7 @@
                     }
                 }
                 if (!ret) {
-                    ret = Questionnaire.questionnaireDocView.select(function (json) {
+                    ret = QuestionnaireRemote.questionnaireDocView.select(function (json) {
                         // this callback will be called asynchronously
                         // when the response is available
                         Log.print(Log.l.trace, "questionnaireDocView: success!");
@@ -1186,7 +1065,7 @@
             that.loadPicture = loadPicture;
 
             var loadData = function () {
-                Log.call(Log.l.trace, "Questionnaire.Controller.");
+                Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                 AppData.setErrorMsg(that.binding);
                 if (that.questions) {
                     that.questions.length = 0;
@@ -1196,50 +1075,19 @@
                     that.images.length = 0;
                 }
                 that.docCount = 0;
-                var contactId = AppData.getRecordId("Kontakt");
+                var contactId = AppData.getRecordId("Kontakt_Remote");
                 var ret = new WinJS.Promise.as().then(function () {
-                    if (!contactId) {
-                        var newContact = {
-                            HostName: (window.device && window.device.uuid),
-                            MitarbeiterID: AppData.getRecordId("Mitarbeiter"),
-                            VeranstaltungID: AppData.getRecordId("Veranstaltung"),
-                            Nachbearbeitet: 1
-                        };
-                        Log.print(Log.l.trace, "insert new contactView for MitarbeiterID=" + newContact.MitarbeiterID);
-                        AppData.setErrorMsg(that.binding);
-                        return Questionnaire.contactView.insert(function (json) {
-                            // this callback will be called asynchronously
-                            // when the response is available
-                            Log.print(Log.l.trace, "contactView: success!");
-                            // contactData returns object already parsed from json file in response
-                            if (json && json.d) {
-                                contactId = json.d.KontaktVIEWID;
-                                AppData.setRecordId("Kontakt", contactId);
-                                AppData.getUserData();
-                            } else {
-                                AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
-                            }
-                        }, function (errorResponse) {
-                            // called asynchronously if an error occurs
-                            // or server returns response with an error status.
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                        }, newContact);
-                    } else {
-                        Log.print(Log.l.trace, "use existing contactID=" + contactId);
-                        return WinJS.Promise.as();
-                    }
-                }).then(function () {
                     if (!contactId) {
                         AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
                         return WinJS.Promise.as();
                     } else {
-                        return Questionnaire.questionnaireView.select(function (json) {
+                        return QuestionnaireRemote.questionnaireView.select(function (json) {
                             // this callback will be called asynchronously
                             // when the response is available
-                            Log.print(Log.l.trace, "Questionnaire.questionnaireView: success!");
+                            Log.print(Log.l.trace, "QuestionnaireRemote.questionnaireView: success!");
                             // startContact returns object already parsed from json file in response
                             if (json && json.d) {
-                                that.nextUrl = Questionnaire.questionnaireView.getNextUrl(json);
+                                that.nextUrl = QuestionnaireRemote.questionnaireView.getNextUrl(json);
                                 var results = json.d.results;
                                 if (!that.questions) {
                                     results.forEach(function (item, index) {
@@ -1387,7 +1235,7 @@
                         });
                     }
                 }).then(function () {
-                    ret = Questionnaire.CR_VERANSTOPTION_ODataView.select(function (json) {
+                    ret = QuestionnaireRemote.CR_VERANSTOPTION_ODataView.select(function (json) {
                         // this callback will be called asynchronously
                         // when the response is available
                         Log.print(Log.l.trace, "Login: success!");

@@ -355,6 +355,9 @@
     "label.mailing"         : "Email",
     "label.infodesk"        : "Infodesk",
     "label.mandatory"       : "Campo obbligatorio",
+    "label.contactRemote"   : "Contatto",
+    "label.questionnaireRemote" : "Questionario",
+    "label.sketchRemote"    : "Schizzo",
 
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Annulla",
