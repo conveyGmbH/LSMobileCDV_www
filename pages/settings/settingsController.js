@@ -275,9 +275,23 @@
                             break;
                         case 20:
                             item.pageProperty = "questionnaire";
+                            if (item.LocalValue === "0") {
+                                AppData._persistentStates.hideQuestionnaire = true;
+                                NavigationBar.disablePage(item.pageProperty);
+                            } else {
+                                AppData._persistentStates.hideQuestionnaire = false;
+                                NavigationBar.enablePage(item.pageProperty);
+                            }
                             break;
                         case 21:
                             item.pageProperty = "sketch";
+                            if (item.LocalValue === "0") {
+                                AppData._persistentStates.hideSketch = true;
+                                NavigationBar.disablePage(item.pageProperty);
+                            } else {
+                                AppData._persistentStates.hideSketch = false;
+                                NavigationBar.enablePage(item.pageProperty);
+                            }
                             break;
                         default:
                             // defaultvalues
@@ -348,17 +362,26 @@
                         //that.binding.generalData.individualColors = false;
                     }
                 }
-                if (item.pageProperty) {
+                if (item.INITOptionTypeID === 18) {
+                    if (item.LocalValue === "1") {
+                        that.binding.generalData.isDarkTheme = true;
+                    } else {
+                        that.binding.generalData.isDarkTheme = false;
+                    }
+                }
+                /*if (item.pageProperty) {
                     if (item.LocalValue === "1") {
                         NavigationBar.enablePage(item.pageProperty);
                     } else if (item.LocalValue === "0") {
                         NavigationBar.disablePage(item.pageProperty);
                     }
-                }
+                }*/
             }
             this.resultConverter = resultConverter;
 
             var loadData = function (complete, error) {
+                AppData._persistentStates.hideQuestionnaire = false;
+                AppData._persistentStates.hideSketch = false;
                 return Settings.CR_VERANSTOPTION_ODataView.select(function (json) {
                     // this callback will be called asynchronously
                     // when the response is available

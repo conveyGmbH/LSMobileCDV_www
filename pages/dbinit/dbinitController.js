@@ -131,6 +131,13 @@
                         });
                     }
                 }
+                if (item.INITOptionTypeID === 18) {
+                    if (item.LocalValue === "0") {
+                        that.binding.generalData.isDarkTheme = false;
+                    } else {
+                        that.binding.generalData.isDarkTheme = true;
+                    }
+                }
             }
             this.resultConverter = resultConverter;
 

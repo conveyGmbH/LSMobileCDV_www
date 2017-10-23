@@ -81,7 +81,7 @@
                 AppBar.triggerDisableHandlers();
             }
 
-            var setDataContact = function(newDataContact) {
+            var setDataContact = function (newDataContact) {
                 var prevNotifyModified = AppBar.notifyModified;
                 AppBar.notifyModified = false;
                 // Bug: textarea control shows 'null' string on null value in Internet Explorer!
@@ -102,7 +102,7 @@
             }
             this.setDataContact = setDataContact;
 
-            var setInitLandItem = function(newInitLandItem) {
+            var setInitLandItem = function (newInitLandItem) {
                 var prevNotifyModified = AppBar.notifyModified;
                 AppBar.notifyModified = false;
                 that.binding.InitLandItem = newInitLandItem;
@@ -204,21 +204,21 @@
                     }
                     Log.ret(Log.l.trace);
                 },
-                clickNew: function(event){
+                clickNew: function (event) {
                     Log.call(Log.l.trace, "Contact.Controller.");
                     Application.navigateById(Application.navigateNewId, event);
                     Log.ret(Log.l.trace);
                 },
-                clickDelete: function(event){
+                clickDelete: function (event) {
                     Log.call(Log.l.trace, "Contact.Controller.");
                     var confirmTitle = getResourceText("contact.questionDelete");
                     confirm(confirmTitle, function (result) {
                         if (result) {
-                            Log.print(Log.l.trace,"clickDelete: user choice OK");
-                            deleteData(function(response) {
+                            Log.print(Log.l.trace, "clickDelete: user choice OK");
+                            deleteData(function (response) {
                                 // delete OK - goto start
                                 Application.navigateById("start", event);
-                            }, function(errorResponse) {
+                            }, function (errorResponse) {
                                 // delete ERROR
                                 var message = null;
                                 Log.print(Log.l.error, "error status=" + errorResponse.status + " statusText=" + errorResponse.statusText);

@@ -92,6 +92,14 @@
                         case 17:
                             item.colorPickerId = "tileBackgroundColor";
                             break;
+                        case 18:
+                            if (item.LocalValue === 0) {
+                                that.binding.generalData.isDarkTheme = false;
+                            } else {
+                                that.binding.generalData.isDarkTheme = true;
+                            }
+                            Colors.isDarkTheme = that.binding.generalData.isDarkTheme;
+                            break;
                         case 20:
                             item.pageProperty = "questionnaire";
                             break;

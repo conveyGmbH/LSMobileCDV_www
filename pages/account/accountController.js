@@ -101,6 +101,14 @@
                         case 17:
                             item.colorPickerId = "tileBackgroundColor";
                             break;
+                        case 18:
+                            if (item.LocalValue === 0) {
+                                that.binding.generalData.isDarkTheme = false;
+                            } else {
+                                that.binding.generalData.isDarkTheme = true;
+                            }
+                            Colors.isDarkTheme = that.binding.generalData.isDarkTheme;
+                            break;
                         case 20:
                             item.pageProperty = "questionnaire";
                             break;
@@ -198,7 +206,7 @@
             };
 
             this.disableHandlers = {
-                clickOk: function() {
+                clickOk: function () {
                     // work on user change handling!
                     if (!that.binding.appSettings.odata.useOffline) {
                         that.binding.doReloadDb = false;
@@ -299,7 +307,7 @@
                             error(err);
                         }
                         return WinJS.Promise.as();
-                    }, function(errorResponse) {
+                    }, function (errorResponse) {
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
                         Log.print(Log.l.error, "loginRequest error: " + AppData.getErrorMsgFromResponse(errorResponse));
