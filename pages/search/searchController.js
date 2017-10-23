@@ -14,18 +14,7 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Search.Controller.");
             Application.Controller.apply(this, [pageElement, {
-                restriction: {
-                    KontaktVIEWID: "",
-                    Firmenname: "",
-                    Vorname: "",
-                    Name: "",
-                    Email: "",
-                    Strasse: "",
-                    PLZ: "",
-                    Stadt: "",
-                    useErfassungsdatum: false,
-                    usemodifiedTS: false
-                }
+                restriction: getEmptyDefaultValue(Search.defaultValue)
             }, commandList]);
 
             var Erfassungsdatum = pageElement.querySelector("#Erfassungsdatum.win-datepicker");
@@ -40,10 +29,6 @@
 
             var that = this;
 
-            var savedRestriction = AppData.getRestriction("Kontakt");
-            if (typeof savedRestriction === "object") {
-                this.binding.restriction = savedRestriction;
-            }
             // always define date types
             if (typeof that.binding.restriction.Erfassungsdatum === "undefined") {
                 that.binding.restriction.Erfassungsdatum = new Date();
@@ -192,6 +177,11 @@
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 return that.loadData();
             }).then(function() {
+                var savedRestriction = AppData.getRestriction("Kontakt");
+                if (typeof savedRestriction === "object") {
+                    that.binding.restriction = savedRestriction;
+                    copyMissingMembersByValue(that.binding.restriction, Search.defaultValue);
+                }
                 Log.print(Log.l.trace, "Data loaded");
                 return that.showDateRestrictions();
             }).then(function () {
