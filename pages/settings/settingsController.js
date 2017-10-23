@@ -250,6 +250,7 @@
             }
 
             var resultConverter = function (item, index) {
+                var plusRemote = false;
                 if (item.INITOptionTypeID > 10) {
                     switch (item.INITOptionTypeID) {
                         case 11:
@@ -277,22 +278,17 @@
                             item.pageProperty = "questionnaire";
                             if (item.LocalValue === "0") {
                                 AppData._persistentStates.hideQuestionnaire = true;
-                                NavigationBar.disablePage(item.pageProperty);
-                                NavigationBar.disablePage(item.pageProperty + "Remote");
                             } else {
                                 AppData._persistentStates.hideQuestionnaire = false;
-                                NavigationBar.enablePage(item.pageProperty);
-                                NavigationBar.enablePage(item.pageProperty + "Remote");
                             }
+                            plusRemote = true;
                             break;
                         case 21:
                             item.pageProperty = "sketch";
                             if (item.LocalValue === "0") {
                                 AppData._persistentStates.hideSketch = true;
-                                NavigationBar.disablePage(item.pageProperty);
                             } else {
                                 AppData._persistentStates.hideSketch = false;
-                                NavigationBar.enablePage(item.pageProperty);
                             }
                             break;
                         default:
@@ -371,13 +367,19 @@
                         that.binding.generalData.isDarkTheme = false;
                     }
                 }
-                /*if (item.pageProperty) {
+                if (item.pageProperty) {
                     if (item.LocalValue === "1") {
                         NavigationBar.enablePage(item.pageProperty);
+                        if (plusRemote) {
+                            NavigationBar.enablePage(item.pageProperty + "Remote");
+                        }
                     } else if (item.LocalValue === "0") {
                         NavigationBar.disablePage(item.pageProperty);
+                        if (plusRemote) {
+                            NavigationBar.disablePage(item.pageProperty + "Remote");
+                        }
                     }
-                }*/
+                }
             }
             this.resultConverter = resultConverter;
 
