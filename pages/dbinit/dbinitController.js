@@ -115,7 +115,9 @@
                             }
                         } else if (item.LocalValue === "0") {
                             NavigationBar.disablePage(item.pageProperty);
-                            NavigationBar.disablePage(item.pageProperty + "Remote");
+                            if (plusRemote) {
+                                NavigationBar.disablePage(item.pageProperty + "Remote");
+                            }
                         }
                     }
                 }

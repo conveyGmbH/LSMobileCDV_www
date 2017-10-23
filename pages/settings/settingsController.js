@@ -278,9 +278,11 @@
                             if (item.LocalValue === "0") {
                                 AppData._persistentStates.hideQuestionnaire = true;
                                 NavigationBar.disablePage(item.pageProperty);
+                                NavigationBar.disablePage(item.pageProperty + "Remote");
                             } else {
                                 AppData._persistentStates.hideQuestionnaire = false;
                                 NavigationBar.enablePage(item.pageProperty);
+                                NavigationBar.enablePage(item.pageProperty + "Remote");
                             }
                             break;
                         case 21:

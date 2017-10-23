@@ -70,6 +70,7 @@
 
             var resultConverter = function (item, index) {
                 if (item.INITOptionTypeID > 10) {
+                    var plusRemote = false;
                     switch (item.INITOptionTypeID) {
                         case 11:
                             item.colorPickerId = "accentColor";
@@ -102,6 +103,7 @@
                             break;
                         case 20:
                             item.pageProperty = "questionnaire";
+                            plusRemote = true;
                             break;
                         case 21:
                             item.pageProperty = "sketch";
@@ -126,8 +128,14 @@
                     if (item.pageProperty) {
                         if (item.LocalValue === "1") {
                             NavigationBar.enablePage(item.pageProperty);
+                            if (plusRemote) {
+                                NavigationBar.enablePage(item.pageProperty + "Remote");
+                            }
                         } else if (item.LocalValue === "0") {
                             NavigationBar.disablePage(item.pageProperty);
+                            if (plusRemote) {
+                                NavigationBar.disablePage(item.pageProperty + "Remote");
+                            }
                         }
                     }
                 }
