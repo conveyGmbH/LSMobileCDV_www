@@ -1,0 +1,39 @@
+﻿.list-img {
+    width: 150px;
+    height: 150px;
+    display: block;
+}
+
+.list-svg {
+    width: 150px;
+    height: 150px;
+    display: block;
+}
+
+#sketchList .win-container {
+    width: 158px;
+    height: 158px;
+}
+
+#sketchListController .contentarea .win-type-body {
+    height: 166px;
+}
+.contentarea .win-type-body .win-listview {
+    height: 166px;
+}
+
+
+.list-img-item {
+    width: 100%;
+    height: auto;
+    max-height: 150px;
+    display: inline;
+}
+
+.list-svg-item {
+    width: 100%;
+    height: auto;
+    max-height: 150px;
+    display: inline;
+    /*viewBox in Controller.onLoadingStateChanged*/
+}

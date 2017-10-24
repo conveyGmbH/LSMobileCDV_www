@@ -1,6 +1,6 @@
 // implements the SVGEditor namespace
 /// <reference path="~/www/lib/WinJS/scripts/base.js" />
-/// <reference path="~/www/lib/jQuerySVG/scripts/jquery.svg.js" />
+/// <reference path="~/www/lib/jQuerySVG/scripts/jquery.svg.min.js" />
 
 (function() {
     "use strict";

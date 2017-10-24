@@ -147,6 +147,7 @@
     "sketch.shape"          : "Zeichenform",
     "sketch.color"          : "Farbe",
     "sketch.width"          : "Stiftbreite",
+    "sketch.showList"		    : "Mehr Notizen",
 
     "search.title"          : "Kriterien zur Suche",
     "search.comment"        : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",

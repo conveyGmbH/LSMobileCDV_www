@@ -1,6 +1,6 @@
 ﻿// implements the SVGEditor namespace
 /// <reference path="~/www/lib/WinJS/scripts/base.js" />
-/// <reference path="~/www/pages/sketch/svg.js" />
+/// <reference path="~/www/fragments/svgSketch/svg.js" />
 /// <reference path="~/www/lib/convey/scripts/appbar.js" />
 
 (function () {
