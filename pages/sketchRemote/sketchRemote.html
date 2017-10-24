@@ -3,9 +3,6 @@
 <head>
     <meta charset="utf-8" />
     <link href="sketchRemote.css" rel="stylesheet" />
-    <script type="text/javascript" src="svg.js"></script>
-    <script type="text/javascript" src="svgeditor.js"></script>
-    <script type="text/javascript" src="sketchRemoteService.js"></script>
     <script type="text/javascript" src="sketchRemoteController.js"></script>
     <script type="text/javascript" src="sketchRemote.js"></script>
 </head>
@@ -23,12 +20,10 @@
                             <span class="date-field" data-win-bind="textContent: generalData.remoteContactDate Binding.Converter.toDateString"></span>
                         </div>
                     </div>
-                    <div id="sketch" class="feature">
-                        <div id="svgsketch" class="svgdiv">
-                        </div>
-                    </div>
-                    <div class="error-message"
-                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+                    <div id="svghost" class="sketchfragmenthost" data-win-bind="style.display: showSvg Binding.Converter.toDisplay"></div>
+                    <div id="imghost" class="sketchfragmenthost" data-win-bind="style.display: showPhoto Binding.Converter.toDisplay"></div>
+                    <div id="listhost" class="listfragmenthost" data-win-bind="style.display: showList Binding.Converter.toDisplay"></div>
+                    <div class="error-message" data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
                 </div>
             </section>
         </div>

@@ -32,17 +32,6 @@
             this.contactId = AppData.getRecordId("Kontakt");
             this.pageElement = pageElement;
 
-            var getSvgFragmentController = function () {
-                var ret;
-                Log.call(Log.l.trace, "Sketch.Controller.");
-                ret = Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("svgSketch"));
-                if (ret) {
-                    ret = ret.controller;
-                }
-                Log.ret(Log.l.trace);
-                return ret;
-            }
-
             var getDocViewer = function (docGroup, docFormat) {
                 Log.call(Log.l.trace, "Sketch.Controller.", "docGroup=" + docGroup + " docFormat=" + docFormat);
                 docViewer = null;
@@ -76,7 +65,7 @@
                     that.binding.showPhoto = false;
                     parentElement = pageElement.querySelector("#svghost");
                     if (parentElement) {
-                        ret = Application.loadFragmentById(parentElement, "svgSketch", { noteId: noteId });
+                        ret = Application.loadFragmentById(parentElement, "svgSketch", { noteId: noteId, isLocal: true });
                     } else {
                         ret = WinJS.Promise.as();
                     }
@@ -85,7 +74,7 @@
                     that.binding.showPhoto = true;
                     parentElement = pageElement.querySelector("#imghost");
                     if (parentElement) {
-                        ret = Application.loadFragmentById(parentElement, "imgSketch", { noteId: noteId });
+                        ret = Application.loadFragmentById(parentElement, "imgSketch", { noteId: noteId, isLocal: true });
                     } else {
                         ret = WinJS.Promise.as();
                     }
@@ -101,22 +90,21 @@
             var isModified = function () {
                 Log.call(Log.l.trace, "svgSketchController.");
                 var ret;
-                var svgFragmentController = getSvgFragmentController();
-                if (svgFragmentController) {
-                    ret = svgFragmentController.isModified();
+                var svgFragment = Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("svgSketch"));
+                if (svgFragment && svgFragment.controller) {
+                    ret = svgFragment.controller.isModified();
                 } else ret = false;
                 Log.ret(Log.l.trace);
                 return ret;
             }
             this.isModified = isModified;
 
-
             var loadData = function (noteId, docGroup, docFormat) {
                 Log.call(Log.l.trace, "Sketch.Controller.", "noteId=" + noteId + " docGroup=" + docGroup + " docFormat=" + docFormat);
                 AppData.setErrorMsg(that.binding);
                 that.contactId = AppData.getRecordId("Kontakt");
                 var ret = new WinJS.Promise.as().then(function () {
-                    /*if (!that.contactId) {
+                    if (!that.contactId) {
                         var newContact = {
                             HostName: (window.device && window.device.uuid),
                             MitarbeiterID: AppData.getRecordId("Mitarbeiter"),
@@ -146,7 +134,7 @@
                         Log.print(Log.l.trace, "use existing that.contactID=" + that.contactId);
                         return WinJS.Promise.as();
                     }
-                }).then(function () {*/
+                }).then(function () {
                     //load list first -> noteId, showSvg, showPhoto, moreNotes set
                     if (!noteId) {
                         var sketchListFragmentControl = Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("sketchList"));
@@ -155,7 +143,7 @@
                         } else {
                             var parentElement = pageElement.querySelector("#listhost");
                             if (parentElement) {
-                                return Application.loadFragmentById(parentElement,"sketchList",{ contactId: that.contactId });
+                                return Application.loadFragmentById(parentElement,"sketchList",{ contactId: that.contactId, isLocal: true });
                             } else {
                                 return WinJS.Promise.as();
                             }
@@ -169,79 +157,31 @@
             }
             this.loadData = loadData;
             
-            // save data
-            //var saveData = function (complete, error) {
-            //if (that.noteId !== 0) {
-                    /*else {
-                                //insert if a primary key is not available (getRecordId() == null)
-                                dataSketch.KontaktID = AppData.getRecordId("Kontakt");
-                                dataSketch.ExecAppTypeID = 15; // SVG note
-                                if (!dataSketch.KontaktID) {
-                                    return new WinJS.Promise.as().then(function () {
-                                        var errorResponse = {
-                                            status: -1,
-                                            statusText: "missing recordId for table Kontakt"
-                                        }
-                                        AppData.setErrorMsg(that.binding, errorResponse);
-                                        error(errorResponse);
-                                    });
-                                } else {
-                                    return Sketch.sketchView.insert(function (json) {
-                                        // this callback will be called asynchronously
-                                        // when the response is available
-                                        Log.print(Log.l.trace, "sketchData insert: success!");
-                                        // contactData returns object already parsed from json file in response
-                                        if (json && json.d) {
-                                            that.binding.dataSketch = json.d;
-                                            setRecordId(that.binding.dataSketch.KontaktNotizVIEWID);
-                                            if (typeof that.binding.dataSketch.Quelltext !== "undefined" &&
-                                                that.binding.dataSketch.Quelltext) {
-                                                Log.print(Log.l.trace, "SVG Element: " + that.binding.dataSketch.Quelltext.substr(0, 100) + "...");
-                                            }
-                                            WinJS.Promise.timeout(0).then(function () {
-                                                that.svgEditor.fnLoadSVG(that.binding.dataSketch.Quelltext);
-                                            });
-                                        }
-                                        complete(json);
-                                    }, function (errorResponse) {
-                                        // called asynchronously if an error occurs
-                                        // or server returns response with an error status.
-                                        AppData.setErrorMsg(that.binding, errorResponse);
-                                        error(errorResponse);
-                                    }, dataSketch);
-                                }
-                            }*/
-
             // define handlers
             this.eventHandlers = {
-                clickBack: function(event) {
+                clickBack: function (event) {
                     Log.call(Log.l.trace, "Sketch.Controller.");
                     if (WinJS.Navigation.canGoBack === true) {
                         WinJS.Navigation.back(1).done(/* Your success and error handlers */);
                     }
                     Log.ret(Log.l.trace);
                 },
-                clickChangeUserState: function(event) {
+                clickChangeUserState: function (event) {
                     Log.call(Log.l.trace, "Sketch.Controller.");
                     Application.navigateById("userinfo", event);
                     Log.ret(Log.l.trace);
                 },
-                clickGotoPublish: function(event) {
-                    Log.call(Log.l.trace, "Sketch.Controller.");
-                    Application.navigateById("publish", event);
-                    Log.ret(Log.l.trace);
-                },
-                clickNew: function(event) {
+                clickNew: function (event) {
                     Log.call(Log.l.trace, "Sketch.Controller.");
                     Application.navigateById(Application.navigateNewId, event);
                     Log.ret(Log.l.trace);
                 },
-                clickForward: function(event) {
+                clickForward: function (event) {
                     Log.call(Log.l.trace, "Sketch.Controller.");
                     Application.navigateById("start", event);
                     Log.ret(Log.l.trace);
                 },
-                clickShowList: function(event) {
+                clickShowList: function (event) {
                     Log.call(Log.l.trace, "Sketch.Controller.");
                     that.binding.showList = !that.binding.showList;
                     that.binding.userHidesList = !that.binding.showList;

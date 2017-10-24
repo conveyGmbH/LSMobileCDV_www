@@ -15,6 +15,7 @@
             Log.call(Log.l.trace, "SketchList.Controller.");
             Fragments.Controller.apply(this, [fragmentElement, {
                 contactId: options.contactId,
+                isLocal: options.isLocal,
                 curId: 0
             }]);
             var that = this;
@@ -171,48 +172,6 @@
                     this.eventHandlers.onLoadingStateChanged.bind(this));
             }
 
-
-            /*var selectRecordId = function (recordId) {
-                Log.call(Log.l.trace, "SketchList.Controller.", "recordId=" + recordId);
-                if (recordId && listView && listView.winControl && listView.winControl.selection) {
-                    if (sketches) {
-                        for (var i = 0; i < that.sketches.length; i++) {
-                            var sketch = that.sketches.getAt(i);
-                            if (sketch &&
-                                typeof sketch === "object" &&
-                                sketch.KontaktNotizVIEWID === recordId) {
-                                listView.winControl.selection.set(i);
-                                break;
-                            }
-                        }
-                    }
-                }
-                Log.ret(Log.l.trace);
-            }
-            this.selectRecordId = selectRecordId;
-
-            var scopeFromRecordId = function (recordId) {
-                var i;
-                Log.call(Log.l.trace, "SketchList.Controller.", "recordId=" + recordId);
-                var item = null;
-                for (i = 0; i < that.sketches.length; i++) {
-                    var sketch = that.sketches.getAt(i);
-                    if (sketch && typeof sketch === "object" &&
-                        sketch.KontaktNotizVIEWID === recordId) {
-                        item = sketch;
-                        break;
-                    }
-                }
-                if (item) {
-                    Log.ret(Log.l.trace, "i=" + i);
-                    return { index: i, item: item };
-                } else {
-                    Log.ret(Log.l.trace, "not found");
-                    return null;
-                }
-            };
-            this.scopeFromRecordId = scopeFromRecordId;*/
-
             var saveData = function (complete, error) {
                 Log.call(Log.l.trace, "SketchList.Controller.");
                 var ret = new WinJS.Promise.as().then(function () {
@@ -242,7 +201,7 @@
                         // select returns object already parsed from json file in response
                         if (json && json.d) {
                             that.binding.count = json.d.results.length;
-                            that.nextUrl = SketchList.sketchlistView.getNextUrl(json);
+                            that.nextUrl = SketchList.sketchlistView.getNextUrl(json, that.binding.isLocal);
                             var results = json.d.results;
                             results.forEach(function (item, index) {
                                 that.resultConverter(item, index);
@@ -278,7 +237,7 @@
                         AppData.setErrorMsg(that.binding, errorResponse);
                     }, {
                         KontaktID: that.binding.contactId
-                    });
+                    }, that.binding.isLocal);
                 }).then(function () {
                     AppBar.notifyModified = true;
                     AppBar.triggerDisableHandlers();

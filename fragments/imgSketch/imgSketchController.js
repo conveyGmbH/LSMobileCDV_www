@@ -48,6 +48,7 @@
 
             Fragments.Controller.apply(this, [fragmentElement, {
                 noteId: options.noteId,
+                isLocal: options.isLocal,
                 dataSketch: {}
             }]);
             this.img = null;
@@ -376,7 +377,8 @@
                         // or server returns response with an error status.
                         AppData.setErrorMsg(that.binding, errorResponse);
                     },
-                    that.binding.noteId);
+                    that.binding.noteId,
+                    that.binding.isLocal);
                 } else {
                     ret = WinJS.Promise.as();
                 }

@@ -7,15 +7,13 @@
     "use strict";
 
     WinJS.Namespace.define("SketchList", {
-        _sketchlistView: {
-            get: function () {
-                return AppData.getFormatView("KontaktNotiz", 20504, false);
-            }
+        getSketchlistView: function (isLocal) {
+                return AppData.getFormatView("KontaktNotiz", 20504, isLocal);
         },
         sketchlistView: {
-            select: function (complete, error, restriction) {
+            select: function (complete, error, restriction, isLocal) {
                 Log.call(Log.l.trace, "SketchList.");
-                var ret = SketchList._sketchlistView.select(complete, error, restriction, {
+                var ret = SketchList.getSketchlistView(isLocal).select(complete, error, restriction, {
                     ordered: true,
                     orderAttribute: "KontaktNotizVIEWID",
                     desc: true
@@ -24,15 +22,15 @@
                 Log.ret(Log.l.trace);
                 return ret;
             },
-            getNextUrl: function (response) {
+            getNextUrl: function (response, isLocal) {
                 Log.call(Log.l.trace, "SketchList.");
-                var ret = SketchList._sketchlistView.getNextUrl(response);
+                var ret = SketchList.getSketchlistView(isLocal).getNextUrl(response);
                 Log.ret(Log.l.trace);
                 return ret;
             },
-            selectNext: function (complete, error, response, nextUrl) {
+            selectNext: function (complete, error, response, nextUrl, isLocal) {
                 Log.call(Log.l.trace, "SketchList.");
-                var ret = SketchList._sketchlistView.selectNext(complete, error, response, nextUrl);
+                var ret = SketchList.getSketchlistView(isLocal).selectNext(complete, error, response, nextUrl);
                 // this will return a promise to controller
                 Log.ret(Log.l.trace);
                 return ret;

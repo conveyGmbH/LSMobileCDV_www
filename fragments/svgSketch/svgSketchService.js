@@ -7,20 +7,19 @@
     "use strict";
 
     WinJS.Namespace.define("SvgSketch", {
-        _sketchDocView: {
-            get: function () {
-                return AppData.getFormatView("KontaktNotiz", 20505);
-            }
+        getSketchDocView: function (isLocal) {
+                return AppData.getFormatView("KontaktNotiz", 20505, isLocal);
         },
         sketchDocView: {
-            select: function (complete, error, recordId) {
+            select: function (complete, error, recordId, isLocal) {
                 Log.call(Log.l.trace, "sketchView.");
-                var ret = SvgSketch._sketchDocView.selectById(complete, error, recordId);
+                var ret = SvgSketch.getSketchDocView(isLocal).selectById(complete, error, recordId);
                 // this will return a promise to controller
                 Log.ret(Log.l.trace);
                 return ret;
             }
         },
+
         _sketchView: {
             get: function () {
                 return AppData.getFormatView("KontaktNotiz", 0);
@@ -36,13 +35,13 @@
             },
             insert: function (complete, error, viewResponse) {
                 Log.call(Log.l.trace, "sketchView.");
-                var ret = SvgSketch._sketchView.insert(complete, error, viewResponse);
+                var ret = SvgSketch.getSketchView(true).insert(complete, error, viewResponse);
                 Log.ret(Log.l.trace);
                 return ret;
             },
             update: function (complete, error, recordId, viewResponse) {
                 Log.call(Log.l.trace, "sketchView.");
-                var ret = SvgSketch._sketchView.update(complete, error, recordId, viewResponse);
+                var ret = SvgSketch.getSketchView(true).update(complete, error, recordId, viewResponse);
                 Log.ret(Log.l.trace);
                 return ret;
             }

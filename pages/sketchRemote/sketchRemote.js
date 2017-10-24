@@ -6,7 +6,6 @@
 /// <reference path="~/www/lib/convey/scripts/logging.js" />
 /// <reference path="~/www/lib/convey/scripts/navigator.js" />
 /// <reference path="~/www/lib/convey/scripts/appbar.js" />
-/// <reference path="~/www/pages/sketchRemote/svg.js" />
 /// <reference path="~/www/pages/sketchRemote/sketchRemoteController.js" />
 
 (function () {
@@ -29,7 +28,8 @@
             var commandList = [
                 { id: 'clickBack', label: getResourceText('command.backward'), tooltip: getResourceText('tooltip.backward'), section: 'primary', svg: 'navigate_left' },
                 { id: "clickNew", label: getResourceText("command.new"), tooltip: getResourceText("tooltip.new"), section: "primary", svg: "user_plus" },
-                { id: 'clickForward', label: getResourceText('command.ok'), tooltip: getResourceText('tooltip.ok'), section: 'primary', svg: 'navigate_check', key: WinJS.Utilities.Key.enter }
+                { id: 'clickForward', label: getResourceText('command.ok'), tooltip: getResourceText('tooltip.ok'), section: 'primary', svg: 'navigate_check', key: WinJS.Utilities.Key.enter },
+                { id: 'clickShowList', label: getResourceText('sketch.showList'), tooltip: getResourceText('sketch.showList'), section: 'primary', svg: 'elements3' }
             ];
 
             this.controller = new SketchRemote.Controller(element, commandList);
@@ -55,26 +55,36 @@
             if (element && !that.inResize) {
                 that.inResize = 1;
                 ret = WinJS.Promise.timeout(0).then(function () {
-                    var mySketch = element.querySelector("#svgsketch");
-                    if (mySketch && mySketch.style) {
+                    var mySketchViewers = element.querySelectorAll(".sketchfragmenthost");
+                    var mySketchList = element.querySelector(".listfragmenthost");
+                    if (mySketchViewers) {
                         var contentarea = element.querySelector(".contentarea");
                         if (contentarea) {
+                            var mySketch, i;
                             var contentHeader = element.querySelector(".content-header");
                             var width = contentarea.clientWidth;
                             var height = contentarea.clientHeight - (contentHeader ? contentHeader.clientHeight : 0);
 
-                            if (width !== that.prevWidth || height !== that.prevHeight) {
-                                if (that.controller && that.controller.svgEditor) {
-                                    that.controller.svgEditor.resize(width, height);
-                                }
+                            if (that.controller && that.controller.binding && that.controller.binding.showList) {
+                                height -= mySketchList.clientHeight;
                             }
                             if (width !== that.prevWidth) {
+                                for (i = 0; i < mySketchViewers.length; i++) {
+                                    mySketch = mySketchViewers[i];
+                                    if (mySketch && mySketch.style) {
+                                        mySketch.style.width = width.toString() + "px";
+                                    }
+                                }
                                 that.prevWidth = width;
-                                mySketch.style.width = width.toString() + "px";
                             }
                             if (height !== that.prevHeight) {
+                                for (i = 0; i < mySketchViewers.length; i++) {
+                                    mySketch = mySketchViewers[i];
+                                    if (mySketch && mySketch.style) {
+                                        mySketch.style.height = height.toString() + "px";
+                                    }
+                                }
                                 that.prevHeight = height;
-                                mySketch.style.height = height.toString() + "px";
                             }
                         }
                     }
@@ -82,7 +92,7 @@
                 });
             }
             Log.ret(Log.l.trace);
-            return ret;
+            return ret || WinJS.Promise.as();
         }
     });
 
