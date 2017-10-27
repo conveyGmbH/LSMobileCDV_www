@@ -147,6 +147,9 @@
     "sketch.color"          : "Color",
     "sketch.width"          : "Pen width",
     "sketch.showList"		: "More notes",
+    "sketch.addNote"		: "Add note",
+    "sketch.addSvg"			: "Add sketch",
+    "sketch.addImg"			: "Add photo",
 
     "search.title"          : "Enter search criteria",
     "search.comment"        : "On this page, use the Back button to go back!",

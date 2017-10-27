@@ -6,6 +6,9 @@
 /// <reference path="~/www/lib/convey/scripts/fragmentController.js" />
 /// <reference path="~/www/scripts/generalData.js" />
 /// <reference path="~/www/fragments/imgSketch/imgSketchService.js" />
+/// <reference path="~/plugins/cordova-plugin-camera/www/CameraConstants.js" />
+/// <reference path="~/plugins/cordova-plugin-camera/www/Camera.js" />
+/// <reference path="~/plugins/cordova-plugin-device/www/device.js" />
 
 (function () {
     "use strict";
@@ -353,12 +356,129 @@
                 Log.ret(Log.l.trace);
             }
 
+            var insertCameradata = function (imageData, width, height) {
+                Log.call(Log.l.trace, "ImgSketch.Controller.");
+                var ret = new WinJS.Promise.as().then(function () {
+                    // UTC-Zeit in Klartext
+                    var now = new Date();
+                    var dateStringUtc = now.toUTCString();
+
+                    // decodierte Dateigröße
+                    var contentLength = Math.floor(imageData.length * 3 / 4);
+
+                    var newPicture = {
+                        //TODO adjust attributes & values
+                        DOC1ZeilenantwortVIEWID: that.getNextDocId(),
+                        wFormat: 3,
+                        ColorType: 11,
+                        ulWidth: width,
+                        ulHeight: height,
+                        ulDpm: 0,
+                        szOriFileNameDOC1: "Question.jpg",
+                        DocContentDOCCNT1:
+                        "Content-Type: image/jpegAccept-Ranges: bytes\x0D\x0ALast-Modified: " + dateStringUtc + "\x0D\x0AContent-Length: " + contentLength + "\x0D\x0A\x0D\x0A" + imageData,
+                        PrevContentDOCCNT2: null,
+                        OvwContentDOCCNT3: null,
+                        szOvwPathDOC3: null,
+                        szPrevPathDOC4: null,
+                        ContentEncoding: 4096
+                    };
+                    //load of format relation record data
+                    Log.print(Log.l.trace, "insert new cameraData for DOC1ZeilenantwortVIEWID=" + newPicture.DOC1ZeilenantwortVIEWID);
+                    return Questionnaire.questionnaireDocView.insert(function (json) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                        Log.print(Log.l.trace, "questionnaireDocView: success!");
+                        // contactData returns object already parsed from json file in response
+                        if (json && json.d) {
+                            that.setNextDocId(json.d.DOC1ZeilenantwortVIEWID);
+                            Log.print(Log.l.info, "DOC1ZeilenantwortVIEWID=" + json.d.DOC1ZeilenantwortVIEWID);
+                            that.docCount++;
+                            WinJS.Promise.timeout(50).then(function () {
+                                that.loadPicture(json.d.DOC1ZeilenantwortVIEWID);
+                            });
+                        } else {
+                            AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
+                        }
+                        AppBar.busy = false;
+                        return WinJS.Promise.as();
+                    }, function (errorResponse) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        AppData.setErrorMsg(that.binding, errorResponse);
+                        AppBar.busy = false;
+                    }, newPicture);
+                });
+                Log.ret(Log.l.trace);
+                return ret;
+            };
+            this.insertCameradata = insertCameradata;
+
+            var onPhotoDataSuccess = function (imageData) {
+                Log.call(Log.l.trace, "Questionnaire.Controller.");
+                // Get image handle
+                //
+                var cameraImage = new Image();
+                // Show the captured photo
+                // The inline CSS rules are used to resize the image
+                //
+                cameraImage.src = "data:image/jpeg;base64," + imageData;
+
+                var width = cameraImage.width;
+                var height = cameraImage.height;
+                Log.print(Log.l.trace, "width=" + width + " height=" + height);
+
+                // todo: create preview from imageData
+                that.insertCameradata(imageData, width, height);
+                Log.ret(Log.l.trace);
+            };
+
+            var onPhotoDataFail = function (message) {
+                Log.call(Log.l.error, "Questionnaire.Controller.");
+                //message: The message is provided by the device's native code
+                //AppData.setErrorMsg(that.binding, message);
+                AppBar.busy = false;
+                Log.ret(Log.l.error);
+            };
+
+            //start native Camera async
+            AppData.setErrorMsg(that.binding);
+            var takePhoto = function () {
+                Log.call(Log.l.trace, "ImgSketch.Controller.");
+                if (navigator.camera &&
+                    typeof navigator.camera.getPicture === "function") {
+                    // shortcuts for camera definitions
+                    //pictureSource: navigator.camera.PictureSourceType,   // picture source
+                    //destinationType: navigator.camera.DestinationType, // sets the format of returned value
+                    Log.print(Log.l.trace, "calling camera.getPicture...");
+                    // Take picture using device camera and retrieve image as base64-encoded string
+                    AppBar.busy = true;
+                    navigator.camera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
+                        destinationType: Camera.DestinationType.DATA_URL,
+                        sourceType: Camera.PictureSourceType.CAMERA,
+                        allowEdit: true,
+                        quality: AppData.generalData.cameraQuality,
+                        targetWidth: -1,
+                        targetHeight: -1,
+                        encodingType: Camera.EncodingType.JPEG,
+                        saveToPhotoAlbum: false,
+                        cameraDirection: Camera.Direction.BACK,
+                        variableEditRect: true
+                    });
+                } else {
+                    Log.print(Log.l.error, "camera.getPicture not supported...");
+                    that.updateStates({ errorMessage: "Camera plugin not supported" });
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.takePhoto = takePhoto;
+
             var loadData = function (noteId) {
                 Log.call(Log.l.trace, "ImgSketch.Controller.");
                 if (noteId) {
                     that.binding.noteId = noteId;
                 }
-                var ret = null;
+                var ret;
                 if (that.binding.noteId !== null) {
                     AppData.setErrorMsg(that.binding);
                     ret = ImgSketch.sketchDocView.select(function (json) {
@@ -380,6 +500,7 @@
                     that.binding.noteId,
                     that.binding.isLocal);
                 } else {
+                    that.takePhoto();
                     ret = WinJS.Promise.as();
                 }
                 Log.ret(Log.l.trace);

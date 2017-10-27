@@ -83,7 +83,7 @@
                 var ret = new WinJS.Promise.as().then(function () {
                     var doret = null;
                     if (that.binding.noteId !== null) {
-                        doret = SvgSketch.sketchDocView.select(function (json) {
+                        doret = SvgSketch.sketchDocView.select(function(json) {
                                 // this callback will be called asynchronously
                                 // when the response is available
                                 Log.print(Log.l.trace, "SvgSketch.sketchDocView: success!");
@@ -101,13 +101,16 @@
                                     showSvgAfterResize();
                                 }
                             },
-                            function (errorResponse) {
+                            function(errorResponse) {
                                 // called asynchronously if an error occurs
                                 // or server returns response with an error status.
                                 AppData.setErrorMsg(that.binding, errorResponse);
                             },
                             that.binding.noteId,
                             that.binding.isLocal);
+                    } else {
+                        that.svgEditor.fnNewSVG(event);
+                        showSvgAfterResize();
                     }
                     return doret;
                 });

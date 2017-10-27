@@ -143,6 +143,9 @@
     "sketch.color"          : "Colore",
     "sketch.width"          : "Larghezza",
     "sketch.showList"		: "Altre notizie",
+    "sketch.addNote"		: "Aggiungete una notizia",
+    "sketch.addSvg"			: "Aggiungete uno schizzo",
+    "sketch.addImg"			: "Aggiungete una foto",
 
     "search.title"          : "Immettere i criteri di ricerca",
     "search.comment"        : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
