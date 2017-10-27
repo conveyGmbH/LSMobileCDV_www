@@ -187,6 +187,29 @@
                     that.binding.userHidesList = !that.binding.showList;
                     Application.navigator._resized();
                     Log.ret(Log.l.trace);
+                },
+                clickAddNote: function (event) {
+                    Log.call(Log.l.trace, "Sketch.Controller.");
+                    //TODO show buttons
+                    Log.ret(Log.l.trace);
+                },
+                clickAddSvg: function (event) {
+                    Log.call(Log.l.trace, "Sketch.Controller.");
+                    //TODO open blank svg
+                    var parentElement = pageElement.querySelector("#svghost");
+                    if (parentElement) {
+                        Application.loadFragmentById(parentElement, "svgSketch", { noteId: null, isLocal: true });
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                clickAddImg: function (event) {
+                    Log.call(Log.l.trace, "Sketch.Controller.");
+                    //TODO open camera
+                    var parentElement = pageElement.querySelector("#imghost");
+                    if (parentElement) {
+                        Application.loadFragmentById(parentElement, "imgSketch", { noteId: null, isLocal: true });
+                    }
+                    Log.ret(Log.l.trace);
                 }
             };
 

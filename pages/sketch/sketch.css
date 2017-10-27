@@ -12,3 +12,15 @@
     height: 200px;
 }
 
+.add-box {
+    display: none;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    height: 100px;
+    padding: 4px;
+    background-color: #2f2f2f;
+    opacity: 0.9;
+    min-width: 260px;
+}
+
