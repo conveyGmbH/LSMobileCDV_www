@@ -24,15 +24,33 @@
             this.prevWidth = 0;
             this.prevHeight = 0;
 
+            if (element) {
+                var shapeElements = element.querySelectorAll(".tool-image");
+                if (shapeElements && shapeElements.length > 0) {
+                    for (var i = 0; i < shapeElements.length; i++) {
+                        if (shapeElements[i].id && shapeElements[i].id.length > 0) {
+                            var svgObject = shapeElements[i];
+                            // insert svg object before span element 
+                            if (svgObject && !svgObject.firstChild) {
+                                // load the image file
+                                Colors.loadSVGImage({
+                                    fileName: shapeElements[i].id,
+                                    color: Colors.isDarkTheme ? "#ffffff" : "#000000",
+                                    size: 32
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            Colors.changeCSS(".add-box", "background-color", Colors.isDarkTheme ? "#2b2b2b" : "#f2f2f2");
+
             // add page specific commands to AppBar
             var commandList = [
                 { id: 'clickBack', label: getResourceText('command.backward'), tooltip: getResourceText('tooltip.backward'), section: 'primary', svg: 'navigate_left' },
                 { id: "clickNew", label: getResourceText("command.new"), tooltip: getResourceText("tooltip.new"), section: "primary", svg: "user_plus" },
-                { id: 'clickForward', label: getResourceText('command.ok'), tooltip: getResourceText('tooltip.ok'), section: 'primary', svg: 'navigate_check', key: WinJS.Utilities.Key.enter },
                 { id: 'clickShowList', label: getResourceText('sketch.showList'), tooltip: getResourceText('sketch.showList'), section: 'primary', svg: 'elements3' },
-                { id: "clickAddNote", label: getResourceText("sketch.addNote"), tooltip: getResourceText("sketch.addNote"), section: "primary", svg: "add" },
-                { id: "clickAddSvg", label: getResourceText("sketch.addSvg"), tooltip: getResourceText("sketch.addSvg"), section: "secondary" },
-                { id: "clickAddImg", label: getResourceText("sketch.addImg"), tooltip: getResourceText("sketch.addImg"), section: "secondary", svg:"camera" }
+                { id: "clickAddNote", label: getResourceText("sketch.addNote"), tooltip: getResourceText("sketch.addNote"), section: "primary", svg: "add" }
             ];
             
             this.controller = new Sketch.Controller(element, commandList);

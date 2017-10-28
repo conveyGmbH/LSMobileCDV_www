@@ -17,7 +17,9 @@
 
             // instanciate SVGEditor class
             var svgEditor = new SVGEditor.SVGEditorClass();
-            svgEditor.registerTouchEvents();
+            if (options && options.isLocal) {
+                svgEditor.registerTouchEvents();                
+            }
             svgEditor.fnCreateDrawDiv();
             svgEditor.fnStartSketch();
 
@@ -77,16 +79,14 @@
             var loadData = function (noteId) {
                 Log.call(Log.l.trace, "SvgSketch.Controller.");
                 AppData.setErrorMsg(that.binding);
-                if (noteId) {
-                    that.binding.noteId = noteId;
-                }
                 var ret = new WinJS.Promise.as().then(function () {
                     var doret = null;
-                    if (that.binding.noteId !== null) {
+                    if (noteId !== null) {
                         doret = SvgSketch.sketchDocView.select(function(json) {
                                 // this callback will be called asynchronously
                                 // when the response is available
                                 Log.print(Log.l.trace, "SvgSketch.sketchDocView: success!");
+                                that.binding.noteId = noteId;
                                 // select returns object already parsed from json file in response
                                 if (json && json.d) {
                                     that.resultConverter(json.d);
@@ -106,7 +106,7 @@
                                 // or server returns response with an error status.
                                 AppData.setErrorMsg(that.binding, errorResponse);
                             },
-                            that.binding.noteId,
+                            noteId,
                             that.binding.isLocal);
                     } else {
                         that.svgEditor.fnNewSVG(event);
@@ -124,7 +124,7 @@
                 var ret;
                 AppData.setErrorMsg(that.binding);
                 var dataSketch = that.binding.dataSketch;
-                if (dataSketch.Quelltext && AppBar.modified) {
+                if (dataSketch && AppBar.modified) {
                     ret = new WinJS.Promise.as().then(function() {
                         that.svgEditor.fnSaveSVG(function(quelltext) {
                             dataSketch.Quelltext = quelltext;
@@ -143,7 +143,8 @@
                                         error(errorResponse);
                                     },
                                     that.binding.noteId,
-                                    dataSketch);
+                                    dataSketch,
+                                    that.binding.isLocal);
                             } else {
                                 //insert if a primary key is not available (noteId === null)
                                 dataSketch.KontaktID = AppData.getRecordId("Kontakt");
@@ -181,7 +182,9 @@
                                         // or server returns response with an error status.
                                         AppData.setErrorMsg(that.binding, errorResponse);
                                         error(errorResponse);
-                                    }, dataSketch);
+                                    },
+                                    dataSketch,
+                                    that.binding.isLocal);
                                 }
                             }
                             return doret;
@@ -198,6 +201,21 @@
             this.saveData = saveData;
 
             var eventHandlers = {
+                clickOk: function (event) {
+                    Log.call(Log.l.trace, "Sketch.Controller.");
+                    if (AppBar.modified && !AppBar.busy) {
+                        AppBar.busy = true;
+                        AppData.setErrorMsg(that.binding);
+                        that.saveData(function (response) {
+                            // called asynchronously if ok
+                            AppBar.busy = false;
+                        }, function (errorResponse) {
+                            AppBar.busy = false;
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        });
+                    }
+                    Log.ret(Log.l.trace);
+                },
                 clickUndo: function (event) {
                     Log.call(Log.l.trace, "Sketch.Controller.");
                     that.svgEditor.fnUndoSVG(event);
@@ -275,6 +293,9 @@
             this.eventHandlers = eventHandlers;
 
             var disableHandlers = {
+                clickOk: function () {
+                    return !AppBar.modified || AppBar.busy;
+                },
                 clickUndo: function () {
                     if (that.svgEditor && that.svgEditor.fnCanUndo()) {
                         return false;
@@ -303,7 +324,7 @@
             // finally, load the data
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
-                return that.loadData();
+                return that.loadData(options.noteId);
             }).then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Data loaded");

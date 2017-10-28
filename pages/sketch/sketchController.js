@@ -32,9 +32,9 @@
             this.contactId = AppData.getRecordId("Kontakt");
             this.pageElement = pageElement;
 
-            var getDocViewer = function (docGroup, docFormat) {
+            var setDocViewer = function (docGroup, docFormat) {
+                var prevDocViewer = docViewer;
                 Log.call(Log.l.trace, "Sketch.Controller.", "docGroup=" + docGroup + " docFormat=" + docFormat);
-                docViewer = null;
                 if (AppData.isSvg(docGroup, docFormat)) {
                     that.binding.showSvg = true;
                     that.binding.showPhoto = false;
@@ -43,9 +43,11 @@
                     that.binding.showSvg = false;
                     that.binding.showPhoto = true;
                     docViewer = Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("imgSketch"));
+                } else {
+                    docViewer = null;
                 }
                 Log.ret(Log.l.trace);
-                return docViewer;
+                return prevDocViewer;
             }
             that.docViewer = {
                 get: function() {
@@ -53,33 +55,68 @@
                 }
             }
 
+            var prevNoteId;
+            var inLoadDoc = false;
             var loadDoc = function (noteId, docGroup, docFormat) {
                 var ret;
                 var parentElement;
                 Log.call(Log.l.trace, "Sketch.Controller.", "noteId=" + noteId + " docGroup=" + docGroup + " docFormat=" + docFormat);
-                getDocViewer(docGroup, docFormat);
-                if (docViewer && docViewer.controller) {
-                    ret = docViewer.controller.loadData(noteId);
-                } else if (AppData.isSvg(docGroup, docFormat)) {
-                    that.binding.showSvg = true;
-                    that.binding.showPhoto = false;
-                    parentElement = pageElement.querySelector("#svghost");
-                    if (parentElement) {
-                        ret = Application.loadFragmentById(parentElement, "svgSketch", { noteId: noteId, isLocal: true });
-                    } else {
+                // prevent recursive calls here!
+                if (inLoadDoc) {
+                    if (noteId === prevNoteId) {
+                        Log.print(Log.l.trace, "extra ignored");
                         ret = WinJS.Promise.as();
-                    }
-                } else if (AppData.isImg(docGroup, docFormat)) {
-                    that.binding.showSvg = false;
-                    that.binding.showPhoto = true;
-                    parentElement = pageElement.querySelector("#imghost");
-                    if (parentElement) {
-                        ret = Application.loadFragmentById(parentElement, "imgSketch", { noteId: noteId, isLocal: true });
                     } else {
-                        ret = WinJS.Promise.as();
+                        Log.print(Log.l.trace, "busy - try later again");
+                        ret = WinJS.Promise.timeout(50).then(function () {
+                            return loadDoc(noteId, docGroup, docFormat);
+                        });
                     }
                 } else {
-                    ret = WinJS.Promise.as();
+                    inLoadDoc = true;
+                    prevNoteId = noteId;
+                    var bNewDocViewer = false;
+                    var bUpdateCommands = false;
+                    var prevDocViewer = setDocViewer(docGroup, docFormat);
+                    if (docViewer && docViewer.controller) {
+                        bUpdateCommands = true;
+                        ret = docViewer.controller.loadData(noteId);
+                    } else if (AppData.isSvg(docGroup, docFormat)) {
+                        that.binding.showSvg = true;
+                        that.binding.showPhoto = false;
+                        parentElement = pageElement.querySelector("#svghost");
+                        if (parentElement) {
+                            bNewDocViewer = true;
+                            bUpdateCommands = true;
+                            ret = Application.loadFragmentById(parentElement, "svgSketch", { noteId: noteId, isLocal: true });
+                        } else {
+                            ret = WinJS.Promise.as();
+                        }
+                    } else if (AppData.isImg(docGroup, docFormat)) {
+                        that.binding.showSvg = false;
+                        that.binding.showPhoto = true;
+                        parentElement = pageElement.querySelector("#imghost");
+                        if (parentElement) {
+                            bNewDocViewer = true;
+                            bUpdateCommands = true;
+                            ret = Application.loadFragmentById(parentElement, "imgSketch", { noteId: noteId, isLocal: true });
+                        } else {
+                            ret = WinJS.Promise.as();
+                        }
+                    } else {
+                        ret = WinJS.Promise.as();
+                    }
+                    ret = ret.then(function () {
+                        if (bUpdateCommands) {
+                            if (bNewDocViewer) {
+                                prevDocViewer = setDocViewer(docGroup, docFormat);
+                            }
+                            if (prevDocViewer !== docViewer && docViewer && docViewer.controller) {
+                                docViewer.controller.updateCommands(prevDocViewer && prevDocViewer.controller);
+                            }
+                        }
+                        inLoadDoc = false;
+                    });
                 }
                 Log.ret(Log.l.trace);
                 return ret;
@@ -156,6 +193,52 @@
                 return ret;
             }
             this.loadData = loadData;
+
+            var hideToolbox = function(id) {
+                var curToolbox = document.querySelector('#' + id);
+                if (curToolbox) {
+                    //var height = -curToolbox.clientHeight;
+                    //var offset = { top: height.toString() + "px", left: "0px" };
+                    WinJS.UI.Animation.slideDown(curToolbox).done(function() {
+                        curToolbox.style.display = "none";
+                    });
+                }
+            }
+            this.hideToolbox = hideToolbox;
+
+            var toggleToolbox = function (id) {
+                window.setTimeout(function() {
+                    var toolboxIds = ['addNotesToolbar'];
+                    var curToolbox = document.querySelector('#' + id);
+                    if (curToolbox && curToolbox.style) {
+                        if (!curToolbox.style.display ||
+                            curToolbox.style.display === "none") {
+                            for (var i = 0; i < toolboxIds.length; i++) {
+                                if (toolboxIds[i] !== id) {
+                                    var otherToolbox = document.querySelector('#' + toolboxIds[i]);
+                                    if (otherToolbox && otherToolbox.style &&
+                                        otherToolbox.style.display === "block") {
+                                        otherToolbox.style.display = "none";
+                                    }
+                                }
+                            }
+                            if (docViewer && docViewer.controller && docViewer.controller.svgEditor) {
+                                docViewer.controller.svgEditor.unregisterTouchEvents();
+                            }
+                            curToolbox.style.display = "block";
+                            WinJS.UI.Animation.slideUp(curToolbox).done(function () {
+                                // now visible
+                            });
+                        } else {
+                            that.hideToolbox(id);
+                            if (docViewer && docViewer.controller && docViewer.controller.svgEditor) {
+                                docViewer.controller.svgEditor.registerTouchEvents();
+                            }
+                        }
+                    }
+                }, 0, id);
+            }
+            this.toggleToolbox = toggleToolbox;
             
             // define handlers
             this.eventHandlers = {
@@ -190,25 +273,21 @@
                 },
                 clickAddNote: function (event) {
                     Log.call(Log.l.trace, "Sketch.Controller.");
-                    //TODO show buttons
+                    // TODO: show buttons
+                    that.toggleToolbox("addNotesToolbar");
                     Log.ret(Log.l.trace);
                 },
                 clickAddSvg: function (event) {
                     Log.call(Log.l.trace, "Sketch.Controller.");
-                    //TODO open blank svg
-                    var parentElement = pageElement.querySelector("#svghost");
-                    if (parentElement) {
-                        Application.loadFragmentById(parentElement, "svgSketch", { noteId: null, isLocal: true });
-                    }
+                    // TODO: open blank svg
+                    that.hideToolbox("addNotesToolbar");
+                    loadDoc(null, 3, 75);
                     Log.ret(Log.l.trace);
                 },
                 clickAddImg: function (event) {
                     Log.call(Log.l.trace, "Sketch.Controller.");
-                    //TODO open camera
-                    var parentElement = pageElement.querySelector("#imghost");
-                    if (parentElement) {
-                        Application.loadFragmentById(parentElement, "imgSketch", { noteId: null, isLocal: true });
-                    }
+                    // TODO: open camera
+                    that.hideToolbox("addNotesToolbar");
                     Log.ret(Log.l.trace);
                 }
             };

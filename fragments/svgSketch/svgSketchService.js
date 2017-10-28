@@ -20,28 +20,26 @@
             }
         },
 
-        _sketchView: {
-            get: function () {
-                return AppData.getFormatView("KontaktNotiz", 0);
-            }
+        getSketchView: function (isLocal) {
+            return AppData.getFormatView("KontaktNotiz", 0, isLocal);
         },
         sketchView: {
-            select: function (complete, error, recordId) {
+            select: function (complete, error, recordId, isLocal) {
                 Log.call(Log.l.trace, "sketchView.");
-                var ret = SvgSketch._sketchView.selectById(complete, error, recordId);
+                var ret = SvgSketch.getSketchView(isLocal).selectById(complete, error, recordId);
                 // this will return a promise to controller
                 Log.ret(Log.l.trace);
                 return ret;
             },
-            insert: function (complete, error, viewResponse) {
+            insert: function (complete, error, viewResponse, isLocal) {
                 Log.call(Log.l.trace, "sketchView.");
-                var ret = SvgSketch.getSketchView(true).insert(complete, error, viewResponse);
+                var ret = SvgSketch.getSketchView(isLocal).insert(complete, error, viewResponse);
                 Log.ret(Log.l.trace);
                 return ret;
             },
-            update: function (complete, error, recordId, viewResponse) {
+            update: function (complete, error, recordId, viewResponse, isLocal) {
                 Log.call(Log.l.trace, "sketchView.");
-                var ret = SvgSketch.getSketchView(true).update(complete, error, recordId, viewResponse);
+                var ret = SvgSketch.getSketchView(isLocal).update(complete, error, recordId, viewResponse);
                 Log.ret(Log.l.trace);
                 return ret;
             }

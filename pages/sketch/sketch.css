@@ -17,10 +17,13 @@
     position: absolute;
     bottom: 0px;
     right: 0px;
-    height: 100px;
+    height: 60px;
     padding: 4px;
     background-color: #2f2f2f;
     opacity: 0.9;
     min-width: 260px;
 }
 
+#addNotesToolbar .shape {
+    background-color: transparent;
+}

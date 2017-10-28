@@ -471,6 +471,9 @@
                                 }
                                 that.unregisterTouchEvents();
                                 curToolbox.style.display = "block";
+                                WinJS.UI.Animation.slideUp(curToolbox).done(function () {
+                                    // now visible
+                                });
                             } else {
                                 that.hideToolbox(id);
                                 that.registerTouchEvents();

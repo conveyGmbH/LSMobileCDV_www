@@ -475,16 +475,14 @@
 
             var loadData = function (noteId) {
                 Log.call(Log.l.trace, "ImgSketch.Controller.");
-                if (noteId) {
-                    that.binding.noteId = noteId;
-                }
                 var ret;
-                if (that.binding.noteId !== null) {
+                if (noteId !== null) {
                     AppData.setErrorMsg(that.binding);
                     ret = ImgSketch.sketchDocView.select(function (json) {
                         // this callback will be called asynchronously
                         // when the response is available
                         Log.print(Log.l.trace, "ImgSketch.sketchDocView: success!");
+                        that.binding.noteId = noteId;
                         // select returns object already parsed from json file in response
                         if (json && json.d) {
                             that.resultConverter(json.d);
@@ -497,7 +495,7 @@
                         // or server returns response with an error status.
                         AppData.setErrorMsg(that.binding, errorResponse);
                     },
-                    that.binding.noteId,
+                    noteId,
                     that.binding.isLocal);
                 } else {
                     that.takePhoto();
@@ -528,7 +526,7 @@
 
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
-                return that.loadData();
+                return that.loadData(options.noteId);
             }).then(function () {
                 Log.print(Log.l.trace, "Data loaded");
             });
