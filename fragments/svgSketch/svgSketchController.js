@@ -81,7 +81,7 @@
                 AppData.setErrorMsg(that.binding);
                 var ret = new WinJS.Promise.as().then(function () {
                     var doret = null;
-                    if (noteId !== null) {
+                    if (noteId) {
                         doret = SvgSketch.sketchDocView.select(function(json) {
                                 // this callback will be called asynchronously
                                 // when the response is available
@@ -148,7 +148,21 @@
                             } else {
                                 //insert if a primary key is not available (noteId === null)
                                 dataSketch.KontaktID = AppData.getRecordId("Kontakt");
-                                dataSketch.ExecAppTypeID = 15; // SVG note
+                                // SVG note
+                                dataSketch.ExecAppTypeID = 15; 
+                                dataSketch.DocGroup = 3;
+                                dataSketch.DocFormat = 75;
+                                dataSketch.OvwEdge = 100;
+                                dataSketch.DocExt = "svg";
+                                var svgdiv = fragmentElement.querySelector(".svgdiv");
+                                if (svgdiv) {
+                                    var svg = svgdiv.firstElementChild;
+                                    if (svg) {
+                                        dataSketch.Width = svg.height && svg.height.baseVal && svg.height.baseVal.value;
+                                        dataSketch.Height = svg.width && svg.width.baseVal && svg.width.baseVal.value;
+                                    }
+                                }
+
                                 if (!dataSketch.KontaktID) {
                                     doret = new WinJS.Promise.as().then(function () {
                                         var errorResponse = {
@@ -160,6 +174,7 @@
                                     });
                                 } else {
                                     doret = SvgSketch.sketchView.insert(function (json) {
+                                        var doret2;
                                         // this callback will be called asynchronously
                                         // when the response is available
                                         Log.print(Log.l.trace, "sketchData insert: success!");
@@ -170,13 +185,20 @@
                                             AppBar.scope.contactId = dataSketch.KontaktID;
                                             if (typeof that.binding.dataSketch.Quelltext !== "undefined" &&
                                                 that.binding.dataSketch.Quelltext) {
-                                                Log.print(Log.l.trace, "SVG Element: " + that.binding.dataSketch.Quelltext.substr(0, 100) + "...");
+                                                Log.print(Log.l.trace,
+                                                    "SVG Element: " +
+                                                    that.binding.dataSketch.Quelltext.substr(0, 100) +
+                                                    "...");
                                             }
-                                            WinJS.Promise.timeout(0).then(function () {
+                                            doret2 = WinJS.Promise.timeout(0).then(function () {
+                                                // reload trigger-generated SVG
                                                 that.svgEditor.fnLoadSVG(that.binding.dataSketch.Quelltext);
                                             });
+                                        } else {
+                                            doret2 = WinJS.Promise.as();
                                         }
                                         complete(json);
+                                        return doret2;
                                     }, function (errorResponse) {
                                         // called asynchronously if an error occurs
                                         // or server returns response with an error status.

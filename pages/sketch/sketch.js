@@ -66,19 +66,19 @@
             var ret;
             var that = this;
             if (that.controller) {
-                ret = WinJS.Promise.as().then(function (response) {
+                ret = WinJS.Promise.as().then(function () {
                     // called asynchronously if ok
                     // call fragment canUnload
                     var doc = that.controller.docViewer;
                     if (doc && doc.canUnload) {
                         doc.canUnload(complete, error);
                     } else {
-                        complete(response);
+                        complete();
                     }
                 });
             } else {
                 ret = WinJS.Promise.as().then(function () {
-                    complete(response);
+                    complete();
                 });
             }
             Log.ret(Log.l.trace);

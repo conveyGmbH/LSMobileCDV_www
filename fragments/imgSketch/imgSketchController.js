@@ -67,7 +67,7 @@
             var resultConverter = function (item, index) {
                 Log.call(Log.l.trace, "ImgSketch.Controller.");
                 if (item) {
-                    var docContent = item.DocContentDOCCNT1;
+                    var docContent = item.DocContentDOCCNT1 ? item.DocContentDOCCNT1 : item.Quelltext;
                     if (docContent) {
                         var sub = docContent.search("\r\n\r\n");
                         item.DocContentDOCCNT1 = "data:image/jpeg;base64," + docContent.substr(sub + 4);
@@ -357,57 +357,86 @@
             }
 
             var insertCameradata = function (imageData, width, height) {
+                var ovwEdge = 256;
+                var err = null;
                 Log.call(Log.l.trace, "ImgSketch.Controller.");
+                AppData.setErrorMsg(that.binding);
+                var dataSketch = that.binding.dataSketch;
                 var ret = new WinJS.Promise.as().then(function () {
-                    // UTC-Zeit in Klartext
-                    var now = new Date();
-                    var dateStringUtc = now.toUTCString();
-
-                    // decodierte Dateigröße
-                    var contentLength = Math.floor(imageData.length * 3 / 4);
-
-                    var newPicture = {
-                        //TODO adjust attributes & values
-                        DOC1ZeilenantwortVIEWID: that.getNextDocId(),
-                        wFormat: 3,
-                        ColorType: 11,
-                        ulWidth: width,
-                        ulHeight: height,
-                        ulDpm: 0,
-                        szOriFileNameDOC1: "Question.jpg",
-                        DocContentDOCCNT1:
-                        "Content-Type: image/jpegAccept-Ranges: bytes\x0D\x0ALast-Modified: " + dateStringUtc + "\x0D\x0AContent-Length: " + contentLength + "\x0D\x0A\x0D\x0A" + imageData,
-                        PrevContentDOCCNT2: null,
-                        OvwContentDOCCNT3: null,
-                        szOvwPathDOC3: null,
-                        szPrevPathDOC4: null,
-                        ContentEncoding: 4096
-                    };
-                    //load of format relation record data
-                    Log.print(Log.l.trace, "insert new cameraData for DOC1ZeilenantwortVIEWID=" + newPicture.DOC1ZeilenantwortVIEWID);
-                    return Questionnaire.questionnaireDocView.insert(function (json) {
-                        // this callback will be called asynchronously
-                        // when the response is available
-                        Log.print(Log.l.trace, "questionnaireDocView: success!");
-                        // contactData returns object already parsed from json file in response
-                        if (json && json.d) {
-                            that.setNextDocId(json.d.DOC1ZeilenantwortVIEWID);
-                            Log.print(Log.l.info, "DOC1ZeilenantwortVIEWID=" + json.d.DOC1ZeilenantwortVIEWID);
-                            that.docCount++;
-                            WinJS.Promise.timeout(50).then(function () {
-                                that.loadPicture(json.d.DOC1ZeilenantwortVIEWID);
-                            });
-                        } else {
-                            AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
-                        }
-                        AppBar.busy = false;
+                    if (imageData.length < 500000) {
+                        // keep original 
                         return WinJS.Promise.as();
-                    }, function (errorResponse) {
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                        AppData.setErrorMsg(that.binding, errorResponse);
-                        AppBar.busy = false;
-                    }, newPicture);
+                    }
+                    return Colors.resizeImageBase64(imageData, "image/jpeg", 2560, AppData.generalData.cameraQuality, 0.25);
+                }).then(function (resizeData) {
+                    if (resizeData) {
+                        Log.print(Log.l.trace, "resized");
+                        imageData = resizeData;
+                    }
+                    return Colors.resizeImageBase64(imageData, "image/jpeg", ovwEdge, AppData.generalData.cameraQuality);
+                }).then(function (ovwData) {
+                    dataSketch.KontaktID = AppData.getRecordId("Kontakt");
+                    if (!dataSketch.KontaktID) {
+                        err = {
+                            status: -1,
+                            statusText: "missing recordId for table Kontakt"
+                        }
+                        AppData.setErrorMsg(that.binding, err);
+                        return WinJS.Promise.as();
+                    } else {
+                        // JPEG note
+                        dataSketch.ExecAppTypeID = 3;
+                        dataSketch.DocGroup = 1;
+                        dataSketch.DocFormat = 3;
+                        dataSketch.Width = width;
+                        dataSketch.Height = height;
+                        dataSketch.OvwEdge = ovwEdge;
+                        dataSketch.ColorType = 11;
+                        dataSketch.DocExt = "jpg";
+
+                        // UTC-Zeit in Klartext
+                        var now = new Date();
+                        var dateStringUtc = now.toUTCString();
+
+                        // decodierte Dateigröße
+                        var contentLength = Math.floor(imageData.length * 3 / 4);
+
+                        dataSketch.Quelltext = "Content-Type: image/jpegAccept-Ranges: bytes\x0D\x0ALast-Modified: " +
+                            dateStringUtc +
+                            "\x0D\x0AContent-Length: " +
+                            contentLength +
+                            "\x0D\x0A\x0D\x0A" +
+                            imageData;
+
+                        if (ovwData) {
+                            var contentLengthOvw = Math.floor(ovwData.length * 3 / 4);
+                            dataSketch.OvwQuelltext =
+                                "Content-Type: image/jpegAccept-Ranges: bytes\x0D\x0ALast-Modified: " +
+                                dateStringUtc +
+                                "\x0D\x0AContent-Length: " +
+                                contentLengthOvw +
+                                "\x0D\x0A\x0D\x0A" +
+                                ovwData;
+                        }
+                        return ImgSketch.sketchView.insert(function (json) {
+                            // this callback will be called asynchronously
+                            // when the response is available
+                            Log.print(Log.l.trace, "sketchData insert: success!");
+                            // select returns object already parsed from json file in response
+                            if (json && json.d) {
+                                that.binding.noteId = json.d.KontaktNotizVIEWID;
+                                that.resultConverter(json.d);
+                                that.binding.dataSketch = json.d;
+                                showPhotoAfterResize();
+                            }
+                        }, function (errorResponse) {
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        },
+                        dataSketch,
+                        that.binding.isLocal);
+                    }
                 });
                 Log.ret(Log.l.trace);
                 return ret;
@@ -467,7 +496,7 @@
                     });
                 } else {
                     Log.print(Log.l.error, "camera.getPicture not supported...");
-                    that.updateStates({ errorMessage: "Camera plugin not supported" });
+                    AppData.setErrorMsg(that.binding, { errorMessage: "Camera plugin not supported" });
                 }
                 Log.ret(Log.l.trace);
             }
@@ -476,15 +505,15 @@
             var loadData = function (noteId) {
                 Log.call(Log.l.trace, "ImgSketch.Controller.");
                 var ret;
-                if (noteId !== null) {
+                if (noteId) {
                     AppData.setErrorMsg(that.binding);
                     ret = ImgSketch.sketchDocView.select(function (json) {
                         // this callback will be called asynchronously
                         // when the response is available
                         Log.print(Log.l.trace, "ImgSketch.sketchDocView: success!");
-                        that.binding.noteId = noteId;
                         // select returns object already parsed from json file in response
                         if (json && json.d) {
+                            that.binding.noteId = json.d.KontaktNotizVIEWID;
                             that.resultConverter(json.d);
                             that.binding.dataSketch = json.d;
                             showPhotoAfterResize();

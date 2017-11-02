@@ -640,7 +640,7 @@
                     });
                 } else {
                     Log.print(Log.l.error, "camera.getPicture not supported...");
-                    that.updateStates({ errorMessage: "Camera plugin not supported" });
+                    AppData.setErrorMsg(that.binding, { errorMessage: "Camera plugin not supported" });
                 }
                 Log.ret(Log.l.trace);
             }

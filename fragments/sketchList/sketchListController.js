@@ -41,8 +41,8 @@
                             var svg = svglist[i].firstElementChild;
                             if(svg) {
                                 WinJS.Utilities.addClass(svg, "list-svg-item");
-                                svg.viewBox.baseVal.height = svg.height.baseVal.value;
-                                svg.viewBox.baseVal.width = svg.width.baseVal.value;
+                                svg.viewBox.baseVal.height = svg.height && svg.height.baseVal && svg.height.baseVal.value;
+                                svg.viewBox.baseVal.width = svg.width && svg.width.baseVal && svg.width.baseVal.value;
                                 var surface = svg.querySelector("#surface");
                                 if (surface) {
                                     surface.setAttribute("fill", "#ffffff");

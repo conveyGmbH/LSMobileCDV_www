@@ -24,13 +24,6 @@
             return AppData.getFormatView("KontaktNotiz", 0, isLocal);
         },
         sketchView: {
-            select: function (complete, error, recordId, isLocal) {
-                Log.call(Log.l.trace, "sketchView.");
-                var ret = SvgSketch.getSketchView(isLocal).selectById(complete, error, recordId);
-                // this will return a promise to controller
-                Log.ret(Log.l.trace);
-                return ret;
-            },
             insert: function (complete, error, viewResponse, isLocal) {
                 Log.call(Log.l.trace, "sketchView.");
                 var ret = SvgSketch.getSketchView(isLocal).insert(complete, error, viewResponse);

@@ -18,6 +18,18 @@
                 Log.ret(Log.l.trace);
                 return ret;
             }
+        },
+
+        getSketchView: function (isLocal) {
+            return AppData.getFormatView("KontaktNotiz", 0, isLocal);
+        },
+        sketchView: {
+            insert: function (complete, error, viewResponse, isLocal) {
+                Log.call(Log.l.trace, "sketchView.");
+                var ret = ImgSketch.getSketchView(isLocal).insert(complete, error, viewResponse);
+                Log.ret(Log.l.trace);
+                return ret;
+            }
         }
     });
 })();

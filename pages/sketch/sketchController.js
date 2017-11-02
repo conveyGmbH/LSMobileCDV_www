@@ -7,6 +7,9 @@
 /// <reference path="~/www/lib/convey/scripts/pageController.js" />
 /// <reference path="~/www/scripts/generalData.js" />
 /// <reference path="~/www/pages/sketch/sketchService.js" />
+/// <reference path="~/plugins/cordova-plugin-camera/www/CameraConstants.js" />
+/// <reference path="~/plugins/cordova-plugin-camera/www/Camera.js" />
+/// <reference path="~/plugins/cordova-plugin-device/www/device.js" />
 
 (function () {
     "use strict";
@@ -73,8 +76,10 @@
                         });
                     }
                 } else {
+                    // set semaphore
                     inLoadDoc = true;
                     prevNoteId = noteId;
+                    // check for need of command update in AppBar
                     var bNewDocViewer = false;
                     var bUpdateCommands = false;
                     var prevDocViewer = setDocViewer(docGroup, docFormat);
@@ -106,6 +111,7 @@
                     } else {
                         ret = WinJS.Promise.as();
                     }
+                    // do command update if needed
                     ret = ret.then(function () {
                         if (bUpdateCommands) {
                             if (bNewDocViewer) {
@@ -115,6 +121,7 @@
                                 docViewer.controller.updateCommands(prevDocViewer && prevDocViewer.controller);
                             }
                         }
+                        // reset semaphore
                         inLoadDoc = false;
                     });
                 }
@@ -239,7 +246,7 @@
                 }, 0, id);
             }
             this.toggleToolbox = toggleToolbox;
-            
+
             // define handlers
             this.eventHandlers = {
                 clickBack: function (event) {
@@ -281,13 +288,32 @@
                     Log.call(Log.l.trace, "Sketch.Controller.");
                     // TODO: open blank svg
                     that.hideToolbox("addNotesToolbar");
-                    loadDoc(null, 3, 75);
+                    if (docViewer && docViewer.canUnload) {
+                        // save previous
+                        docViewer.canUnload(function() {
+                            loadDoc(null, 3, 75);
+                        }, function() {
+                            // error occured!
+                        });
+                    } else {
+                        loadDoc(null, 3, 75);
+                    }
                     Log.ret(Log.l.trace);
                 },
                 clickAddImg: function (event) {
                     Log.call(Log.l.trace, "Sketch.Controller.");
                     // TODO: open camera
                     that.hideToolbox("addNotesToolbar");
+                    if (docViewer && docViewer.canUnload) {
+                        // save previous
+                        docViewer.canUnload(function () {
+                            loadDoc(null, 1, 3);
+                        }, function () {
+                            // error occured!
+                        });
+                    } else {
+                        loadDoc(null, 1, 3);
+                    }
                     Log.ret(Log.l.trace);
                 }
             };
