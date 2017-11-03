@@ -71,6 +71,7 @@
                     var promise = fragmentControl.updateLayout.call(fragmentControl, fragmentElement) || WinJS.Promise.as();
                     promise.then(function () {
                         that.svgEditor.fnLoadSVG(that.binding.dataSketch.Quelltext);
+                        that.svgEditor.registerTouchEvents();
                     });
                 }
                 Log.ret(Log.l.trace);
@@ -79,6 +80,7 @@
             var loadData = function (noteId) {
                 Log.call(Log.l.trace, "SvgSketch.Controller.");
                 AppData.setErrorMsg(that.binding);
+                that.binding.noteId = noteId;
                 var ret = new WinJS.Promise.as().then(function () {
                     var doret = null;
                     if (noteId) {
@@ -86,7 +88,6 @@
                                 // this callback will be called asynchronously
                                 // when the response is available
                                 Log.print(Log.l.trace, "SvgSketch.sketchDocView: success!");
-                                that.binding.noteId = noteId;
                                 // select returns object already parsed from json file in response
                                 if (json && json.d) {
                                     that.resultConverter(json.d);
@@ -110,6 +111,10 @@
                             that.binding.isLocal);
                     } else {
                         that.svgEditor.fnNewSVG(event);
+                        if (that.binding.dataSketch.Quelltext) {
+                            //erase previous quelltext
+                            that.binding.dataSketch.Quelltext = null;
+                        }
                         showSvgAfterResize();
                     }
                     return doret;
@@ -134,6 +139,7 @@
                                         // called asynchronously if ok
                                         Log.print(Log.l.trace, "sketchData update: success!");
                                         that.svgEditor.modified = false;
+                                        AppBar.scope.loadList(dataSketch.KontaktNotizVIEWID);
                                         complete(response);
                                     },
                                     function(errorResponse) {
@@ -181,10 +187,9 @@
                                         // contactData returns object already parsed from json file in response
                                         if (json && json.d) {
                                             that.binding.dataSketch = json.d;
-                                            that.binding.noteId = that.binding.dataSketch.KontaktNotizVIEWID;
+                                            that.binding.noteId = dataSketch.KontaktNotizVIEWID;
                                             AppBar.scope.contactId = dataSketch.KontaktID;
-                                            if (typeof that.binding.dataSketch.Quelltext !== "undefined" &&
-                                                that.binding.dataSketch.Quelltext) {
+                                            if (typeof that.binding.dataSketch.Quelltext !== "undefined" && dataSketch.Quelltext) {
                                                 Log.print(Log.l.trace,
                                                     "SVG Element: " +
                                                     that.binding.dataSketch.Quelltext.substr(0, 100) +
@@ -192,7 +197,10 @@
                                             }
                                             doret2 = WinJS.Promise.timeout(0).then(function () {
                                                 // reload trigger-generated SVG
-                                                that.svgEditor.fnLoadSVG(that.binding.dataSketch.Quelltext);
+                                                that.svgEditor.fnLoadSVG(dataSketch.Quelltext);
+                                            }).then(function () {
+                                                // reload list
+                                                AppBar.scope.loadList(dataSketch.KontaktNotizVIEWID);
                                             });
                                         } else {
                                             doret2 = WinJS.Promise.as();

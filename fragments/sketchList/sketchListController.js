@@ -185,7 +185,7 @@
             this.saveData = saveData;
 
 
-            var loadData = function (conId) {
+            var loadData = function (conId, curId) {
                 if (conId) {
                     that.binding.contactId = conId;
                 }
@@ -215,8 +215,8 @@
                                 if (listView.winControl.selection && results[0]) {
                                     listView.winControl.selection.set(0).then(function() {
                                         //load sketch with new recordId
-                                        that.binding.curId = results[0].KontaktNotizVIEWID;
-                                        AppBar.scope.loadData(that.binding.curId, results[0].DocGroup, results[0].DocFormat);
+                                        that.binding.curId = curId ? curId : results[0].KontaktNotizVIEWID;
+                                        AppBar.scope.loadDoc(that.binding.curId, results[0].DocGroup, results[0].DocFormat);
                                     });
                                 }
                             }

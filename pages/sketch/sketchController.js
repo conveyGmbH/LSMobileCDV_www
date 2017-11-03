@@ -128,6 +128,7 @@
                 Log.ret(Log.l.trace);
                 return ret;
             }
+            this.loadDoc = loadDoc;
 
             // check modify state
             // modified==true when startDrag() in svg.js is called!
@@ -178,28 +179,40 @@
                         Log.print(Log.l.trace, "use existing that.contactID=" + that.contactId);
                         return WinJS.Promise.as();
                     }
-                }).then(function () {
+                }).then(function() {
                     //load list first -> noteId, showSvg, showPhoto, moreNotes set
-                    if (!noteId) {
-                        var sketchListFragmentControl = Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("sketchList"));
-                        if (sketchListFragmentControl && sketchListFragmentControl.controller) {
-                            return sketchListFragmentControl.controller.loadData(that.contactId);
-                        } else {
-                            var parentElement = pageElement.querySelector("#listhost");
-                            if (parentElement) {
-                                return Application.loadFragmentById(parentElement,"sketchList",{ contactId: that.contactId, isLocal: true });
-                            } else {
-                                return WinJS.Promise.as();
-                            }
-                        }
-                    } else {
-                        return loadDoc(noteId, docGroup, docFormat);
+                    that.loadList(noteId);
+                }).then(function() {
+                    if (noteId) {
+                        loadDoc(noteId, docGroup, docFormat);
                     }
                 });
                 Log.ret(Log.l.trace);
                 return ret;
             }
             this.loadData = loadData;
+
+            var loadList = function (noteId) {
+                Log.call(Log.l.trace, "svgSketchController.loadList");
+                var ret = null;
+                //TODO reload also if noteId exists (called from svgSketchController.saveData on insert / update
+                if (!noteId) {
+                    var sketchListFragmentControl = Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("sketchList"));
+                    if (sketchListFragmentControl && sketchListFragmentControl.controller) {
+                        ret = sketchListFragmentControl.controller.loadData(that.contactId, noteId);
+                    } else {
+                        var parentElement = pageElement.querySelector("#listhost");
+                        if (parentElement) {
+                            ret = Application.loadFragmentById(parentElement, "sketchList", { contactId: that.contactId, isLocal: true });
+                        } else {
+                            ret = WinJS.Promise.as();
+                        }
+                    }
+                }
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+            this.loadList = loadList;
 
             var hideToolbox = function(id) {
                 var curToolbox = document.querySelector('#' + id);
