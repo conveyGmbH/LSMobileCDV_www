@@ -35,8 +35,25 @@
             this.contactId = AppData.getRecordId("Kontakt");
             this.pageElement = pageElement;
 
-            var setDocViewer = function (docGroup, docFormat) {
-                var prevDocViewer = docViewer;
+            var setNotesCount = function (count) {
+                Log.call(Log.l.trace, "Sketch.Controller.", "count=" + count);
+                if (count > 1) {
+                    that.binding.moreNotes = true;
+                } else {
+                    that.binding.moreNotes = false;
+                }
+                if (!that.binding.userHidesList) {
+                    that.binding.showList = that.binding.moreNotes;
+                }
+                AppBar.replaceCommands([
+                    { id: 'clickShowList', label: getResourceText('sketch.showList'), tooltip: getResourceText('sketch.showList'), section: 'primary', svg: that.binding.showList ? 'document_height' : 'elements3' }
+                ]);
+                Log.ret(Log.l.trace);
+            }
+            that.setNotesCount = setNotesCount;
+
+            var getDocViewer = function (docGroup, docFormat) {
+                var docViewer;
                 Log.call(Log.l.trace, "Sketch.Controller.", "docGroup=" + docGroup + " docFormat=" + docFormat);
                 if (AppData.isSvg(docGroup, docFormat)) {
                     that.binding.showSvg = true;
@@ -50,7 +67,7 @@
                     docViewer = null;
                 }
                 Log.ret(Log.l.trace);
-                return prevDocViewer;
+                return docViewer;
             }
             that.docViewer = {
                 get: function() {
@@ -80,10 +97,12 @@
                     inLoadDoc = true;
                     prevNoteId = noteId;
                     // check for need of command update in AppBar
-                    var bNewDocViewer = false;
+                    var bGetNewDocViewer = false;
                     var bUpdateCommands = false;
-                    var prevDocViewer = setDocViewer(docGroup, docFormat);
-                    if (docViewer && docViewer.controller) {
+                    var prevDocViewer = docViewer;
+                    var newDocViewer = getDocViewer(docGroup, docFormat);
+                    if (newDocViewer && newDocViewer.controller) {
+                        docViewer = newDocViewer;
                         bUpdateCommands = true;
                         ret = docViewer.controller.loadData(noteId);
                     } else if (AppData.isSvg(docGroup, docFormat)) {
@@ -91,7 +110,7 @@
                         that.binding.showPhoto = false;
                         parentElement = pageElement.querySelector("#svghost");
                         if (parentElement) {
-                            bNewDocViewer = true;
+                            bGetNewDocViewer = true;
                             bUpdateCommands = true;
                             ret = Application.loadFragmentById(parentElement, "svgSketch", { noteId: noteId, isLocal: true });
                         } else {
@@ -102,7 +121,7 @@
                         that.binding.showPhoto = true;
                         parentElement = pageElement.querySelector("#imghost");
                         if (parentElement) {
-                            bNewDocViewer = true;
+                            bGetNewDocViewer = true;
                             bUpdateCommands = true;
                             ret = Application.loadFragmentById(parentElement, "imgSketch", { noteId: noteId, isLocal: true });
                         } else {
@@ -114,8 +133,8 @@
                     // do command update if needed
                     ret = ret.then(function () {
                         if (bUpdateCommands) {
-                            if (bNewDocViewer) {
-                                prevDocViewer = setDocViewer(docGroup, docFormat);
+                            if (bGetNewDocViewer) {
+                                docViewer = getDocViewer(docGroup, docFormat);
                             }
                             if (prevDocViewer !== docViewer && docViewer && docViewer.controller) {
                                 docViewer.controller.updateCommands(prevDocViewer && prevDocViewer.controller);
@@ -180,11 +199,12 @@
                         return WinJS.Promise.as();
                     }
                 }).then(function() {
-                    //load list first -> noteId, showSvg, showPhoto, moreNotes set
-                    that.loadList(noteId);
-                }).then(function() {
-                    if (noteId) {
-                        loadDoc(noteId, docGroup, docFormat);
+                    if (!noteId) {
+                        //load list first -> noteId, showSvg, showPhoto, moreNotes set
+                        return that.loadList(noteId);
+                    } else {
+                        //load doc then if noteId is set
+                        return loadDoc(noteId, docGroup, docFormat);
                     }
                 });
                 Log.ret(Log.l.trace);
@@ -195,18 +215,15 @@
             var loadList = function (noteId) {
                 Log.call(Log.l.trace, "svgSketchController.loadList");
                 var ret = null;
-                //TODO reload also if noteId exists (called from svgSketchController.saveData on insert / update
-                if (!noteId) {
-                    var sketchListFragmentControl = Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("sketchList"));
-                    if (sketchListFragmentControl && sketchListFragmentControl.controller) {
-                        ret = sketchListFragmentControl.controller.loadData(that.contactId, noteId);
+                var sketchListFragmentControl = Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("sketchList"));
+                if (sketchListFragmentControl && sketchListFragmentControl.controller) {
+                    ret = sketchListFragmentControl.controller.loadData(that.contactId, noteId);
+                } else {
+                    var parentElement = pageElement.querySelector("#listhost");
+                    if (parentElement) {
+                        ret = Application.loadFragmentById(parentElement, "sketchList", { contactId: that.contactId, isLocal: true });
                     } else {
-                        var parentElement = pageElement.querySelector("#listhost");
-                        if (parentElement) {
-                            ret = Application.loadFragmentById(parentElement, "sketchList", { contactId: that.contactId, isLocal: true });
-                        } else {
-                            ret = WinJS.Promise.as();
-                        }
+                        ret = WinJS.Promise.as();
                     }
                 }
                 Log.ret(Log.l.trace);
@@ -286,9 +303,67 @@
                 },
                 clickShowList: function (event) {
                     Log.call(Log.l.trace, "Sketch.Controller.");
-                    that.binding.showList = !that.binding.showList;
-                    that.binding.userHidesList = !that.binding.showList;
-                    Application.navigator._resized();
+                    var mySketchList = pageElement.querySelector(".listfragmenthost");
+                    var pageControl = pageElement.winControl;
+                    var replaceCommands = function () {
+                        that.binding.showList = newShowList;
+                        if (mySketchList && mySketchList.style) {
+                            mySketchList.style.display = "";
+                            mySketchList.style.position = "";
+                            mySketchList.style.top = "";
+                        }
+                        if (pageControl) {
+                            pageControl.prevHeight = 0;
+                            pageControl.prevWidth = 0;
+                        }
+                        AppBar.replaceCommands([
+                            { id: 'clickShowList', label: getResourceText('sketch.showList'), tooltip: getResourceText('sketch.showList'), section: 'primary', svg: that.binding.showList ? 'document_height' : 'elements3' }
+                        ]);
+                    };
+
+                    var newShowList = !that.binding.showList;
+                    that.binding.userHidesList = !newShowList;
+                    if (mySketchList && mySketchList.style) {
+                        mySketchList.style.display = "block";
+                        mySketchList.style.position = "absolute";
+                        var contentarea = pageElement.querySelector(".contentarea");
+                        if (contentarea) {
+                            var contentHeader = pageElement.querySelector(".content-header");
+                            var height = contentarea.clientHeight;
+                            mySketchList.style.top = (height - 170).toString() + "px";
+                            if (contentHeader) {
+                                height -= contentHeader.clientHeight;
+                            }
+                            if (newShowList) {
+                                that.binding.showList = newShowList;
+                                WinJS.UI.Animation.slideUp(mySketchList).done(function () {
+                                    replaceCommands(newShowList);
+                                });
+                            } else {
+                                var mySketchViewers = pageElement.querySelectorAll(".sketchfragmenthost");
+                                if (mySketchViewers) {
+                                    var mySketch, i;
+
+                                    for (i = 0; i < mySketchViewers.length; i++) {
+                                        mySketch = mySketchViewers[i];
+                                        if (mySketch && mySketch.style) {
+                                            mySketch.style.height = height.toString() + "px";
+                                        }
+                                    }
+                                }
+                                if (Application.navigator) {
+                                    Application.navigator._updateFragmentsLayout();
+                                }
+                                WinJS.Promise.timeout(0).then(function () {
+                                    WinJS.UI.Animation.slideDown(mySketchList).done(function () {
+                                        replaceCommands(newShowList);
+                                    });
+                                })
+                            }
+                        }
+                    } else {
+                        replaceCommands(newShowList);
+                    }
                     Log.ret(Log.l.trace);
                 },
                 clickAddNote: function (event) {
