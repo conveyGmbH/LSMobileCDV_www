@@ -73,7 +73,6 @@
                 { id: 'clickColors', label: getResourceText('sketch.color'), tooltip: getResourceText('sketch.color'), section: 'secondary' },
                 { id: 'clickWidths', label: getResourceText('sketch.width'), tooltip: getResourceText('sketch.width'), section: 'secondary' }
             ];
-
             this.controller = new SvgSketch.Controller(element, options, commandList);
 
             Log.ret(Log.l.trace);

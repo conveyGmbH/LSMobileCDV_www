@@ -14,7 +14,7 @@
     "use strict";
 
     WinJS.Namespace.define("ImgSketch", {
-        Controller: WinJS.Class.derive(Fragments.Controller, function Controller(fragmentElement, options) {
+        Controller: WinJS.Class.derive(Fragments.Controller, function Controller(fragmentElement, options, commandList) {
             Log.call(Log.l.trace, "ImgSketch.Controller.");
 
             var that = this;
@@ -29,9 +29,6 @@
             this.hasDoc = hasDoc;
 
             // show note photo
-            var imageOffsetX = 0;
-            var imageOffsetY = 0;
-
             var imgWidth = 0;
             var imgHeight = 0;
             var imgLeft = 0;
@@ -53,7 +50,7 @@
                 noteId: options.noteId,
                 isLocal: options.isLocal,
                 dataSketch: {}
-            }]);
+            }, commandList]);
             this.img = null;
 
             this.dispose = function () {
@@ -310,9 +307,7 @@
                                 }
                             });
                             WinJS.Promise.timeout(0).then(function () {
-                                imageOffsetX = photoview.offsetLeft + fragmentElement.offsetLeft;
-                                imageOffsetY = photoview.offsetTop + fragmentElement.offsetTop;
-                                Log.print(Log.l.trace, "imageOffsetX=" + imageOffsetX + " imageOffsetY=" + imageOffsetY);
+                                calcImagePosition();
                                 // recalc page layout if needed
                                 if (pageControl && pageControl.updateLayout) {
                                     pageControl.prevWidth = 0;
@@ -424,10 +419,17 @@
                             Log.print(Log.l.trace, "sketchData insert: success!");
                             // select returns object already parsed from json file in response
                             if (json && json.d) {
-                                that.binding.noteId = json.d.KontaktNotizVIEWID;
                                 that.resultConverter(json.d);
                                 that.binding.dataSketch = json.d;
-                                showPhotoAfterResize();
+                                that.binding.noteId = json.d.KontaktNotizVIEWID;
+                                WinJS.Promise.timeout(0).then(function () {
+                                    showPhotoAfterResize();
+                                }).then(function () {
+                                    // reload list
+                                    if (AppBar.scope && typeof AppBar.scope.loadList === "function") {
+                                        AppBar.scope.loadList(that.binding.noteId);
+                                    }
+                                });
                             }
                         }, function (errorResponse) {
                             // called asynchronously if an error occurs
@@ -526,7 +528,8 @@
                     },
                     noteId,
                     that.binding.isLocal);
-                } else {
+                } else if (that.binding.isLocal) {
+                    // take photo first - but only if isLocal!
                     that.takePhoto();
                     ret = WinJS.Promise.as();
                 }
@@ -540,7 +543,7 @@
                 Log.call(Log.l.trace, "ImgSketch.Controller.");
                 var ret = new WinJS.Promise.as().then(function () {
                     if (typeof complete === "function") {
-                        complete({});
+                        complete(that.binding.dataSketch);
                     }
                 });
                 Log.ret(Log.l.trace, ret);
@@ -548,10 +551,102 @@
             };
             this.saveData = saveData;
 
-            var eventHandlers = {
-                //TODO zoom, ...
+            // define handlers
+            this.eventHandlers = {
+                clickZoomIn: function (event) {
+                    Log.call(Log.l.trace, "ImgSketch.Controller.");
+                    if (that.hasDoc() && imgScale * scaleIn < 1) {
+                        that.calcImagePosition({
+                            scale: imgScale * scaleIn
+                        });
+                    } else {
+                        that.calcImagePosition({
+                            scale: 1
+                        });
+                    }
+                    AppBar.triggerDisableHandlers();
+                    Log.ret(Log.l.trace);
+                },
+                clickZoomOut: function (event) {
+                    Log.call(Log.l.trace, "ImgSketch.Controller.");
+                    if (that.hasDoc() &&
+                        ((imgRotation === 0 || imgRotation === 180) && imgWidth * imgScale * scaleOut > 100 ||
+                         (imgRotation === 90 || imgRotation === 270) && imgHeight * imgScale * scaleOut > 100)) {
+                        that.calcImagePosition({
+                            scale: imgScale * scaleOut
+                        });
+                    } else {
+                        if (imgRotation === 0 || imgRotation === 180) {
+                            that.calcImagePosition({
+                                scale: 100 / imgWidth
+                            });
+                        } else {
+                            that.calcImagePosition({
+                                scale: 100 / imgHeight
+                            });
+                        }
+                    }
+                    AppBar.triggerDisableHandlers();
+                    Log.ret(Log.l.trace);
+                },
+                clickRotateLeft: function (event) {
+                    Log.call(Log.l.trace, "ImgSketch.Controller.");
+                    var rotate = imgRotation - 90;
+                    if (rotate < 0) {
+                        rotate = 270;
+                    }
+                    that.calcImagePosition({
+                        rotate: rotate
+                    });
+                    AppBar.triggerDisableHandlers();
+                    Log.ret(Log.l.trace);
+                },
+                clickRotateRight: function (event) {
+                    Log.call(Log.l.trace, "ImgSketch.Controller.");
+                    var rotate = imgRotation + 90;
+                    if (rotate >= 360) {
+                        rotate = 0;
+                    }
+                    that.calcImagePosition({
+                        rotate: rotate
+                    });
+                    AppBar.triggerDisableHandlers();
+                    Log.ret(Log.l.trace);
+                }
+            };
+
+            this.disableHandlers = {
+                clickZoomIn: function () {
+                    if (that.hasDoc() && imgScale < 1) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                clickZoomOut: function () {
+                    if (that.hasDoc() &&
+                        ((imgRotation === 0 || imgRotation === 180) && imgWidth * imgScale > 100 ||
+                         (imgRotation === 90 || imgRotation === 270) && imgHeight * imgScale > 100)) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                clickRotateLeft: function () {
+                    if (getPhotoData()) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                clickRotateRight: function () {
+                    if (getPhotoData()) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
             }
-            this.eventHandlers = eventHandlers;
 
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");

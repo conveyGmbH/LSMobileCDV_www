@@ -190,6 +190,12 @@ img .field_line {
     width: 100%;
 }
 
+.list-container {
+    width: 100%;
+    padding: 5px;
+    background-color: transparent;
+}
+
 /*
     forward decls from pages
 */

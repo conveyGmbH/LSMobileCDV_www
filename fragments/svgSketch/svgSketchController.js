@@ -78,47 +78,46 @@
             }
             
             var loadData = function (noteId) {
+                var ret;
                 Log.call(Log.l.trace, "SvgSketch.Controller.");
                 AppData.setErrorMsg(that.binding);
                 that.binding.noteId = noteId;
-                var ret = new WinJS.Promise.as().then(function () {
-                    var doret = null;
-                    if (noteId) {
-                        doret = SvgSketch.sketchDocView.select(function(json) {
-                                // this callback will be called asynchronously
-                                // when the response is available
-                                Log.print(Log.l.trace, "SvgSketch.sketchDocView: success!");
-                                // select returns object already parsed from json file in response
-                                if (json && json.d) {
-                                    that.resultConverter(json.d);
-                                    that.binding.dataSketch = json.d;
-                                    if (typeof that.binding.dataSketch.Quelltext !== "undefined" &&
-                                        that.binding.dataSketch.Quelltext) {
-                                        Log.print(Log.l.trace,
-                                            "SVG Element: " +
-                                            that.binding.dataSketch.Quelltext.substr(0, 100) +
-                                            "...");
-                                    }
-                                    showSvgAfterResize();
-                                }
-                            },
-                            function(errorResponse) {
-                                // called asynchronously if an error occurs
-                                // or server returns response with an error status.
-                                AppData.setErrorMsg(that.binding, errorResponse);
-                            },
-                            noteId,
-                            that.binding.isLocal);
-                    } else {
-                        that.svgEditor.fnNewSVG(event);
-                        if (that.binding.dataSketch.Quelltext) {
-                            //erase previous quelltext
-                            that.binding.dataSketch.Quelltext = null;
+                if (noteId) {
+                    ret = SvgSketch.sketchDocView.select(function (json) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                        Log.print(Log.l.trace, "SvgSketch.sketchDocView: success!");
+                        // select returns object already parsed from json file in response
+                        if (json && json.d) {
+                            that.resultConverter(json.d);
+                            that.binding.dataSketch = json.d;
+                            if (typeof that.binding.dataSketch.Quelltext !== "undefined" &&
+                                that.binding.dataSketch.Quelltext) {
+                                Log.print(Log.l.trace,
+                                    "SVG Element: " +
+                                    that.binding.dataSketch.Quelltext.substr(0, 100) +
+                                    "...");
+                            }
+                            showSvgAfterResize();
                         }
-                        showSvgAfterResize();
-                    }
-                    return doret;
-                });
+                    },  function (errorResponse) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        AppData.setErrorMsg(that.binding, errorResponse);
+                    },
+                    noteId,
+                    that.binding.isLocal);
+                } else if (that.binding.isLocal) {
+                    // insert new SVG note first - but only if isLocal!
+                    that.svgEditor.fnNewSVG();
+                    ret = that.saveData(function (response) {
+                        // called asynchronously if ok
+                        AppBar.busy = false;
+                    }, function (errorResponse) {
+                        AppBar.busy = false;
+                        AppData.setErrorMsg(that.binding, errorResponse);
+                    });
+                }
                 Log.ret(Log.l.trace);
                 return ret;
             };
@@ -129,28 +128,34 @@
                 var ret;
                 AppData.setErrorMsg(that.binding);
                 var dataSketch = that.binding.dataSketch;
-                if (dataSketch && AppBar.modified) {
-                    ret = new WinJS.Promise.as().then(function() {
+                if (dataSketch && (AppBar.modified || !that.binding.noteId) && that.binding.isLocal) {
+                    ret = new WinJS.Promise.as().then(function () {
                         that.svgEditor.fnSaveSVG(function(quelltext) {
                             dataSketch.Quelltext = quelltext;
                             var doret;
                             if (that.binding.noteId) {
                                 doret = SvgSketch.sketchView.update(function(response) {
-                                        // called asynchronously if ok
-                                        Log.print(Log.l.trace, "sketchData update: success!");
-                                        that.svgEditor.modified = false;
-                                        AppBar.scope.loadList(dataSketch.KontaktNotizVIEWID);
+                                    // called asynchronously if ok
+                                    Log.print(Log.l.trace, "sketchData update: success!");
+                                    that.svgEditor.modified = false;
+                                    if (AppBar.scope && typeof AppBar.scope.loadList === "function") {
+                                        AppBar.scope.loadList(that.binding.noteId);
+                                    }
+                                    if (typeof complete === "function") {
                                         complete(response);
-                                    },
-                                    function(errorResponse) {
-                                        // called asynchronously if an error occurs
-                                        // or server returns response with an error status.
-                                        AppData.setErrorMsg(that.binding, errorResponse);
+                                    }
+                                },
+                                function(errorResponse) {
+                                    // called asynchronously if an error occurs
+                                    // or server returns response with an error status.
+                                    AppData.setErrorMsg(that.binding, errorResponse);
+                                    if (typeof error === "function") {
                                         error(errorResponse);
-                                    },
-                                    that.binding.noteId,
-                                    dataSketch,
-                                    that.binding.isLocal);
+                                    }
+                                },
+                                that.binding.noteId,
+                                dataSketch,
+                                that.binding.isLocal);
                             } else {
                                 //insert if a primary key is not available (noteId === null)
                                 dataSketch.KontaktID = AppData.getRecordId("Kontakt");
@@ -176,7 +181,9 @@
                                             statusText: "missing recordId for table Kontakt"
                                         }
                                         AppData.setErrorMsg(that.binding, errorResponse);
-                                        error(errorResponse);
+                                        if (typeof error === "function") {
+                                            error(errorResponse);
+                                        }
                                     });
                                 } else {
                                     doret = SvgSketch.sketchView.insert(function (json) {
@@ -187,9 +194,8 @@
                                         // contactData returns object already parsed from json file in response
                                         if (json && json.d) {
                                             that.binding.dataSketch = json.d;
-                                            that.binding.noteId = dataSketch.KontaktNotizVIEWID;
-                                            AppBar.scope.contactId = dataSketch.KontaktID;
-                                            if (typeof that.binding.dataSketch.Quelltext !== "undefined" && dataSketch.Quelltext) {
+                                            that.binding.noteId = json.d.KontaktNotizVIEWID;
+                                            if (that.binding.dataSketch.Quelltext) {
                                                 Log.print(Log.l.trace,
                                                     "SVG Element: " +
                                                     that.binding.dataSketch.Quelltext.substr(0, 100) +
@@ -197,21 +203,27 @@
                                             }
                                             doret2 = WinJS.Promise.timeout(0).then(function () {
                                                 // reload trigger-generated SVG
-                                                that.svgEditor.fnLoadSVG(dataSketch.Quelltext);
+                                                showSvgAfterResize();
                                             }).then(function () {
                                                 // reload list
-                                                AppBar.scope.loadList(dataSketch.KontaktNotizVIEWID);
+                                                if (AppBar.scope && typeof AppBar.scope.loadList === "function") {
+                                                    AppBar.scope.loadList(that.binding.noteId);
+                                                }
                                             });
                                         } else {
                                             doret2 = WinJS.Promise.as();
                                         }
-                                        complete(json);
+                                        if (typeof complete === "function") {
+                                            complete(json);
+                                        }
                                         return doret2;
                                     }, function (errorResponse) {
                                         // called asynchronously if an error occurs
                                         // or server returns response with an error status.
                                         AppData.setErrorMsg(that.binding, errorResponse);
-                                        error(errorResponse);
+                                        if (typeof error === "function") {
+                                            error(errorResponse);
+                                        }
                                     },
                                     dataSketch,
                                     that.binding.isLocal);
@@ -222,7 +234,9 @@
                     });
                 } else {
                     ret = new WinJS.Promise.as().then(function () {
-                        complete(dataSketch);
+                        if (typeof complete === "function") {
+                            complete(that.binding.dataSketch);
+                        }
                     });
                 }
                 Log.ret(Log.l.trace);

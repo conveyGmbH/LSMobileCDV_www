@@ -64,8 +64,8 @@
             if (element && !that.inResize) {
                 that.inResize = 1;
                 ret = WinJS.Promise.timeout(0).then(function () {
-                    var listcontainer = element.querySelector(".list-container");
-                    if (listcontainer && listcontainer.style) {
+                    var listview = element.querySelector(".listview");
+                    if (listview && listview.style) {
                         var contentarea = element.querySelector(".contentarea");
                         if (contentarea) {
                             var width = contentarea.clientWidth;
@@ -73,11 +73,11 @@
                             
                             if (width > 0 && width !== that.prevWidth) {
                                 that.prevWidth = width;
-                                listcontainer.style.width = width.toString() + "px";
+                                listview.style.width = width.toString() + "px";
                             }
                             if (height > 0 && height !== that.prevHeight) {
                                 that.prevHeight = height;
-                                listcontainer.style.height = height.toString() + "px";
+                                listview.style.height = height.toString() + "px";
                             }
                         }
                     }
