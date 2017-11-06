@@ -383,10 +383,14 @@
             that.processAll().then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Binding wireup page complete");
-                Application.pageframe.hideSplashScreen();
+                if (AppHeader && AppHeader.controller) {
+                    return AppHeader.controller.loadData();
+                } else {
+                    return WinJS.Promise.as();
+                }
             }).then(function () {
-                Log.print(Log.l.trace, "Appheader refresh");
-                AppHeader.controller.loadData();
+                Log.print(Log.l.trace, "Appheader refresh complete");
+                Application.pageframe.hideSplashScreen();
             });
             Log.ret(Log.l.trace);
         })

@@ -513,14 +513,16 @@
                                 pageControl.prevHeight = 0;
                                 promise = pageControl.updateLayout.call(pageControl, pageElement);
                             }
-                            if (!promise) {
-                                promise = WinJS.Promise.as();
+                            if (!Application.pageframe.splashScreenDone) {
+                                if (!promise) {
+                                    promise = WinJS.Promise.as();
+                                }
+                                promise.then(function () {
+                                    return WinJS.Promise.timeout(100);
+                                }).then(function () {
+                                    return Application.pageframe.hideSplashScreen();
+                                });
                             }
-                            promise.then(function () {
-                                return WinJS.Promise.timeout(Application.pageframe.splashScreenDone ? 0 : 1000);
-                            }).then(function () {
-                                return Application.pageframe.hideSplashScreen();
-                            });
                         }
                     }
                     Log.ret(Log.l.trace);
