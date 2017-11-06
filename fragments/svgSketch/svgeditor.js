@@ -454,7 +454,7 @@
                 },
                 toggleToolbox: function (id) {
                     var that = this;
-                    window.setTimeout(function() {
+                    WinJS.Promise.timeout(0).then(function () {
                         var toolboxIds = ['shapesToolbar', 'widthsToolbar', 'colorsToolbar'];
                         var curToolbox = document.querySelector('#' + id);
                         if (curToolbox && curToolbox.style) {
@@ -479,7 +479,7 @@
                                 that.registerTouchEvents();
                             }
                         }
-                    }, 0, id);
+                    });
                 }
             }
         )

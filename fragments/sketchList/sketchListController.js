@@ -104,34 +104,34 @@
                 onSelectionChanged: function (eventInfo) {
                     Log.call(Log.l.trace, "SketchList.Controller.");
                     //if current sketch is saved successfully, change selection
-                    if (AppBar.scope &&
-                        AppBar.scope.pageElement &&
-                        AppBar.scope.pageElement.winControl &&
-                        typeof AppBar.scope.pageElement.winControl.canUnload === "function") {
-                        AppBar.scope.pageElement.winControl.canUnload(function (response) {
-                            // called asynchronously if ok
-                            if (listView && listView.winControl) {
-                                var listControl = listView.winControl;
-                                if (listControl.selection) {
-                                    var selectionCount = listControl.selection.count();
-                                    if (selectionCount === 1) {
-                                        // Only one item is selected, show the page
-                                        listControl.selection.getItems().done(function (items) {
-                                            var item = items[0];
-                                            if (item.data) {
+                    if (listView && listView.winControl) {
+                        var listControl = listView.winControl;
+                        if (listControl.selection) {
+                            var selectionCount = listControl.selection.count();
+                            if (selectionCount === 1) {
+                                // Only one item is selected, show the page
+                                listControl.selection.getItems().done(function (items) {
+                                    var item = items[0];
+                                    if (item.data) {
+                                        if (AppBar.scope &&
+                                            AppBar.scope.pageElement &&
+                                            AppBar.scope.pageElement.winControl &&
+                                            typeof AppBar.scope.pageElement.winControl.canUnload === "function") {
+                                            AppBar.scope.pageElement.winControl.canUnload(function (response) {
+                                                // called asynchronously if ok
                                                 //load sketch with new recordId
                                                 that.binding.curId = item.data.KontaktNotizVIEWID;
                                                 if (AppBar.scope && typeof AppBar.scope.loadData === "function") {
                                                     AppBar.scope.loadData(that.binding.curId, item.data.DocGroup, item.data.DocFormat);
                                                 }
-                                            }
-                                        });
+                                            }, function (errorResponse) {
+                                                // error handled in saveData!
+                                            });
+                                        }
                                     }
-                                }
+                                });
                             }
-                        }, function (errorResponse) {
-                            // error handled in saveData!
-                        });
+                        }
                     }
                     Log.ret(Log.l.trace);
                 },
@@ -188,15 +188,40 @@
 
 
             var loadData = function (contactId, noteId) {
+                var i, selIdx = -1, ret;
+               
+                Log.call(Log.l.trace, "SketchList.", "contactId=" + contactId + " noteId=" + noteId);
                 if (contactId) {
                     that.binding.contactId = contactId;
                 }
-                
-                Log.call(Log.l.trace, "SketchList.", "contactId=" + contactId + " noteId=" + noteId);
                 AppData.setErrorMsg(that.binding);
-
-                var ret = new WinJS.Promise.as().then(function () {
-                    return SketchList.sketchlistView.select(function (json) {
+                // find index of noteId
+                if (noteId && that.sketches) {
+                    for (i = 0; i < that.sketches.length; i++) {
+                        var item = that.sketches.getAt(i);
+                        if (item && item.KontaktNotizVIEWID === noteId) {
+                            selIdx = i;
+                            break;
+                        }
+                    }
+                }
+                if (selIdx >= 0) {
+                    ret = SketchList.sketchlistView.select(function (json) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                        Log.print(Log.l.trace, "SketchList.sketchlistView: success!");
+                        // select returns object already parsed from json file in response
+                        if (json && json.d) {
+                            that.resultConverter(json.d, selIdx);
+                            that.sketches.setAt(selIdx, json.d);
+                        }
+                    }, function (errorResponse) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        AppData.setErrorMsg(that.binding, errorResponse);
+                    }, noteId, that.binding.isLocal);
+                } else {
+                    ret = SketchList.sketchlistView.select(function (json) {
                         // this callback will be called asynchronously
                         // when the response is available
                         Log.print(Log.l.trace, "SketchList.sketchlistView: success!");
@@ -225,9 +250,9 @@
                                 // add ListView dataSource
                                 listView.winControl.itemDataSource = that.sketches.dataSource;
                                 // find selection index
-                                var selIdx = 0;
+                                selIdx = 0;
                                 if (noteId) {
-                                    for (var i = 0; i < results.length; i++) {
+                                    for (i = 0; i < results.length; i++) {
                                         if (results[i].KontaktNotizVIEWID === noteId) {
                                             selIdx = i;
                                             break;
@@ -256,11 +281,12 @@
                     }, {
                         KontaktID: that.binding.contactId
                     }, that.binding.isLocal);
-                }).then(function () {
+                }
+                ret = ret.then(function () {
                     AppBar.notifyModified = true;
                     AppBar.triggerDisableHandlers();
                     return WinJS.Promise.as();
-                });
+                })
                 Log.ret(Log.l.trace);
                 return ret;
             };

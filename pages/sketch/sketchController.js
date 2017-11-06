@@ -21,7 +21,6 @@
         
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Sketch.Controller.");
-            var docViewer = null;
             var that = this;
             
             Application.Controller.apply(this, [pageElement, {
@@ -34,6 +33,7 @@
 
             this.contactId = AppData.getRecordId("Kontakt");
             this.pageElement = pageElement;
+            this.docViewer = null;
 
             var setNotesCount = function (count) {
                 Log.call(Log.l.trace, "Sketch.Controller.", "count=" + count);
@@ -69,11 +69,6 @@
                 Log.ret(Log.l.trace);
                 return docViewer;
             }
-            that.docViewer = {
-                get: function() {
-                    return docViewer;
-                }
-            }
 
             var prevNoteId;
             var inLoadDoc = false;
@@ -99,12 +94,12 @@
                     // check for need of command update in AppBar
                     var bGetNewDocViewer = false;
                     var bUpdateCommands = false;
-                    var prevDocViewer = docViewer;
+                    var prevDocViewer = that.docViewer;
                     var newDocViewer = getDocViewer(docGroup, docFormat);
                     if (newDocViewer && newDocViewer.controller) {
-                        docViewer = newDocViewer;
+                        that.docViewer = newDocViewer;
                         bUpdateCommands = true;
-                        ret = docViewer.controller.loadData(noteId);
+                        ret = that.docViewer.controller.loadData(noteId);
                     } else if (AppData.isSvg(docGroup, docFormat)) {
                         that.binding.showSvg = true;
                         that.binding.showPhoto = false;
@@ -134,10 +129,10 @@
                     ret = ret.then(function () {
                         if (bUpdateCommands) {
                             if (bGetNewDocViewer) {
-                                docViewer = getDocViewer(docGroup, docFormat);
+                                that.docViewer = getDocViewer(docGroup, docFormat);
                             }
-                            if (prevDocViewer !== docViewer && docViewer && docViewer.controller) {
-                                docViewer.controller.updateCommands(prevDocViewer && prevDocViewer.controller);
+                            if (prevDocViewer !== that.docViewer && that.docViewer && that.docViewer.controller) {
+                                that.docViewer.controller.updateCommands(prevDocViewer && prevDocViewer.controller);
                             }
                         }
                         // reset semaphore
@@ -244,7 +239,8 @@
             this.hideToolbox = hideToolbox;
 
             var toggleToolbox = function (id) {
-                window.setTimeout(function() {
+                WinJS.Promise.timeout(0).then(function() {
+                    Log.call(Log.l.trace, "Sketch.Controller.toggleToolbox");
                     var toolboxIds = ['addNotesToolbar'];
                     var curToolbox = document.querySelector('#' + id);
                     if (curToolbox && curToolbox.style) {
@@ -259,8 +255,8 @@
                                     }
                                 }
                             }
-                            if (docViewer && docViewer.controller && docViewer.controller.svgEditor) {
-                                docViewer.controller.svgEditor.unregisterTouchEvents();
+                            if (that.docViewer && that.docViewer.controller && that.docViewer.controller.svgEditor) {
+                                that.docViewer.controller.svgEditor.unregisterTouchEvents();
                             }
                             curToolbox.style.display = "block";
                             WinJS.UI.Animation.slideUp(curToolbox).done(function () {
@@ -268,12 +264,13 @@
                             });
                         } else {
                             that.hideToolbox(id);
-                            if (docViewer && docViewer.controller && docViewer.controller.svgEditor) {
-                                docViewer.controller.svgEditor.registerTouchEvents();
+                            if (that.docViewer && that.docViewer.controller && that.docViewer.controller.svgEditor) {
+                                that.docViewer.controller.svgEditor.registerTouchEvents();
                             }
                         }
                     }
-                }, 0, id);
+                    Log.ret(Log.l.trace);
+                });
             }
             this.toggleToolbox = toggleToolbox;
 
@@ -305,12 +302,10 @@
                     Log.call(Log.l.trace, "Sketch.Controller.");
                     var mySketchList = pageElement.querySelector(".listfragmenthost");
                     var pageControl = pageElement.winControl;
+                    var newShowList = !that.binding.showList;
                     var replaceCommands = function () {
-                        that.binding.showList = newShowList;
-                        if (mySketchList && mySketchList.style) {
-                            mySketchList.style.display = "";
-                            mySketchList.style.position = "";
-                            mySketchList.style.top = "";
+                        if (!newShowList && mySketchList && mySketchList.style) {
+                            mySketchList.style.display = "none";
                         }
                         if (pageControl) {
                             pageControl.prevHeight = 0;
@@ -319,9 +314,18 @@
                         AppBar.replaceCommands([
                             { id: 'clickShowList', label: getResourceText('sketch.showList'), tooltip: getResourceText('sketch.showList'), section: 'primary', svg: that.binding.showList ? 'document_height' : 'elements3' }
                         ]);
+                        WinJS.Promise.timeout(50).then(function () {
+                            mySketchList = pageElement.querySelector(".listfragmenthost");
+                            if (mySketchList && mySketchList.style) {
+                                mySketchList.style.position = "";
+                                mySketchList.style.top = "";
+                                if (newShowList) {
+                                    mySketchList.style.display = "";
+                                }
+                            }
+                        });
                     };
 
-                    var newShowList = !that.binding.showList;
                     that.binding.userHidesList = !newShowList;
                     if (mySketchList && mySketchList.style) {
                         mySketchList.style.display = "block";
@@ -330,12 +334,12 @@
                         if (contentarea) {
                             var contentHeader = pageElement.querySelector(".content-header");
                             var height = contentarea.clientHeight;
-                            mySketchList.style.top = (height - 170).toString() + "px";
+                            mySketchList.style.top = (height - 178).toString() + "px";
                             if (contentHeader) {
                                 height -= contentHeader.clientHeight;
                             }
                             if (newShowList) {
-                                that.binding.showList = newShowList;
+                                that.binding.showList = true;
                                 WinJS.UI.Animation.slideUp(mySketchList).done(function () {
                                     replaceCommands(newShowList);
                                 });
@@ -354,11 +358,12 @@
                                 if (Application.navigator) {
                                     Application.navigator._updateFragmentsLayout();
                                 }
-                                WinJS.Promise.timeout(0).then(function () {
-                                    WinJS.UI.Animation.slideDown(mySketchList).done(function () {
+                                WinJS.Promise.timeout(0).then(function() {
+                                    WinJS.UI.Animation.slideDown(mySketchList).done(function() {
+                                        that.binding.showList = false;
                                         replaceCommands(newShowList);
                                     });
-                                })
+                                });
                             }
                         }
                     } else {
@@ -376,9 +381,9 @@
                     Log.call(Log.l.trace, "Sketch.Controller.");
                     // TODO: open blank svg
                     that.hideToolbox("addNotesToolbar");
-                    if (docViewer && docViewer.canUnload) {
+                    if (that.docViewer && that.docViewer.canUnload) {
                         // save previous
-                        docViewer.canUnload(function() {
+                        that.docViewer.canUnload(function () {
                             loadDoc(null, 3, 75);
                         }, function() {
                             // error occured!
@@ -392,9 +397,9 @@
                     Log.call(Log.l.trace, "Sketch.Controller.");
                     // TODO: open camera
                     that.hideToolbox("addNotesToolbar");
-                    if (docViewer && docViewer.canUnload) {
+                    if (that.docViewer && that.docViewer.canUnload) {
                         // save previous
-                        docViewer.canUnload(function () {
+                        that.docViewer.canUnload(function () {
                             loadDoc(null, 1, 3);
                         }, function () {
                             // error occured!

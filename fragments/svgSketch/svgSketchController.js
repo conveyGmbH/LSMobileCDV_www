@@ -110,13 +110,16 @@
                 } else if (that.binding.isLocal) {
                     // insert new SVG note first - but only if isLocal!
                     that.svgEditor.fnNewSVG();
-                    ret = that.saveData(function (response) {
+                    ret = that.saveData(function(response) {
                         // called asynchronously if ok
                         AppBar.busy = false;
-                    }, function (errorResponse) {
+                    },
+                    function(errorResponse) {
                         AppBar.busy = false;
                         AppData.setErrorMsg(that.binding, errorResponse);
                     });
+                } else {
+                    ret = WinJS.Promise.as();
                 }
                 Log.ret(Log.l.trace);
                 return ret;
@@ -278,19 +281,16 @@
                 clickShapes: function (event) {
                     Log.call(Log.l.trace, "Sketch.Controller.");
                     that.svgEditor.toggleToolbox("shapesToolbar");
-                    AppBar.scope.binding.showList = false;
                     Log.ret(Log.l.trace);
                 },
                 clickColors: function (event) {
                     Log.call(Log.l.trace, "Sketch.Controller.");
                     that.svgEditor.toggleToolbox("colorsToolbar");
-                    AppBar.scope.binding.showList = false;
                     Log.ret(Log.l.trace);
                 },
                 clickWidths: function (event) {
                     Log.call(Log.l.trace, "Sketch.Controller.");
                     that.svgEditor.toggleToolbox("widthsToolbar");
-                    AppBar.scope.binding.showList = false;
                     Log.ret(Log.l.trace);
                 },
                 // Eventhandler for tools
