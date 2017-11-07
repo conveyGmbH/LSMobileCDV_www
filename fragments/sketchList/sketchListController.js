@@ -288,11 +288,11 @@
                         KontaktID: that.binding.contactId
                     }, that.binding.isLocal);
                 }
-                ret = ret.then(function () {
+                ret = ret.then(function() {
                     AppBar.notifyModified = true;
                     AppBar.triggerDisableHandlers();
                     return WinJS.Promise.as();
-                })
+                });
                 Log.ret(Log.l.trace);
                 return ret;
             };
