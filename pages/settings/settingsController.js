@@ -23,6 +23,20 @@
 
             var individualColorToggle = pageElement.querySelector(".individualColor");
 
+            this.dispose = function () {
+                var colorContainers = pageElement.querySelectorAll(".color_container");
+                if (colorContainers) {
+                    for (var i = 0; i < colorContainers.length; i++) {
+                        var colorContainer = colorContainers[i];
+                        if (colorContainer && colorContainer.colorPicker &&
+                            typeof colorContainer.colorPicker._dispose === "function") {
+                            colorContainer.colorPicker._dispose();
+                            colorContainer.colorPicker = null;
+                        }
+                    }
+                }
+            }
+
             var createColorPicker = function (colorProperty, doRecreate) {
                 Log.call(Log.l.trace, "Settings.Controller.");
                 var id = "#" + colorProperty + "_picker";
