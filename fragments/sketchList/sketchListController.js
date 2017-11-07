@@ -117,16 +117,23 @@
                                             AppBar.scope.pageElement &&
                                             AppBar.scope.pageElement.winControl &&
                                             typeof AppBar.scope.pageElement.winControl.canUnload === "function") {
-                                            AppBar.scope.pageElement.winControl.canUnload(function (response) {
-                                                // called asynchronously if ok
-                                                //load sketch with new recordId
-                                                that.binding.curId = item.data.KontaktNotizVIEWID;
-                                                if (AppBar.scope && typeof AppBar.scope.loadData === "function") {
-                                                    AppBar.scope.loadData(that.binding.curId, item.data.DocGroup, item.data.DocFormat);
-                                                }
-                                            }, function (errorResponse) {
-                                                // error handled in saveData!
-                                            });
+                                            AppBar.scope.pageElement.winControl.canUnload(function(response) {
+                                                    // called asynchronously if ok
+                                                    //load sketch with new recordId
+                                                    that.binding.curId = item.data.KontaktNotizVIEWID;
+                                                    if (AppBar.scope && typeof AppBar.scope.loadData === "function") {
+                                                        AppBar.scope.loadData(that.binding.curId, item.data.DocGroup, item.data.DocFormat);
+                                                    }
+                                                },
+                                                function(errorResponse) {
+                                                    // error handled in saveData!
+                                                });
+                                        } else {
+                                            //load sketch with new recordId
+                                            that.binding.curId = item.data.KontaktNotizVIEWID;
+                                            if (AppBar.scope && typeof AppBar.scope.loadData === "function") {
+                                                AppBar.scope.loadData(that.binding.curId, item.data.DocGroup, item.data.DocFormat);
+                                            }
                                         }
                                     }
                                 });
@@ -227,7 +234,6 @@
                         Log.print(Log.l.trace, "SketchList.sketchlistView: success!");
                         // select returns object already parsed from json file in response
                         if (json && json.d) {
-                            that.binding.count = json.d.results.length;
                             that.nextUrl = SketchList.sketchlistView.getNextUrl(json, that.binding.isLocal);
                             var results = json.d.results;
                             if (that.sketches) {
@@ -235,7 +241,7 @@
                                 that.sketches.length = 0;
                                 results.forEach(function (item, index) {
                                     that.resultConverter(item, index);
-                                    that.binding.count = that.sketches.push(item);
+                                    that.sketches.push(item);
                                 });
                             } else {
                                 results.forEach(function (item, index) {
@@ -243,8 +249,8 @@
                                 });
                                 // Now, we call WinJS.Binding.List to get the bindable list
                                 that.sketches = new WinJS.Binding.List(results);
-                                that.binding.count = that.sketches.length;
                             }
+                            that.binding.count = that.sketches.length;
                             //as default, show first sketchnote in sketch page
                             if (listView.winControl) {
                                 // add ListView dataSource

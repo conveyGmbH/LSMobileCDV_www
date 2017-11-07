@@ -64,7 +64,7 @@
             }
             Colors.changeCSS(".tool-box", "background-color", toolBackgroundColor);
 
-            var commandList = [
+            var commandList = options && options.isLocal ? [
                 { id: 'clickUndo', label: getResourceText('command.undo'), tooltip: getResourceText('tooltip.undo'), section: 'primary', svg: 'undo' },
                 { id: 'clickRedo', label: getResourceText('command.redo'), tooltip: getResourceText('tooltip.redo'), section: 'primary', svg: 'redo' },
                 //{ id: 'clickDelete', label: getResourceText('command.delete'), tooltip: getResourceText('tooltip.delete'), section: 'primary', svg: 'delete' },
@@ -72,7 +72,7 @@
                 { id: 'clickShapes', label: getResourceText('sketch.shape'), tooltip: getResourceText('sketch.shape'), section: 'secondary' },
                 { id: 'clickColors', label: getResourceText('sketch.color'), tooltip: getResourceText('sketch.color'), section: 'secondary' },
                 { id: 'clickWidths', label: getResourceText('sketch.width'), tooltip: getResourceText('sketch.width'), section: 'secondary' }
-            ];
+            ] : [];
             this.controller = new SvgSketch.Controller(element, options, commandList);
 
             Log.ret(Log.l.trace);

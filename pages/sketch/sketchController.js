@@ -161,7 +161,6 @@
             var loadData = function (noteId, docGroup, docFormat) {
                 Log.call(Log.l.trace, "Sketch.Controller.", "noteId=" + noteId + " docGroup=" + docGroup + " docFormat=" + docFormat);
                 AppData.setErrorMsg(that.binding);
-                that.contactId = AppData.getRecordId("Kontakt");
                 var ret = new WinJS.Promise.as().then(function () {
                     if (!that.contactId) {
                         var newContact = {
@@ -208,8 +207,8 @@
             this.loadData = loadData;
 
             var loadList = function (noteId) {
-                Log.call(Log.l.trace, "svgSketchController.loadList");
-                var ret = null;
+                Log.call(Log.l.trace, "Sketch.Controller.");
+                var ret;
                 var sketchListFragmentControl = Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("sketchList"));
                 if (sketchListFragmentControl && sketchListFragmentControl.controller) {
                     ret = sketchListFragmentControl.controller.loadData(that.contactId, noteId);
@@ -325,7 +324,6 @@
                             }
                         });
                     };
-
                     that.binding.userHidesList = !newShowList;
                     if (mySketchList && mySketchList.style) {
                         mySketchList.style.display = "block";
@@ -347,7 +345,6 @@
                                 var mySketchViewers = pageElement.querySelectorAll(".sketchfragmenthost");
                                 if (mySketchViewers) {
                                     var mySketch, i;
-
                                     for (i = 0; i < mySketchViewers.length; i++) {
                                         mySketch = mySketchViewers[i];
                                         if (mySketch && mySketch.style) {
