@@ -612,6 +612,48 @@
                     });
                     AppBar.triggerDisableHandlers();
                     Log.ret(Log.l.trace);
+                },
+                clickDelete: function (event) {
+                    Log.call(Log.l.trace, "ImgSketch.Controller.");
+                    var confirmTitle = getResourceText("sketch.questionDelete");
+                    confirm(confirmTitle, function(result) {
+                            if (result) {
+                                WinJS.Promise.as().then(function () {
+                                    return ImgSketch.sketchView.deleteRecord(function (response) {
+                                            // called asynchronously if ok
+                                            Log.print(Log.l.trace, "ImgSketchData delete: success!");
+                                            //reload sketchlist
+                                            if (AppBar.scope && typeof AppBar.scope.loadList === "function") {
+                                                AppBar.scope.loadList(null);
+                                            }
+                                        },
+                                        function (errorResponse) {
+                                            // called asynchronously if an error occurs
+                                            // or server returns response with an error status.
+                                            AppData.setErrorMsg(that.binding, errorResponse);
+
+                                            var message = null;
+                                            Log.print(Log.l.error, "error status=" + errorResponse.status + " statusText=" + errorResponse.statusText);
+                                            if (errorResponse.data && errorResponse.data.error) {
+                                                Log.print(Log.l.error, "error code=" + errorResponse.data.error.code);
+                                                if (errorResponse.data.error.message) {
+                                                    Log.print(Log.l.error, "error message=" + errorResponse.data.error.message.value);
+                                                    message = errorResponse.data.error.message.value;
+                                                }
+                                            }
+                                            if (!message) {
+                                                message = getResourceText("error.delete");
+                                            }
+                                            alert(message);
+                                        },
+                                        that.binding.noteId,
+                                        that.binding.isLocal);
+                                });
+                            } else {
+                                Log.print(Log.l.trace, "clickDelete: user choice CANCEL");
+                            }
+                        });
+                        Log.ret(Log.l.trace);
                 }
             };
 

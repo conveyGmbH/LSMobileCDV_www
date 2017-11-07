@@ -151,6 +151,7 @@
 	"sketch.addNote"		: "Notiz hinzufügen",
 	"sketch.addSvg"			: "Skizze hinzufügen",
 	"sketch.addImg"			: "Foto hinzufügen",
+	"sketch.questionDelete"	: "Wollen Sie die aktuelle Notiz löschen?",
 
     "search.title"          : "Kriterien zur Suche",
     "search.comment"        : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",

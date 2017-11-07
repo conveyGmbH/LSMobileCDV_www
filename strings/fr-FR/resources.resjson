@@ -150,6 +150,7 @@
     "sketch.addNote"		: "Ajoutez une note",
     "sketch.addSvg"			: "Ajoutez une esquisse",
     "sketch.addImg"			: "Ajoutez une photo",
+    "sketch.questionDelete"	: "Voulez-vous supprimer cette note?",
 
     "search.title"          : "Entrez les critères de recherche",
     "search.comment"        : "Utilisez le bouton Retour sur cette page pour y retourner!",

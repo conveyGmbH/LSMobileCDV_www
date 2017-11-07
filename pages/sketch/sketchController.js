@@ -35,12 +35,23 @@
             this.pageElement = pageElement;
             this.docViewer = null;
 
+            this.prevcount = -1;
+
             var setNotesCount = function (count) {
                 Log.call(Log.l.trace, "Sketch.Controller.", "count=" + count);
                 if (count > 1) {
                     that.binding.moreNotes = true;
                 } else {
                     that.binding.moreNotes = false;
+                    if (that.prevcount > count && count === 0) {
+                        //update page layout
+                        that.binding.showSvg = false;
+                        that.binding.showPhoto = false;
+                        if (that.docViewer && that.docViewer.controller) {
+                            AppBar.replaceCommands([], that.docViewer.controller.commandList);
+                        }
+                        that.docViewer = null;
+                    }
                 }
                 if (!that.binding.userHidesList) {
                     that.binding.showList = that.binding.moreNotes;
@@ -48,6 +59,7 @@
                 AppBar.replaceCommands([
                     { id: 'clickShowList', label: getResourceText('sketch.showList'), tooltip: getResourceText('sketch.showList'), section: 'primary', svg: that.binding.showList ? 'document_height' : 'elements3' }
                 ]);
+                that.prevcount = count;
                 Log.ret(Log.l.trace);
             }
             that.setNotesCount = setNotesCount;
@@ -316,8 +328,8 @@
                         WinJS.Promise.timeout(50).then(function () {
                             mySketchList = pageElement.querySelector(".listfragmenthost");
                             if (mySketchList && mySketchList.style) {
-                                mySketchList.style.position = "";
-                                mySketchList.style.top = "";
+                                //mySketchList.style.position = "";
+                                //mySketchList.style.top = "";
                                 if (newShowList) {
                                     mySketchList.style.display = "";
                                 }
@@ -381,11 +393,13 @@
                     if (that.docViewer && that.docViewer.canUnload) {
                         // save previous
                         that.docViewer.canUnload(function () {
+                            that.binding.showSvg = true;
                             loadDoc(null, 3, 75);
                         }, function() {
                             // error occured!
                         });
                     } else {
+                        that.binding.showSvg = true;
                         loadDoc(null, 3, 75);
                     }
                     Log.ret(Log.l.trace);
@@ -397,11 +411,13 @@
                     if (that.docViewer && that.docViewer.canUnload) {
                         // save previous
                         that.docViewer.canUnload(function () {
+                            that.binding.showPhoto = true;
                             loadDoc(null, 1, 3);
                         }, function () {
                             // error occured!
                         });
                     } else {
+                        that.binding.showPhoto = true;
                         loadDoc(null, 1, 3);
                     }
                     Log.ret(Log.l.trace);
@@ -435,7 +451,7 @@
                     }
                 }
             }
-
+            
             // finally, load the data
             that.processAll().then(function() {
                 Log.print(Log.l.trace, "Binding wireup page complete");

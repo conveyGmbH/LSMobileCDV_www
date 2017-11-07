@@ -146,6 +146,7 @@
     "sketch.addNote"		: "Aggiungete una notizia",
     "sketch.addSvg"			: "Aggiungete uno schizzo",
     "sketch.addImg"			: "Aggiungete una foto",
+    "sketch.questionDelete"	: "Vuoi eliminare questa notizia?",
 
     "search.title"          : "Immettere i criteri di ricerca",
     "search.comment"        : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",

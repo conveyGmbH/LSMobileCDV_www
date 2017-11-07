@@ -45,7 +45,7 @@
             // check modify state
             // modified==true when startDrag() in svg.js is called!
             var isModified = function () {
-                Log.call(Log.l.trace, "svgSketchController.");
+                Log.call(Log.l.trace, "SvgSketchController.");
                 Log.ret(Log.l.trace, that.svgEditor.modified);
                 return that.svgEditor.modified;
             }
@@ -249,7 +249,7 @@
 
             var eventHandlers = {
                 clickOk: function (event) {
-                    Log.call(Log.l.trace, "Sketch.Controller.");
+                    Log.call(Log.l.trace, "SvgSketch.Controller.");
                     if (AppBar.modified && !AppBar.busy) {
                         AppBar.busy = true;
                         AppData.setErrorMsg(that.binding);
@@ -264,38 +264,81 @@
                     Log.ret(Log.l.trace);
                 },
                 clickUndo: function (event) {
-                    Log.call(Log.l.trace, "Sketch.Controller.");
+                    Log.call(Log.l.trace, "SvgSketch.Controller.");
                     that.svgEditor.fnUndoSVG(event);
                     Log.ret(Log.l.trace);
                 },
                 clickRedo: function (event) {
-                    Log.call(Log.l.trace, "Sketch.Controller.");
+                    Log.call(Log.l.trace, "SvgSketch.Controller.");
                     that.svgEditor.fnRedoSVG(event);
                     Log.ret(Log.l.trace);
                 },
                 clickDelete: function (event) {
-                    Log.call(Log.l.trace, "Sketch.Controller.");
-                    that.svgEditor.fnNewSVG(event);
+                    Log.call(Log.l.trace, "SvgSketch.Controller.");
+                    var confirmTitle = getResourceText("sketch.questionDelete");
+                    confirm(confirmTitle, function (result) {
+                        if (result) {
+                            WinJS.Promise.as().then(function () {
+                                Log.print(Log.l.trace, "clickDelete: user choice OK");
+                                return SvgSketch.sketchView.deleteRecord(function (response) {
+                                    // called asynchronously if ok
+                                    Log.print(Log.l.trace, "svgSketchData delete: success!");
+                                    //reload sketchlist
+                                    if (AppBar.scope && typeof AppBar.scope.loadList === "function") {
+                                        AppBar.scope.loadList(null);
+                                    }
+                                },
+                                    function (errorResponse) {
+                                        // called asynchronously if an error occurs
+                                        // or server returns response with an error status.
+                                        AppData.setErrorMsg(that.binding, errorResponse);
+
+                                        var message = null;
+                                        Log.print(Log.l.error,
+                                            "error status=" +
+                                            errorResponse.status +
+                                            " statusText=" +
+                                            errorResponse.statusText);
+                                        if (errorResponse.data && errorResponse.data.error) {
+                                            Log.print(Log.l.error, "error code=" + errorResponse.data.error.code);
+                                            if (errorResponse.data.error.message) {
+                                                Log.print(Log.l.error,
+                                                    "error message=" + errorResponse.data.error.message.value);
+                                                message = errorResponse.data.error.message.value;
+                                            }
+                                        }
+                                        if (!message) {
+                                            message = getResourceText("error.delete");
+                                        }
+                                        alert(message);
+                                    },
+                                    that.binding.noteId,
+                                    that.binding.isLocal);
+                            });
+                        } else {
+                            Log.print(Log.l.trace, "clickDelete: user choice CANCEL");
+                        }
+                    });
                     Log.ret(Log.l.trace);
                 },
                 clickShapes: function (event) {
-                    Log.call(Log.l.trace, "Sketch.Controller.");
+                    Log.call(Log.l.trace, "SvgSketch.Controller.");
                     that.svgEditor.toggleToolbox("shapesToolbar");
                     Log.ret(Log.l.trace);
                 },
                 clickColors: function (event) {
-                    Log.call(Log.l.trace, "Sketch.Controller.");
+                    Log.call(Log.l.trace, "SvgSketch.Controller.");
                     that.svgEditor.toggleToolbox("colorsToolbar");
                     Log.ret(Log.l.trace);
                 },
                 clickWidths: function (event) {
-                    Log.call(Log.l.trace, "Sketch.Controller.");
+                    Log.call(Log.l.trace, "SvgSketch.Controller.");
                     that.svgEditor.toggleToolbox("widthsToolbar");
                     Log.ret(Log.l.trace);
                 },
                 // Eventhandler for tools
                 clickTool: function (event) {
-                    Log.call(Log.l.trace, "Sketch.Controller.");
+                    Log.call(Log.l.trace, "SvgSketch.Controller.");
                     var tool = event.currentTarget;
                     if (tool && tool.id) {
                         if (tool.id.length > 4) {
@@ -311,7 +354,7 @@
                 },
                 // Eventhandler for colors
                 clickColor: function (event) {
-                    Log.call(Log.l.trace, "Sketch.Controller.");
+                    Log.call(Log.l.trace, "SvgSketch.Controller.");
                     var color = event.currentTarget;
                     if (color && color.id) {
                         if (color.id.length > 10) {
@@ -328,7 +371,7 @@
                     Log.ret(Log.l.trace);
                 },
                 clickWidth: function (event) {
-                    Log.call(Log.l.trace, "Sketch.Controller.", "selected width=" + that.binding.width);
+                    Log.call(Log.l.trace, "SvgSketch.Controller.", "selected width=" + that.binding.width);
                     that.svgEditor.hideToolbox("widthsToolbar");
                     that.svgEditor.registerTouchEvents();
                     Log.ret(Log.l.trace);
