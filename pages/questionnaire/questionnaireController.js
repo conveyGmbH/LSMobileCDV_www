@@ -430,7 +430,7 @@
                             for (prop in newRecord) {
                                 if (newRecord.hasOwnProperty(prop)) {
                                     if (prop !== "Freitext") {
-                                        if (newRecord[prop].length > 0 && newRecord[prop] !== "0" && newRecord[prop] !== "00") {
+                                        if (newRecord[prop] && newRecord[prop].length > 0 && newRecord[prop] !== "0" && newRecord[prop] !== "00") {
                                             Log.call(Log.l.u1,"Questionnaire.Controller. Answer not empty" + newRecord.prop);
                                             ret = false;
                                             break;
