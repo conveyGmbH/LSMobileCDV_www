@@ -36,6 +36,7 @@
             this.docViewer = null;
 
             this.prevcount = -1;
+            this.listloaded = false;
 
             var setNotesCount = function (count) {
                 Log.call(Log.l.trace, "Sketch.Controller.", "count=" + count);
@@ -350,6 +351,11 @@
                             }
                             if (newShowList) {
                                 that.binding.showList = true;
+                                //load list again
+                                if (!that.listloaded) {
+                                    Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("sketchList")).controller.loadData(that.contactId);
+                                    that.listloaded = true;
+                                }
                                 WinJS.UI.Animation.slideUp(mySketchList).done(function () {
                                     replaceCommands(newShowList);
                                 });
@@ -394,6 +400,7 @@
                         // save previous
                         that.docViewer.canUnload(function () {
                             that.binding.showSvg = true;
+                            that.listloaded = that.binding.showList ? true : false;
                             loadDoc(null, 3, 75);
                         }, function() {
                             // error occured!

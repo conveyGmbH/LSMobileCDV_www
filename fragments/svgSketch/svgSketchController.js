@@ -285,6 +285,7 @@
                                     Log.print(Log.l.trace, "svgSketchData delete: success!");
                                     //reload sketchlist
                                     if (AppBar.scope && typeof AppBar.scope.loadList === "function") {
+                                        AppBar.scope.listloaded = AppBar.scope.binding.showList ? true : false;
                                         AppBar.scope.loadList(null);
                                     }
                                 },
