@@ -305,6 +305,22 @@
                                 AppData._persistentStates.hideSketch = false;
                             }
                             break;
+                        case 23:
+                            item.pageProperty = "barcode";
+                            if (item.LocalValue === "0") {
+                                AppData._persistentStates.hideBarcode = true;
+                            } else {
+                                AppData._persistentStates.hideBarcode = false;
+                            }
+                            break;
+                        case 24:
+                            item.pageProperty = "businesscard";
+                            if (item.LocalValue === "0") {
+                                AppData._persistentStates.hideCamera = true;
+                            } else {
+                                AppData._persistentStates.hideCamera = false;
+                            }
+                            break;
                         default:
                             // defaultvalues
                     }
