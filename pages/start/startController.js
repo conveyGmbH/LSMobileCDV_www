@@ -110,6 +110,24 @@
                 }
             };
 
+            var disableButton = function (button, bDisabled) {
+                bDisabled = !!bDisabled;
+                Log.call(Log.l.trace, "Start.Controller.", "bDisabled=" + bDisabled);
+                if (button && button.disabled !== bDisabled) {
+                    button.disabled = bDisabled;
+                    var elements = button.querySelectorAll("span");
+                    for (var l = 0; l < elements.length; l++) {
+                        elements[l].style.color = bDisabled ? "#808080" : "#f0f0f0";
+                    }
+                    var svgObject = button.querySelector(".action-image-list");
+                    if (svgObject) {
+                        var svgRoot = svgObject.firstChild;
+                        Colors.changeSVGColor(svgRoot, bDisabled ? "#808080" : "#f0f0f0", true, false);
+                    }
+                }
+                Log.ret(Log.l.trace);
+            };
+
             var updateActions = function(bReload) {
                 Log.call(Log.l.trace, "Start.Controller.");
                 if (bReload) {
@@ -245,21 +263,17 @@
                                         for (var k = 0; k < attrs.length; k++) {
                                             if (attrs[k].nodeName === "propdescname" || attrs[k].nodeName === "name") {
                                                 switch (attrs[k].nodeValue) {
-                                                case "listRemote":
-                                                case "search":
-                                                    if (button.disabled && !AppData.appSettings.odata.serverFailure ||
-                                                        !button.disabled && AppData.appSettings.odata.serverFailure) {
-                                                        var l;
-                                                        button.disabled = AppData.appSettings.odata.serverFailure;
-                                                        var elements = button.querySelectorAll("span");
-                                                        for (l = 0; l < elements.length; l++) {
-                                                            elements[l].style.color = AppData.appSettings.odata.serverFailure ? "#808080" : "#f0f0f0";
-                                                        }
-                                                        var svgObject = button.querySelector(".action-image-list");
-                                                        if (svgObject) {
-                                                            var svgRoot = svgObject.firstChild;
-                                                            Colors.changeSVGColor(svgRoot, AppData.appSettings.odata.serverFailure ? "#808080" : "#f0f0f0", true, false);
-                                                        }
+                                                    case "listRemote":
+                                                    case "search": {
+                                                        disableButton(button, AppData.appSettings.odata.serverFailure);
+                                                    }
+                                                    break;
+                                                    case "barcode": {
+                                                        disableButton(button, AppData._persistentStates.hideBarcode);
+                                                    }
+                                                    break;
+                                                    case "camera": {
+                                                        disableButton(button, AppData._persistentStates.hideCamera);
                                                     }
                                                     break;
                                                 }
