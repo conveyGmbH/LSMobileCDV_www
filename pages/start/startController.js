@@ -300,7 +300,13 @@
                 Log.call(Log.l.trace, "Start.Controller.");
                 AppData.setErrorMsg(that.binding);
                 var ret = new WinJS.Promise.as().then(function () {
-                    WinJS.Promise.timeout(50).then(function() {
+                    if (AppData._userRemoteDataPromise) {
+                        Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                        AppData._userRemoteDataPromise.cancel();
+                    }
+                    AppData._userRemoteDataPromise = WinJS.Promise.timeout(100).then(function () {
+                        Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + 100 + "s is over!");
+                        AppData._curGetUserRemoteDataId = 0;
                         AppData.getUserRemoteData();
                     });
                     var recordId = getRecordId();
