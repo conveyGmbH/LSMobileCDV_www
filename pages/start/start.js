@@ -67,6 +67,33 @@
             Log.ret(Log.l.trace);
         },
 
+        online: function () {
+            Log.call(Log.l.trace, pageName + ".");
+            if (AppData._userRemoteDataPromise) {
+                Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                AppData._userRemoteDataPromise.cancel();
+            }
+            AppData._userRemoteDataPromise = WinJS.Promise.timeout(1000).then(function () {
+                Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + 1000 + "s is over!");
+                AppData._curGetUserRemoteDataId = 0;
+                AppData.getUserRemoteData();
+            });
+            Log.ret(Log.l.trace);
+        },
+
+        offline: function () {
+            Log.call(Log.l.trace, pageName + ".");
+            if (!AppData.appSettings.odata.serverFailure) {
+                AppData.appSettings.odata.serverFailure = true;
+                NavigationBar.disablePage("listRemote");
+                NavigationBar.disablePage("search");
+                if (this.controller) {
+                    this.controller.updateActions();
+                }
+            }
+            Log.ret(Log.l.trace);
+        },
+
         updateLayout: function (element, viewState, lastViewState) {
             var ret = null;
             var that = this;

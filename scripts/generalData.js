@@ -70,6 +70,7 @@
                 return ret;
             }
         },
+        _userRemoteDataPromise: null,
         _curGetUserDataId: 0,
         _curGetRemoteUserDataId: 0,
         _curGetContactDataId: 0,
@@ -241,6 +242,7 @@
         getUserRemoteData: function () {
             var ret;
             Log.call(Log.l.trace, "AppData.");
+            AppData._userRemoteDataPromise = null;
             if (!AppData.appSettings.odata.login ||
                 !AppData.appSettings.odata.password ||
                 !AppData.appSettings.odata.dbSiteId) {
@@ -296,7 +298,11 @@
                                 }
                                 var timeout = AppData._persistentStates.odata.replInterval || 30;
                                 Log.print(Log.l.info, "getUserRemoteData: Now, wait for timeout=" + timeout + "s");
-                                WinJS.Promise.timeout(timeout * 1000).then(function () {
+                                if (AppData._userRemoteDataPromise) {
+                                    Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                                    AppData._userRemoteDataPromise.cancel();
+                                }
+                                AppData._userRemoteDataPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
                                     Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");
                                     AppData._curGetUserRemoteDataId = 0;
                                     AppData.getUserRemoteData();

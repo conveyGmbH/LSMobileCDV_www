@@ -85,26 +85,26 @@
                         //}
                         businessCardContainer.appendChild(that.img);
                         switch (AppData._barcodeType) {
-                        case "barcode":
-                            {
-                                WinJS.Utilities.addClass(that.img, "start-barcode");
-                                that.img.src = "images/barcode.jpg";
-                                var text = document.createElement("SPAN");
-                                WinJS.Utilities.addClass(text, "start-barcode");
-                                var shortText = AppData._barcodeRequest.substr(0, 32);
-                                if (shortText.length < AppData._barcodeRequest.length) {
-                                    shortText += "...";
+                            case "barcode":
+                                {
+                                    WinJS.Utilities.addClass(that.img, "start-barcode");
+                                    that.img.src = "images/barcode.jpg";
+                                    var text = document.createElement("SPAN");
+                                    WinJS.Utilities.addClass(text, "start-barcode");
+                                    var shortText = AppData._barcodeRequest.substr(0, 32);
+                                    if (shortText.length < AppData._barcodeRequest.length) {
+                                        shortText += "...";
+                                    }
+                                    text.textContent = shortText;
+                                    businessCardContainer.appendChild(text);
                                 }
-                                text.textContent = shortText;
-                                businessCardContainer.appendChild(text);
-                            }
-                            break;
-                        case "vcard":
-                            {
-                                WinJS.Utilities.addClass(that.img, "start-vcard");
-                                that.img.src = "images/qrcode.jpg";
-                            }
-                            break;
+                                break;
+                            case "vcard":
+                                {
+                                    WinJS.Utilities.addClass(that.img, "start-vcard");
+                                    that.img.src = "images/qrcode.jpg";
+                                }
+                                break;
                         }
                     }
                 }
