@@ -307,10 +307,10 @@
                     if (!recordId) {
                         that.binding.dataContact = {};
                         that.binding.InitLandItem = {};
-                        ret = WinJS.Promise.as();
+                        return WinJS.Promise.as();
                     } else {
                         Log.print(Log.l.trace, "calling select startContact...");
-                        ret = Start.contactView.select(function(json) {
+                        return Start.contactView.select(function(json) {
                             // this callback will be called asynchronously
                             // when the response is available
                             Log.print(Log.l.trace, "startContact: success!");
@@ -318,18 +318,15 @@
                             if (json && json.d) {
                                 that.binding.dataContact = json.d;
                             }
-                            updateActions();
                             return WinJS.Promise.as();
                         }, function(errorResponse) {
                             that.binding.dataContact = {};
-                            updateActions();
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
                             AppData.setErrorMsg(that.binding, errorResponse);
                             return WinJS.Promise.as();
                         }, recordId).then();
                     }
-                    return ret;
                 }).then(function() {
                     if (typeof that.binding.dataContact.INITLandID !== "undefined" &&
                         !AppData.initLandView.getResults().length) {
@@ -355,7 +352,6 @@
                             var curIndex = map[that.binding.dataContact.INITLandID];
                             if (typeof curIndex !== "undefined") {
                                 that.binding.InitLandItem = results[curIndex];
-                                updateActions();
                             }
                         }
                     }
@@ -379,7 +375,6 @@
                                     if (docContent) {
                                         var sub = docContent.search("\r\n\r\n");
                                         AppData._photoData = docContent.substr(sub + 4);
-                                        updateActions();
                                     }
                                 }
                             }, function(errorResponse) {
@@ -389,9 +384,10 @@
                             return WinJS.Promise.as();
                         }
                     } else {
-                        updateActions();
                         return WinJS.Promise.as();
                     }
+                }).then(function () {
+                    updateActions();
                 });
                 Log.ret(Log.l.trace);
                 return ret;
@@ -537,18 +533,17 @@
                                     return WinJS.Promise.as();
                                 }
                             }).then(function () {
-                                return WinJS.Promise.join(js).then(function () {
-                                    checkListButtonStates();
+                                return WinJS.Promise.join(js);
+                            }).then(function () {
+                                checkListButtonStates();
+                                if (!Application.pageframe.splashScreenDone) {
+                                    return WinJS.Promise.timeout(100).then(function () {
+                                        return Application.pageframe.hideSplashScreen();
+                                    });
+                                } else {
                                     return WinJS.Promise.as();
-                                });
+                                }
                             });
-                            if (!Application.pageframe.splashScreenDone) {
-                                promise.then(function () {
-                                    return WinJS.Promise.timeout(100);
-                                }).then(function () {
-                                    return Application.pageframe.hideSplashScreen();
-                                });
-                            }
                         }
                     }
                     Log.ret(Log.l.trace);
