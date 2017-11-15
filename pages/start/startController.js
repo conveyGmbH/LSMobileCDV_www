@@ -119,7 +119,7 @@
                     for (var l = 0; l < elements.length; l++) {
                         elements[l].style.color = bDisabled ? "#808080" : "#f0f0f0";
                     }
-                    var svgObject = button.querySelector(".action-image-list");
+                    var svgObject = button.querySelector(".action-image-list, .action-image-new");
                     if (svgObject) {
                         var svgRoot = svgObject.firstChild;
                         Colors.changeSVGColor(svgRoot, bDisabled ? "#808080" : "#f0f0f0", true, false);
@@ -129,12 +129,15 @@
                 Log.ret(Log.l.trace);
             };
 
-            var checkListButtonStates = function() {
+            var checkListButtonStates = function (buttonElement) {
                 Log.call(Log.l.trace, "Start.Controller.");
                 var buttons = listView.querySelectorAll("button");
                 if (buttons && buttons.length > 0) {
                     for (var j = 0; j < buttons.length; j++) {
                         var button = buttons[j];
+                        if (buttonElement && buttonElement !== button) {
+                            continue;
+                        }
                         var attrs = button.attributes;
                         if (attrs && attrs.length > 0) {
                             for (var k = 0; k < attrs.length; k++) {
@@ -158,6 +161,16 @@
                                 }
                             }
                         }
+                    }
+                }
+                Log.ret(Log.l.trace);
+            };
+            var resetSvgLoaded = function () {
+                Log.call(Log.l.trace, "Start.Controller.");
+                var buttons = listView.querySelectorAll("button");
+                if (buttons && buttons.length > 0) {
+                    for (var j = 0; j < buttons.length; j++) {
+                        buttons[j].svgLoaded = false;
                     }
                 }
                 Log.ret(Log.l.trace);
@@ -511,19 +524,26 @@
                                 }
                             }
                             var showTileButton = function (svgInfo) {
+                                var ret = null;
                                 if (svgInfo.element &&
                                     svgInfo.element.parentNode) {
                                     var buttonElement = svgInfo.element.parentNode.parentNode;
-                                    if (buttonElement &&
-                                        buttonElement.style &&
-                                        buttonElement.style.visibility !== "visible") {
-                                        buttonElement.style.visibility = "visible";
-                                        return WinJS.UI.Animation.enterPage(buttonElement);
+                                    if (buttonElement) {
+                                        checkListButtonStates(buttonElement);
+                                        if (buttonElement.style &&
+                                            buttonElement.style.visibility !== "visible") {
+                                            buttonElement.style.visibility = "visible";
+                                            ret = WinJS.UI.Animation.enterPage(buttonElement);
+                                        }
                                     }
                                 }
-                                return WinJS.Promise.as();
+                                if (!ret) {
+                                    ret = WinJS.Promise.as();
+                                }
+                                return ret;
                             };
 
+                            resetSvgLoaded();
                             var js = {};
                             js.recent = Colors.loadSVGImageElements(listView, "action-image-recent", 40, Colors.textColor, "name", showTileButton);
                             js.list = Colors.loadSVGImageElements(listView, "action-image-list", 40, "#f0f0f0", "name", showTileButton);
@@ -542,7 +562,6 @@
                             }).then(function () {
                                 return WinJS.Promise.join(js);
                             }).then(function () {
-                                checkListButtonStates();
                                 if (!Application.pageframe.splashScreenDone) {
                                     return WinJS.Promise.timeout(100).then(function () {
                                         return Application.pageframe.hideSplashScreen();
