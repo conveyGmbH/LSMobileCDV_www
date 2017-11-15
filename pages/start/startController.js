@@ -113,7 +113,7 @@
             var disableButton = function (button, bDisabled) {
                 bDisabled = !!bDisabled;
                 Log.call(Log.l.trace, "Start.Controller.", "bDisabled=" + bDisabled);
-                if (button && button.disabled !== bDisabled) {
+                if (button && (button.disabled !== bDisabled || (bDisabled && !button.svgLoaded))) {
                     button.disabled = bDisabled;
                     var elements = button.querySelectorAll("span");
                     for (var l = 0; l < elements.length; l++) {
@@ -123,6 +123,7 @@
                     if (svgObject) {
                         var svgRoot = svgObject.firstChild;
                         Colors.changeSVGColor(svgRoot, bDisabled ? "#808080" : "#f0f0f0", true, false);
+                        button.svgLoaded = true;
                     }
                 }
                 Log.ret(Log.l.trace);
