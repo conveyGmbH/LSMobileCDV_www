@@ -1,0 +1,8 @@
+﻿#wavSketchController .doc-container {
+    float: left;
+}
+
+#noteAudio.player {
+    width: 100%;
+    height: 100%
+}

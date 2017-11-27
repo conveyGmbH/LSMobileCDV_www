@@ -93,10 +93,12 @@
                     var prevDocViewer = that.docViewer;
                     var newDocViewer = getDocViewer(docGroup, docFormat);
                     if (newDocViewer && newDocViewer.controller) {
+                        Log.print(Log.l.trace, "found docViewer!");
                         that.docViewer = newDocViewer;
                         bUpdateCommands = true;
                         ret = that.docViewer.controller.loadData(noteId);
                     } else if (AppData.isSvg(docGroup, docFormat)) {
+                        Log.print(Log.l.trace, "load new svgSketch!");
                         that.binding.showSvg = true;
                         that.binding.showPhoto = false;
                         parentElement = pageElement.querySelector("#svghost");
@@ -108,6 +110,7 @@
                             ret = WinJS.Promise.as();
                         }
                     } else if (AppData.isImg(docGroup, docFormat)) {
+                        Log.print(Log.l.trace, "load new imgSketch!");
                         that.binding.showSvg = false;
                         that.binding.showPhoto = true;
                         parentElement = pageElement.querySelector("#imghost");
@@ -130,6 +133,9 @@
                             if (prevDocViewer !== that.docViewer && that.docViewer && that.docViewer.controller) {
                                 that.docViewer.controller.updateCommands(prevDocViewer && prevDocViewer.controller);
                             }
+                        }
+                        if (prevDocViewer !== that.docViewer && prevDocViewer && prevDocViewer.controller) {
+                            prevDocViewer.controller.removeDoc();
                         }
                         // reset semaphore
                         inLoadDoc = false;
@@ -158,7 +164,7 @@
             this.loadData = loadData;
 
             var loadList = function (noteId) {
-                Log.call(Log.l.trace, "SketchRemote.");
+                Log.call(Log.l.trace, "SketchRemote.", "noteId=" + noteId);
                 var ret;
                 var sketchListFragmentControl = Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("sketchList"));
                 if (sketchListFragmentControl && sketchListFragmentControl.controller) {

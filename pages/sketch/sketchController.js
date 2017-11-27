@@ -7,9 +7,6 @@
 /// <reference path="~/www/lib/convey/scripts/pageController.js" />
 /// <reference path="~/www/scripts/generalData.js" />
 /// <reference path="~/www/pages/sketch/sketchService.js" />
-/// <reference path="~/plugins/cordova-plugin-camera/www/CameraConstants.js" />
-/// <reference path="~/plugins/cordova-plugin-camera/www/Camera.js" />
-/// <reference path="~/plugins/cordova-plugin-device/www/device.js" />
 
 (function () {
     "use strict";
@@ -26,6 +23,7 @@
             Application.Controller.apply(this, [pageElement, {
                 showSvg: false,
                 showPhoto: false,
+                showAudio: false,
                 showList: false,
                 moreNotes: false,
                 userHidesList: false
@@ -35,24 +33,12 @@
             this.pageElement = pageElement;
             this.docViewer = null;
 
-            this.prevcount = -1;
-            this.listloaded = false;
-
             var setNotesCount = function (count) {
                 Log.call(Log.l.trace, "Sketch.Controller.", "count=" + count);
                 if (count > 1) {
                     that.binding.moreNotes = true;
                 } else {
                     that.binding.moreNotes = false;
-                    if (that.prevcount > count && count === 0) {
-                        //update page layout
-                        that.binding.showSvg = false;
-                        that.binding.showPhoto = false;
-                        if (that.docViewer && that.docViewer.controller) {
-                            AppBar.replaceCommands([], that.docViewer.controller.commandList);
-                        }
-                        that.docViewer = null;
-                    }
                 }
                 if (!that.binding.userHidesList) {
                     that.binding.showList = that.binding.moreNotes;
@@ -60,7 +46,6 @@
                 AppBar.replaceCommands([
                     { id: 'clickShowList', label: getResourceText('sketch.showList'), tooltip: getResourceText('sketch.showList'), section: 'primary', svg: that.binding.showList ? 'document_height' : 'elements3' }
                 ]);
-                that.prevcount = count;
                 Log.ret(Log.l.trace);
             }
             that.setNotesCount = setNotesCount;
@@ -71,10 +56,12 @@
                 if (AppData.isSvg(docGroup, docFormat)) {
                     that.binding.showSvg = true;
                     that.binding.showPhoto = false;
+                    that.binding.showAudio = false;
                     docViewer = Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("svgSketch"));
                 } else if (AppData.isImg(docGroup, docFormat)) {
                     that.binding.showSvg = false;
                     that.binding.showPhoto = true;
+                    that.binding.showAudio = false;
                     docViewer = Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("imgSketch"));
                 } else {
                     docViewer = null;
@@ -110,12 +97,15 @@
                     var prevDocViewer = that.docViewer;
                     var newDocViewer = getDocViewer(docGroup, docFormat);
                     if (newDocViewer && newDocViewer.controller) {
+                        Log.print(Log.l.trace, "found docViewer!");
                         that.docViewer = newDocViewer;
                         bUpdateCommands = true;
                         ret = that.docViewer.controller.loadData(noteId);
                     } else if (AppData.isSvg(docGroup, docFormat)) {
+                        Log.print(Log.l.trace, "load new svgSketch!");
                         that.binding.showSvg = true;
                         that.binding.showPhoto = false;
+                        that.binding.showAudio = false;
                         parentElement = pageElement.querySelector("#svghost");
                         if (parentElement) {
                             bGetNewDocViewer = true;
@@ -125,8 +115,10 @@
                             ret = WinJS.Promise.as();
                         }
                     } else if (AppData.isImg(docGroup, docFormat)) {
+                        Log.print(Log.l.trace, "load new imgSketch!");
                         that.binding.showSvg = false;
                         that.binding.showPhoto = true;
+                        that.binding.showAudio = false;
                         parentElement = pageElement.querySelector("#imghost");
                         if (parentElement) {
                             bGetNewDocViewer = true;
@@ -147,6 +139,9 @@
                             if (prevDocViewer !== that.docViewer && that.docViewer && that.docViewer.controller) {
                                 that.docViewer.controller.updateCommands(prevDocViewer && prevDocViewer.controller);
                             }
+                        }
+                        if (prevDocViewer !== that.docViewer && prevDocViewer && prevDocViewer.controller) {
+                            prevDocViewer.controller.removeDoc();
                         }
                         // reset semaphore
                         inLoadDoc = false;
@@ -220,7 +215,7 @@
             this.loadData = loadData;
 
             var loadList = function (noteId) {
-                Log.call(Log.l.trace, "Sketch.Controller.");
+                Log.call(Log.l.trace, "Sketch.", "noteId=" + noteId);
                 var ret;
                 var sketchListFragmentControl = Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("sketchList"));
                 if (sketchListFragmentControl && sketchListFragmentControl.controller) {
@@ -329,8 +324,8 @@
                         WinJS.Promise.timeout(50).then(function () {
                             mySketchList = pageElement.querySelector(".listfragmenthost");
                             if (mySketchList && mySketchList.style) {
-                                //mySketchList.style.position = "";
-                                //mySketchList.style.top = "";
+                                mySketchList.style.position = "";
+                                mySketchList.style.top = "";
                                 if (newShowList) {
                                     mySketchList.style.display = "";
                                 }
@@ -351,11 +346,6 @@
                             }
                             if (newShowList) {
                                 that.binding.showList = true;
-                                //load list again
-                                if (!that.listloaded) {
-                                    Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("sketchList")).controller.loadData(that.contactId);
-                                    that.listloaded = true;
-                                }
                                 WinJS.UI.Animation.slideUp(mySketchList).done(function () {
                                     replaceCommands(newShowList);
                                 });
@@ -399,8 +389,6 @@
                     if (that.docViewer && that.docViewer.canUnload) {
                         // save previous
                         that.docViewer.canUnload(function () {
-                            that.binding.showSvg = true;
-                            that.listloaded = that.binding.showList ? true : false;
                             loadDoc(null, 3, 75);
                         }, function() {
                             // error occured!
@@ -418,7 +406,6 @@
                     if (that.docViewer && that.docViewer.canUnload) {
                         // save previous
                         that.docViewer.canUnload(function () {
-                            that.binding.showPhoto = true;
                             loadDoc(null, 1, 3);
                         }, function () {
                             // error occured!
@@ -426,6 +413,24 @@
                     } else {
                         that.binding.showPhoto = true;
                         loadDoc(null, 1, 3);
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                clickAddAudio: function (event) {
+                    Log.call(Log.l.trace, "Sketch.Controller.");
+                    // TODO: open camera
+                    that.hideToolbox("addNotesToolbar");
+                    if (that.docViewer && that.docViewer.canUnload) {
+                        // save previous
+                        that.docViewer.canUnload(function () {
+                            that.binding.showPhoto = true;
+                            loadDoc(null, 6, 67);
+                        }, function () {
+                            // error occured!
+                        });
+                    } else {
+                        that.binding.showPhoto = true;
+                        loadDoc(null, 6, 67);
                     }
                     Log.ret(Log.l.trace);
                 }
