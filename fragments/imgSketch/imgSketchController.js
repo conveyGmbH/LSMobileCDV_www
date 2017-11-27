@@ -24,9 +24,6 @@
             var imgScale = 1;
             var imgRotation = 0;
 
-            var marginLeft = 0;
-            var marginTop = 0;
-
             var scaleIn = 1.25;
             var scaleOut = 0.8;
 
@@ -85,7 +82,7 @@
             this.removePhoto = removePhoto;
 
             var calcImagePosition = function (opt) {
-                var newScale, newRotate;
+                var newScale, newRotate, marginLeft, marginTop;
                 if (opt) {
                     newScale = opt.scale;
                     newRotate = opt.rotate;
@@ -209,7 +206,13 @@
                             that.img.src = getDocData();
                             var pinchElement = fragmentElement.querySelector(".pinch");
                             if (pinchElement) {
-                                var prevScale;
+                                var photoViewport = fragmentElement.querySelector("#notePhoto .win-viewport");
+                                var prevScrollLeft = 0;
+                                var prevScrollTop = 0;
+                                var prevScale = 1;
+                                var prevCenter, prevCenterInImage;
+                                var prevOffsetLeft = 0;
+                                var prevOffsetTop = 0;
                                 var ham = new Hammer.Manager(pinchElement);
                                 var pan = null;
                                 var pinch = new Hammer.Pinch();
@@ -223,6 +226,30 @@
                                 }
                                 ham.on("pinchstart", function (e) {
                                     prevScale = imgScale;
+                                    if (e.center && typeof e.center.x === "number" && typeof e.center.x === "number") {
+                                        prevOffsetLeft = 0;
+                                        prevOffsetTop = 0;
+                                        var element = e.target;
+                                        while (element) {
+                                            prevOffsetLeft += element.offsetLeft;
+                                            prevOffsetTop += element.offsetTop;
+                                            element = element.offsetParent;
+                                        }
+                                        Log.print(Log.l.trace, "prevOffsetLeft=" + prevOffsetLeft + " prevOffsetTop=" + prevOffsetTop);
+                                        prevCenter = {
+                                            x: e.center.x - prevOffsetLeft,
+                                            y: e.center.y - prevOffsetTop
+                                        }
+                                        if (photoViewport) {
+                                            prevScrollLeft = photoViewport.scrollLeft;
+                                            prevScrollTop = photoViewport.scrollTop;
+                                        }
+                                        prevCenterInImage = {
+                                            x: (prevCenter.x + prevScrollLeft) / prevScale,
+                                            y: (prevCenter.y + prevScrollTop) / prevScale
+                                        }
+                                        Log.print(Log.l.trace, "prevCenter.x=" + prevCenter.x + " prevCenter.y=" + prevCenter.y + " prevCenterInImage.x=" + prevCenterInImage.x + " prevCenterInImage.y=" + prevCenterInImage.y);
+                                    }
                                 });
                                 ham.on("pinch", function (e) {
                                     if (e.scale) {
@@ -233,6 +260,27 @@
                                             that.calcImagePosition({
                                                 scale: scale
                                             });
+                                        }
+                                        if (e.center && typeof e.center.x === "number" && typeof e.center.x === "number") {
+                                            var center = {
+                                                x: e.center.x - prevOffsetLeft,
+                                                y: e.center.y - prevOffsetTop
+                                            }
+                                            if (photoViewport) {
+                                                prevScrollLeft = photoViewport.scrollLeft;
+                                                prevScrollTop = photoViewport.scrollTop;
+                                            }
+                                            var centerInImage = {
+                                                x: (center.x + prevScrollLeft) / scale,
+                                                y: (center.y + prevScrollTop) / scale
+                                            }
+                                            Log.print(Log.l.trace, "center.x=" + center.x + " center.y=" + center.y + " centerInImage.x=" + centerInImage.x + " centerInImage.y=" + centerInImage.y);
+                                            var deltaLeft = (prevCenterInImage.x - centerInImage.x) * scale;
+                                            var deltaTop = (prevCenterInImage.y - centerInImage.y) * scale;
+                                            if (photoViewport) {
+                                                photoViewport.scrollLeft += deltaLeft;
+                                                photoViewport.scrollTop += deltaTop;
+                                            }
                                         }
                                     }
                                 });
@@ -246,13 +294,26 @@
                                                 scale: scale
                                             });
                                         }
+                                        if (e.center && typeof e.center.x === "number" && typeof e.center.x === "number") {
+                                            var center = {
+                                                x: e.center.x - prevOffsetLeft,
+                                                y: e.center.y - prevOffsetTop
+                                            }
+                                            var centerInImage = {
+                                                x: (center.x + prevScrollLeft) / scale,
+                                                y: (center.y + prevScrollTop) / scale
+                                            }
+                                            Log.print(Log.l.trace, "center.x=" + center.x + " center.y=" + center.y + " centerInImage.x=" + centerInImage.x + " centerInImage.y=" + centerInImage.y);
+                                            var deltaLeft = (prevCenterInImage.x - centerInImage.x) * scale;
+                                            var deltaTop = (prevCenterInImage.y - centerInImage.y) * scale;
+                                            if (photoViewport) {
+                                                photoViewport.scrollLeft += deltaLeft;
+                                                photoViewport.scrollTop += deltaTop;
+                                            }
+                                        }
                                     }
                                 });
                                 if (pan) {
-                                    var prevScrollLeft = 0;
-                                    var prevScrollTop = 0;
-
-                                    var photoViewport = fragmentElement.querySelector("#notePhoto .win-viewport");
                                     ham.on("panstart", function (e) {
                                         if (photoViewport) {
                                             prevScrollLeft = photoViewport.scrollLeft;
