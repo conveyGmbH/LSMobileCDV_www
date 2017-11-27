@@ -73,10 +73,6 @@ img .field_line {
     visibility: hidden;
 }
 
-.data-container {
-    background-color: Window;
-}
-
 .row-bkg {
     display: inline-block;
     position: absolute;

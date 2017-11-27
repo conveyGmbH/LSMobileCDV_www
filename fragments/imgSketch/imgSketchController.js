@@ -317,6 +317,15 @@
                                             }
                                         }
                                     });
+                                    if (photoItemBox.childElementCount > 1) {
+                                        WinJS.Promise.timeout(50).then(function () {
+                                            var oldElement = photoItemBox.firstElementChild || photoItemBox.firstChild;
+                                            if (oldElement) {
+                                                animationOptions.left = (-animationDistanceX).toString() + "px";
+                                                WinJS.UI.Animation.exitContent(oldElement, animationOptions);
+                                            }
+                                        });
+                                    }
                                 } else {
                                     photoItemBox.appendChild(that.img);
                                 }
