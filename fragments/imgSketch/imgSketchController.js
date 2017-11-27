@@ -4,7 +4,6 @@
 /// <reference path="~/www/lib/convey/scripts/appSettings.js" />
 /// <reference path="~/www/lib/convey/scripts/dataService.js" />
 /// <reference path="~/www/lib/convey/scripts/fragmentController.js" />
-/// <reference path="~/www/lib/jQuery/scripts/jquery-2.1.4.min.js" />
 /// <reference path="~/www/lib/hammer/scripts/hammer.js" />
 /// <reference path="~/www/scripts/generalData.js" />
 /// <reference path="~/www/fragments/imgSketch/imgSketchService.js" />
@@ -197,8 +196,6 @@
                 if (fragmentElement) {
                     var photoItemBox = fragmentElement.querySelector("#notePhoto .win-itembox");
                     if (photoItemBox) {
-                        //var pageElement = Application.navigator && Application.navigator.pageElement;
-                        //var pageControl = pageElement && pageElement.winControl;
                         if (getDocData()) {
                             if (photoItemBox.childElementCount > 1) {
                                 var oldElement = photoItemBox.firstElementChild || photoItemBox.firstChild;
@@ -210,82 +207,88 @@
                             that.img = new Image();
                             WinJS.Utilities.addClass(that.img, "active");
                             that.img.src = getDocData();
+                            var pinchElement = fragmentElement.querySelector(".pinch");
+                            if (pinchElement) {
+                                var prevScale;
+                                var ham = new Hammer.Manager(pinchElement);
+                                var pan = null;
+                                var pinch = new Hammer.Pinch();
+                                var vendor = navigator.vendor;
+                                // touch-action not supported on Safari, so use Hammer instead!
+                                if (vendor && vendor.indexOf("Apple") >= 0) {
+                                    pan = new Hammer.Pan();
+                                    ham.add([pinch, pan]);
+                                } else {
+                                    ham.add([pinch]);
+                                }
+                                ham.on("pinchstart", function (e) {
+                                    prevScale = imgScale;
+                                });
+                                ham.on("pinch", function (e) {
+                                    if (e.scale) {
+                                        var scale = prevScale * e.scale;
+                                        if (scale <= 1 &&
+                                        ((imgRotation === 0 || imgRotation === 180) && imgWidth * scale > 100 ||
+                                            (imgRotation === 90 || imgRotation === 270) && imgHeight * scale > 100)) {
+                                            that.calcImagePosition({
+                                                scale: scale
+                                            });
+                                        }
+                                    }
+                                });
+                                ham.on("pinchend", function (e) {
+                                    if (e.scale) {
+                                        var scale = prevScale * e.scale;
+                                        if (scale <= 1 &&
+                                        ((imgRotation === 0 || imgRotation === 180) && imgWidth * scale > 100 ||
+                                            (imgRotation === 90 || imgRotation === 270) && imgHeight * scale > 100)) {
+                                            that.calcImagePosition({
+                                                scale: scale
+                                            });
+                                        }
+                                    }
+                                });
+                                if (pan) {
+                                    var prevScrollLeft = 0;
+                                    var prevScrollTop = 0;
 
-                            var ham = new Hammer($(".pinch")[0], {
-                                domEvents: true
-                            });
-                            ham.get('pinch').set({ enable: true, therhold: 10 });
-                            var prevScale = imgScale;
-                            $(".pinch").on("pinchstart", function (e) {
-                                prevScale = imgScale;
-                            });
-                            $(".pinch").on("pinch", function (e) {
-                                var scale = prevScale * e.originalEvent.gesture.scale;
-                                if (scale <= 1 &&
-                                    ((imgRotation === 0 || imgRotation === 180) && imgWidth * scale > 100 ||
-                                    (imgRotation === 90 || imgRotation === 270) && imgHeight * scale > 100)) {
-                                    that.calcImagePosition({
-                                        scale: scale
+                                    var photoViewport = fragmentElement.querySelector("#notePhoto .win-viewport");
+                                    ham.on("panstart", function (e) {
+                                        if (photoViewport) {
+                                            prevScrollLeft = photoViewport.scrollLeft;
+                                            prevScrollTop = photoViewport.scrollTop;
+                                        }
                                     });
-                                }
-                            });
-                            $(".pinch").on("pinchend", function (e) {
-                                var scale = prevScale * e.originalEvent.gesture.scale;
-                                if (scale <= 1 &&
-                                    ((imgRotation === 0 || imgRotation === 180) && imgWidth * scale > 100 ||
-                                    (imgRotation === 90 || imgRotation === 270) && imgHeight * scale > 100)) {
-                                    that.calcImagePosition({
-                                        scale: scale
+                                    ham.on("panmove", function (e) {
+                                        if (e.deltaX || e.deltaY) {
+                                            var deltaLeft = prevScrollLeft - e.deltaX;
+                                            var deltaTop = prevScrollTop - e.deltaY;
+                                            Log.print(Log.l.trace, "pan deltaX=" + e.deltaX + " deltaY=" + e.deltaY);
+                                            if (photoViewport) {
+                                                photoViewport.scrollLeft = deltaLeft;
+                                                photoViewport.scrollTop = deltaTop;
+                                            }
+                                        }
                                     });
+                                    ham.on("panend", function (e) {
+                                        if (e.deltaX || e.deltaY) {
+                                            var deltaLeft = prevScrollLeft - e.deltaX;
+                                            var deltaTop = prevScrollTop - e.deltaY;
+                                            Log.print(Log.l.trace, "pan deltaX=" + e.deltaX + " deltaY=" + e.deltaY);
+                                            if (photoViewport) {
+                                                photoViewport.scrollLeft = deltaLeft;
+                                                photoViewport.scrollTop = deltaTop;
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    pinchElement.style.touchAction = "pan-x pan-y";
                                 }
-                            });
-                            var prevScrollLeft = 0;
-                            var prevScrollTop = 0;
-
-                            var photoViewport = fragmentElement.querySelector("#notePhoto .win-viewport");
-                            var contentarea = fragmentElement.querySelector(".contentarea");
-
-                            $(".pinch").on("panstart", function (e) {
-                                if (photoViewport) {
-                                    prevScrollLeft = photoViewport.scrollLeft;
-                                }
-                                if (contentarea) {
-                                    prevScrollTop = contentarea.scrollTop;
-                                }
-                            });
-                            $(".pinch").on("panmove", function (e) {
-                                var deltaLeft = prevScrollLeft - e.originalEvent.gesture.deltaX;
-                                var deltaTop = prevScrollTop - e.originalEvent.gesture.deltaY;
-                                Log.print(Log.l.trace, "pan deltaX=" + e.originalEvent.gesture.deltaX + " deltaY=" + e.originalEvent.gesture.deltaY);
-                                if (photoViewport) {
-                                    photoViewport.scrollLeft = deltaLeft;
-                                }
-                                if (contentarea) {
-                                    contentarea.scrollTop = deltaTop;
-                                }
-                            });
-                            $(".pinch").on("panend", function (e) {
-                                var deltaLeft = prevScrollLeft - e.originalEvent.gesture.deltaX;
-                                var deltaTop = prevScrollTop - e.originalEvent.gesture.deltaY;
-                                Log.print(Log.l.trace, "pan deltaX=" + e.originalEvent.gesture.deltaX + " deltaY=" + e.originalEvent.gesture.deltaY);
-                                if (photoViewport) {
-                                    photoViewport.scrollLeft = deltaLeft;
-                                }
-                                if (contentarea) {
-                                    contentarea.scrollTop = deltaTop;
-                                }
-                            });
+                            }
                             WinJS.Promise.timeout(0).then(function () {
                                 imgRotation = 0;
-                                var containerWidth = fragmentElement.clientWidth;
-                                if (containerWidth < that.img.naturalWidth) {
-                                    imgScale = containerWidth / that.img.naturalWidth;
-                                    imgWidth = containerWidth;
-                                } else {
-                                    imgScale = 1;
-                                    imgWidth = that.img.naturalWidth;
-                                }
-                                imgHeight = that.img.naturalHeight * imgScale;
+                                imgScale = 1;
+                                calcImagePosition();
                                 if (photoItemBox.childElementCount > 0) {
                                     if (that.img.style) {
                                         that.img.style.transform = "";
@@ -293,17 +296,14 @@
                                         that.img.style.display = "block";
                                         that.img.style.position = "absolute";
                                         that.img.style.top = fragmentElement.offsetTop.toString() + "px";
-                                        that.img.style.marginLeft = 0;
-                                        that.img.style.marginTop = 0;
-                                        that.img.style.width = imgWidth + "px";
-                                        that.img.style.height = imgHeight + "px";
                                     }
                                     photoItemBox.appendChild(that.img);
+
+                                    var animationDistanceX = imgWidth / 4;
+                                    var animationOptions = { top: "0px", left: animationDistanceX.toString() + "px" };
                                     if (that.img.style) {
                                         that.img.style.visibility = "";
-                                            }
-                                    var animationDistanceX = imgWidth / 4;
-                                            var animationOptions = { top: "0px", left: animationDistanceX.toString() + "px" };
+                                    }
                                     WinJS.UI.Animation.enterContent(that.img, animationOptions).then(function () {
                                         if (that.img.style) {
                                             that.img.style.display = "";

@@ -301,6 +301,11 @@ section[role=main] {
     height: calc(100% - 8px);
     z-index: 1;
 }
+.content-noscroll {
+    overflow-y: hidden;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: auto; 
+}
 
 .content-header {
     height: 48px;
