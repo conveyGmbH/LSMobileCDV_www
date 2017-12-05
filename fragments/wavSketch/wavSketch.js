@@ -5,12 +5,12 @@
 /// <reference path="~/www/lib/convey/scripts/strings.js" />
 /// <reference path="~/www/lib/convey/scripts/logging.js" />
 /// <reference path="~/www/lib/convey/scripts/navigator.js" />
-/// <reference path="~/www/fragments/imgSketch/imgSketchController.js" />
+/// <reference path="~/www/fragments/wavSketch/wavSketchController.js" />
 
 (function () {
     "use strict";
 
-    var fragmentName = Application.getFragmentPath("imgSketch");
+    var fragmentName = Application.getFragmentPath("wavSketch");
 
     Fragments.define(fragmentName, {
         // This function is called whenever a user navigates to this fragment. It
@@ -24,13 +24,9 @@
 
             // add page specific commands to AppBar
             var commandList = [
-                { id: "clickZoomIn", label: getResourceText("command.zoomin"), tooltip: getResourceText("tooltip.zoomin"), section: "primary", svg: "zoom_in" },
-                { id: "clickZoomOut", label: getResourceText("command.zoomout"), tooltip: getResourceText("tooltip.zoomout"), section: "primary", svg: "zoom_out" },
-                { id: "clickRotateLeft", label: getResourceText("command.rotate"), tooltip: getResourceText("tooltip.rotateLeft"), section: "primary", svg: "rotate_left" },
-                { id: "clickRotateRight", label: getResourceText("command.rotate"), tooltip: getResourceText("tooltip.rotateRight"), section: "primary", svg: "rotate_right" },
                 { id: "clickDelete", label: getResourceText("command.delete"), tooltip: getResourceText("tooltip.delete"), section: "primary", svg: "garbage_can" }
             ];
-            this.controller = new ImgSketch.Controller(element, options, commandList);
+            this.controller = new WavSketch.Controller(element, options, commandList);
 
             Log.ret(Log.l.trace);
         },
