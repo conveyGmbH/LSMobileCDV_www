@@ -356,7 +356,7 @@
                                         that.img.style.visibility = "hidden";
                                         that.img.style.display = "block";
                                         that.img.style.position = "absolute";
-                                        that.img.style.top = fragmentElement.offsetTop.toString() + "px";
+                                        //that.img.style.top = fragmentElement.offsetTop.toString() + "px";
                                     }
                                     photoItemBox.appendChild(that.img);
 

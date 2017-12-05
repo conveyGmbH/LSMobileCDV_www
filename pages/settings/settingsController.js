@@ -124,7 +124,6 @@
                 Log.call(Log.l.trace, "Settings.Controller.", "colorProperty=" + colorProperty + " color=" + color);
 
                 Colors[colorProperty] = color;
-                that.binding.generalData[colorProperty] = color;
                 switch (colorProperty) {
                     case "accentColor":
                         that.createColorPicker("backgroundColor");
