@@ -127,6 +127,19 @@
                         } else {
                             ret = WinJS.Promise.as();
                         }
+                    } else if (AppData.isAudio(docGroup, docFormat)) {
+                        Log.print(Log.l.trace, "load new wavSketch!");
+                        that.binding.showSvg = false;
+                        that.binding.showPhoto = false;
+                        that.binding.showAudio = true;
+                        parentElement = pageElement.querySelector("#wavhost");
+                        if (parentElement) {
+                            bGetNewDocViewer = true;
+                            bUpdateCommands = true;
+                            ret = Application.loadFragmentById(parentElement, "wavSketch", { noteId: noteId, isLocal: true });
+                        } else {
+                            ret = WinJS.Promise.as();
+                        }
                     } else {
                         ret = WinJS.Promise.as();
                     }
@@ -389,13 +402,13 @@
                     if (that.docViewer && that.docViewer.canUnload) {
                         // save previous
                         that.docViewer.canUnload(function () {
-                            loadDoc(null, 3, 75);
+                            loadDoc(null, AppData.DocGroup.Text, 75);
                         }, function() {
                             // error occured!
                         });
                     } else {
                         that.binding.showSvg = true;
-                        loadDoc(null, 3, 75);
+                        loadDoc(null, AppData.DocGroup.Text, 75);
                     }
                     Log.ret(Log.l.trace);
                 },
@@ -406,17 +419,17 @@
                     if (that.docViewer && that.docViewer.canUnload) {
                         // save previous
                         that.docViewer.canUnload(function () {
-                            loadDoc(null, 1, 3);
+                            loadDoc(null, AppData.DocGroup.Image, 3);
                         }, function () {
                             // error occured!
                         });
                     } else {
                         that.binding.showPhoto = true;
-                        loadDoc(null, 1, 3);
+                        loadDoc(null, AppData.DocGroup.Image, 3);
                     }
                     Log.ret(Log.l.trace);
                 },
-                clickAddAudio: function (event) {
+                clickAddWav: function (event) {
                     Log.call(Log.l.trace, "Sketch.Controller.");
                     // TODO: open camera
                     that.hideToolbox("addNotesToolbar");
@@ -424,13 +437,13 @@
                         // save previous
                         that.docViewer.canUnload(function () {
                             that.binding.showPhoto = true;
-                            loadDoc(null, 6, 67);
+                            loadDoc(null, AppData.DocGroup.Audio, 67);
                         }, function () {
                             // error occured!
                         });
                     } else {
                         that.binding.showPhoto = true;
-                        loadDoc(null, 6, 67);
+                        loadDoc(null, AppData.DocGroup.Audio, 67);
                     }
                     Log.ret(Log.l.trace);
                 }

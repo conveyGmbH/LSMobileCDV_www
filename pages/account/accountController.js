@@ -103,15 +103,15 @@
                             break;
                         case 18:
                             if (item.LocalValue === 0) {
-                                that.binding.generalData.isDarkTheme = false;
+                                AppData._persistentStates.isDarkTheme = false;
                             } else {
-                                that.binding.generalData.isDarkTheme = true;
+                                AppData._persistentStates.isDarkTheme = true;
                             }
-                            Colors.isDarkTheme = that.binding.generalData.isDarkTheme;
+                            Colors.isDarkTheme = AppData._persistentStates.isDarkTheme;
                             break;
                         case 20:
                             item.pageProperty = "questionnaire";
-                            if (item.LocalValue === "0") {
+                            if (item.LocalValue === "1") {
                                 AppData._persistentStates.hideQuestionnaire = true;
                             } else {
                                 AppData._persistentStates.hideQuestionnaire = false;
@@ -120,15 +120,16 @@
                             break;
                         case 21:
                             item.pageProperty = "sketch";
-                            if (item.LocalValue === "0") {
+                            if (item.LocalValue === "1") {
                                 AppData._persistentStates.hideSketch = true;
                             } else {
                                 AppData._persistentStates.hideSketch = false;
                             }
+                            plusRemote = true;
                             break;
                         case 23:
                             item.pageProperty = "barcode";
-                            if (item.LocalValue === "0") {
+                            if (item.LocalValue === "1") {
                                 AppData._persistentStates.hideBarcode = true;
                             } else {
                                 AppData._persistentStates.hideBarcode = false;
@@ -136,7 +137,7 @@
                             break;
                         case 24:
                             item.pageProperty = "businesscard";
-                            if (item.LocalValue === "0") {
+                            if (item.LocalValue === "1") {
                                 AppData._persistentStates.hideCamera = true;
                             } else {
                                 AppData._persistentStates.hideCamera = false;

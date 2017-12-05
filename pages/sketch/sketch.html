@@ -23,6 +23,7 @@
                     </div>
                     <div id="svghost" class="sketchfragmenthost" data-win-bind="style.display: showSvg Binding.Converter.toDisplay"></div>
                     <div id="imghost" class="sketchfragmenthost" data-win-bind="style.display: showPhoto Binding.Converter.toDisplay"></div>
+                    <div id="wavhost" class="sketchfragmenthost" data-win-bind="style.display: showAudio Binding.Converter.toDisplay"></div>
                     <div id="listhost" class="row-bkg listfragmenthost" data-win-bind="style.display: showList Binding.Converter.toDisplay"></div>
                     <div id="addNotesToolbar" class="add-box">
                         <button id="sketch" class="win-button shape"
@@ -32,6 +33,10 @@
                         <button id="photo" class="win-button shape"
                                 onclick="AppBar.handleEvent('click', 'clickAddImg', event)">
                             <div id="camera" class="tool-image"></div>
+                        </button>
+                        <button id="audio" class="win-button shape"
+                                onclick="AppBar.handleEvent('click', 'clickAddWav', event)">
+                            <div id="microphone" class="tool-image"></div>
                         </button>
                     </div>
                     <div class="error-message" data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>

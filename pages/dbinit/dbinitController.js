@@ -92,9 +92,17 @@
                         case 17:
                             item.colorPickerId = "tileBackgroundColor";
                             break;
+                        case 18:
+                            if (item.LocalValue === 0) {
+                                AppData._persistentStates.isDarkTheme = false;
+                            } else {
+                                AppData._persistentStates.isDarkTheme = true;
+                            }
+                            Colors.isDarkTheme = AppData._persistentStates.isDarkTheme;
+                            break;
                         case 20:
                             item.pageProperty = "questionnaire";
-                            if (item.LocalValue === "0") {
+                            if (item.LocalValue === "1") {
                                 AppData._persistentStates.hideQuestionnaire = true;
                             } else {
                                 AppData._persistentStates.hideQuestionnaire = false;
@@ -103,15 +111,16 @@
                             break;
                         case 21:
                             item.pageProperty = "sketch";
-                            if (item.LocalValue === "0") {
+                            if (item.LocalValue === "1") {
                                 AppData._persistentStates.hideSketch = true;
                             } else {
                                 AppData._persistentStates.hideSketch = false;
                             }
+                            plusRemote = true;
                             break;
                         case 23:
                             item.pageProperty = "barcode";
-                            if (item.LocalValue === "0") {
+                            if (item.LocalValue === "1") {
                                 AppData._persistentStates.hideBarcode = true;
                             } else {
                                 AppData._persistentStates.hideBarcode = false;
@@ -119,7 +128,7 @@
                             break;
                         case 24:
                             item.pageProperty = "businesscard";
-                            if (item.LocalValue === "0") {
+                            if (item.LocalValue === "1") {
                                 AppData._persistentStates.hideCamera = true;
                             } else {
                                 AppData._persistentStates.hideCamera = false;
@@ -139,35 +148,21 @@
                             AppData._persistentStates.individualColors = false;
                             AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
                             var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
-                         /*   that.createColorPicker("accentColor", true);
-                            that.createColorPicker("backgroundColor");
-                            that.createColorPicker("textColor");
-                            that.createColorPicker("labelColor");
-                            that.createColorPicker("tileTextColor");
-                            that.createColorPicker("tileBackgroundColor");
-                            that.createColorPicker("navigationColor");*/
                             AppBar.loadIcons();
                             NavigationBar.groups = Application.navigationBarGroups;
                         });
                     }
                 }
-                if (item.INITOptionTypeID === 18) {
-                    if (item.LocalValue === "0") {
-                        that.binding.generalData.isDarkTheme = false;
-                    } else {
-                        that.binding.generalData.isDarkTheme = true;
-                    }
-                }
                 if (item.pageProperty) {
                     if (item.LocalValue === "1") {
-                        NavigationBar.enablePage(item.pageProperty);
-                        if (plusRemote) {
-                            NavigationBar.enablePage(item.pageProperty + "Remote");
-                        }
-                    } else if (item.LocalValue === "0") {
                         NavigationBar.disablePage(item.pageProperty);
                         if (plusRemote) {
                             NavigationBar.disablePage(item.pageProperty + "Remote");
+                        }
+                    } else {
+                        NavigationBar.enablePage(item.pageProperty);
+                        if (plusRemote) {
+                            NavigationBar.enablePage(item.pageProperty + "Remote");
                         }
                     }
                 }
