@@ -45,118 +45,11 @@
 
             var that = this;
 
-            var applyColorSetting = function (colorProperty, color) {
-                Log.call(Log.l.trace, "Settings.Controller.", "colorProperty=" + colorProperty + " color=" + color);
-
-                Colors[colorProperty] = color;
-                switch (colorProperty) {
-                    case "accentColor":
-                        // fall through...
-                    case "navigationColor":
-                        AppBar.loadIcons();
-                        NavigationBar.groups = Application.navigationBarGroups;
-                        break;
-                }
-                Log.ret(Log.l.trace);
-            }
-            this.applyColorSetting = applyColorSetting;
-
             var resultConverter = function (item, index) {
-                var plusRemote = false;
-                if (item.INITOptionTypeID > 10) {
-                    switch (item.INITOptionTypeID) {
-                        case 11:
-                            item.colorPickerId = "accentColor";
-                            break;
-                        case 12:
-                            item.colorPickerId = "backgroundColor";
-                            break;
-                        case 13:
-                            item.colorPickerId = "navigationColor";
-                            break;
-                        case 14:
-                            item.colorPickerId = "textColor";
-                            break;
-                        case 15:
-                            item.colorPickerId = "labelColor";
-                            break;
-                        case 16:
-                            item.colorPickerId = "tileTextColor";
-                            break;
-                        case 17:
-                            item.colorPickerId = "tileBackgroundColor";
-                            break;
-                        case 18:
-                            if (item.LocalValue === 0) {
-                                AppData._persistentStates.isDarkTheme = false;
-                            } else {
-                                AppData._persistentStates.isDarkTheme = true;
-                            }
-                            Colors.isDarkTheme = AppData._persistentStates.isDarkTheme;
-                            break;
-                        case 20:
-                            item.pageProperty = "questionnaire";
-                            if (item.LocalValue === "1") {
-                                AppData._persistentStates.hideQuestionnaire = true;
-                            } else {
-                                AppData._persistentStates.hideQuestionnaire = false;
-                            }
-                            plusRemote = true;
-                            break;
-                        case 21:
-                            item.pageProperty = "sketch";
-                            if (item.LocalValue === "1") {
-                                AppData._persistentStates.hideSketch = true;
-                            } else {
-                                AppData._persistentStates.hideSketch = false;
-                            }
-                            plusRemote = true;
-                            break;
-                        case 23:
-                            item.pageProperty = "barcode";
-                            if (item.LocalValue === "1") {
-                                AppData._persistentStates.hideBarcode = true;
-                            } else {
-                                AppData._persistentStates.hideBarcode = false;
-                            }
-                            break;
-                        case 24:
-                            item.pageProperty = "businesscard";
-                            if (item.LocalValue === "1") {
-                                AppData._persistentStates.hideCamera = true;
-                            } else {
-                                AppData._persistentStates.hideCamera = false;
-                            }
-                            break;
-                        default:
-                            // defaultvalues
-                    }
-                    if (item.colorPickerId !== "individualColors") {
-                        item.colorValue = "#" + item.LocalValue;
-                        that.applyColorSetting(item.colorPickerId, item.colorValue);
-                    } else {
-                        // item.colorValue = "#" + item.LocalValue;
-                        if (item.LocalValue === "1") {
-                            that.binding.generalData.individualColors = true;
-                            that.binding.showSettingsFlag = false;
-                        } else {
-                            that.binding.generalData.individualColors = false;
-                        }
-                        //that.applyColorSetting(item.colorPickerId, item.LocalValue);
-                    }
-                }
-                if (item.pageProperty) {
-                    if (item.LocalValue === "1") {
-                        NavigationBar.enablePage(item.pageProperty);
-                        if (plusRemote) {
-                            NavigationBar.enablePage(item.pageProperty + "Remote");
-                        }
-                    } else if (item.LocalValue === "0") {
-                        NavigationBar.disablePage(item.pageProperty);
-                        if (plusRemote) {
-                            NavigationBar.disablePage(item.pageProperty + "Remote");
-                        }
-                    }
+                var property = AppData.getPropertyFromInitoptionTypeID(item);
+                if (property && property !== "individualColors" && (!item.pageProperty) && item.LocalValue) {
+                    item.colorValue = "#" + item.LocalValue;
+                    AppData.applyColorSetting(property, item.colorValue);
                 }
             }
             this.resultConverter = resultConverter;
@@ -368,10 +261,7 @@
                                 results.forEach(function (item, index) {
                                     that.resultConverter(item, index);
                                 });
-                            } else {
-                                AppData._persistentStates.individualColors = false;
-                                AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
-                                var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
+                                Application.pageframe.savePersistentStates();
                             }
                         }, function (errorResponse) {
                             // called asynchronously if an error occurs

@@ -19,6 +19,7 @@
     float: left;
     margin-top: 0;
 }
+
 .titlearea {
     padding: 0;
     border: none;
@@ -26,10 +27,9 @@
     overflow-y: hidden;
     width: 100%;
     height: 48px;
-    color: gray;
-    background-color: Window;
     z-index: 10010;
 }
+
 
 /*
     event name
@@ -84,7 +84,6 @@
     display: block;
     position: absolute;
     right: 0;
-    background-color: Window;
 }
 .user-name-container {
     float: left;

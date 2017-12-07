@@ -475,6 +475,137 @@
             Log.ret(Log.l.u1, ret);
             return ret;
         },
+        getPropertyFromInitoptionTypeID: function (item) {
+            Log.call(Log.l.u1, "AppData.");
+            var plusRemote = false;
+            var property = "";
+            switch (item.INITOptionTypeID) {
+                case 10:
+                    item.colorPickerId = "individualColors";
+                    property = item.colorPickerId;
+                    if (item.LocalValue === "1") {
+                        AppData._persistentStates.individualColors = true;
+                        AppData._persistentStates.serverColors = true;
+                    } else {
+                        AppData._persistentStates.serverColors = false;
+                    }
+                    break;
+                case 11:
+                    if (AppData._persistentStates.serverColors) {
+                        item.colorPickerId = "accentColor";
+                        property = "accentColor";
+                    }
+                    break;
+                case 12:
+                    if (AppData._persistentStates.serverColors) {
+                        item.colorPickerId = "backgroundColor";
+                        property = "backgroundColor";
+                    }
+                    break;
+                case 13:
+                    if (AppData._persistentStates.serverColors) {
+                        item.colorPickerId = "navigationColor";
+                        property = "navigationColor";
+                    }
+                    break;
+                case 14:
+                    if (AppData._persistentStates.serverColors) {
+                        item.colorPickerId = "textColor";
+                        property = "textColor";
+                    }
+                    break;
+                case 15:
+                    if (AppData._persistentStates.serverColors) {
+                        item.colorPickerId = "labelColor";
+                        property = "labelColor";
+                    }
+                    break;
+                case 16:
+                    if (AppData._persistentStates.serverColors) {
+                        item.colorPickerId = "tileTextColor";
+                        property = "tileTextColor";
+                    }
+                    break;
+                case 17:
+                    if (AppData._persistentStates.serverColors) {
+                        item.colorPickerId = "tileBackgroundColor";
+                        property = "tileBackgroundColor";
+                    }
+                    break;
+                case 18:
+                    if (AppData._persistentStates.serverColors) {
+                        if (item.LocalValue === "1") {
+                            AppData.generalData.isDarkTheme = true;
+                        } else {
+                            AppData.generalData.isDarkTheme = false;
+                        }
+                        Colors.isDarkTheme = AppData.generalData.isDarkTheme;
+                    }
+                    break;
+                case 20:
+                    item.pageProperty = "questionnaire";
+                    if (item.LocalValue === "1") {
+                        AppData._persistentStates.hideQuestionnaire = true;
+                    } else {
+                        AppData._persistentStates.hideQuestionnaire = false;
+                    }
+                    plusRemote = true;
+                    break;
+                case 21:
+                    item.pageProperty = "sketch";
+                    if (item.LocalValue === "1") {
+                        AppData._persistentStates.hideSketch = true;
+                    } else {
+                        AppData._persistentStates.hideSketch = false;
+                    }
+                    plusRemote = true;
+                    break;
+                case 23:
+                    if (item.LocalValue === "1") {
+                        AppData._persistentStates.hideBarcodeScan = true;
+                    } else {
+                        AppData._persistentStates.hideBarcodeScan = false;
+                    }
+                    break;
+                case 24:
+                    if (item.LocalValue === "1") {
+                        AppData._persistentStates.hideCameraScan = true;
+                    } else {
+                        AppData._persistentStates.hideCameraScan = false;
+                    }
+                    break;
+                default:
+                    // defaultvalues
+            }
+            if (item.pageProperty) {
+                if (item.LocalValue === "1") {
+                    NavigationBar.disablePage(item.pageProperty);
+                    if (plusRemote) {
+                        NavigationBar.disablePage(item.pageProperty + "Remote");
+                    }
+                } else {
+                    NavigationBar.enablePage(item.pageProperty);
+                    if (plusRemote) {
+                        NavigationBar.enablePage(item.pageProperty + "Remote");
+                    }
+                }
+            }
+            Log.ret(Log.l.u1, property);
+            return property;
+        },
+        applyColorSetting: function (colorProperty, color) {
+            Log.call(Log.l.u1, "AppData.", "colorProperty=" + colorProperty + " color=" + color);
+            Colors[colorProperty] = color;
+            switch (colorProperty) {
+                case "accentColor":
+                    // fall through...
+                case "navigationColor":
+                    AppBar.loadIcons();
+                    NavigationBar.groups = Application.navigationBarGroups;
+                    break;
+            }
+            Log.ret(Log.l.u1);
+        },
         generalData: {
             get: function () {
                 return {
