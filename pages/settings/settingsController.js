@@ -124,10 +124,9 @@
                         var toggle = event.currentTarget.winControl;
                         if (toggle) {
                             that.binding.generalData.isDarkTheme = toggle.checked;
-                            AppData._persistentStates.isDarkTheme = toggle.checked;
                             WinJS.Promise.timeout(0).then(function () {
-                                Colors.isDarkTheme = AppData._persistentStates.isDarkTheme;
-                                Log.print(Log.l.trace, "isDarkTheme=" + Colors.isDarkTheme);
+                                Colors.isDarkTheme = that.binding.generalData.isDarkTheme;
+                                Log.print(Log.l.trace, "isDarkTheme=" + that.binding.generalData.isDarkTheme);
                                 that.createColorPicker("backgroundColor");
                                 that.createColorPicker("textColor");
                                 that.createColorPicker("labelColor");
@@ -150,7 +149,6 @@
                         if (toggle) {
                             if (!toggle.checked && AppData._persistentStates.individualColors) {
                                 WinJS.Promise.timeout(0).then(function () {
-                                    AppData._persistentStates.individualColors = false;
                                     AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
                                     var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
                                     that.createColorPicker("accentColor");
@@ -165,7 +163,6 @@
                                 });
                             }
                             that.binding.generalData.individualColors = toggle.checked;
-                            AppData._persistentStates.individualColors = toggle.checked;
                             Application.pageframe.savePersistentStates();
                         }
                     }
@@ -178,12 +175,11 @@
                         var toggle = event.currentTarget.winControl;
                         if (toggle) {
                             that.binding.generalData.showAppBkg = toggle.checked;
-                            AppData._persistentStates.showAppBkg = toggle.checked;
-                            Log.print(Log.l.trace, "showAppBkg=" + AppData._persistentStates.showAppBkg);
+                            Log.print(Log.l.trace, "showAppBkg=" + toggle.checked);
                             WinJS.Promise.timeout(0).then(function () {
                                 var appBkg = document.querySelector(".app-bkg");
                                 if (appBkg && appBkg.style) {
-                                    appBkg.style.visibility = AppData._persistentStates.showAppBkg ? "visible" : "hidden";
+                                    appBkg.style.visibility = that.binding.generalData.showAppBkg ? "visible" : "hidden";
                                 }
                             });
                         }
@@ -197,10 +193,9 @@
                         var range = event.currentTarget;
                         if (range) {
                             that.binding.generalData.inputBorder = range.value;
-                            AppData._persistentStates.inputBorder = range.value;
-                            Log.print(Log.l.trace, "inputBorder=" + AppData._persistentStates.inputBorder);
+                            Log.print(Log.l.trace, "inputBorder=" + range.value);
                             WinJS.Promise.timeout(0).then(function () {
-                                Colors.inputBorder = AppData._persistentStates.inputBorder;
+                                Colors.inputBorder = that.binding.generalData.inputBorder;
                             });
                         }
                     }
@@ -259,6 +254,7 @@
 
                     if (json && json.d && json.d.results && json.d.results.length > 0) {
                         var results = json.d.results;
+                        AppData._persistentStates.serverColors = false;
                         results.forEach(function (item, index) {
                             that.resultConverter(item, index);
                         });

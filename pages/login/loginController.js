@@ -258,6 +258,7 @@
                             // CR_VERANSTOPTION_ODataView returns object already parsed from json file in response
                             if (json && json.d && json.d.results && json.d.results.length > 1) {
                                 var results = json.d.results;
+                                AppData._persistentStates.serverColors = false;
                                 results.forEach(function (item, index) {
                                     that.resultConverter(item, index);
                                 });

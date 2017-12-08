@@ -479,6 +479,7 @@
             Log.call(Log.l.u1, "AppData.");
             var plusRemote = false;
             var property = "";
+            var color;
             switch (item.INITOptionTypeID) {
                 case 10:
                     item.colorPickerId = "individualColors";
@@ -494,52 +495,80 @@
                     if (AppData._persistentStates.serverColors) {
                         item.colorPickerId = "accentColor";
                         property = "accentColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
                     }
                     break;
                 case 12:
                     if (AppData._persistentStates.serverColors) {
                         item.colorPickerId = "backgroundColor";
                         property = "backgroundColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
                     }
                     break;
                 case 13:
                     if (AppData._persistentStates.serverColors) {
                         item.colorPickerId = "navigationColor";
                         property = "navigationColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
                     }
                     break;
                 case 14:
                     if (AppData._persistentStates.serverColors) {
                         item.colorPickerId = "textColor";
                         property = "textColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
                     }
                     break;
                 case 15:
                     if (AppData._persistentStates.serverColors) {
                         item.colorPickerId = "labelColor";
                         property = "labelColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
                     }
                     break;
                 case 16:
                     if (AppData._persistentStates.serverColors) {
                         item.colorPickerId = "tileTextColor";
                         property = "tileTextColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
                     }
                     break;
                 case 17:
                     if (AppData._persistentStates.serverColors) {
                         item.colorPickerId = "tileBackgroundColor";
                         property = "tileBackgroundColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
                     }
                     break;
                 case 18:
                     if (AppData._persistentStates.serverColors) {
                         if (item.LocalValue === "1") {
-                            AppData.generalData.isDarkTheme = true;
+                            AppData._persistentStates.isDarkTheme = true;
                         } else {
-                            AppData.generalData.isDarkTheme = false;
+                            AppData._persistentStates.isDarkTheme = false;
                         }
-                        Colors.isDarkTheme = AppData.generalData.isDarkTheme;
+                        Colors.isDarkTheme = AppData._persistentStates.isDarkTheme;
                     }
                     break;
                 case 20:
@@ -608,46 +637,37 @@
         },
         generalData: {
             get: function () {
-                return {
-                    newContactPageId: AppData._persistentStates.prevNavigateNewId,
-                    setRecordId: AppData.setRecordId,
-                    getRecordId: AppData.getRecordId,
-                    setRestriction: AppData.setRestriction,
-                    getRestriction: AppData.getRestriction,
-                    contactDateTime: (function () {
-                        return (AppData.getContactDateString() + " " + AppData.getContactTimeString());
-                    })(),
-                    individualColors: AppData._persistentStates.individualColors,
-                    isDarkTheme: AppData._persistentStates.isDarkTheme,
-                    inputBorder: AppData._persistentStates.inputBorder,
-                    showAppBkg: AppData._persistentStates.showAppBkg,
-                    logEnabled: AppData._persistentStates.logEnabled,
-                    logLevel: AppData._persistentStates.logLevel,
-                    logGroup: AppData._persistentStates.logGroup,
-                    logNoStack: AppData._persistentStates.logNoStack,
-                    logTarget: Log.targets.console,
-                    cameraQuality: AppData._persistentStates.cameraQuality,
-                    cameraUseGrayscale: AppData._persistentStates.cameraUseGrayscale,
-                    useClippingCamera: AppData._persistentStates.useClippingCamera,
-                    eventName: AppData._userData.VeranstaltungName,
-                    userName: AppData._userData.Login,
-                    userPresent: AppData._userData.Present,
-                    contactDate: (AppData._contactData && AppData._contactData.Erfassungsdatum),
-                    contactId: (AppData._contactData && AppData._contactData.KontaktVIEWID),
-                    globalContactID: ((AppData._contactData && AppData._contactData.CreatorRecID) ?
-                        (AppData._contactData.CreatorSiteID + "/" + AppData._contactData.CreatorRecID) : ""),
-                    contactCountLocal: AppData.getCountLocal(),
-                    contactCountRemote: AppData.getCountRemote(),
-                    on: getResourceText("settings.on"),
-                    off: getResourceText("settings.off"),
-                    dark: getResourceText("settings.dark"),
-                    light: getResourceText("settings.light"),
-                    present: getResourceText("userinfo.present"),
-                    absend: getResourceText("userinfo.absend"),
-                    remoteContactID: ((AppData._remoteContactData && AppData._remoteContactData.CreatorRecID) ?
-                        (AppData._remoteContactData.CreatorSiteID + "/" + AppData._remoteContactData.CreatorRecID) : ""),
-                    remoteContactDate: (AppData._remoteContactData && AppData._remoteContactData.Erfassungsdatum)
-                };
+                var data = AppData._persistentStates;
+                data.logTarget = Log.targets.console;
+                data.setRecordId = AppData.setRecordId;
+                data.getRecordId = AppData.getRecordId;
+                data.setRestriction = AppData.setRestriction;
+                data.getRestriction = AppData.getRestriction;
+                data.contactDateTime = (function () {
+                    return (AppData.getContactDateString() + " " + AppData.getContactTimeString());
+                })();
+                data.eventName = AppData._userData.VeranstaltungName;
+                data.userName = AppData._userData.Login;
+                data.userPresent = AppData._userData.Present;
+                data.publishFlag = AppData._userData.PublishFlag;
+                data.contactDate = (AppData._contactData && AppData._contactData.Erfassungsdatum);
+                data.contactId = (AppData._contactData && AppData._contactData.KontaktVIEWID);
+                data.globalContactID = ((AppData._contactData && AppData._contactData.CreatorRecID)
+                    ? (AppData._contactData.CreatorSiteID + "/" + AppData._contactData.CreatorRecID)
+                    : "");
+                data.contactCountLocal = AppData.getCountLocal();
+                data.contactCountRemote = AppData.getCountRemote();
+                data.remoteContactID = ((AppData._remoteContactData && AppData._remoteContactData.CreatorRecID)
+                    ? (AppData._remoteContactData.CreatorSiteID + "/" + AppData._remoteContactData.CreatorRecID)
+                    : "");
+                data.remoteContactDate = (AppData._remoteContactData && AppData._remoteContactData.Erfassungsdatum);
+                data.on = getResourceText("settings.on");
+                data.off = getResourceText("settings.off");
+                data.dark = getResourceText("settings.dark");
+                data.light = getResourceText("settings.light");
+                data.present = getResourceText("userinfo.present");
+                data.absend = getResourceText("userinfo.absend");
+                return data;
             }
         },
         _initAnredeView: {
