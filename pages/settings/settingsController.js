@@ -214,11 +214,7 @@
                 var property = AppData.getPropertyFromInitoptionTypeID(item);
 
                 if (property && property !== "individualColors" && (!item.pageProperty) && item.LocalValue) {
-                    var childElement = pageElement.querySelector("#" + property);
                     item.colorValue = "#" + item.LocalValue;
-                    if (childElement) {
-                        childElement.value = item.colorValue;
-                    }
                     var pickerParent = pageElement.querySelector("#" + property + "_picker");
                     if (pickerParent) {
                         var colorcontainer = pickerParent.querySelector(".color_container");
