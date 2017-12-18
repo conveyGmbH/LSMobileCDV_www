@@ -590,6 +590,7 @@
                     plusRemote = true;
                     break;
                 case 23:
+                    item.pageProperty = "barcode";
                     if (item.LocalValue === "1") {
                         AppData._persistentStates.hideBarcodeScan = true;
                     } else {
@@ -597,6 +598,7 @@
                     }
                     break;
                 case 24:
+                    item.pageProperty = "camera";
                     if (item.LocalValue === "1") {
                         AppData._persistentStates.hideCameraScan = true;
                     } else {

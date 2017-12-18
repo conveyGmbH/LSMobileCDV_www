@@ -23,8 +23,12 @@
     padding: 4px;
     background-color: #2f2f2f;
     opacity: 0.9;
-    min-width: 260px;
+    width: 260px;
     z-index: 10000;
+}
+
+.view-size-small .add-box {
+    width: 100%;
 }
 
 #addNotesToolbar .shape {

@@ -131,36 +131,29 @@
 
             var checkListButtonStates = function (buttonElement) {
                 Log.call(Log.l.trace, "Start.Controller.");
-                var buttons = listView.querySelectorAll("button");
+                var buttons = listView.querySelectorAll(".tile-button");
                 if (buttons && buttons.length > 0) {
                     for (var j = 0; j < buttons.length; j++) {
                         var button = buttons[j];
                         if (buttonElement && buttonElement !== button) {
                             continue;
                         }
-                        var attrs = button.attributes;
-                        if (attrs && attrs.length > 0) {
-                            for (var k = 0; k < attrs.length; k++) {
-                                if (attrs[k].nodeName === "propdescname" || attrs[k].nodeName === "name") {
-                                    switch (attrs[k].nodeValue) {
-                                    case "listRemote":
-                                    case "search": {
-                                            disableButton(button, AppData.appSettings.odata.serverFailure);
-                                        }
-                                        break;
-                                    case "barcode": {
-                                            disableButton(button, AppData._persistentStates.hideBarcode);
-                                        }
-                                        break;
-                                    case "camera": {
-                                            disableButton(button, AppData._persistentStates.hideCamera);
-                                        }
-                                        break;
-                                    }
-                                    break;
-                                }
+                        switch (button.name) {
+                            case "listRemote":
+                            case "search": {
+                                disableButton(button, AppData.appSettings.odata.serverFailure);
                             }
+                            break;
+                            case "barcode": {
+                                disableButton(button, AppData._persistentStates.hideBarcodeScan);
+                            }
+                            break;
+                            case "camera": {
+                                disableButton(button, AppData._persistentStates.hideCameraScan);
+                            }
+                            break;
                         }
+                        break;
                     }
                 }
                 Log.ret(Log.l.trace);
@@ -302,9 +295,9 @@
                             if (changed) {
                                 Start.actions.setAt(i, actionLine);
                             }
-                            checkListButtonStates();
                         }
                     }
+                    checkListButtonStates();
                 }
                 Log.ret(Log.l.trace);
             };
