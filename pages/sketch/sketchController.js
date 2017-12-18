@@ -313,11 +313,6 @@
                     Application.navigateById(Application.navigateNewId, event);
                     Log.ret(Log.l.trace);
                 },
-                clickForward: function (event) {
-                    Log.call(Log.l.trace, "Sketch.Controller.");
-                    Application.navigateById("start", event);
-                    Log.ret(Log.l.trace);
-                },
                 clickShowList: function (event) {
                     Log.call(Log.l.trace, "Sketch.Controller.");
                     var mySketchList = pageElement.querySelector(".listfragmenthost");

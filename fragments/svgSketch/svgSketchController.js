@@ -268,6 +268,9 @@
                         that.saveData(function (response) {
                             // called asynchronously if ok
                             AppBar.busy = false;
+                            WinJS.Promise.timeout(0).then(function() {
+                                Application.navigateById("start", event);
+                            });
                         }, function (errorResponse) {
                             AppBar.busy = false;
                             AppData.setErrorMsg(that.binding, errorResponse);
@@ -394,7 +397,7 @@
 
             var disableHandlers = {
                 clickOk: function () {
-                    return !AppBar.modified || AppBar.busy;
+                    return AppBar.busy;
                 },
                 clickUndo: function () {
                     if (that.svgEditor && that.svgEditor.fnCanUndo()) {

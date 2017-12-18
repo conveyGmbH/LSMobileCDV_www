@@ -241,6 +241,11 @@
 
             // define handlers
             this.eventHandlers = {
+                clickOk: function (event) {
+                    Log.call(Log.l.trace, "WavSketch.Controller.");
+                    Application.navigateById("start", event);
+                    Log.ret(Log.l.trace);
+                },
                 clickDelete: function (event) {
                     Log.call(Log.l.trace, "WavSketch.Controller.");
                     var confirmTitle = getResourceText("sketch.questionDelete");

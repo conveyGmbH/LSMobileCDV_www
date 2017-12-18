@@ -24,6 +24,7 @@
 
             // add page specific commands to AppBar
             var commandList = [
+                { id: 'clickOk', label: getResourceText('command.ok'), tooltip: getResourceText('tooltip.ok'), section: 'primary', svg: 'navigate_check', key: WinJS.Utilities.Key.enter },
                 { id: "clickDelete", label: getResourceText("command.delete"), tooltip: getResourceText("tooltip.delete"), section: "primary", svg: "garbage_can" }
             ];
             this.controller = new WavSketch.Controller(element, options, commandList);

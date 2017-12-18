@@ -629,6 +629,11 @@
 
             // define handlers
             this.eventHandlers = {
+                clickOk: function (event) {
+                    Log.call(Log.l.trace, "ImgSketch.Controller.");
+                    Application.navigateById("start", event);
+                    Log.ret(Log.l.trace);
+                },
                 clickZoomIn: function (event) {
                     Log.call(Log.l.trace, "ImgSketch.Controller.");
                     if (that.hasDoc() && imgScale * scaleIn < 1) {
