@@ -11,7 +11,6 @@
     "use strict";
 
     var fragmentName = Application.getFragmentPath("sketchList");
-    var inResize = 0;
 
     Fragments.define(fragmentName, {
         // This function is called whenever a user navigates to this fragment. It
