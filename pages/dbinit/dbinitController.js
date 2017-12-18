@@ -72,10 +72,6 @@
                         Log.print(Log.l.info, "openDB success!");
                         AppData._curGetUserDataId = 0;
                         AppData.getUserData();
-                        WinJS.Promise.timeout(0).then(function () {
-                            // navigate async here to ensure load of navigation menu!
-                            Application.navigateById(getStartPage());
-                        });
                     }, function (err) {
                         AppBar.busy = false;
                         Log.print(Log.l.error, "openDB error!");
@@ -116,6 +112,11 @@
                         } else {
                             return WinJS.Promise.as();
                         }
+                    }).then(function () {
+                        WinJS.Promise.timeout(0).then(function () {
+                            // navigate async here to ensure load of navigation menu!
+                            Application.navigateById(getStartPage());
+                        });
                     });
                 }
                 Log.ret(Log.l.info);
@@ -127,7 +128,7 @@
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 // now open the DB
-                that.openDb();
+                return that.openDb();
             });
             Log.ret(Log.l.trace);
         })
