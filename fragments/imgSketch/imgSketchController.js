@@ -73,7 +73,7 @@
                     if (photoItemBox) {
                         var oldElement = photoItemBox.firstElementChild || photoItemBox.firstChild;
                         if (oldElement) {
-                            oldElement.parentNode.removeChild(oldElement);
+                            photoItemBox.removeChild(oldElement);
                             oldElement.innerHTML = "";
                         }
                     }
@@ -194,13 +194,6 @@
                     var photoItemBox = fragmentElement.querySelector("#notePhoto .win-itembox");
                     if (photoItemBox) {
                         if (getDocData()) {
-                            if (photoItemBox.childElementCount > 1) {
-                                var oldElement = photoItemBox.firstElementChild || photoItemBox.firstChild;
-                                if (oldElement) {
-                                    oldElement.style.display = "block";
-                                    oldElement.style.position = "absolute";
-                                }
-                            }
                             that.img = new Image();
                             WinJS.Utilities.addClass(that.img, "active");
                             that.img.src = getDocData();
@@ -350,45 +343,45 @@
                                 imgRotation = 0;
                                 imgScale = 1;
                                 calcImagePosition();
-                                if (photoItemBox.childElementCount > 0) {
-                                    if (that.img.style) {
-                                        that.img.style.transform = "";
-                                        that.img.style.visibility = "hidden";
-                                        that.img.style.display = "block";
-                                        that.img.style.position = "absolute";
-                                        //that.img.style.top = fragmentElement.offsetTop.toString() + "px";
-                                    }
-                                    photoItemBox.appendChild(that.img);
+                                var oldElement = photoItemBox.firstElementChild || photoItemBox.firstChild;
+                                if (oldElement && oldElement.style) {
+                                    oldElement.style.display = "block";
+                                    oldElement.style.position = "absolute";
+                                }
+                                if (that.img.style) {
+                                    that.img.style.transform = "";
+                                    that.img.style.visibility = "hidden";
+                                    that.img.style.display = "block";
+                                    that.img.style.position = "absolute";
+                                }
+                                photoItemBox.appendChild(that.img);
 
-                                    var animationDistanceX = imgWidth / 4;
-                                    var animationOptions = { top: "0px", left: animationDistanceX.toString() + "px" };
+                                var animationDistanceX = imgWidth / 4;
+                                var animationOptions = { top: "0px", left: animationDistanceX.toString() + "px" };
+                                if (that.img.style) {
+                                    that.img.style.visibility = "";
+                                }
+                                WinJS.UI.Animation.enterContent(that.img, animationOptions).then(function () {
                                     if (that.img.style) {
-                                        that.img.style.visibility = "";
+                                        that.img.style.display = "";
+                                        that.img.style.position = "";
                                     }
-                                    WinJS.UI.Animation.enterContent(that.img, animationOptions).then(function () {
-                                        if (that.img.style) {
-                                            that.img.style.display = "";
-                                            that.img.style.position = "";
+                                    while (photoItemBox.childElementCount > 1) {
+                                        oldElement = photoItemBox.firstElementChild || photoItemBox.firstChild;
+                                        if (oldElement) {
+                                            photoItemBox.removeChild(oldElement);
+                                            oldElement.innerHTML = "";
                                         }
-                                        if (photoItemBox.childElementCount > 1) {
-                                            var oldElement = photoItemBox.firstElementChild || photoItemBox.firstChild;
-                                            if (oldElement) {
-                                                oldElement.parentNode.removeChild(oldElement);
-                                                oldElement.innerHTML = "";
-                                            }
+                                    }
+                                });
+                                if (photoItemBox.childElementCount > 1) {
+                                    WinJS.Promise.timeout(50).then(function () {
+                                        oldElement = photoItemBox.firstElementChild || photoItemBox.firstChild;
+                                        if (oldElement) {
+                                            animationOptions.left = (-animationDistanceX).toString() + "px";
+                                            WinJS.UI.Animation.exitContent(oldElement, animationOptions);
                                         }
                                     });
-                                    if (photoItemBox.childElementCount > 1) {
-                                        WinJS.Promise.timeout(50).then(function () {
-                                            var oldElement = photoItemBox.firstElementChild || photoItemBox.firstChild;
-                                            if (oldElement) {
-                                                animationOptions.left = (-animationDistanceX).toString() + "px";
-                                                WinJS.UI.Animation.exitContent(oldElement, animationOptions);
-                                            }
-                                        });
-                                    }
-                                } else {
-                                    photoItemBox.appendChild(that.img);
                                 }
                             });
                         } else {
@@ -478,6 +471,7 @@
                         return ImgSketch.sketchView.insert(function (json) {
                             // this callback will be called asynchronously
                             // when the response is available
+                            AppBar.busy = false;
                             Log.print(Log.l.trace, "sketchData insert: success!");
                             // select returns object already parsed from json file in response
                             if (json && json.d) {
@@ -496,6 +490,7 @@
                         }, function (errorResponse) {
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
+                            AppBar.busy = false;
                             AppData.setErrorMsg(that.binding, errorResponse);
                         },
                         dataSketch,
@@ -596,9 +591,11 @@
                     },
                     noteId,
                     that.binding.isLocal);
-                } else if (that.binding.isLocal) {
-                    // take photo first - but only if isLocal!
-                    that.takePhoto();
+                } else {
+                    if (that.binding.isLocal) {
+                        // take photo first - but only if isLocal!
+                        that.takePhoto();
+                    }
                     ret = WinJS.Promise.as();
                 }
                 Log.ret(Log.l.trace);
@@ -739,6 +736,9 @@
             };
 
             this.disableHandlers = {
+                clickOk: function () {
+                    return AppBar.busy;
+                },
                 clickZoomIn: function () {
                     if (that.hasDoc() && imgScale < 1) {
                         return false;

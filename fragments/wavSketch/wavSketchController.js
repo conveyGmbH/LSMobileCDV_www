@@ -208,9 +208,11 @@
                     },
                     noteId,
                     that.binding.isLocal);
-                } else if (that.binding.isLocal) {
+                } else {
+                    if (that.binding.isLocal) {
                     // capture audio first - but only if isLocal!
-                    that.captureAudio();
+                        that.captureAudio();
+                    }
                     ret = WinJS.Promise.as();
                 }
                 Log.ret(Log.l.trace);
@@ -291,6 +293,9 @@
             };
 
             this.disableHandlers = {
+                clickOk: function () {
+                    return AppBar.busy;
+                }
             }
 
             that.processAll().then(function () {

@@ -17,13 +17,13 @@
 
             // instanciate SVGEditor class
             var svgEditor = new SVGEditor.SVGEditorClass();
-            if (options && options.isLocal) {
-                svgEditor.registerTouchEvents();                
-            }
             svgEditor.fnCreateDrawDiv();
             svgEditor.fnStartSketch();
 
             this.svgEditor = svgEditor;
+            if (options && options.isLocal) {
+                this.svgEditor.registerTouchEvents();
+            }
 
             Fragments.Controller.apply(this, [fragmentElement, {
                 noteId: 0,
@@ -83,7 +83,34 @@
                     var promise = fragmentControl.updateLayout.call(fragmentControl, fragmentElement) || WinJS.Promise.as();
                     promise.then(function () {
                         that.svgEditor.fnLoadSVG(getDocData());
-                        that.svgEditor.registerTouchEvents();
+                        if (options && options.isLocal) {
+                            that.svgEditor.registerTouchEvents();
+                        }
+                        var sketchContainer = fragmentElement.querySelector(".sketch-container");
+                        if (sketchContainer) {
+                            var sketchElement = sketchContainer.lastElementChild || sketchContainer.lastChild;
+                            if (sketchElement) {
+                                var oldElement;
+                                var animationDistanceX = fragmentElement.clientWidth / 4;
+                                var animationOptions = { top: "0px", left: animationDistanceX.toString() + "px" };
+                                if (sketchElement.style) {
+                                    sketchElement.style.visibility = "";
+                                }
+                                WinJS.UI.Animation.enterContent(sketchElement, animationOptions).then(function () {
+                                    if (sketchElement.style) {
+                                        sketchElement.style.display = "";
+                                        sketchElement.style.position = "";
+                                    }
+                                    while (sketchContainer.childElementCount > 1) {
+                                        oldElement = sketchContainer.firstElementChild || sketchContainer.firstChild;
+                                        if (oldElement) {
+                                            sketchContainer.removeChild(oldElement);
+                                            oldElement.innerHTML = "";
+                                        }
+                                    }
+                                });
+                            }
+                        }
                     });
                 }
                 Log.ret(Log.l.trace);
@@ -93,6 +120,28 @@
                 var ret;
                 Log.call(Log.l.trace, "SvgSketch.Controller.", "noteId=" + noteId);
                 AppData.setErrorMsg(that.binding);
+                var sketchContainer = fragmentElement.querySelectorAll(".svgdiv");
+                if (sketchContainer) {
+                    var sketchElement = sketchContainer.lastElementChild || sketchContainer.lastChild;
+                    if (sketchElement) {
+                        if (sketchElement.childElementCount > 0 && noteId !== that.binding.noteId) {
+                            var sketchContent = sketchElement.innerHTML;
+                            var oldElement = document.createElement("div");
+                            WinJS.Utilities.addClass(oldElement, "svgdiv");
+                            if (oldElement.style) {
+                                oldElement.style.display = "block";
+                                oldElement.style.position = "absolute";
+                            }
+                            oldElement.innerHTML = sketchContent;
+                            sketchContainer.insertBefore(oldElement, sketchElement);
+                        }
+                        if (sketchElement.style) {
+                            sketchElement.style.visibility = "hidden";
+                            sketchElement.style.display = "block";
+                            sketchElement.style.position = "absolute";
+                        }
+                    }
+                }
                 if (noteId) {
                     ret = SvgSketch.sketchDocView.select(function (json) {
                         // this callback will be called asynchronously
@@ -122,7 +171,10 @@
                     that.binding.noteId = 0;
                     // insert new SVG note first - but only if isLocal!
                     that.svgEditor.fnNewSVG();
-                    ret = that.saveData(function(response) {
+                    if (options && options.isLocal) {
+                        that.svgEditor.registerTouchEvents();
+                    }
+                    ret = that.saveData(function (response) {
                         // called asynchronously if ok
                         AppBar.busy = false;
                     },
@@ -363,7 +415,9 @@
                             that.svgEditor.fnSetShape(parseInt(toolNo));
                         } //else {
                         that.svgEditor.hideToolbox("shapesToolbar");
-                        that.svgEditor.registerTouchEvents();
+                        if (options && options.isLocal) {
+                            that.svgEditor.registerTouchEvents();
+                        }
                         //}
                     }
                     Log.ret(Log.l.trace);
@@ -381,7 +435,9 @@
                             that.svgEditor.fnSetColor(nColorNo);
                         } //else {
                         that.svgEditor.hideToolbox("colorsToolbar");
-                        that.svgEditor.registerTouchEvents();
+                        if (options && options.isLocal) {
+                            that.svgEditor.registerTouchEvents();
+                        }
                         //}
                     }
                     Log.ret(Log.l.trace);
@@ -389,7 +445,9 @@
                 clickWidth: function (event) {
                     Log.call(Log.l.trace, "SvgSketch.Controller.", "selected width=" + that.binding.width);
                     that.svgEditor.hideToolbox("widthsToolbar");
-                    that.svgEditor.registerTouchEvents();
+                    if (options && options.isLocal) {
+                        that.svgEditor.registerTouchEvents();
+                    }
                     Log.ret(Log.l.trace);
                 }
             }
@@ -426,8 +484,12 @@
 
             var removeDoc = function () {
                 Log.call(Log.l.trace, "ImgSketch.Controller.");
+                that.binding.noteId = null;
                 that.binding.dataSketch = {};
-                that.svgEditor.fnLoadSVG(getDocData());
+                that.svgEditor.fnNewSVG();
+                if (options && options.isLocal) {
+                    that.svgEditor.unregisterTouchEvents();
+                }
                 Log.ret(Log.l.trace);
             }
             this.removeDoc = removeDoc;

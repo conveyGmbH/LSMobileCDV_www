@@ -15,7 +15,8 @@
         <section aria-label="Main content" role="main" class="animationElement">
             <div class="contentarea win-type-body">
                 <div id="sketch" class="feature">
-                    <div id="svgsketch" class="svgdiv">
+                    <div class="sketch-container">
+                        <div id="svgsketch" class="svgdiv"></div>
                     </div>
                     <div id="shapesToolbar" class="tool-box">
                         <button id="tool0" class="win-button shape"
@@ -42,32 +43,32 @@
                     <div id="colorsToolbar" class="tool-box">
                         <button id="tool_empty0" class="win-button shape"
                                 onclick="AppBar.handleEvent('click', 'clickColor', event)"
-                                style="background-color:black">
+                                style="background-color: black">
                             <div id="tool_black"></div>
                         </button>
                         <button id="tool_empty1" class="win-button shape"
                                 onclick="AppBar.handleEvent('click', 'clickColor', event)"
-                                style="background-color:blue">
+                                style="background-color: blue">
                             <div id="tool_blue"></div>
                         </button>
                         <button id="tool_empty2" class="win-button shape"
                                 onclick="AppBar.handleEvent('click', 'clickColor', event)"
-                                style="background-color:red">
+                                style="background-color: red">
                             <div id="tool_red"></div>
                         </button>
                         <button id="tool_empty3" class="win-button shape"
                                 onclick="AppBar.handleEvent('click', 'clickColor', event)"
-                                style="background-color:yellow">
+                                style="background-color: yellow">
                             <div id="tool_yellow"></div>
                         </button>
                         <button id="tool_empty4" class="win-button shape"
                                 onclick="AppBar.handleEvent('click', 'clickColor', event)"
-                                style="background-color:green">
+                                style="background-color: green">
                             <div id="tool_green"></div>
                         </button>
                         <button id="tool_empty5" class="win-button shape"
                                 onclick="AppBar.handleEvent('click', 'clickColor', event)"
-                                style="background-color:gray">
+                                style="background-color: gray">
                             <div id="tool_gray"></div>
                         </button>
                     </div>
@@ -84,9 +85,9 @@
                         </button>
                     </div>
                     <div>
-                        <input id="fill" type="hidden" value="none" />
-                        <input id="stroke" type="hidden" value="black" />
-                        <input id="shape" type="hidden" value="polyline" />
+                        <input id="fill" type="hidden" value="none"/>
+                        <input id="stroke" type="hidden" value="black"/>
+                        <input id="shape" type="hidden" value="polyline"/>
                     </div>
 
                 </div>

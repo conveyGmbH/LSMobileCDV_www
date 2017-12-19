@@ -59,10 +59,15 @@
                     that.binding.showAudio = false;
                     docViewer = Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("svgSketch"));
                 } else if (AppData.isImg(docGroup, docFormat)) {
-                    that.binding.showSvg = false;
                     that.binding.showPhoto = true;
+                    that.binding.showSvg = false;
                     that.binding.showAudio = false;
                     docViewer = Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("imgSketch"));
+                } else if (AppData.isAudio(docGroup, docFormat)) {
+                    that.binding.showAudio = true;
+                    that.binding.showSvg = false;
+                    that.binding.showPhoto = false;
+                    docViewer = Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("wavSketch"));
                 } else {
                     docViewer = null;
                 }
@@ -102,10 +107,10 @@
                         bUpdateCommands = true;
                         ret = that.docViewer.controller.loadData(noteId);
                     } else if (AppData.isSvg(docGroup, docFormat)) {
-                        Log.print(Log.l.trace, "load new svgSketch!");
                         that.binding.showSvg = true;
                         that.binding.showPhoto = false;
                         that.binding.showAudio = false;
+                        Log.print(Log.l.trace, "load new svgSketch!");
                         parentElement = pageElement.querySelector("#svghost");
                         if (parentElement) {
                             bGetNewDocViewer = true;
@@ -115,10 +120,10 @@
                             ret = WinJS.Promise.as();
                         }
                     } else if (AppData.isImg(docGroup, docFormat)) {
-                        Log.print(Log.l.trace, "load new imgSketch!");
-                        that.binding.showSvg = false;
                         that.binding.showPhoto = true;
+                        that.binding.showSvg = false;
                         that.binding.showAudio = false;
+                        Log.print(Log.l.trace, "load new imgSketch!");
                         parentElement = pageElement.querySelector("#imghost");
                         if (parentElement) {
                             bGetNewDocViewer = true;
@@ -128,10 +133,10 @@
                             ret = WinJS.Promise.as();
                         }
                     } else if (AppData.isAudio(docGroup, docFormat)) {
-                        Log.print(Log.l.trace, "load new wavSketch!");
+                        that.binding.showAudio = true;
                         that.binding.showSvg = false;
                         that.binding.showPhoto = false;
-                        that.binding.showAudio = true;
+                        Log.print(Log.l.trace, "load new wavSketch!");
                         parentElement = pageElement.querySelector("#wavhost");
                         if (parentElement) {
                             bGetNewDocViewer = true;
@@ -402,7 +407,6 @@
                             // error occured!
                         });
                     } else {
-                        that.binding.showSvg = true;
                         loadDoc(null, AppData.DocGroup.Text, 75);
                     }
                     Log.ret(Log.l.trace);
@@ -419,7 +423,6 @@
                             // error occured!
                         });
                     } else {
-                        that.binding.showPhoto = true;
                         loadDoc(null, AppData.DocGroup.Image, 3);
                     }
                     Log.ret(Log.l.trace);
@@ -431,13 +434,11 @@
                     if (that.docViewer && that.docViewer.canUnload) {
                         // save previous
                         that.docViewer.canUnload(function () {
-                            that.binding.showPhoto = true;
                             loadDoc(null, AppData.DocGroup.Audio, 67);
                         }, function () {
                             // error occured!
                         });
                     } else {
-                        that.binding.showPhoto = true;
                         loadDoc(null, AppData.DocGroup.Audio, 67);
                     }
                     Log.ret(Log.l.trace);
@@ -454,14 +455,10 @@
                 },
                 clickNew: function () {
                     if (that.binding.generalData.contactId) {
-                        return false;
+                        return AppBar.busy;
                     } else {
                         return true;
                     }
-                },
-                clickForward: function () {
-                    // never disable!
-                    return false;
                 },
                 clickShowList: function () {
                     if (that.binding.moreNotes) {

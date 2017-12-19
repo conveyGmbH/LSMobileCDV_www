@@ -89,7 +89,7 @@
                                 {
                                     WinJS.Utilities.addClass(that.img, "start-barcode");
                                     that.img.src = "images/barcode.jpg";
-                                    var text = document.createElement("SPAN");
+                                    var text = document.createElement("span");
                                     WinJS.Utilities.addClass(text, "start-barcode");
                                     var shortText = AppData._barcodeRequest.substr(0, 32);
                                     if (shortText.length < AppData._barcodeRequest.length) {
