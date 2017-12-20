@@ -774,11 +774,17 @@ input.win-textbox, input.win-checkbox, input.win-radio, textarea.win-textarea, s
     height:100%;
     color: gray
 }
+.list-compressed-red {
+    float: left;
+    width:calc(100% - 65px); 
+    height:100%;
+    color: red
+}
 .list-compressed-green {
     float: left;
     width: calc(100% - 65px);
     height: 100%;
-    color: green
+    color: forestgreen
 }
 .list-compressed-title {
     min-height: 20px;
