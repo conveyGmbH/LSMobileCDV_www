@@ -318,6 +318,22 @@
                     Application.navigateById(Application.navigateNewId, event);
                     Log.ret(Log.l.trace);
                 },
+                clickForward: function (event) {
+                    Log.call(Log.l.trace, "Sketch.Controller.");
+                    Application.navigateById("start", event);
+                    Log.ret(Log.l.trace);
+                },
+                clickDelete: function(event) {
+                    Log.call(Log.l.trace, "Sketch.Controller.");
+                    if (that.docViewer &&
+                        that.docViewer.controller &&
+                        that.docViewer.controller.binding &&
+                        that.docViewer.controller.binding.noteId && 
+                        typeof that.docViewer.controller.deleteData === "function") {
+                        that.docViewer.controller.deleteData();
+                    }
+                    Log.ret(Log.l.trace);
+                },
                 clickShowList: function (event) {
                     Log.call(Log.l.trace, "Sketch.Controller.");
                     var mySketchList = pageElement.querySelector(".listfragmenthost");
@@ -460,8 +476,21 @@
                         return true;
                     }
                 },
+                clickForward: function () {
+                    // never disable!
+                    return false;
+                },
                 clickShowList: function () {
                     if (that.binding.moreNotes) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                clickDelete: function () {
+                    if (that.docViewer && that.docViewer.controller &&
+                        that.docViewer.controller.binding &&
+                        that.docViewer.controller.binding.noteId) {
                         return false;
                     } else {
                         return true;

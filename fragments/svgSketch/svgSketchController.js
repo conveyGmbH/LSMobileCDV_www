@@ -311,25 +311,60 @@
             };
             this.saveData = saveData;
 
-            var eventHandlers = {
-                clickOk: function (event) {
-                    Log.call(Log.l.trace, "SvgSketch.Controller.");
-                    if (AppBar.modified && !AppBar.busy) {
-                        AppBar.busy = true;
-                        AppData.setErrorMsg(that.binding);
-                        that.saveData(function (response) {
-                            // called asynchronously if ok
-                            AppBar.busy = false;
-                            WinJS.Promise.timeout(0).then(function() {
-                                Application.navigateById("start", event);
+            var deleteData = function() {
+                Log.call(Log.l.trace, "SvgSketch.Controller.");
+                if (options && options.isLocal) {
+                    that.svgEditor.unregisterTouchEvents();
+                    var confirmTitle = getResourceText("sketch.questionDelete");
+                    confirm(confirmTitle, function (result) {
+                        if (result) {
+                            WinJS.Promise.as().then(function () {
+                                that.svgEditor.modified = false;
+                                Log.print(Log.l.trace, "clickDelete: user choice OK");
+                                return SvgSketch.sketchView.deleteRecord(function (response) {
+                                    // called asynchronously if ok
+                                    Log.print(Log.l.trace, "svgSketchData delete: success!");
+                                    //reload sketchlist
+                                    if (AppBar.scope && typeof AppBar.scope.loadData === "function") {
+                                        AppBar.scope.loadData();
+                                    }
+                                }, function (errorResponse) {
+                                    // called asynchronously if an error occurs
+                                    // or server returns response with an error status.
+                                    AppData.setErrorMsg(that.binding, errorResponse);
+                                    var message = null;
+                                    Log.print(Log.l.error,
+                                        "error status=" +
+                                        errorResponse.status +
+                                        " statusText=" +
+                                        errorResponse.statusText);
+                                    if (errorResponse.data && errorResponse.data.error) {
+                                        Log.print(Log.l.error, "error code=" + errorResponse.data.error.code);
+                                        if (errorResponse.data.error.message) {
+                                            Log.print(Log.l.error,
+                                                "error message=" + errorResponse.data.error.message.value);
+                                            message = errorResponse.data.error.message.value;
+                                        }
+                                    }
+                                    if (!message) {
+                                        message = getResourceText("error.delete");
+                                    }
+                                    alert(message);
+                                },
+                                that.binding.noteId,
+                                that.binding.isLocal);
                             });
-                        }, function (errorResponse) {
-                            AppBar.busy = false;
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                        });
-                    }
-                    Log.ret(Log.l.trace);
-                },
+                        } else {
+                            Log.print(Log.l.trace, "deleteData: user choice CANCEL");
+                            that.svgEditor.registerTouchEvents();
+                        }
+                    });
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.deleteData = deleteData;
+
+            var eventHandlers = {
                 clickUndo: function (event) {
                     Log.call(Log.l.trace, "SvgSketch.Controller.");
                     that.svgEditor.fnUndoSVG(event);
@@ -338,55 +373,6 @@
                 clickRedo: function (event) {
                     Log.call(Log.l.trace, "SvgSketch.Controller.");
                     that.svgEditor.fnRedoSVG(event);
-                    Log.ret(Log.l.trace);
-                },
-                clickDelete: function (event) {
-                    Log.call(Log.l.trace, "SvgSketch.Controller.");
-                    var confirmTitle = getResourceText("sketch.questionDelete");
-                    confirm(confirmTitle, function (result) {
-                        if (result) {
-                            WinJS.Promise.as().then(function () {
-                                Log.print(Log.l.trace, "clickDelete: user choice OK");
-                                return SvgSketch.sketchView.deleteRecord(function (response) {
-                                    // called asynchronously if ok
-                                    Log.print(Log.l.trace, "svgSketchData delete: success!");
-                                    //reload sketchlist
-                                    if (AppBar.scope && typeof AppBar.scope.loadList === "function") {
-                                        AppBar.scope.listloaded = AppBar.scope.binding.showList ? true : false;
-                                        AppBar.scope.loadList(null);
-                                    }
-                                },
-                                    function (errorResponse) {
-                                        // called asynchronously if an error occurs
-                                        // or server returns response with an error status.
-                                        AppData.setErrorMsg(that.binding, errorResponse);
-
-                                        var message = null;
-                                        Log.print(Log.l.error,
-                                            "error status=" +
-                                            errorResponse.status +
-                                            " statusText=" +
-                                            errorResponse.statusText);
-                                        if (errorResponse.data && errorResponse.data.error) {
-                                            Log.print(Log.l.error, "error code=" + errorResponse.data.error.code);
-                                            if (errorResponse.data.error.message) {
-                                                Log.print(Log.l.error,
-                                                    "error message=" + errorResponse.data.error.message.value);
-                                                message = errorResponse.data.error.message.value;
-                                            }
-                                        }
-                                        if (!message) {
-                                            message = getResourceText("error.delete");
-                                        }
-                                        alert(message);
-                                    },
-                                    that.binding.noteId,
-                                    that.binding.isLocal);
-                            });
-                        } else {
-                            Log.print(Log.l.trace, "clickDelete: user choice CANCEL");
-                        }
-                    });
                     Log.ret(Log.l.trace);
                 },
                 clickShapes: function (event) {
@@ -454,25 +440,15 @@
             this.eventHandlers = eventHandlers;
 
             var disableHandlers = {
-                clickOk: function () {
-                    return AppBar.busy;
-                },
                 clickUndo: function () {
-                    if (that.svgEditor && that.svgEditor.fnCanUndo()) {
+                    if (options && options.isLocal && that.svgEditor && that.svgEditor.fnCanUndo()) {
                         return false;
                     } else {
                         return true;
                     }
                 },
                 clickRedo: function () {
-                    if (that.svgEditor && that.svgEditor.fnCanRedo()) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                },
-                clickDelete: function () {
-                    if (that.svgEditor && that.svgEditor.fnCanNew()) {
+                    if (options && options.isLocal && that.svgEditor && that.svgEditor.fnCanRedo()) {
                         return false;
                     } else {
                         return true;
@@ -487,6 +463,7 @@
                 that.binding.noteId = null;
                 that.binding.dataSketch = {};
                 that.svgEditor.fnNewSVG();
+                that.svgEditor.modified = false;
                 if (options && options.isLocal) {
                     that.svgEditor.unregisterTouchEvents();
                 }

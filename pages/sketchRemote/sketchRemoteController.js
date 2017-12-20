@@ -113,7 +113,7 @@
                         if (parentElement) {
                             bGetNewDocViewer = true;
                             bUpdateCommands = true;
-                            ret = Application.loadFragmentById(parentElement, "svgSketch", { noteId: noteId, isLocal: true });
+                            ret = Application.loadFragmentById(parentElement, "svgSketch", { noteId: noteId, isLocal: false });
                         } else {
                             ret = WinJS.Promise.as();
                         }
@@ -126,7 +126,7 @@
                         if (parentElement) {
                             bGetNewDocViewer = true;
                             bUpdateCommands = true;
-                            ret = Application.loadFragmentById(parentElement, "imgSketch", { noteId: noteId, isLocal: true });
+                            ret = Application.loadFragmentById(parentElement, "imgSketch", { noteId: noteId, isLocal: false });
                         } else {
                             ret = WinJS.Promise.as();
                         }
@@ -139,7 +139,7 @@
                         if (parentElement) {
                             bGetNewDocViewer = true;
                             bUpdateCommands = true;
-                            ret = Application.loadFragmentById(parentElement, "wavSketch", { noteId: noteId, isLocal: true });
+                            ret = Application.loadFragmentById(parentElement, "wavSketch", { noteId: noteId, isLocal: false });
                         } else {
                             ret = WinJS.Promise.as();
                         }

@@ -62,7 +62,7 @@
                             }
                         }
                     }
-                } else {
+                } else if (that.binding.count > 1) {
                     WinJS.Promise.timeout(50).then(function () {
                         scaleItemsAfterResize();
                     });

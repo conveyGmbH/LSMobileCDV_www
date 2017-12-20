@@ -241,15 +241,9 @@
             };
             this.saveData = saveData;
 
-            // define handlers
-            this.eventHandlers = {
-                clickOk: function (event) {
-                    Log.call(Log.l.trace, "WavSketch.Controller.");
-                    Application.navigateById("start", event);
-                    Log.ret(Log.l.trace);
-                },
-                clickDelete: function (event) {
-                    Log.call(Log.l.trace, "WavSketch.Controller.");
+            var deleteData = function() {
+                Log.call(Log.l.trace, "WavSketch.Controller.");
+                if (options && options.isLocal) {
                     var confirmTitle = getResourceText("sketch.questionDelete");
                     confirm(confirmTitle, function (result) {
                         if (result) {
@@ -261,41 +255,41 @@
                                     if (AppBar.scope && typeof AppBar.scope.loadList === "function") {
                                         AppBar.scope.loadList(null);
                                     }
+                                },  function (errorResponse) {
+                                    // called asynchronously if an error occurs
+                                    // or server returns response with an error status.
+                                    AppData.setErrorMsg(that.binding, errorResponse);
+                                    var message = null;
+                                    Log.print(Log.l.error, "error status=" + errorResponse.status + " statusText=" + errorResponse.statusText);
+                                    if (errorResponse.data && errorResponse.data.error) {
+                                        Log.print(Log.l.error, "error code=" + errorResponse.data.error.code);
+                                        if (errorResponse.data.error.message) {
+                                            Log.print(Log.l.error, "error message=" + errorResponse.data.error.message.value);
+                                            message = errorResponse.data.error.message.value;
+                                        }
+                                    }
+                                    if (!message) {
+                                        message = getResourceText("error.delete");
+                                    }
+                                    alert(message);
                                 },
-                                    function (errorResponse) {
-                                        // called asynchronously if an error occurs
-                                        // or server returns response with an error status.
-                                        AppData.setErrorMsg(that.binding, errorResponse);
-
-                                        var message = null;
-                                        Log.print(Log.l.error, "error status=" + errorResponse.status + " statusText=" + errorResponse.statusText);
-                                        if (errorResponse.data && errorResponse.data.error) {
-                                            Log.print(Log.l.error, "error code=" + errorResponse.data.error.code);
-                                            if (errorResponse.data.error.message) {
-                                                Log.print(Log.l.error, "error message=" + errorResponse.data.error.message.value);
-                                                message = errorResponse.data.error.message.value;
-                                            }
-                                        }
-                                        if (!message) {
-                                            message = getResourceText("error.delete");
-                                        }
-                                        alert(message);
-                                    },
-                                    that.binding.noteId,
-                                    that.binding.isLocal);
+                                that.binding.noteId,
+                                that.binding.isLocal);
                             });
                         } else {
-                            Log.print(Log.l.trace, "clickDelete: user choice CANCEL");
+                            Log.print(Log.l.trace, "deleteData: user choice CANCEL");
                         }
                     });
-                    Log.ret(Log.l.trace);
                 }
+                Log.ret(Log.l.trace);
+            }
+            this.deleteData = deleteData;
+
+            // define handlers
+            this.eventHandlers = {
             };
 
             this.disableHandlers = {
-                clickOk: function () {
-                    return AppBar.busy;
-                }
             }
 
             that.processAll().then(function () {

@@ -27,9 +27,7 @@
                 { id: "clickZoomIn", label: getResourceText("command.zoomin"), tooltip: getResourceText("tooltip.zoomin"), section: "primary", svg: "zoom_in" },
                 { id: "clickZoomOut", label: getResourceText("command.zoomout"), tooltip: getResourceText("tooltip.zoomout"), section: "primary", svg: "zoom_out" },
                 { id: "clickRotateLeft", label: getResourceText("command.rotate"), tooltip: getResourceText("tooltip.rotateLeft"), section: "primary", svg: "rotate_left" },
-                { id: "clickRotateRight", label: getResourceText("command.rotate"), tooltip: getResourceText("tooltip.rotateRight"), section: "primary", svg: "rotate_right" },
-                { id: "clickDelete", label: getResourceText("command.delete"), tooltip: getResourceText("tooltip.delete"), section: "primary", svg: "garbage_can" },
-                { id: 'clickOk', label: getResourceText('command.ok'), tooltip: getResourceText('tooltip.ok'), section: 'primary', svg: 'navigate_check', key: WinJS.Utilities.Key.enter }
+                { id: "clickRotateRight", label: getResourceText("command.rotate"), tooltip: getResourceText("tooltip.rotateRight"), section: "primary", svg: "rotate_right" }
             ];
             this.controller = new ImgSketch.Controller(element, options, commandList);
 
