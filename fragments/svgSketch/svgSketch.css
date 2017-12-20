@@ -35,23 +35,24 @@ div#svgsketch {
     right: 0px;
     height: 100px;
     padding: 4px;
-    background-color: #2f2f2f;
     opacity: 0.9;
-    width: 260px;
+    width: 300px;
     z-index: 10000;
 }
 
 .view-size-small .tool-box {
-    width: 100%;
+    width: calc(100% - 20px);
+    padding-left: 20px;
 }
-
 
 .tool-box-width {
     border-bottom-style: solid; 
     border-bottom-width: 1px; 
     border-bottom-color: #000000; 
-    margin: 0 10px; 
-    padding: 0 0 4px 0;
+    margin: 0;
+    padding: 10px;
+    width: 100%;
+    height: 32px;
 }
 
 .tool-image {
@@ -62,15 +63,11 @@ div#svgsketch {
     display: none;
 }
 .tool-ok {
-    margin-top: 20px;
-    display: inline-block;
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
+    margin: 10px;
+    float: left;
 }
 
 #swidth{
-    width: calc(100% - 4px);
-    height: 32px;
+    width: calc(100% - 32px);
 }
 

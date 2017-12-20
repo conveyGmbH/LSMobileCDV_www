@@ -18,7 +18,7 @@
                     <div class="doc-container">
                         <div id="svgsketch" class="svgdiv"></div>
                     </div>
-                    <div id="shapesToolbar" class="tool-box">
+                    <div id="shapesToolbar" class="tool-box box-bkg">
                         <button id="tool0" class="win-button shape"
                                 onclick="AppBar.handleEvent('click', 'clickTool', event)">
                             <div id="tool_freehand" class="tool-image"></div>
@@ -40,7 +40,7 @@
                             <div id="tool_ellipse" class="tool-image"></div>
                         </button>
                     </div>
-                    <div id="colorsToolbar" class="tool-box">
+                    <div id="colorsToolbar" class="tool-box box-bkg">
                         <button id="tool_empty0" class="win-button shape"
                                 onclick="AppBar.handleEvent('click', 'clickColor', event)"
                                 style="background-color: black">
@@ -72,7 +72,7 @@
                             <div id="tool_gray"></div>
                         </button>
                     </div>
-                    <div id="widthsToolbar" class="tool-box">
+                    <div id="widthsToolbar" class="tool-box box-bkg">
                         <div class="tool-box-width"
                              data-win-bind="style.borderBottomWidth: width; style.borderBottomColor: color">
                             <input id="swidth" type="range" min="1" max="10" step="1"

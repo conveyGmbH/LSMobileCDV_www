@@ -33,8 +33,8 @@
             this.hasDoc = hasDoc;
 
             this.dispose = function () {
+                that.removeDoc();
                 if (that.img) {
-                    that.removeAudio();
                     that.img.src = "";
                     that.img = null;
                 }
@@ -243,45 +243,41 @@
 
             var deleteData = function() {
                 Log.call(Log.l.trace, "WavSketch.Controller.");
-                if (options && options.isLocal) {
-                    var confirmTitle = getResourceText("sketch.questionDelete");
-                    confirm(confirmTitle, function (result) {
-                        if (result) {
-                            WinJS.Promise.as().then(function () {
-                                return WavSketch.sketchView.deleteRecord(function (response) {
-                                    // called asynchronously if ok
-                                    Log.print(Log.l.trace, "WavSketchData delete: success!");
-                                    //reload sketchlist
-                                    if (AppBar.scope && typeof AppBar.scope.loadList === "function") {
-                                        AppBar.scope.loadList(null);
-                                    }
-                                },  function (errorResponse) {
-                                    // called asynchronously if an error occurs
-                                    // or server returns response with an error status.
-                                    AppData.setErrorMsg(that.binding, errorResponse);
-                                    var message = null;
-                                    Log.print(Log.l.error, "error status=" + errorResponse.status + " statusText=" + errorResponse.statusText);
-                                    if (errorResponse.data && errorResponse.data.error) {
-                                        Log.print(Log.l.error, "error code=" + errorResponse.data.error.code);
-                                        if (errorResponse.data.error.message) {
-                                            Log.print(Log.l.error, "error message=" + errorResponse.data.error.message.value);
-                                            message = errorResponse.data.error.message.value;
-                                        }
-                                    }
-                                    if (!message) {
-                                        message = getResourceText("error.delete");
-                                    }
-                                    alert(message);
-                                },
-                                that.binding.noteId,
-                                that.binding.isLocal);
-                            });
-                        } else {
-                            Log.print(Log.l.trace, "deleteData: user choice CANCEL");
-                        }
-                    });
-                }
+                var ret = WinJS.Promise.as().then(function () {
+                    if (options && options.isLocal) {
+                        return WavSketch.sketchView.deleteRecord(function (response) {
+                            // called asynchronously if ok
+                            Log.print(Log.l.trace, "WavSketchData delete: success!");
+                            //reload sketchlist
+                            if (AppBar.scope && typeof AppBar.scope.loadList === "function") {
+                                AppBar.scope.loadList(null);
+                            }
+                        }, function (errorResponse) {
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                            var message = null;
+                            Log.print(Log.l.error, "error status=" + errorResponse.status + " statusText=" + errorResponse.statusText);
+                            if (errorResponse.data && errorResponse.data.error) {
+                                Log.print(Log.l.error, "error code=" + errorResponse.data.error.code);
+                                if (errorResponse.data.error.message) {
+                                    Log.print(Log.l.error, "error message=" + errorResponse.data.error.message.value);
+                                    message = errorResponse.data.error.message.value;
+                                }
+                            }
+                            if (!message) {
+                                message = getResourceText("error.delete");
+                            }
+                            alert(message);
+                        },
+                        that.binding.noteId,
+                        that.binding.isLocal);
+                    } else {
+                        return WinJS.Promise.as();
+                    }
+                });
                 Log.ret(Log.l.trace);
+                return ret;
             }
             this.deleteData = deleteData;
 

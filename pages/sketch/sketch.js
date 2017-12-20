@@ -43,7 +43,6 @@
                     }
                 }
             }
-            Colors.changeCSS(".add-box", "background-color", Colors.isDarkTheme ? "#2b2b2b" : "#f2f2f2");
 
             // add page specific commands to AppBar
             var commandList = [

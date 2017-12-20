@@ -24,10 +24,10 @@
                 showPhoto: false,
                 showList: false,
                 moreNotes: false,
-                userHidesList: false
+                userHidesList: false,
+                contactId: AppData.getRecordId("Kontakt_Remote")
             }, commandList]);
 
-            this.contactId = AppData.getRecordId("Kontakt_Remote");
             this.pageElement = pageElement;
             this.docViewer = null;
 
@@ -195,11 +195,11 @@
                 var ret;
                 var sketchListFragmentControl = Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("sketchList"));
                 if (sketchListFragmentControl && sketchListFragmentControl.controller) {
-                    ret = sketchListFragmentControl.controller.loadData(that.contactId, noteId);
+                    ret = sketchListFragmentControl.controller.loadData(that.binding.contactId, noteId);
                 } else {
                     var parentElement = pageElement.querySelector("#listhost");
                     if (parentElement) {
-                        ret = Application.loadFragmentById(parentElement, "sketchList", { contactId: that.contactId, isLocal: false });
+                        ret = Application.loadFragmentById(parentElement, "sketchList", { contactId: that.binding.contactId, isLocal: false });
                     } else {
                         ret = WinJS.Promise.as();
                     }
@@ -315,7 +315,7 @@
                     }
                 },
                 clickNew: function () {
-                    if (that.binding.generalData.contactId) {
+                    if (that.binding.contactId) {
                         return false;
                     } else {
                         return true;

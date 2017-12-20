@@ -26,10 +26,10 @@
                 showAudio: false,
                 showList: false,
                 moreNotes: false,
-                userHidesList: false
+                userHidesList: false,
+                contactId: AppData.getRecordId("Kontakt")
             }, commandList]);
 
-            this.contactId = AppData.getRecordId("Kontakt");
             this.pageElement = pageElement;
             this.docViewer = null;
 
@@ -194,7 +194,7 @@
                 Log.call(Log.l.trace, "Sketch.Controller.", "noteId=" + noteId + " docGroup=" + docGroup + " docFormat=" + docFormat);
                 AppData.setErrorMsg(that.binding);
                 var ret = new WinJS.Promise.as().then(function () {
-                    if (!that.contactId) {
+                    if (!that.binding.contactId) {
                         var newContact = {
                             HostName: (window.device && window.device.uuid),
                             MitarbeiterID: AppData.getRecordId("Mitarbeiter"),
@@ -209,8 +209,8 @@
                             Log.print(Log.l.trace, "contactView: success!");
                             // contactData returns object already parsed from json file in response
                             if (json && json.d) {
-                                that.contactId = json.d.KontaktVIEWID;
-                                AppData.setRecordId("Kontakt", that.contactId);
+                                that.binding.contactId = json.d.KontaktVIEWID;
+                                AppData.setRecordId("Kontakt", that.binding.contactId);
                                 AppData.getUserData();
                             } else {
                                 AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
@@ -221,7 +221,7 @@
                             AppData.setErrorMsg(that.binding, errorResponse);
                         }, newContact);
                     } else {
-                        Log.print(Log.l.trace, "use existing that.contactID=" + that.contactId);
+                        Log.print(Log.l.trace, "use existing contactID=" + that.binding.contactId);
                         return WinJS.Promise.as();
                     }
                 }).then(function() {
@@ -243,11 +243,11 @@
                 var ret;
                 var sketchListFragmentControl = Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("sketchList"));
                 if (sketchListFragmentControl && sketchListFragmentControl.controller) {
-                    ret = sketchListFragmentControl.controller.loadData(that.contactId, noteId);
+                    ret = sketchListFragmentControl.controller.loadData(that.binding.contactId, noteId);
                 } else {
                     var parentElement = pageElement.querySelector("#listhost");
                     if (parentElement) {
-                        ret = Application.loadFragmentById(parentElement, "sketchList", { contactId: that.contactId, isLocal: true });
+                        ret = Application.loadFragmentById(parentElement, "sketchList", { contactId: that.binding.contactId, isLocal: true });
                     } else {
                         ret = WinJS.Promise.as();
                     }
@@ -336,7 +336,29 @@
                         that.docViewer.controller.binding &&
                         that.docViewer.controller.binding.noteId && 
                         typeof that.docViewer.controller.deleteData === "function") {
-                        that.docViewer.controller.deleteData();
+                        if (that.docViewer.controller.svgEditor) {
+                            that.docViewer.controller.svgEditor.unregisterTouchEvents();
+                        }
+                        var confirmTitle = getResourceText("sketch.questionDelete");
+                        confirm(confirmTitle, function (result) {
+                            if (result) {
+                                Log.print(Log.l.trace, "deleteData: user choice OK");
+                                if (that.docViewer &&
+                                    that.docViewer.controller &&
+                                    that.docViewer.controller.binding &&
+                                    that.docViewer.controller.binding.noteId &&
+                                    typeof that.docViewer.controller.deleteData === "function") {
+                                    that.docViewer.controller.deleteData();
+                                }
+                            } else {
+                                Log.print(Log.l.trace, "deleteData: user choice CANCEL");
+                                if (that.docViewer &&
+                                    that.docViewer.controller &&
+                                    that.docViewer.controller.svgEditor) {
+                                    that.docViewer.controller.svgEditor.registerTouchEvents();
+                                }
+                            }
+                        });
                     }
                     Log.ret(Log.l.trace);
                 },
@@ -476,7 +498,7 @@
                     }
                 },
                 clickNew: function () {
-                    if (that.binding.generalData.contactId) {
+                    if (that.binding.contactId) {
                         return AppBar.busy;
                     } else {
                         return true;

@@ -283,7 +283,7 @@
                             that.binding.DocGroup = null;
                             that.binding.DocFormat = null;
                         }
-                        that.binding.count = that.sketches.length;
+                        that.binding.count = that.sketches ? that.sketches.length : 0;
                         if (AppBar.scope && typeof AppBar.scope.setNotesCount === "function") {
                             AppBar.scope.setNotesCount(that.binding.count);
                         }

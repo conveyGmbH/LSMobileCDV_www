@@ -31,7 +31,7 @@
                             var svgObject = shapeElements[i];
                             // insert svg object before span element 
                             if (svgObject && !svgObject.firstChild) {
-                                var size = 28;
+                                var size = 32;
                                 if (svgObject.parentNode &&
                                     svgObject.parentNode.clientWidth) {
                                     size = svgObject.parentNode.clientWidth;
@@ -56,13 +56,6 @@
                     }
                 }
             }
-            var toolBackgroundColor;
-            if (Colors.isDarkTheme) {
-                toolBackgroundColor = "#2b2b2b";
-            } else {
-                toolBackgroundColor = "#f2f2f2";
-            }
-            Colors.changeCSS(".tool-box", "background-color", toolBackgroundColor);
 
             var commandList = options && options.isLocal ? [
                 { id: 'clickUndo', label: getResourceText('command.undo'), tooltip: getResourceText('tooltip.undo'), section: 'primary', svg: 'undo' },
@@ -116,7 +109,7 @@
                         var fragment = element.querySelector(".contentarea");
                         if (fragment) {
                             var width = fragment.clientWidth;
-                            var height = fragment.clientHeight;
+                            var height = fragment.clientHeight - 4;
 
                             if (width > 0 && width !== that.prevWidth) {
                                 that.prevWidth = width;
