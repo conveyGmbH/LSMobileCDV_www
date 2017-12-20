@@ -26,7 +26,7 @@
             }
 
             Fragments.Controller.apply(this, [fragmentElement, {
-                noteId: 0,
+                noteId: null,
                 isLocal: options.isLocal,
                 dataSketch: {},
                 color: svgEditor.drawcolor && svgEditor.drawcolor[0],
@@ -86,11 +86,11 @@
                         if (options && options.isLocal) {
                             that.svgEditor.registerTouchEvents();
                         }
-                        var sketchContainer = fragmentElement.querySelector(".sketch-container");
-                        if (sketchContainer) {
-                            var sketchElement = sketchContainer.lastElementChild || sketchContainer.lastChild;
+                        var docContainer = fragmentElement.querySelector(".doc-container");
+                        if (docContainer) {
+                            var sketchElement = docContainer.lastElementChild || docContainer.lastChild;
                             if (sketchElement) {
-                                var oldElement;
+                                //var oldElement;
                                 var animationDistanceX = fragmentElement.clientWidth / 4;
                                 var animationOptions = { top: "0px", left: animationDistanceX.toString() + "px" };
                                 if (sketchElement.style) {
@@ -100,13 +100,6 @@
                                     if (sketchElement.style) {
                                         sketchElement.style.display = "";
                                         sketchElement.style.position = "";
-                                    }
-                                    while (sketchContainer.childElementCount > 1) {
-                                        oldElement = sketchContainer.firstElementChild || sketchContainer.firstChild;
-                                        if (oldElement) {
-                                            sketchContainer.removeChild(oldElement);
-                                            oldElement.innerHTML = "";
-                                        }
                                     }
                                 });
                             }
@@ -120,21 +113,10 @@
                 var ret;
                 Log.call(Log.l.trace, "SvgSketch.Controller.", "noteId=" + noteId);
                 AppData.setErrorMsg(that.binding);
-                var sketchContainer = fragmentElement.querySelectorAll(".svgdiv");
-                if (sketchContainer) {
-                    var sketchElement = sketchContainer.lastElementChild || sketchContainer.lastChild;
+                var docContainer = fragmentElement.querySelector(".doc-container");
+                if (docContainer) {
+                    var sketchElement = docContainer.lastElementChild || docContainer.lastChild;
                     if (sketchElement) {
-                        if (sketchElement.childElementCount > 0 && noteId !== that.binding.noteId) {
-                            var sketchContent = sketchElement.innerHTML;
-                            var oldElement = document.createElement("div");
-                            WinJS.Utilities.addClass(oldElement, "svgdiv");
-                            if (oldElement.style) {
-                                oldElement.style.display = "block";
-                                oldElement.style.position = "absolute";
-                            }
-                            oldElement.innerHTML = sketchContent;
-                            sketchContainer.insertBefore(oldElement, sketchElement);
-                        }
                         if (sketchElement.style) {
                             sketchElement.style.visibility = "hidden";
                             sketchElement.style.display = "block";
@@ -157,8 +139,11 @@
                                     "SVG Element: " +
                                     getDocData().substr(0, 100) +
                                     "...");
+                                WinJS.Promise.timeout(0).then(function () {
+                                    // reload trigger-generated SVG
+                                    showSvgAfterResize();
+                                });
                             }
-                            showSvgAfterResize();
                         }
                     },  function (errorResponse) {
                         // called asynchronously if an error occurs
@@ -262,16 +247,7 @@
                                         if (json && json.d) {
                                             that.binding.dataSketch = json.d;
                                             that.binding.noteId = json.d.KontaktNotizVIEWID;
-                                            if (that.binding.dataSketch.Quelltext) {
-                                                Log.print(Log.l.trace,
-                                                    "SVG Element: " +
-                                                    that.binding.dataSketch.Quelltext.substr(0, 100) +
-                                                    "...");
-                                            }
                                             doret2 = WinJS.Promise.timeout(0).then(function () {
-                                                // reload trigger-generated SVG
-                                                showSvgAfterResize();
-                                            }).then(function () {
                                                 // reload list
                                                 if (AppBar.scope && typeof AppBar.scope.loadList === "function") {
                                                     AppBar.scope.loadList(that.binding.noteId);

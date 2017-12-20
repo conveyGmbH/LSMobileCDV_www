@@ -37,6 +37,11 @@
                     that.binding.moreNotes = true;
                 } else {
                     that.binding.moreNotes = false;
+                    if (!count) {
+                        that.binding.showSvg = false;
+                        that.binding.showPhoto = false;
+                        that.binding.showAudio = false;
+                    }
                 }
                 if (!that.binding.userHidesList) {
                     that.binding.showList = that.binding.moreNotes;

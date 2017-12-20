@@ -1,6 +1,5 @@
-﻿.sketch-container {
-    width: 100%;
-    height: 100%;
+﻿#svgSketchController .doc-container {
+    float: left;
 }
 
 #sketch .feature {
@@ -18,8 +17,8 @@ div#svgsketch {
     border: 1px solid #E4E4E4;
     -ms-touch-action: none; /* Disable touch behaviors, like pan and zoom */
     background-image: url(Hatch16.gif);
-    /*width: 200px;
-    height: 200px;*/
+    width: 100%;
+    height: 100%;
     /*
     height: calc(100% - 90px);
     margin-bottom: 10px;

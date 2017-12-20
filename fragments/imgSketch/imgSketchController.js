@@ -1,7 +1,7 @@
 ﻿// controller for page: imgSketch
 /// <reference path="~/www/lib/WinJS/scripts/base.js" />
 /// <reference path="~/www/lib/WinJS/scripts/ui.js" />
-/// <reference path="~/www/lib/convey/scripts/appSettings.js" />
+/// <reference path="~/www/lib/convey/scripts/logging.js" />
 /// <reference path="~/www/lib/convey/scripts/dataService.js" />
 /// <reference path="~/www/lib/convey/scripts/fragmentController.js" />
 /// <reference path="~/www/lib/hammer/scripts/hammer.js" />
@@ -28,7 +28,7 @@
             var scaleOut = 0.8;
 
             Fragments.Controller.apply(this, [fragmentElement, {
-                noteId: 0,
+                noteId: null,
                 isLocal: options.isLocal,
                 dataSketch: {}
             }, commandList]);

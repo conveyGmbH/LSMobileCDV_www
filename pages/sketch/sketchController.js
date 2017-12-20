@@ -39,6 +39,11 @@
                     that.binding.moreNotes = true;
                 } else {
                     that.binding.moreNotes = false;
+                    if (!count) {
+                        that.binding.showSvg = false;
+                        that.binding.showPhoto = false;
+                        that.binding.showAudio = false;
+                    }
                 }
                 if (!that.binding.userHidesList) {
                     that.binding.showList = that.binding.moreNotes;
@@ -46,6 +51,7 @@
                 AppBar.replaceCommands([
                     { id: 'clickShowList', label: getResourceText('sketch.showList'), tooltip: getResourceText('sketch.showList'), section: 'primary', svg: that.binding.showList ? 'document_height' : 'elements3' }
                 ]);
+
                 Log.ret(Log.l.trace);
             }
             that.setNotesCount = setNotesCount;

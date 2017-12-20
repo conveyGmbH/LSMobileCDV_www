@@ -16,7 +16,7 @@
             Log.call(Log.l.trace, "WavSketch.Controller.", "noteId=" + (options && options.noteId));
 
             Fragments.Controller.apply(this, [fragmentElement, {
-                noteId: 0,
+                noteId: null,
                 isLocal: options.isLocal,
                 dataSketch: {}
             }, commandList]);
