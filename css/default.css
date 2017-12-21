@@ -457,7 +457,12 @@ select {
     width: calc(100% - 4px);
     min-width: calc(100% - 4px);
 }
-
+.input_field_noLabel {
+    float:left;
+    width: calc(100% - 4px);
+    min-width: calc(100% - 0px);
+    min-height: 32px;
+}
 .input_field {
     float:left;
     width: calc(100% - 4px);
@@ -875,12 +880,16 @@ input.win-textbox, input.win-checkbox, input.win-radio, textarea.win-textarea, s
     min-width: calc(100% - 124px);
     margin-right: 16px;
 }
+.view-size-medium .input_field_noLabel {
+    float: right;
+    width: calc(100% - 124px);
+}
 .view-size-medium .input_field {
     float: right;
     width: calc(100% - 124px);
-   /* min-width: calc(100% - 124px);
+    min-width: calc(100% - 124px);
     margin-right: 16px;
-    
+    /*
     min-height: 32px;
     */
 }
@@ -898,7 +907,7 @@ input.win-textbox, input.win-checkbox, input.win-radio, textarea.win-textarea, s
     /*display: inline;*/
     /*position: relative;*/
     top: 0;
-    /*margin-right: 16px;*/
+    margin-right: 16px;
     margin-bottom: 0;
 }
 .view-size-medium .portrait_only_quarter,
@@ -911,7 +920,7 @@ input.win-textbox, input.win-checkbox, input.win-radio, textarea.win-textarea, s
 .view-size-medium .landscape_only {
     display: inline-block;
     position: relative;
-    /*top: 5px;*/
+    top: 5px;
 }
 .view-size-medium .field_line {
     /*min-height: 40px;*/
@@ -1034,7 +1043,7 @@ input.win-textbox, input.win-checkbox, input.win-radio, textarea.win-textarea, s
 .view-size-small .input_field {
     float:left;
     width: calc(100% - 4px);
-    /*min-width: calc(100% - 4px);*/
+    min-width: calc(100% - 4px);
     min-height: 32px; 
     margin-right: 0;
 }
@@ -1158,5 +1167,3 @@ input.win-textbox, input.win-checkbox, input.win-radio, textarea.win-textarea, s
 .lightthemeMandatory:focus {
     background-color: lightyellow;
 }
-
-
