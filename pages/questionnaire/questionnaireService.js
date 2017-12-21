@@ -7,6 +7,19 @@
     "use strict";
 
     WinJS.Namespace.define("Questionnaire", {
+        _contactView: {
+            get: function () {
+                return AppData.getFormatView("Kontakt", 0);
+            }
+        },
+        contactView: {
+            insert: function (complete, error, viewResponse) {
+                Log.call(Log.l.trace, "contactView.");
+                var ret = Questionnaire._contactView.insert(complete, error, viewResponse);
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+        },
         _questionnaireView20433: {
             get: function () {
                 var ret = AppData.getFormatView("Zeilenantwort", 20433);

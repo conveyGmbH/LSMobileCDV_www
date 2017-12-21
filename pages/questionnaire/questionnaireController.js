@@ -1127,7 +1127,8 @@
                     }
                 },
                 clickNew: function () {
-                    if (that.binding.generalData.contactId) {
+                    var contactId = AppData.getRecordId("Kontakt");
+                    if (contactId) {
                         return false;
                     } else {
                         return true;
