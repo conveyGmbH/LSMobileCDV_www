@@ -461,7 +461,7 @@ select {
 .input_field {
     float:left;
     width: calc(100% - 4px);
-    min-width: calc(100% - 4px);
+    min-width: calc(100% - 0px);
     min-height: 32px; 
 }
 .large_field {
@@ -471,7 +471,7 @@ select {
 }
 .input_group {
     float:left;
-    width: calc(100% - 4px);
+    width: 100% /*width: calc(100% - 4px)*/;
     margin-top: 0;
     margin-bottom: -4px;
     margin-left: 0;
@@ -596,7 +596,7 @@ input.win-textbox, input.win-checkbox, input.win-radio, textarea.win-textarea, s
 }
 .input_half_right {
     min-height: 32px;
-    margin-right: -2px;
+    margin-right: 0px; /*-2*/
     float: right;
     width: 50%;
    /* margin-left: 1em;*/
@@ -878,9 +878,9 @@ input.win-textbox, input.win-checkbox, input.win-radio, textarea.win-textarea, s
 .view-size-medium .input_field {
     float: right;
     width: calc(100% - 124px);
-    min-width: calc(100% - 124px);
+   /* min-width: calc(100% - 124px);
     margin-right: 16px;
-    /*
+    
     min-height: 32px;
     */
 }
@@ -898,7 +898,7 @@ input.win-textbox, input.win-checkbox, input.win-radio, textarea.win-textarea, s
     /*display: inline;*/
     /*position: relative;*/
     top: 0;
-    margin-right: 16px;
+    /*margin-right: 16px;*/
     margin-bottom: 0;
 }
 .view-size-medium .portrait_only_quarter,
@@ -911,7 +911,7 @@ input.win-textbox, input.win-checkbox, input.win-radio, textarea.win-textarea, s
 .view-size-medium .landscape_only {
     display: inline-block;
     position: relative;
-    top: 5px;
+    /*top: 5px;*/
 }
 .view-size-medium .field_line {
     /*min-height: 40px;*/
@@ -1034,7 +1034,7 @@ input.win-textbox, input.win-checkbox, input.win-radio, textarea.win-textarea, s
 .view-size-small .input_field {
     float:left;
     width: calc(100% - 4px);
-    min-width: calc(100% - 4px);
+    /*min-width: calc(100% - 4px);*/
     min-height: 32px; 
     margin-right: 0;
 }

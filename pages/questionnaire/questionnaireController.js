@@ -178,7 +178,7 @@
                                 keyTitle = "SS" + iStr;
                             }
                             if (item.Combobox) {
-                                if (item[keyTitle] && item[keyValue]) {
+                                if (item[keyTitle] && item[keyValue] && item[keyTitle] !== "null" && item[keyValue] !== "null") {
                                     ssItems.push({
                                         title: item[keyTitle],
                                         value: item[keyValue]
@@ -241,6 +241,46 @@
                         item["mandatoryColor"] = "lightyellow";
                     }
                 }
+                // Abfrage welcher Typ um Typ von Antwort, dann alle null werte ignorieren 
+                if (item.type === "single-rating") {
+                    for (var y = 1; y <= 6; y++) {
+                        var keyValue, keyTitle;
+                        var iStr = y.toString();
+                        if (y < 10) {
+                            // keyValue = "SRANTWORT0" + iStr;
+                            keyTitle = "SR0" + iStr;
+                        } else {
+                            //keyValue = "SSANTWORT" + iStr;
+                            keyTitle = "SR" + iStr;
+                        }
+                        if (item[keyTitle] === null) {
+                            item[keyTitle] = "";
+                        }
+                        if (item[keyValue] === null) {
+                            item[keyValue] = "";
+                        }
+                    }
+                }
+                if (item.type === "multi-rating") {
+                    for (var y = 1; y <= 6; y++) {
+                        var keyValue, keyTitle;
+                        var iStr = y.toString();
+                        if (y < 10) {
+                            keyValue = "MRShow0" + iStr;
+                            keyTitle = "MR0" + iStr;
+                        } else {
+                            keyValue = "MRShow" + iStr;
+                            keyTitle = "MR" + iStr;
+                        }
+                        if (item[keyValue] === null) {
+                            item[keyValue] = "";
+                        }
+                        if (item[keyTitle] === null) {
+                            item[keyTitle] = "";
+                        }
+                    }
+                }
+
             }
             this.resultConverter = resultConverter;
 
