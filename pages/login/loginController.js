@@ -63,13 +63,7 @@
                 },
                 clickAccount: function (event) {
                     Log.call(Log.l.trace, "Login.Controller.");
-                    Application.navigateById("newAccount", event);
-                    //
-                    // remove this page from navigation history!
-                    if (WinJS.Navigation.history &&
-                        WinJS.Navigation.history.backStack) {
-                        WinJS.Navigation.history.backStack.pop();
-                    }
+                    Application.navigateById("newAccount", event, true);
                     Log.ret(Log.l.trace);
                 }
             };

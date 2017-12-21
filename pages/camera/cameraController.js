@@ -199,16 +199,11 @@
                         if (json && json.d) {
                             that.updateStates({ errorMessage: "OK" });
                             AppData.generalData.setRecordId("DOC1IMPORT_CARDSCAN", json.d.DOC1IMPORT_CARDSCANVIEWID);
-                            return WinJS.Promise.timeout(0).then(function () {
+                            return WinJS.Promise.timeout(0).then(function() {
                                 // do the following in case of success:
                                 // go on to questionnaire
-                                Application.navigateById("questionnaire");
-                                //
-                                // remove this page from navigation history!
-                                if (WinJS.Navigation.history &&
-                                    WinJS.Navigation.history.backStack) {
-                                    WinJS.Navigation.history.backStack.pop();
-                                }
+                                Application.navigateById("questionnaire", null, true);
+                                // accelarate replication
                                 if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
                                     var numFastReqs = 10;
                                     AppRepl.replicator.run(numFastReqs);
