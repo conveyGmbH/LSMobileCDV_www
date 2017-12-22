@@ -1,4 +1,4 @@
-﻿// controller for page: imgSketch
+﻿// controller for page: wavSketch
 /// <reference path="~/www/lib/WinJS/scripts/base.js" />
 /// <reference path="~/www/lib/WinJS/scripts/ui.js" />
 /// <reference path="~/www/lib/convey/scripts/appSettings.js" />
@@ -11,6 +11,8 @@
 (function () {
     "use strict";
 
+    var b64 = window.base64js;
+
     WinJS.Namespace.define("WavSketch", {
         Controller: WinJS.Class.derive(Fragments.Controller, function Controller(fragmentElement, options, commandList) {
             Log.call(Log.l.trace, "WavSketch.Controller.", "noteId=" + (options && options.noteId));
@@ -20,7 +22,6 @@
                 isLocal: options.isLocal,
                 dataSketch: {}
             }, commandList]);
-            this.img = null;
 
             var that = this;
 
@@ -34,10 +35,6 @@
 
             this.dispose = function () {
                 that.removeDoc();
-                if (that.img) {
-                    that.img.src = "";
-                    that.img = null;
-                }
             }
 
             var resultConverter = function (item, index) {
@@ -89,9 +86,9 @@
                         AppData.setErrorMsg(that.binding, err);
                         return WinJS.Promise.as();
                     } else {
-                        // JPEG note
+                        // mp3 note
                         dataSketch.ExecAppTypeID = 16;
-                        dataSketch.DocGroup = 5;
+                        dataSketch.DocGroup = AppData.DocGroup.Audio;
                         dataSketch.DocFormat = 67;
                         dataSketch.DocExt = "mp3";
 
@@ -100,9 +97,9 @@
                         var dateStringUtc = now.toUTCString();
 
                         // decodierte Dateigröße
-                        var contentLength = Math.floor(imageData.length * 3 / 4);
+                        var contentLength = Math.floor(audioData.length * 3 / 4);
 
-                        dataSketch.Quelltext = "Content-Type: audio/jpegAccept-Ranges: bytes\x0D\x0ALast-Modified: " +
+                        dataSketch.Quelltext = "Content-Type: audio/mpegAccept-Ranges: bytes\x0D\x0ALast-Modified: " +
                             dateStringUtc +
                             "\x0D\x0AContent-Length: " +
                             contentLength +
@@ -119,7 +116,7 @@
                                 that.binding.dataSketch = json.d;
                                 that.binding.noteId = json.d.KontaktNotizVIEWID;
                                 WinJS.Promise.timeout(0).then(function () {
-                                    playAudio();
+                                    //playAudio();
                                 }).then(function () {
                                     // reload list
                                     if (AppBar.scope && typeof AppBar.scope.loadList === "function") {
@@ -141,12 +138,74 @@
             };
             this.insertAudiodata = insertAudiodata;
 
-            var onCaptureSuccess = function (result) {
+            var loadDataFile = function(dataDirectory, fileName) {
+                Log.call(Log.l.trace, "WavSketch.Controller.", "dataDirectory=" + dataDirectory + " fileName=" + fileName);
+                if (typeof window.resolveLocalFileSystemURL === "function") {
+                    window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (dirEntry) {
+                        Log.print(Log.l.info,
+                            "resolveLocalFileSystemURL: file system open name=" + dirEntry.name);
+                        dirEntry.getFile(fileName, {
+                            create: false,
+                            exclusive: false
+                        }, function (fileEntry) {
+                            fileEntry.file(function (file) {
+                                var reader = new FileReader();
+                                reader.onerror = function (e) {
+                                    Log.print(Log.l.error, "Failed file read: " + e.toString());
+                                    AppData.setErrorMsg(that.binding, e.toString());
+                                };
+                                reader.onloadend = function () {
+                                    var data = new Uint8Array(this.result);
+                                    Log.print(Log.l.info, "Successful file read!");
+                                    var encoded = b64.fromByteArray(data);
+                                    if (encoded && encoded.length > 0) {
+                                        that.insertAudiodata(encoded);
+                                    } else {
+                                        var err = "file read error NO data!";
+                                        Log.print(Log.l.error, err);
+                                        AppData.setErrorMsg(that.binding, err);
+                                    }
+                                };
+                                reader.readAsArrayBuffer(file);
+                            },
+                            function (errorResponse) {
+                                Log.print(Log.l.error, "file read error " + errorResponse.toString());
+                                AppData.setErrorMsg(that.binding, errorResponse);
+                            });
+                        }, function (errorResponse) {
+                            Log.print(Log.l.error, "getFile(" + fileName + ") error " + errorResponse.toString());
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        });
+                    }, function (errorResponse) {
+                        Log.print(Log.l.error, "resolveLocalFileSystemURL error " + errorResponse.toString());
+                        AppData.setErrorMsg(that.binding, errorResponse);
+                    });
+                }
+                Log.ret(Log.l.trace);
+            };
+            this.loadDataFile = loadDataFile;
+
+            var onCaptureSuccess = function (mediaFiles) {
                 var audioData = null;
                 Log.call(Log.l.trace, "WavSketch.Controller.");
-
-                // todo: create audioData
-                that.insertAudiodata(audioData);
+                if (mediaFiles) {
+                    var i, len;
+                    for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+                        var fullPath = mediaFiles[i].fullPath;
+                        var pos = fullPath.lastIndexOf("/");
+                        if (pos < 0) {
+                            pos = fullPath.lastIndexOf("\\");
+                        }
+                        var fileName;
+                        if (pos >= 0) {
+                            fileName = fullPath.substr(pos + 1);
+                        } else {
+                            fileName = fullPath;
+                        }
+                        // do something interesting with the file
+                        that.loadDataFile(cordova.file.dataDirectory, fileName);
+                    }
+                }
                 Log.ret(Log.l.trace);
             };
 
@@ -198,7 +257,7 @@
                                     getDocData().substr(0, 100) +
                                     "...");
                             }
-                            playAudio();
+                            //playAudio();
                         }
                     },
                     function (errorResponse) {
