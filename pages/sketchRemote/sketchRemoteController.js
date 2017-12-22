@@ -22,6 +22,7 @@
             Application.Controller.apply(this, [pageElement, {
                 showSvg: false,
                 showPhoto: false,
+                showAudio: false,
                 showList: false,
                 moreNotes: false,
                 userHidesList: false,
