@@ -1,15 +1,4 @@
-﻿.list-img {
-    width: 150px;
-    height: 150px;
-    display: block;
-}
-
-.list-svg {
-    width: 150px;
-    height: 150px;
-    display: block;
-}
-
+﻿
 #sketchList .win-container {
     width: 160px;
     height: 160px;
@@ -22,18 +11,53 @@
     height: 170px;
 }
 
+.list-img {
+    width: 150px;
+    height: 150px;
+    display: block;
+}
+
+.list-svg {
+    width: 150px;
+    height: 150px;
+    display: block;
+}
+
+.list-icon {
+    width: 150px;
+    height: 115px;
+    display: block;
+}
 
 .list-img-item {
     width: 100%;
     height: auto;
     max-height: 150px;
-    display: inline;
 }
 
 .list-svg-item {
     width: 100%;
     height: auto;
     max-height: 150px;
-    display: inline;
-    /*viewBox in Controller.onLoadingStateChanged*/
+}
+
+.list-icon-item {
+    margin-left: calc(50% - 40px);
+    margin-top: calc(50% - 40px);
+    width: 80px;
+    height: 80px;
+    display: block !important;
+}
+
+.list-caption-container {
+    height: 20px;
+    bottom: 0;
+    position: absolute;
+    display: block;
+    background-color: rgba(255, 255, 255, 0.6);
+    width: 100%;
+    text-align: center;
+}
+.list-caption {
+    color: #101010;
 }

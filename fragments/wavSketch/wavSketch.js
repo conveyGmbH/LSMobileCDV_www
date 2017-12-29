@@ -70,7 +70,7 @@
                         var fragment = element.querySelector(".contentarea");
                         if (fragment) {
                             var width = fragment.clientWidth;
-                            var height = fragment.clientHeight - 4;
+                            var height = fragment.clientHeight;
 
                             if (width > 0 && width !== that.prevWidth) {
                                 that.prevWidth = width;

@@ -116,7 +116,7 @@
                                 that.binding.dataSketch = json.d;
                                 that.binding.noteId = json.d.KontaktNotizVIEWID;
                                 WinJS.Promise.timeout(0).then(function () {
-                                    //playAudio();
+                                    that.bindAudio();
                                 }).then(function () {
                                     // reload list
                                     if (AppBar.scope && typeof AppBar.scope.loadList === "function") {
@@ -197,6 +197,19 @@
                 Log.ret(Log.l.trace);
             };
             this.loadDataFile = loadDataFile;
+
+            var bindAudio = function () {
+                //TODO
+                Log.call(Log.l.trace, "WavSketch.Controller.");
+                if (fragmentElement) {
+                    var audio = fragmentElement.querySelector("#noteAudio");
+                    if (audio && hasDoc()) {
+                        audio.src = getDocData();
+                    }
+                }
+                Log.ret(Log.l.trace);
+            };
+            this.bindAudio = bindAudio;
 
             var onCaptureSuccess = function (mediaFiles) {
                 Log.call(Log.l.trace, "WavSketch.Controller.");
@@ -281,7 +294,7 @@
                                     getDocData().substr(0, 100) +
                                     "...");
                             }
-                            //playAudio();
+                            that.bindAudio();
                         }
                     },
                     function (errorResponse) {

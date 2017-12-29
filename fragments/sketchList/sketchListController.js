@@ -77,9 +77,13 @@
                 Log.call(Log.l.trace, "SketchList.Controller.");
                 if (item) {
                     var doc = item;
-                    var isSvg = AppData.isSvg(doc.DocGroup, doc.DocFormat);
-                    var isImg = AppData.isImg(doc.DocGroup, doc.DocFormat);
-                    if (isImg) {
+                    item.showSvg = AppData.isSvg(doc.DocGroup, doc.DocFormat);
+                    item.showImg = AppData.isImg(doc.DocGroup, doc.DocFormat);
+                    item.showAudio = AppData.isAudio(doc.DocGroup, doc.DocFormat);
+                    item.showVideo = AppData.isVideo(doc.DocGroup, doc.DocFormat);
+                    item.showIcon = false;
+                    item.nameIcon = "";
+                    if (item.showImg) {
                         var docContent = doc.OvwContentDOCCNT3;
                         if (docContent) {
                             var sub = docContent.search("\r\n\r\n");
@@ -88,14 +92,23 @@
                             item.srcImg = "";
                         }
                         item.srcSvg = "";
-                        item.showImg = true;
-                        item.showSvg = false;
-                    }
-                    if (isSvg) {
+                    } else if (item.showSvg) {
                         item.srcImg = "";
                         item.srcSvg = doc.OvwContentDOCCNT3;
-                        item.showSvg = true;
-                        item.showImg = false;
+                    } else if (item.showAudio) {
+                        item.nameIcon = "music";
+                        item.showIcon = true;
+                    } else if (item.showVideo) {
+                        item.nameIcon = "movie";
+                        item.showIcon = true;
+                    }
+                    if (item.ErfasstAm) {
+                        var msString = item.ErfasstAm.replace("\/Date(", "").replace(")\/", "");
+                        var milliseconds = parseInt(msString) - AppData.appSettings.odata.timeZoneAdjustment * 60000;
+                        var date = new Date(milliseconds);
+                        item.date = date.toLocaleDateString() + " " + date.toLocaleTimeString();
+                    } else {
+                        item.date = "";
                     }
                 }
                 Log.ret(Log.l.trace);
@@ -165,6 +178,7 @@
                                 listView.winControl.layout = { type: layout };
                             }
                         } else if (listView.winControl.loadingState === "complete") {
+                            Colors.loadSVGImageElements(listView, "list-icon-item", 80, Colors.navigationColor, "name");
                             scaleItemsAfterResize();
                         }
                     }
