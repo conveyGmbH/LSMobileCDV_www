@@ -56,13 +56,15 @@
             this.resultConverter = resultConverter;
 
             var removeAudio = function () {
+                if (that.binding) {
+                    that.binding.dataSketch = {};
+                }
                 if (fragmentElement) {
-                    var photoItemBox = fragmentElement.querySelector("#noteAudio .win-itembox");
-                    if (photoItemBox) {
-                        var oldElement = photoItemBox.firstElementChild || photoItemBox.firstChild;
-                        if (oldElement) {
-                            oldElement.parentNode.removeChild(oldElement);
-                            oldElement.innerHTML = "";
+                    var audio = fragmentElement.querySelector("#noteAudio");
+                    if (audio) {
+                        audio.src = "";
+                        if (audio.style) {
+                            audio.style.display = "none";
                         }
                     }
                 }
@@ -204,6 +206,9 @@
                 if (fragmentElement) {
                     var audio = fragmentElement.querySelector("#noteAudio");
                     if (audio && hasDoc()) {
+                        if (audio.style) {
+                            audio.style.display = "";
+                        }
                         audio.src = getDocData();
                     }
                 }
@@ -259,7 +264,7 @@
                     typeof navigator.device.capture.captureAudio === "function") {
                     var audioRecorderContainer = fragmentElement.querySelector(".audio-recorder-container");
                     if (audioRecorderContainer && audioRecorderContainer.style) {
-                        audioRecorderContainer.style.display = "block";
+                        audioRecorderContainer.style.display = "inline-block";
                     }
                     Log.print(Log.l.trace, "calling capture.captureAudio...");
                     AppBar.busy = true;
@@ -306,7 +311,8 @@
                     that.binding.isLocal);
                 } else {
                     if (that.binding.isLocal) {
-                    // capture audio first - but only if isLocal!
+                        that.removeAudio();
+                        // capture audio first - but only if isLocal!
                         that.captureAudio();
                     }
                     ret = WinJS.Promise.as();
@@ -318,7 +324,6 @@
 
             var removeDoc = function () {
                 Log.call(Log.l.trace, "WavSketch.Controller.");
-                that.binding.dataSketch = {};
                 that.removeAudio();
                 Log.ret(Log.l.trace);
             }
