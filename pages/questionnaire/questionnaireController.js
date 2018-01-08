@@ -624,9 +624,9 @@
                     if (curScope) {
                         var newRecord = that.getFieldEntries(i, curScope.type);
                         that.mergeRecord(curScope, newRecord);
-                        that.resultConverter(curScope);
                         switch (id) {
                             case "showDateCombobox":
+                                that.resultConverter(curScope);
                                 curScope.DateComboboxButtonShow = false;
                                 curScope.DateComboboxButtonOk = true;
                                 break;
@@ -643,6 +643,14 @@
                                         "." +
                                         current.getFullYear().toString();
                                 }
+                                Log.print(Log.l.trace, "save changes of recordId:" + recordId);
+                                Questionnaire.questionnaireView.update(function (response) {
+                                    // called asynchronously if ok
+                                    Log.print(Log.l.trace, "update of recordId:" + recordId + " success!");
+                                }, function (errorResponse) {
+                                    AppData.setErrorMsg(that.binding, errorResponse);
+                                }, recordId, curScope);
+                                that.resultConverter(curScope);
                                 curScope.DateComboboxButtonShow = true;
                                 curScope.DateComboboxButtonOk = false;
                                 break;
@@ -1171,6 +1179,10 @@
             var loadPicture = function (pictureId) {
                 Log.call(Log.l.trace, "Questionnaire.Controller.", "pictureId=" + pictureId);
                 var ret = null;
+                if (!pictureId) {
+                    Log.ret(Log.l.error, "NULL param!");
+                    return WinJS.Promise.as();
+                }
                 if (that.images && that.images.length > 0) {
                     for (var i = 0; i < that.images.length; i++) {
                         var imageItem = that.images[i];
