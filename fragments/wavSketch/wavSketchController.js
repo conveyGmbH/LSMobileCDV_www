@@ -20,13 +20,18 @@
             Fragments.Controller.apply(this, [fragmentElement, {
                 noteId: null,
                 isLocal: options.isLocal,
-                dataSketch: {}
+                dataSketch: {
+                    audioData: ""
+                }
             }, commandList]);
 
             var that = this;
 
             var getDocData = function () {
-                return that.binding.dataSketch && that.binding.dataSketch.audioData;
+                if (that.binding && that.binding.dataSketch && that.binding.dataSketch.audioData) {
+                    return that.binding.dataSketch.audioData;
+                }
+                return "";
             }
             var hasDoc = function () {
                 return (getDocData() && typeof getDocData() === "string");
@@ -201,7 +206,6 @@
             this.loadDataFile = loadDataFile;
 
             var bindAudio = function () {
-                //TODO
                 Log.call(Log.l.trace, "WavSketch.Controller.");
                 if (fragmentElement) {
                     var audio = fragmentElement.querySelector("#noteAudio");
@@ -210,6 +214,12 @@
                             audio.style.display = "";
                         }
                         audio.src = getDocData();
+                        if (typeof audio.load === "function") {
+                            audio.load();
+                        }
+                        if (typeof audio.play === "function") {
+                            audio.play();
+                        }
                     }
                 }
                 Log.ret(Log.l.trace);
