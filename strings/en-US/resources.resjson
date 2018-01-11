@@ -150,7 +150,7 @@
     "sketch.addNote"		: "Add note",
     "sketch.addSvg"			: "Add sketch",
     "sketch.addImg"			: "Add photo",
-    "sketch.questionDelete"	: "Do you want to delete the current sketch?",
+    "sketch.questionDelete"	: "Do you want to delete the current note?",
 
     "search.title"          : "Enter search criteria",
     "search.comment"        : "On this page, use the Back button to go back!",
@@ -342,7 +342,7 @@
     "label.start"           : "Start",
     "label.contact"         : "Contact",
     "label.questionnaire"   : "Questionnaire",
-    "label.sketch"          : "Sketch",
+    "label.sketch"          : "Notes",
     "label.listLocal"       : "Local",
     "label.listRemote"      : "Uploaded",
     "label.search"          : "Search",
@@ -366,7 +366,7 @@
     "label.mandatory"       : "Mandatory Fields",
     "label.contactRemote"   : "Contact",
     "label.questionnaireRemote" : "Questionnaire",
-    "label.sketchRemote"    : "Sketch",
+    "label.sketchRemote"    : "Notes",
 
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Cancel",
@@ -378,7 +378,7 @@
     "event.begin"           : "Begin",
     "event.end"             : "End",
     "event.showHideQuestionnaire" : "Show Questionnaire",
-    "event.showHideSketch"  :  "Show Sketch",
+    "event.showHideSketch"  :  "Show Notes",
     "event.note"            : "Note",
     "event.appInfo"         : "Please restart the APP for the changes to take effect",
 

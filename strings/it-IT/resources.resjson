@@ -338,7 +338,7 @@
     "label.start"           : "Inizio",
     "label.contact"         : "Contatto",
     "label.questionnaire"   : "Questionario",
-    "label.sketch"          : "Schizzo",
+    "label.sketch"          : "Note",
     "label.listLocal"       : "Locale",
     "label.listRemote"      : "Caricato",
     "label.search"          : "Ricerca",
@@ -362,7 +362,7 @@
     "label.mandatory"       : "Campo obbligatorio",
     "label.contactRemote"   : "Contatto",
     "label.questionnaireRemote" : "Questionario",
-    "label.sketchRemote"    : "Schizzo",
+    "label.sketchRemote"    : "Note",
 
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Annulla",
@@ -374,7 +374,7 @@
     "event.begin"           : "Inizio",
     "event.end"             : "Fine",
     "event.showHideQuestionnaire" : "Mostra casella questionario",
-    "event.showHideSketch"  :  "Mostra casella schizzo",
+    "event.showHideSketch"  :  "Mostra casella note",
     "event.note"            : "suggerimento",
     "event.appInfo"         : "Affinché le modifiche abbiano effetto, si prega di riavviare l´APP",
 

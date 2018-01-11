@@ -342,7 +342,7 @@
     "label.start"           : "Accueil",
     "label.contact"         : "Contact",
     "label.questionnaire"   : "Quoitionnaire",
-    "label.sketch"          : "Esquisse",
+    "label.sketch"          : "Notes",
     "label.listLocal"       : "Locale",
     "label.listRemote"      : "Téléchargé",
     "label.search"          : "Rechercher",
@@ -366,7 +366,7 @@
     "label.mandatory"       : "Champs obligatoires",
     "label.contactRemote"   : "Contact",
     "label.questionnaireRemote" : "Quoitionnaire",
-    "label.sketchRemote"    : "Esquisse",
+    "label.sketchRemote"    : "Notes",
     
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Annuler",
@@ -378,7 +378,7 @@
     "event.begin"           : "Début",
     "event.end"             : "Fin",
     "event.showHideQuestionnaire" : "afficher le champ de Questionnaire",
-    "event.showHideSketch"  :   "afficher le champ de Esquisse",
+    "event.showHideSketch"  :   "afficher le champ de notes",
     "event.note"            : "allusion",
     "event.appInfo"         : "Pour que ces modifications prennent effet, vous devez redémarrer votre APP",
 
