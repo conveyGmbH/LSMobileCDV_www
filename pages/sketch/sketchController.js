@@ -19,8 +19,8 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Sketch.Controller.");
             var that = this;
-            
-            Application.Controller.apply(this, [pageElement, {
+
+            var addPageData = {
                 showSvg: false,
                 showPhoto: false,
                 showAudio: false,
@@ -28,7 +28,14 @@
                 moreNotes: false,
                 userHidesList: false,
                 contactId: AppData.getRecordId("Kontakt")
-            }, commandList]);
+            };
+            // load amr lib....
+            /*if (typeof device === "object" &&
+                device.platform === "Android") {
+                var amrnbjs = "../../lib/amrnb/scripts/amrnb.js";
+                addPageData.scripts = [amrnbjs];
+            }*/
+            Application.Controller.apply(this, [pageElement, addPageData, commandList]);
 
             this.pageElement = pageElement;
             this.docViewer = null;

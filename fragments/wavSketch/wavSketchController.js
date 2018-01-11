@@ -46,10 +46,24 @@
                 Log.call(Log.l.trace, "WavSketch.Controller.");
                 if (item) {
                     if (item.DocContentDOCCNT1 && item.DocGroup === AppData.DocGroup.Audio) {
+                        Log.print(Log.l.trace, "DocFormat=" + item.DocFormat);
                         item.type = AppData.getDocType(item.DocFormat);
+                        if (!item.type) {
+                            Log.print(Log.l.trace, "search in DOCContent...");
+                            var typeTag = "Content-Type: ";
+                            var typeStr = item.DocContentDOCCNT1.search(typeTag).substr(typeTag.length);
+                            var endPos = typeStr.indexOf("Accept-Ranges:");
+                            if (endPos > 0) {
+                                typeStr = typeStr.substr(0, endPos);
+                            }
+                            item.type = typeStr.replace("\r\n", "");
+                        }
+                        Log.print(Log.l.trace, "content type==" + item.type);
                         if (item.type) {
                             var sub = item.DocContentDOCCNT1.search("\r\n\r\n");
                             item.audioData = "data:" + item.type + ";base64," + item.DocContentDOCCNT1.substr(sub + 4);
+                        } else {
+                            item.audioData = "";
                         }
                     } else {
                         item.audioData = "";
@@ -62,7 +76,9 @@
 
             var removeAudio = function () {
                 if (that.binding) {
-                    that.binding.dataSketch = {};
+                    that.binding.dataSketch = {
+                        audioData: ""
+                    };
                 }
                 if (fragmentElement) {
                     var audio = fragmentElement.querySelector("#noteAudio");
@@ -76,10 +92,10 @@
             }
             this.removeAudio = removeAudio;
 
-            var insertAudiodata = function (audioData) {
+            var insertAudiodata = function (audioData, fileExt) {
                 var ovwEdge = 256;
                 var err = null;
-                Log.call(Log.l.trace, "WavSketch.Controller.");
+                Log.call(Log.l.trace, "WavSketch.Controller.", "fileExt=" + fileExt);
                 AppData.setErrorMsg(that.binding);
                 var dataSketch = that.binding.dataSketch;
 
@@ -93,11 +109,11 @@
                         AppData.setErrorMsg(that.binding, err);
                         return WinJS.Promise.as();
                     } else {
-                        // mp3 note
+                        // audio note
                         dataSketch.ExecAppTypeID = 16;
                         dataSketch.DocGroup = AppData.DocGroup.Audio;
-                        dataSketch.DocFormat = 67;
-                        dataSketch.DocExt = "mp3";
+                        dataSketch.DocFormat = AppData.getDocFormatFromExt(fileExt);
+                        dataSketch.DocExt = fileExt;
 
                         // UTC-Zeit in Klartext
                         var now = new Date();
@@ -106,7 +122,14 @@
                         // decodierte Dateigröße
                         var contentLength = Math.floor(audioData.length * 3 / 4);
 
-                        dataSketch.Quelltext = "Content-Type: audio/mpegAccept-Ranges: bytes\x0D\x0ALast-Modified: " +
+                        var type;
+                        if (fileExt === "mp3") {
+                            type = "mpeg";
+                        } else {
+                            type = fileExt;
+                        }
+
+                        dataSketch.Quelltext = "Content-Type: audio/" + type + "Accept-Ranges: bytes\x0D\x0ALast-Modified: " +
                             dateStringUtc +
                             "\x0D\x0AContent-Length: " +
                             contentLength +
@@ -146,60 +169,95 @@
             this.insertAudiodata = insertAudiodata;
 
 
-            var loadDataFile = function(dataDirectory, fileName) {
-                Log.call(Log.l.trace, "WavSketch.Controller.", "dataDirectory=" + dataDirectory + " fileName=" + fileName);
-                if (typeof window.resolveLocalFileSystemURL === "function") {
-                    window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (dirEntry) {
-                        Log.print(Log.l.info, "resolveLocalFileSystemURL: file system open name=" + dirEntry.name);
-                        dirEntry.getFile(fileName, {
-                            create: false,
-                            exclusive: false
-                        }, function (fileEntry) {
-                            if (fileEntry) {
-                                var deleteFile = function () {
-                                    fileEntry.remove(function () {
-                                        Log.print(Log.l.info, "file deleted!");
-                                    }, function (errorResponse) {
-                                        Log.print(Log.l.error, errorResponse.toString());
-                                    }, function () {
-                                        Log.print(Log.l.trace, "extra ignored!");
-                                    });
-                                }
-                                fileEntry.file(function (file) {
-                                    var reader = new FileReader();
-                                    reader.onerror = function (e) {
-                                        Log.print(Log.l.error, "Failed file read: " + e.toString());
-                                        AppData.setErrorMsg(that.binding, e.toString());
-                                        deleteFile();
-                                    };
-                                    reader.onloadend = function () {
-                                        var data = new Uint8Array(this.result);
-                                        Log.print(Log.l.info, "Successful file read!");
-                                        var encoded = b64.fromByteArray(data);
-                                        if (encoded && encoded.length > 0) {
-                                            that.insertAudiodata(encoded);
-                                        } else {
-                                            var err = "file read error NO data!";
-                                            Log.print(Log.l.error, err);
-                                            AppData.setErrorMsg(that.binding, err);
-                                        }
-                                        deleteFile();
-                                    };
-                                    reader.readAsArrayBuffer(file);
+            var loadDataFile = function (dataDirectory, fileName, bUseRootDir) {
+                var fileExt;
+                var filePath;
+                Log.call(Log.l.trace, "WavSketch.Controller.", "dataDirectory=" + dataDirectory + " fileName=" + fileName + " bUseRootDir=" + bUseRootDir);
+                var readFileFromDirEntry = function (dirEntry) {
+                    Log.print(Log.l.info, "resolveLocalFileSystemURL: file system open name=" + dirEntry.name);
+                    dirEntry.getFile(filePath, {
+                        create: false,
+                        exclusive: false
+                    }, function (fileEntry) {
+                        if (fileEntry) {
+                            var deleteFile = function () {
+                                fileEntry.remove(function () {
+                                    Log.print(Log.l.info, "file deleted!");
                                 }, function (errorResponse) {
-                                    Log.print(Log.l.error, "file read error " + errorResponse.toString());
-                                    AppData.setErrorMsg(that.binding, errorResponse);
-                                    deleteFile();
+                                    Log.print(Log.l.error, "Failed remove file " + filePath + " error: " + JSON.stringify(errorResponse));
+                                }, function () {
+                                    Log.print(Log.l.trace, "extra ignored!");
                                 });
                             }
-                        }, function (errorResponse) {
-                            Log.print(Log.l.error, "getFile(" + fileName + ") error " + errorResponse.toString());
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                        });
+                            fileEntry.file(function (file) {
+                                var reader = new FileReader();
+                                reader.onerror = function (errorResponse) {
+                                    Log.print(Log.l.error, "Failed read file " + filePath + " error: " + JSON.stringify(errorResponse));
+                                    AppData.setErrorMsg(that.binding, errorResponse);
+                                    deleteFile();
+                                };
+                                reader.onloadend = function () {
+                                    var data = new Uint8Array(this.result);
+                                    Log.print(Log.l.info, "Successful file read! fileExt=" + fileExt + " data-length=" + data.length);
+                                    if (fileExt === "amr") {
+                                        try {
+                                            var buffer = AMR.toWAV(data);
+                                            Log.print(Log.l.info, "AMR.toWAV: data-length=" + buffer.length);
+                                            data = buffer;
+                                            fileExt = "wav";
+                                        } catch (exception) {
+                                            Log.print(Log.l.error, "ARM exception " + (exception && exception.message));
+                                        }
+                                    }
+                                    var encoded = b64.fromByteArray(data);
+                                    if (encoded && encoded.length > 0) {
+                                        that.insertAudiodata(encoded, fileExt);
+                                    } else {
+                                        var err = "file read error NO data!";
+                                        Log.print(Log.l.error, err);
+                                        AppData.setErrorMsg(that.binding, err);
+                                    }
+                                    deleteFile();
+                                };
+                                reader.readAsArrayBuffer(file);
+                            }, function (errorResponse) {
+                                Log.print(Log.l.error, "file read error: " + JSON.stringify(errorResponse));
+                                AppData.setErrorMsg(that.binding, errorResponse);
+                                deleteFile();
+                            });
+                        }
                     }, function (errorResponse) {
-                        Log.print(Log.l.error, "resolveLocalFileSystemURL error " + errorResponse.toString());
+                        Log.print(Log.l.error, "getFile(" + filePath + ") error: " + JSON.stringify(errorResponse));
                         AppData.setErrorMsg(that.binding, errorResponse);
                     });
+                }
+                
+                var fileExtPos = fileName.lastIndexOf(".");
+                if (fileExtPos >= 0) {
+                    fileExt = fileName.substr(fileExtPos + 1);
+                }
+                if (bUseRootDir) {
+                    filePath = decodeURI(dataDirectory + "/" + fileName);
+                    if (typeof window.requestFileSystem === "function") {
+                        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fs) {
+                            readFileFromDirEntry(fs.root);
+                        }, function(errorResponse) {
+                            Log.print(Log.l.error, "requestFileSystem error: " + JSON.stringify(errorResponse));
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        });
+                    } else {
+                        Log.print(Log.l.error, "requestFileSystem is undefined");
+                    }
+                } else {
+                    filePath = fileName;
+                    if (typeof window.resolveLocalFileSystemURL === "function") {
+                        window.resolveLocalFileSystemURL(dataDirectory, readFileFromDirEntry, function(errorResponse) {
+                            Log.print(Log.l.error, "resolveLocalFileSystemURL error: " + JSON.stringify(errorResponse));
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        });
+                    } else {
+                        Log.print(Log.l.error, "resolveLocalFileSystemURL is undefined");
+                    }
                 }
                 Log.ret(Log.l.trace);
             };
@@ -235,6 +293,10 @@
                 if (mediaFiles) {
                     var i, len;
                     for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+                        var bUseRootDir = false;
+                        var rootDirectory = cordova.file.externalRootDirectory;;
+                        var subDirectory = "";
+                        var dataDirectory = "";
                         var fullPath = mediaFiles[i].fullPath;
                         var pos = fullPath.lastIndexOf("/");
                         if (pos < 0) {
@@ -246,8 +308,25 @@
                         } else {
                             fileName = fullPath;
                         }
+                        if (typeof device === "object") {
+                            switch (device.platform) {
+                                case "Android":
+                                    if (pos >= 0) {
+                                        dataDirectory = fullPath.substr(0, pos).replace(rootDirectory, "");
+                                    }
+                                    bUseRootDir = true;
+                                break;
+                                case "iOS":
+                                    dataDirectory = cordova.file.dataDirectory;
+                                break;
+                                default:
+                                    dataDirectory = cordova.file.dataDirectory;
+                            }
+                        } else {
+                            dataDirectory = cordova.file.dataDirectory;
+                        }
                         // do something interesting with the file
-                        that.loadDataFile(cordova.file.dataDirectory, fileName);
+                        that.loadDataFile(dataDirectory + subDirectory, fileName, bUseRootDir);
                     }
                 }
                 Log.ret(Log.l.trace);
@@ -270,7 +349,7 @@
             var captureAudio = function () {
                 Log.call(Log.l.trace, "WavSketch.Controller.");
                 if (navigator.device &&
-                    navigator.device.capture && 
+                    navigator.device.capture &&
                     typeof navigator.device.capture.captureAudio === "function") {
                     var audioRecorderContainer = fragmentElement.querySelector(".audio-recorder-container");
                     if (audioRecorderContainer && audioRecorderContainer.style) {
@@ -278,9 +357,18 @@
                     }
                     Log.print(Log.l.trace, "calling capture.captureAudio...");
                     AppBar.busy = true;
-                    navigator.device.capture.captureAudio(onCaptureSuccess, onCaptureFail, {
+                    var audioOptions = {
                         limit: 1, duration: 30, element: audioRecorderContainer
-                    });
+                    }
+                    navigator.device.capture.captureAudio(function (mediaFiles) {
+                        WinJS.Promise.timeout(0).then(function () {
+                            onCaptureSuccess(mediaFiles);
+                        });
+                    }, function (errorMessage) {
+                        WinJS.Promise.timeout(0).then(function () {
+                            onCaptureFail(errorMessage);
+                        });
+                    }, audioOptions);
                 } else {
                     Log.print(Log.l.error, "capture.captureAudio not supported...");
                     AppData.setErrorMsg(that.binding, { errorMessage: "Audio capture plugin not supported" });
@@ -352,7 +440,7 @@
             };
             this.saveData = saveData;
 
-            var deleteData = function() {
+            var deleteData = function () {
                 Log.call(Log.l.trace, "WavSketch.Controller.");
                 var ret = WinJS.Promise.as().then(function () {
                     if (options && options.isLocal) {
