@@ -76,6 +76,12 @@
                 var ret = Questionnaire._questionnaireDocView.selectById(complete, error, recordId);
                 Log.ret(Log.l.trace);
                 return ret;
+            },
+            insert: function (complete, error, viewResponse) {
+                Log.call(Log.l.trace, "Questionnaire.questionnaireDocView.");
+                var ret = Questionnaire._questionnaireDocView.insertWithId(complete, error, viewResponse);
+                Log.ret(Log.l.trace);
+                return ret;
             }
         },
         _CR_VERANSTOPTION_View: {
