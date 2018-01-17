@@ -146,7 +146,7 @@
     "sketch.shape"          : "Forme",
     "sketch.color"          : "Couleur",
     "sketch.width"          : "Largeur du crayon",
-    "sketch.showList"		: "Plus de notes",
+    "sketch.showList"		: "Afficher la liste",
     "sketch.addNote"		: "Ajoutez une note",
     "sketch.addSvg"			: "Ajoutez une esquisse",
     "sketch.addImg"			: "Ajoutez une photo",

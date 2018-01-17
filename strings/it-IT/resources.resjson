@@ -142,7 +142,7 @@
     "sketch.shape"          : "Tipo forma",
     "sketch.color"          : "Colore",
     "sketch.width"          : "Larghezza",
-    "sketch.showList"		: "Altre notizie",
+    "sketch.showList"		: "Mostra elenco",
     "sketch.addNote"		: "Aggiungete una notizia",
     "sketch.addSvg"			: "Aggiungete uno schizzo",
     "sketch.addImg"			: "Aggiungete una foto",

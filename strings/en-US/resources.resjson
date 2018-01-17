@@ -146,7 +146,7 @@
     "sketch.shape"          : "Drawing shape",
     "sketch.color"          : "Color",
     "sketch.width"          : "Pen width",
-    "sketch.showList"		: "More notes",
+    "sketch.showList"		: "Show list",
     "sketch.addNote"		: "Add note",
     "sketch.addSvg"			: "Add sketch",
     "sketch.addImg"			: "Add photo",

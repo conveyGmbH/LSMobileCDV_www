@@ -147,7 +147,7 @@
     "sketch.shape"          : "Zeichenform",
     "sketch.color"          : "Farbe",
     "sketch.width"          : "Stiftbreite",
-    "sketch.showList"		: "Mehr Notizen",
+    "sketch.showList"		: "Liste anzeigen",
 	"sketch.addNote"		: "Notiz hinzufügen",
 	"sketch.addSvg"			: "Skizze hinzufügen",
 	"sketch.addImg"			: "Foto hinzufügen",
