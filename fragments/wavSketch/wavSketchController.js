@@ -199,15 +199,17 @@
                                 reader.onloadend = function () {
                                     var data = new Uint8Array(this.result);
                                     Log.print(Log.l.info, "Successful file read! fileExt=" + fileExt + " data-length=" + data.length);
-                                    if (fileExt === "amr") {
-                                        try {
-                                            var buffer = AMR.toWAV(data);
-                                            Log.print(Log.l.info, "AMR.toWAV: data-length=" + buffer.length);
-                                            data = buffer;
-                                            fileExt = "wav";
-                                        } catch (exception) {
-                                            Log.print(Log.l.error, "ARM exception " + (exception && exception.message));
-                                        }
+                                    switch (fileExt) {
+                                        case "amr":
+                                            try {
+                                                var buffer = AMR.toWAV(data);
+                                                Log.print(Log.l.info, "AMR.toWAV: data-length=" + buffer.length);
+                                                data = buffer;
+                                                fileExt = "wav";
+                                            } catch (exception) {
+                                                Log.print(Log.l.error, "ARM exception " + (exception && exception.message));
+                                            }
+                                            break;
                                     }
                                     var encoded = b64.fromByteArray(data);
                                     if (encoded && encoded.length > 0) {
