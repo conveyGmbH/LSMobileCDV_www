@@ -174,68 +174,97 @@
                 var filePath;
                 Log.call(Log.l.trace, "WavSketch.Controller.", "dataDirectory=" + dataDirectory + " fileName=" + fileName + " bUseRootDir=" + bUseRootDir);
                 var readFileFromDirEntry = function (dirEntry) {
-                    Log.print(Log.l.info, "resolveLocalFileSystemURL: file system open name=" + dirEntry.name);
-                    dirEntry.getFile(filePath, {
-                        create: false,
-                        exclusive: false
-                    }, function (fileEntry) {
-                        if (fileEntry) {
-                            var deleteFile = function () {
-                                fileEntry.remove(function () {
-                                    Log.print(Log.l.info, "file deleted!");
-                                }, function (errorResponse) {
-                                    Log.print(Log.l.error, "Failed remove file " + filePath + " error: " + JSON.stringify(errorResponse));
-                                }, function () {
-                                    Log.print(Log.l.trace, "extra ignored!");
-                                });
-                            }
-                            fileEntry.file(function (file) {
-                                var reader = new FileReader();
-                                reader.onerror = function (errorResponse) {
-                                    Log.print(Log.l.error, "Failed read file " + filePath + " error: " + JSON.stringify(errorResponse));
-                                    AppData.setErrorMsg(that.binding, errorResponse);
-                                    deleteFile();
-                                    AppBar.busy = false;
-                                };
-                                reader.onloadend = function () {
-                                    var data = new Uint8Array(this.result);
-                                    Log.print(Log.l.info, "Successful file read! fileExt=" + fileExt + " data-length=" + data.length);
-                                    switch (fileExt) {
-                                        case "amr":
-                                            try {
-                                                var buffer = AMR.toWAV(data);
-                                                Log.print(Log.l.info, "AMR.toWAV: data-length=" + buffer.length);
-                                                data = buffer;
-                                                fileExt = "wav";
-                                            } catch (exception) {
-                                                Log.print(Log.l.error, "ARM exception " + (exception && exception.message));
+                    if (dirEntry) {
+                        Log.print(Log.l.info, "resolveLocalFileSystemURL: dirEntry open!");
+                        dirEntry.getFile(filePath, {
+                            create: false,
+                            exclusive: false
+                        },
+                        function(fileEntry) {
+                            if (fileEntry) {
+                                Log.print(Log.l.info, "resolveLocalFileSystemURL: fileEntry open!");
+                                var deleteFile = function() {
+                                    fileEntry.remove(function() {
+                                        Log.print(Log.l.info, "file deleted!");
+                                    },
+                                    function(errorResponse) {
+                                        Log.print(Log.l.error, "file delete: Failed remove file " + filePath + " error: " + JSON.stringify(errorResponse));
+                                    },
+                                    function() {
+                                        Log.print(Log.l.trace, "file delete: extra ignored!");
+                                    });
+                                }
+                                fileEntry.file(function(file) {
+                                        var reader = new FileReader();
+                                        reader.onerror = function(errorResponse) {
+                                            Log.print(Log.l.error,
+                                                "Failed read file " +
+                                                filePath +
+                                                " error: " +
+                                                JSON.stringify(errorResponse));
+                                            AppData.setErrorMsg(that.binding, errorResponse);
+                                            deleteFile();
+                                            AppBar.busy = false;
+                                        };
+                                        reader.onloadend = function() {
+                                            var data = new Uint8Array(this.result);
+                                            Log.print(Log.l.info,
+                                                "Successful file read! fileExt=" +
+                                                fileExt +
+                                                " data-length=" +
+                                                data.length);
+                                            switch (fileExt) {
+                                            case "amr":
+                                                try {
+                                                    var buffer = AMR.toWAV(data);
+                                                    Log.print(Log.l.info,
+                                                        "AMR.toWAV: data-length=" + buffer.length);
+                                                    data = buffer;
+                                                    fileExt = "wav";
+                                                } catch (exception) {
+                                                    Log.print(Log.l.error,
+                                                        "ARM exception " + (exception && exception.message));
+                                                }
+                                                break;
                                             }
-                                            break;
-                                    }
-                                    var encoded = b64.fromByteArray(data);
-                                    if (encoded && encoded.length > 0) {
-                                        that.insertAudiodata(encoded, fileExt);
-                                    } else {
-                                        var err = "file read error NO data!";
-                                        Log.print(Log.l.error, err);
-                                        AppData.setErrorMsg(that.binding, err);
-                                    }
-                                    deleteFile();
-                                    AppBar.busy = false;
-                                };
-                                reader.readAsArrayBuffer(file);
-                            }, function (errorResponse) {
-                                Log.print(Log.l.error, "file read error: " + JSON.stringify(errorResponse));
-                                AppData.setErrorMsg(that.binding, errorResponse);
-                                deleteFile();
+                                            var encoded = b64.fromByteArray(data);
+                                            if (encoded && encoded.length > 0) {
+                                                that.insertAudiodata(encoded, fileExt);
+                                            } else {
+                                                var err = "file read error NO data!";
+                                                Log.print(Log.l.error, err);
+                                                AppData.setErrorMsg(that.binding, err);
+                                            }
+                                            deleteFile();
+                                            AppBar.busy = false;
+                                        };
+                                        reader.readAsArrayBuffer(file);
+                                    },
+                                    function(errorResponse) {
+                                        Log.print(Log.l.error, "file read error: " + JSON.stringify(errorResponse));
+                                        AppData.setErrorMsg(that.binding, errorResponse);
+                                        deleteFile();
+                                        AppBar.busy = false;
+                                    });
+                            } else {
+                                var err = "file read error NO fileEntry!";
+                                Log.print(Log.l.error, err);
+                                AppData.setErrorMsg(that.binding, err);
                                 AppBar.busy = false;
-                            });
-                        }
-                    }, function (errorResponse) {
-                        Log.print(Log.l.error, "getFile(" + filePath + ") error: " + JSON.stringify(errorResponse));
-                        AppData.setErrorMsg(that.binding, errorResponse);
+                            }
+                        },
+                        function(errorResponse) {
+                            Log.print(Log.l.error,
+                                "getFile(" + filePath + ") error: " + JSON.stringify(errorResponse));
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                            AppBar.busy = false;
+                        });
+                    } else {
+                        var err = "file read error NO dirEntry!";
+                        Log.print(Log.l.error, err);
+                        AppData.setErrorMsg(that.binding, err);
                         AppBar.busy = false;
-                    });
+                    }
                 }
                 
                 var fileExtPos = fileName.lastIndexOf(".");
@@ -318,6 +347,7 @@
                             fileName = fullPath;
                         }
                         if (typeof device === "object") {
+                            Log.print(Log.l.trace, "platform=" + device.platform);
                             switch (device.platform) {
                             case "Android":
                                 if (pos >= 0) {
@@ -326,7 +356,7 @@
                                 bUseRootDir = true;
                                 break;
                             case "iOS":
-                                dataDirectory = cordova.file.dataDirectory;
+                                dataDirectory = cordova.file.tempDirectory;
                                 break;
                             default:
                                 dataDirectory = cordova.file.dataDirectory;
