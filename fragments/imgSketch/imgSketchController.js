@@ -433,6 +433,7 @@
                         }
                         AppData.setErrorMsg(that.binding, err);
                         return WinJS.Promise.as();
+                        AppBar.busy = false;
                     } else {
                         // JPEG note
                         dataSketch.ExecAppTypeID = 3;

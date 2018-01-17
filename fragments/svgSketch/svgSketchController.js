@@ -154,6 +154,7 @@
                     noteId,
                     that.binding.isLocal);
                 } else if (that.binding.isLocal) {
+                    AppBar.busy = true;
                     that.binding.noteId = 0;
                     // insert new SVG note first - but only if isLocal!
                     that.svgEditor.fnNewSVG();
@@ -165,8 +166,8 @@
                         AppBar.busy = false;
                     },
                     function(errorResponse) {
-                        AppBar.busy = false;
                         AppData.setErrorMsg(that.binding, errorResponse);
+                        AppBar.busy = false;
                     });
                 } else {
                     ret = WinJS.Promise.as();

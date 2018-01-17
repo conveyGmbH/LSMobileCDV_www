@@ -195,6 +195,7 @@
                                     Log.print(Log.l.error, "Failed read file " + filePath + " error: " + JSON.stringify(errorResponse));
                                     AppData.setErrorMsg(that.binding, errorResponse);
                                     deleteFile();
+                                    AppBar.busy = false;
                                 };
                                 reader.onloadend = function () {
                                     var data = new Uint8Array(this.result);
@@ -220,17 +221,20 @@
                                         AppData.setErrorMsg(that.binding, err);
                                     }
                                     deleteFile();
+                                    AppBar.busy = false;
                                 };
                                 reader.readAsArrayBuffer(file);
                             }, function (errorResponse) {
                                 Log.print(Log.l.error, "file read error: " + JSON.stringify(errorResponse));
                                 AppData.setErrorMsg(that.binding, errorResponse);
                                 deleteFile();
+                                AppBar.busy = false;
                             });
                         }
                     }, function (errorResponse) {
                         Log.print(Log.l.error, "getFile(" + filePath + ") error: " + JSON.stringify(errorResponse));
                         AppData.setErrorMsg(that.binding, errorResponse);
+                        AppBar.busy = false;
                     });
                 }
                 
@@ -246,9 +250,11 @@
                         }, function(errorResponse) {
                             Log.print(Log.l.error, "requestFileSystem error: " + JSON.stringify(errorResponse));
                             AppData.setErrorMsg(that.binding, errorResponse);
+                            AppBar.busy = false;
                         });
                     } else {
                         Log.print(Log.l.error, "requestFileSystem is undefined");
+                        AppBar.busy = false;
                     }
                 } else {
                     filePath = fileName;
@@ -256,9 +262,11 @@
                         window.resolveLocalFileSystemURL(dataDirectory, readFileFromDirEntry, function(errorResponse) {
                             Log.print(Log.l.error, "resolveLocalFileSystemURL error: " + JSON.stringify(errorResponse));
                             AppData.setErrorMsg(that.binding, errorResponse);
+                            AppBar.busy = false;
                         });
                     } else {
                         Log.print(Log.l.error, "resolveLocalFileSystemURL is undefined");
+                        AppBar.busy = false;
                     }
                 }
                 Log.ret(Log.l.trace);
@@ -311,17 +319,17 @@
                         }
                         if (typeof device === "object") {
                             switch (device.platform) {
-                                case "Android":
-                                    if (pos >= 0) {
-                                        dataDirectory = fullPath.substr(0, pos).replace(rootDirectory, "");
-                                    }
-                                    bUseRootDir = true;
+                            case "Android":
+                                if (pos >= 0) {
+                                    dataDirectory = fullPath.substr(0, pos).replace(rootDirectory, "");
+                                }
+                                bUseRootDir = true;
                                 break;
-                                case "iOS":
-                                    dataDirectory = cordova.file.dataDirectory;
+                            case "iOS":
+                                dataDirectory = cordova.file.dataDirectory;
                                 break;
-                                default:
-                                    dataDirectory = cordova.file.dataDirectory;
+                            default:
+                                dataDirectory = cordova.file.dataDirectory;
                             }
                         } else {
                             dataDirectory = cordova.file.dataDirectory;
@@ -329,6 +337,8 @@
                         // do something interesting with the file
                         that.loadDataFile(dataDirectory, fileName, bUseRootDir);
                     }
+                } else {
+                    AppBar.busy = false;
                 }
                 Log.ret(Log.l.trace);
             };

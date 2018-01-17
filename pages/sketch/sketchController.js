@@ -55,7 +55,7 @@
                 if (!that.binding.userHidesList) {
                     if (that.binding.showList !== that.binding.moreNotes) {
                         that.binding.showList = that.binding.moreNotes;
-                        WinJS.Promise.timeout(0).then(function() {
+                        WinJS.Promise.timeout(50).then(function() {
                             var pageControl = pageElement.winControl;
                             if (pageControl && pageControl.updateLayout) {
                                 pageControl.prevWidth = 0;
@@ -522,8 +522,7 @@
                     }
                 },
                 clickForward: function () {
-                    // never disable!
-                    return false;
+                    return AppBar.busy;
                 },
                 clickShowList: function () {
                     if (that.binding.moreNotes) {
@@ -537,6 +536,13 @@
                         that.docViewer.controller.binding &&
                         that.docViewer.controller.binding.noteId) {
                         return false;
+                    } else {
+                        return true;
+                    }
+                },
+                clickAddNote: function() {
+                    if (that.binding.contactId) {
+                        return AppBar.busy;
                     } else {
                         return true;
                     }
