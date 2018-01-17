@@ -297,7 +297,6 @@
                     for (i = 0, len = mediaFiles.length; i < len; i += 1) {
                         var bUseRootDir = false;
                         var rootDirectory = cordova.file.externalRootDirectory;;
-                        var subDirectory = "";
                         var dataDirectory = "";
                         var fullPath = mediaFiles[i].fullPath;
                         var pos = fullPath.lastIndexOf("/");
@@ -328,7 +327,7 @@
                             dataDirectory = cordova.file.dataDirectory;
                         }
                         // do something interesting with the file
-                        that.loadDataFile(dataDirectory + subDirectory, fileName, bUseRootDir);
+                        that.loadDataFile(dataDirectory, fileName, bUseRootDir);
                     }
                 }
                 Log.ret(Log.l.trace);
