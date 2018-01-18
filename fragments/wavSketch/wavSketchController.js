@@ -351,9 +351,12 @@
                             switch (device.platform) {
                             case "Android":
                                 if (pos >= 0) {
-                                    dataDirectory = fullPath.substr(0, pos).replace(rootDirectory, "");
+                                    dataDirectory = fullPath.substr(0, pos);
+                                    if (dataDirectory.indexOf(rootDirectory) >= 0) {
+                                        dataDirectory = dataDirectory.replace(rootDirectory, "");
+                                        bUseRootDir = true;
+                                    }
                                 }
-                                bUseRootDir = true;
                                 break;
                             case "iOS":
                                 dataDirectory = cordova.file.tempDirectory;
