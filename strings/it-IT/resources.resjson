@@ -24,6 +24,8 @@
     "command.new"           : "Nuovo",
     "command.delete"        : "Elimina",
     "command.rotate"        : "Ruota biglietto da visita",
+    "command.rotateLeft"        : "Ruotare a sinistra",
+    "command.rotateRight"        : "Ruotare a destra",
     "command.open"          : "Apri biglietto da visita",
     "command.search"        : "Cerca",
     "command.lineUp"        : "Riga sopra",

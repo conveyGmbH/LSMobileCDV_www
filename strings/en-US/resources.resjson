@@ -24,6 +24,8 @@
     "command.new"           : "New",
     "command.delete"        : "Delete",
     "command.rotate"        : "Rotate Business card",
+    "command.rotateLeft"        : "Rotate Image to the left",
+    "command.rotateRight"        : "Rotate Image to the right",
     "command.open"          : "Open Business card",
     "command.search"        : "Search",
     "command.lineUp"        : "Line up",

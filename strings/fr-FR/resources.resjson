@@ -24,6 +24,8 @@
     "command.new"           : "Nouveau",
     "command.delete"        : "Supprimer",
     "command.rotate"        : "Rotation d'image",
+    "command.rotateLeft"        : "Rotation vers la gauche",
+    "command.rotateRight"        : "Rotation vers la droite",
     "command.open"          : "En plein écran",
     "command.search"        : "Rechercher",
     "command.lineUp"        : "Ligne haut",

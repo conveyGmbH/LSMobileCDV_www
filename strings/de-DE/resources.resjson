@@ -24,6 +24,8 @@
     "command.new"           : "Neu",
     "command.delete"        : "Löschen",
     "command.rotate"        : "Visitenkarte rotieren",
+    "command.rotateLeft"        : "nach links drehen",
+    "command.rotateRight"        : "nach rechts drehen",
     "command.open"          : "Visitenkarte öffnen",
     "command.search"        : "Suche",
     "command.lineUp"        : "Zeile hoch",
