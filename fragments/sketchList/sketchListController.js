@@ -64,6 +64,19 @@
                             }
                         }
                     }
+                    WinJS.Promise.timeout(50).then(function () {
+                        if (AppBar.scope) {
+                            var pageElement = AppBar.scope.pageElement;
+                            if (pageElement) {
+                                var pageControl = pageElement.winControl;
+                                if (pageControl && pageControl.updateLayout) {
+                                    pageControl.prevWidth = 0;
+                                    pageControl.prevHeight = 0;
+                                    pageControl.updateLayout.call(pageControl, pageElement);
+                                }
+                            }
+                        }
+                    });
                 } else if (that.binding.count > 1) {
                     WinJS.Promise.timeout(50).then(function () {
                         scaleItemsAfterResize();

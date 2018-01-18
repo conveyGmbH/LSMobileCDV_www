@@ -340,6 +340,19 @@
                                 }
                             }
                             WinJS.Promise.timeout(0).then(function () {
+                                if (AppBar.scope) {
+                                    var pageElement = AppBar.scope.pageElement;
+                                    if (pageElement) {
+                                        var pageControl = pageElement.winControl;
+                                        if (pageControl && pageControl.updateLayout) {
+                                            pageControl.prevWidth = 0;
+                                            pageControl.prevHeight = 0;
+                                            pageControl.updateLayout.call(pageControl, pageElement);
+                                        }
+                                    }
+                                }
+                                return WinJS.Promise.as();
+                            }).then(function () {
                                 imgRotation = 0;
                                 imgScale = 1;
                                 calcImagePosition();
