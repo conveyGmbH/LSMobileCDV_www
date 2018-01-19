@@ -74,9 +74,10 @@
                     </div>
                     <div id="widthsToolbar" class="tool-box box-bkg">
                         <div class="tool-box-width"
-                             data-win-bind="style.borderBottomWidth: width; style.borderBottomColor: color">
+                             data-win-bind="style.borderBottomWidth: styleWidth; style.marginBottom: styleMargin; style.borderBottomColor: color">
                             <input id="swidth" type="range" min="1" max="10" step="1"
-                                   data-win-bind="value: width Binding.Mode.twoway">
+                                   data-win-bind="value: width"
+                                   onchange="AppBar.handleEvent('change', 'changedWidth', event)">
                         </div>
                         <div class="line-separator"></div>
                         <button id="clickWidth" class="win-button tool-ok"

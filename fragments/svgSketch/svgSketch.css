@@ -33,7 +33,7 @@ div#svgsketch {
     position: absolute;
     bottom: 0px;
     right: 0px;
-    height: 100px;
+    height: 120px;
     padding: 4px;
     opacity: 0.9;
     width: 300px;
@@ -49,9 +49,9 @@ div#svgsketch {
     border-bottom-style: solid; 
     border-bottom-width: 1px; 
     border-bottom-color: #000000; 
-    margin: 0;
-    padding: 10px;
-    width: 100%;
+    margin: 0 10px;
+    padding: 10px 0;
+    width: calc(100% - 20px);
     height: 32px;
 }
 
@@ -68,6 +68,6 @@ div#svgsketch {
 }
 
 #swidth{
-    width: calc(100% - 32px);
+    width: 100%;
 }
 

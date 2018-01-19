@@ -30,7 +30,9 @@
                 isLocal: options.isLocal,
                 dataSketch: {},
                 color: svgEditor.drawcolor && svgEditor.drawcolor[0],
-                width: 0
+                width: 1,
+                styleWidth: "1px",
+                styleMargin: "9px"
             }, commandList]);
 
             var that = this;
@@ -388,6 +390,18 @@
                     that.svgEditor.hideToolbox("widthsToolbar");
                     if (options && options.isLocal) {
                         that.svgEditor.registerTouchEvents();
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                changedWidth: function (event) {
+                    Log.call(Log.l.trace, "SvgSketch.Controller.");
+                    if (event.currentTarget) {
+                        var range = event.currentTarget;
+                        if (range) {
+                            that.binding.width = parseInt(range.value);
+                            that.binding.styleWidth = that.binding.width.toString() + "px";
+                            that.binding.styleMargin = (10 - that.binding.width).toString() + "px";
+                        }
                     }
                     Log.ret(Log.l.trace);
                 }
