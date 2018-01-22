@@ -382,8 +382,10 @@
                 if (audioRecorderContainer && audioRecorderContainer.style) {
                     audioRecorderContainer.style.display = "";
                 }
+                var err = JSON.stringify(errorMessage);
                 //message: The message is provided by the device's native code
-                AppData.setErrorMsg(that.binding, JSON.stringify(errorMessage));
+                Log.print(Log.l.error, "errorMessage=" + err);
+                AppData.setErrorMsg(that.binding, err);
                 AppBar.busy = false;
                 Log.ret(Log.l.error);
             };

@@ -19,7 +19,8 @@
                 downloadTS: (AppData.appSettings.odata.replPrevSelectMs ?
                 "\/Date(" + AppData.appSettings.odata.replPrevSelectMs + ")\/" : null),
                 version: Application.version,
-                environment: "Platform: " + navigator.appVersion
+                environment: "Platform: " + navigator.appVersion,
+                showClipping: false
             }, commandList]);
 
             var that = this;
@@ -171,6 +172,11 @@
             }
 
             AppData.setErrorMsg(this.binding);
+            
+            if (AppData.appSettings.odata.login &&
+                AppData.appSettings.odata.login.search("convey.de") > 0) {
+                that.binding.showClipping = true;
+            }
 
             that.processAll().then(function () {
                 AppBar.notifyModified = true;
