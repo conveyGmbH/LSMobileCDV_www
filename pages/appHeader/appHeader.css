@@ -51,6 +51,7 @@
 }
 .event-field {
     width: calc(100% - 278px);
+    height: 40px;
     float: right;
 }
 .event-name-static {
@@ -193,6 +194,9 @@
         position: absolute;
         top: 15px;
         left: 0;
+    }
+    .event-field {
+        height: 28px;
     }
     .event-name {
         font-size: 15px;
