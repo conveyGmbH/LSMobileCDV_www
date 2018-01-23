@@ -110,14 +110,20 @@
                         if (fragment) {
                             var width = fragment.clientWidth;
                             var height = fragment.clientHeight;
+                            var bDoEditorResize = false;
 
                             if (width > 0 && width !== that.prevWidth) {
                                 that.prevWidth = width;
                                 doccontainer.style.width = width.toString() + "px";
+                                bDoEditorResize = true;
                             }
                             if (height > 0 && height !== that.prevHeight) {
                                 that.prevHeight = height;
                                 doccontainer.style.height = height.toString() + "px";
+                                bDoEditorResize = true;
+                            }
+                            if (bDoEditorResize && that.controller && that.controller.svgEditor) {
+                                that.controller.svgEditor.resize(width, height);
                             }
                         }
                     }
