@@ -57,7 +57,7 @@
             // modified==true when startDrag() in svg.js is called!
             var isModified = function () {
                 Log.call(Log.l.trace, "SvgSketchController.");
-                Log.ret(Log.l.trace, that.svgEditor.modified);
+                Log.ret(Log.l.trace, "modified=" + that.svgEditor.modified);
                 return that.svgEditor.modified;
             }
             this.isModified = isModified;
@@ -84,11 +84,13 @@
                     fragmentControl.prevWidth = 0;
                     fragmentControl.prevHeight = 0;
                     var promise = fragmentControl.updateLayout.call(fragmentControl, fragmentElement) || WinJS.Promise.as();
-                    promise.then(function () {
+                    promise.then(function() {
                         that.svgEditor.fnLoadSVG(getDocData());
                         if (options && options.isLocal) {
                             that.svgEditor.registerTouchEvents();
                         }
+                        return WinJS.Promise.timeout(0);
+                    }).then(function() {
                         var docContainer = fragmentElement.querySelector(".doc-container");
                         if (docContainer) {
                             var sketchElement = docContainer.lastElementChild || docContainer.lastChild;
@@ -160,14 +162,13 @@
                     that.binding.noteId = 0;
                     // insert new SVG note first - but only if isLocal!
                     that.svgEditor.fnNewSVG();
-                    if (options && options.isLocal) {
-                        that.svgEditor.registerTouchEvents();
-                    }
+                    that.svgEditor.registerTouchEvents();
+                    that.svgEditor.modified = true;
                     ret = that.saveData(function (response) {
                         // called asynchronously if ok
                         AppBar.busy = false;
                     },
-                    function(errorResponse) {
+                    function (errorResponse) {
                         AppData.setErrorMsg(that.binding, errorResponse);
                         AppBar.busy = false;
                     });
@@ -184,7 +185,7 @@
                 var ret;
                 AppData.setErrorMsg(that.binding);
                 var dataSketch = that.binding.dataSketch;
-                if (dataSketch && (AppBar.modified || !that.binding.noteId) && that.binding.isLocal) {
+                if (dataSketch && that.binding.isLocal && isModified()) {
                     ret = new WinJS.Promise.as().then(function () {
                         that.svgEditor.fnSaveSVG(function(quelltext) {
                             dataSketch.Quelltext = quelltext;

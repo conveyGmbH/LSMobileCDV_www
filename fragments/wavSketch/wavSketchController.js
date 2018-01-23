@@ -217,8 +217,7 @@
                                             case "amr":
                                                 try {
                                                     var buffer = AMR.toWAV(data);
-                                                    Log.print(Log.l.info,
-                                                        "AMR.toWAV: data-length=" + buffer.length);
+                                                    Log.print(Log.l.info, "AMR.toWAV: data-length=" + buffer.length);
                                                     data = buffer;
                                                     fileExt = "wav";
                                                 } catch (exception) {
@@ -387,6 +386,11 @@
                 Log.print(Log.l.error, "errorMessage=" + err);
                 AppData.setErrorMsg(that.binding, err);
                 AppBar.busy = false;
+                WinJS.Promise.timeout(0).then(function () {
+                    if (AppBar.scope && typeof AppBar.scope.loadList === "function") {
+                        AppBar.scope.loadList();
+                    }
+                });
                 Log.ret(Log.l.error);
             };
 

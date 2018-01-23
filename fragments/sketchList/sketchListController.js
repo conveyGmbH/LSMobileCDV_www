@@ -295,14 +295,16 @@
                                         }
                                     }
                                 }
-                                Log.print(Log.l.trace, "SketchList.sketchlistView: selIdx=" + selIdx);
-                                if (listView.winControl.selection && results[selIdx]) {
-                                    listView.winControl.selection.set(selIdx).then(function() {
-                                        //load sketch with new recordId
-                                        that.binding.noteId = results[selIdx].KontaktNotizVIEWID;
-                                        that.binding.DocGroup = results[selIdx].DocGroup;
-                                        that.binding.DocFormat = results[selIdx].DocFormat;
-                                    });
+                                if (results && results.length > 0) {
+                                    Log.print(Log.l.trace, "SketchList.sketchlistView: selIdx=" + selIdx);
+                                    if (listView.winControl.selection && results[selIdx]) {
+                                        listView.winControl.selection.set(selIdx).then(function () {
+                                            //load sketch with new recordId
+                                            that.binding.noteId = results[selIdx].KontaktNotizVIEWID;
+                                            that.binding.DocGroup = results[selIdx].DocGroup;
+                                            that.binding.DocFormat = results[selIdx].DocFormat;
+                                        });
+                                    }
                                 }
                             }
                         } else {

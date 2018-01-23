@@ -25,7 +25,7 @@
                 // variables for drawing functions
                 width: 0,
                 height: 0,
-
+                toolboxIds: ['shapesToolbar', 'widthsToolbar', 'colorsToolbar'],
                 drawshape: ['polyline', 'line', 'rect', 'circle', 'ellipse'],
                 drawcolor: ['black', 'blue', 'red', 'yellow', 'green', 'gray'],
                 selshapeIdx: 0,
@@ -455,14 +455,13 @@
                 toggleToolbox: function (id) {
                     var that = this;
                     WinJS.Promise.timeout(0).then(function () {
-                        var toolboxIds = ['shapesToolbar', 'widthsToolbar', 'colorsToolbar'];
                         var curToolbox = document.querySelector('#' + id);
                         if (curToolbox && curToolbox.style) {
                             if (!curToolbox.style.display ||
                                 curToolbox.style.display === "none") {
-                                for (var i = 0; i < toolboxIds.length; i++) {
-                                    if (toolboxIds[i] !== id) {
-                                        var otherToolbox = document.querySelector('#' + toolboxIds[i]);
+                                for (var i = 0; i < that.toolboxIds.length; i++) {
+                                    if (that.toolboxIds[i] !== id) {
+                                        var otherToolbox = document.querySelector('#' + that.toolboxIds[i]);
                                         if (otherToolbox && otherToolbox.style &&
                                             otherToolbox.style.display === "block") {
                                             otherToolbox.style.display = "none";
@@ -480,6 +479,16 @@
                             }
                         }
                     });
+                },
+                hideAllToolboxes: function() {
+                    var that = this;
+                    for (var i = 0; i < that.toolboxIds.length; i++) {
+                        var otherToolbox = document.querySelector('#' + that.toolboxIds[i]);
+                        if (otherToolbox && otherToolbox.style &&
+                            otherToolbox.style.display === "block") {
+                            otherToolbox.style.display = "none";
+                        }
+                    }
                 }
             }
         )

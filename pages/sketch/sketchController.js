@@ -39,6 +39,7 @@
 
             this.pageElement = pageElement;
             this.docViewer = null;
+            this.toolboxIds = ['addNotesToolbar'];
 
             var setNotesCount = function (count) {
                 Log.call(Log.l.trace, "Sketch.Controller.", "count=" + count);
@@ -51,6 +52,7 @@
                     that.binding.showSvg = false;
                     that.binding.showPhoto = false;
                     that.binding.showAudio = false;
+                    that.showToolbox("addNotesToolbar");
                 }
                 if (!that.binding.userHidesList) {
                     if (that.binding.showList !== that.binding.moreNotes) {
@@ -194,15 +196,18 @@
             this.loadDoc = loadDoc;
 
             // check modify state
-            // modified==true when startDrag() in svg.js is called!
+            // modified==true when modified in docViewer!
             var isModified = function () {
                 Log.call(Log.l.trace, "svgSketchController.");
                 var ret;
-                var svgFragment = Application.navigator.getFragmentControlFromLocation(Application.getFragmentPath("svgSketch"));
-                if (svgFragment && svgFragment.controller) {
-                    ret = svgFragment.controller.isModified();
-                } else ret = false;
-                Log.ret(Log.l.trace);
+                if (that.docViewer && that.docViewer.controller &&
+                    typeof that.docViewer.controller.isModified === "function") {
+                    Log.print(Log.l.trace, "calling docViewer.controller.isModified...");
+                    ret = that.docViewer.controller.isModified();
+                } else {
+                    ret = false;
+                }
+                Log.ret(Log.l.trace, "modified=" + ret);
                 return ret;
             }
             this.isModified = isModified;
@@ -274,7 +279,40 @@
             }
             this.loadList = loadList;
 
-            var hideToolbox = function(id) {
+            var showToolbox = function (id) {
+                Log.call(Log.l.trace, "Sketch.Controller.", "id=" + id);
+                var ret = false;
+                var curToolbox = document.querySelector('#' + id);
+                if (curToolbox && curToolbox.style) {
+                    if (!curToolbox.style.display ||
+                        curToolbox.style.display === "none") {
+                        for (var i = 0; i < that.toolboxIds.length; i++) {
+                            if (that.toolboxIds[i] !== id) {
+                                var otherToolbox = document.querySelector('#' + that.toolboxIds[i]);
+                                if (otherToolbox && otherToolbox.style &&
+                                    otherToolbox.style.display === "block") {
+                                    otherToolbox.style.display = "none";
+                                }
+                            }
+                        }
+                        if (that.docViewer && that.docViewer.controller && that.docViewer.controller.svgEditor) {
+                            that.docViewer.controller.svgEditor.hideAllToolboxes();
+                            that.docViewer.controller.svgEditor.unregisterTouchEvents();
+                        }
+                        curToolbox.style.display = "block";
+                        WinJS.UI.Animation.slideUp(curToolbox).done(function () {
+                            // now visible
+                        });
+                        ret = true;
+                    }
+                }
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+            this.showToolbox = showToolbox;
+
+            var hideToolbox = function (id) {
+                Log.call(Log.l.trace, "Sketch.Controller.", "id=" + id);
                 var curToolbox = document.querySelector('#' + id);
                 if (curToolbox) {
                     //var height = -curToolbox.clientHeight;
@@ -282,40 +320,19 @@
                     WinJS.UI.Animation.slideDown(curToolbox).done(function() {
                         curToolbox.style.display = "none";
                     });
+                    if (that.docViewer && that.docViewer.controller && that.docViewer.controller.svgEditor) {
+                        that.docViewer.controller.svgEditor.registerTouchEvents();
+                    }
                 }
+                Log.ret(Log.l.trace);
             }
             this.hideToolbox = hideToolbox;
 
             var toggleToolbox = function (id) {
                 WinJS.Promise.timeout(0).then(function() {
                     Log.call(Log.l.trace, "Sketch.Controller.toggleToolbox");
-                    var toolboxIds = ['addNotesToolbar'];
-                    var curToolbox = document.querySelector('#' + id);
-                    if (curToolbox && curToolbox.style) {
-                        if (!curToolbox.style.display ||
-                            curToolbox.style.display === "none") {
-                            for (var i = 0; i < toolboxIds.length; i++) {
-                                if (toolboxIds[i] !== id) {
-                                    var otherToolbox = document.querySelector('#' + toolboxIds[i]);
-                                    if (otherToolbox && otherToolbox.style &&
-                                        otherToolbox.style.display === "block") {
-                                        otherToolbox.style.display = "none";
-                                    }
-                                }
-                            }
-                            if (that.docViewer && that.docViewer.controller && that.docViewer.controller.svgEditor) {
-                                that.docViewer.controller.svgEditor.unregisterTouchEvents();
-                            }
-                            curToolbox.style.display = "block";
-                            WinJS.UI.Animation.slideUp(curToolbox).done(function () {
-                                // now visible
-                            });
-                        } else {
-                            that.hideToolbox(id);
-                            if (that.docViewer && that.docViewer.controller && that.docViewer.controller.svgEditor) {
-                                that.docViewer.controller.svgEditor.registerTouchEvents();
-                            }
-                        }
+                    if (!that.showToolbox(id)) {
+                        that.hideToolbox(id);
                     }
                     Log.ret(Log.l.trace);
                 });

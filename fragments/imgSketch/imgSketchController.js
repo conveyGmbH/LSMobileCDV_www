@@ -535,11 +535,19 @@
                 Log.ret(Log.l.trace);
             };
 
-            var onPhotoDataFail = function (message) {
+            var onPhotoDataFail = function (errorMessage) {
                 Log.call(Log.l.error, "Questionnaire.Controller.");
                 //message: The message is provided by the device's native code
-                //AppData.setErrorMsg(that.binding, message);
+                var err = JSON.stringify(errorMessage);
+                //message: The message is provided by the device's native code
+                Log.print(Log.l.error, "errorMessage=" + err);
+                AppData.setErrorMsg(that.binding, errorMessage);
                 AppBar.busy = false;
+                WinJS.Promise.timeout(0).then(function () {
+                    if (AppBar.scope && typeof AppBar.scope.loadList === "function") {
+                        AppBar.scope.loadList();
+                    }
+                });
                 Log.ret(Log.l.error);
             };
 
