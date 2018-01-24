@@ -316,6 +316,7 @@
     "info.upload"           : "Upload",
     "info.download"         : "Download",
     "info.portal"           : "Portal",
+    "info.useAudioNote"     : "Registrazione audio",
 
     "infodesk.employee"     : "Employee",
     "infodesk.title"        : "Infodesk",

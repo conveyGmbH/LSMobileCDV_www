@@ -27,7 +27,8 @@
                 showList: false,
                 moreNotes: false,
                 userHidesList: false,
-                contactId: AppData.getRecordId("Kontakt")
+                contactId: AppData.getRecordId("Kontakt"),
+                hideAddWav: !AppData.generalData.useAudioNote
             };
             // load amr lib....
             /*if (typeof device === "object" &&

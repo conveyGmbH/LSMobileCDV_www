@@ -13,6 +13,14 @@
     WinJS.Namespace.define("Info", {
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Info.Controller.");
+
+            var isAndroid = false;
+            if (typeof device === "object" && device.platform === "Android") {
+                isAndroid = true;
+                if (typeof AppData.generalData.useAudioNote === "undefined") {
+                    AppData._persistentStates.useAudioNote = false;
+                }
+            }
             Application.Controller.apply(this, [pageElement, {
                 uploadTS: (AppData.appSettings.odata.replPrevPostMs ?
                 "\/Date(" + AppData.appSettings.odata.replPrevPostMs + ")\/" : null),
@@ -20,7 +28,8 @@
                 "\/Date(" + AppData.appSettings.odata.replPrevSelectMs + ")\/" : null),
                 version: Application.version,
                 environment: "Platform: " + navigator.appVersion,
-                showClipping: false
+                showClipping: false,
+                isAndroid: isAndroid
             }, commandList]);
 
             var that = this;
@@ -102,7 +111,18 @@
                     }
                     Log.ret(Log.l.trace);
                 },
-                                clickCameraUseGrayscale: function (event) {
+                clickUseAudioNote: function (event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var toggle = event.currentTarget.winControl;
+                        if (toggle) {
+                            AppData._persistentStates.useAudioNote = toggle.checked;
+                            that.binding.generalData.useAudioNote = toggle.checked;
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                clickCameraUseGrayscale: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
                     if (event.currentTarget && AppBar.notifyModified) {
                         var toggle = event.currentTarget.winControl;

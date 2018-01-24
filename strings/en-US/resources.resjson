@@ -174,7 +174,7 @@
     "search.businesscard"   : "Business Card",
     "search.default"        : "Default",
     "search.edited"         : "Edited",
-   "search.notEdited"       : "Not Edited",
+    "search.notEdited"       : "Not Edited",
 
     "listLocal.title"       : "List of local contacts",
     "listLocal.comment"     : "On this page, use the Back button to go back!",
@@ -320,6 +320,7 @@
     "info.upload"           : "Upload",
     "info.download"         : "Download",
     "info.portal"           : "Portal",
+    "info.useAudioNote"     : "Audio recording",
 
     "infodesk.employee"     : "Employee",
     "infodesk.title"        : "Infodesk",
