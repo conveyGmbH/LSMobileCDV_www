@@ -63,7 +63,7 @@
                 Newsletterflag: 0,
                 ErfassungsStatus: 0,
                 Freischaltung: 0,
-                LanguageID: AppData.getLanguageId(),
+                LanguageID: 0,
                 INITLandID: 0
             }
         }

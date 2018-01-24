@@ -20,6 +20,11 @@
             Log.call(Log.l.trace, "Sketch.Controller.");
             var that = this;
 
+            if (!(typeof device === "object" && device.platform === "Android")) {
+                if (typeof AppData.generalData.useAudioNote === "undefined") {
+                    AppData._persistentStates.useAudioNote = true;
+                }
+            }
             var addPageData = {
                 showSvg: false,
                 showPhoto: false,

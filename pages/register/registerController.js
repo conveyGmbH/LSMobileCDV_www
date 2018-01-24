@@ -16,7 +16,7 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Register.Controller.");
             Application.Controller.apply(this, [pageElement, {
-                dataRegister: Register.registerView && Register.registerView.defaultValue,
+                dataRegister: getEmptyDefaultValue(Register.registerView.defaultValue),
                 InitLandItem: { InitLandID: 0, TITLE: "" },
                 emailOkFlag: null,
                 registerOkFlag: null
@@ -117,7 +117,6 @@
                 AppBar.modified = false;
                 AppBar.notifyModified = prevNotifyModified;
             }
-            setDataRegister(getEmptyDefaultValue(Register.registerView.defaultValue));
             this.setDataRegister = setDataRegister;
 
             var setInitLandItem = function (newInitLandItem) {
@@ -226,6 +225,10 @@
                 return ret;
             }
             this.saveData = saveData;
+            
+            that.setDataRegister(getEmptyDefaultValue(Register.registerView.defaultValue));
+            that.binding.dataRegister.LanguageID = AppData.getLanguageId();
+            Log.print(Log.l.trace, "LanguageID=" + that.binding.dataRegister.LanguageID);
 
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
