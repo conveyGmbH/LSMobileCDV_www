@@ -142,6 +142,7 @@
     "questionnaire.textarea": "S'il vous plaît entrer votre commentaire ici",
     "questionnaire.count"   : "Nombre",
     "questionnaire.attachments" : "Pièce détachée",
+	"questionnaire.labelConfirmMandatoryField" : "Question obligatoire non remplie",
 
     "sketch.title"          : "Dessiner des esquisses",
     "sketch.comment"        : "Utilisez le bouton Retour sur cette page pour y retourner!",

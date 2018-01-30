@@ -138,6 +138,7 @@
     "questionnaire.textarea": "Inserite eventuali commenti in questo spazio",
     "questionnaire.count"   : "Totale",
     "questionnaire.attachments" : "Allegati",
+	"questionnaire.labelConfirmMandatoryField" : "Domanda obbligatoria non compilata",
 
     "sketch.title"          : "Disegnare schizzi",
     "sketch.comment"        : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",

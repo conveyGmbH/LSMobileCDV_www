@@ -750,7 +750,9 @@
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
                     var showconfirmbox = that.showConfirmBoxMandatory();
                     if (showconfirmbox) {
-                        confirm("Pflichtfrage nicht ausgefüllt: \n" + that.actualquestion.FRAGESTELLUNG, function (result) {
+                        var confirmTitle = getResourceText("questionnaire.labelConfirmMandatoryField") + ": " +
+                            that.actualquestion.FRAGESTELLUNG;
+                        confirm(confirmTitle, function (result) {
                            if (result) {
                                Application.navigateById('sketch', event);
                            } else {

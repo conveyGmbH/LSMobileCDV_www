@@ -142,6 +142,7 @@
     "questionnaire.textarea": "Please enter you notes here ",
     "questionnaire.count"   : "Count",
     "questionnaire.attachments" : "Attachments",
+	"questionnaire.labelConfirmMandatoryField" : "Mandatory question not fulfilled",
 
     "sketch.title"          : "Edit notes",
     "sketch.comment"        : "On this page, use the Back button to go back!",

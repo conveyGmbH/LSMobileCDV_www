@@ -143,6 +143,7 @@
     "questionnaire.count"   : "Anzahl",
     "questionnaire.attachments" : "Anhänge",
     "questionnaire.requiredmarker" : "*",
+	"questionnaire.labelConfirmMandatoryField" : "Pflichtfrage nicht ausgefüllt",
 
     "sketch.title"          : "Erfassen Sie Notizen",
     "sketch.comment"        : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
