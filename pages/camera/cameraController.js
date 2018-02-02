@@ -264,7 +264,8 @@
                         typeof navigator.clippingCamera.getPicture === "function") {
                         navigator.clippingCamera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                             quality: AppData.generalData.cameraQuality,
-                            convertToGrayscale: AppData.generalData.cameraUseGrayscale
+                            convertToGrayscale: AppData.generalData.cameraUseGrayscale,
+                            maxResolution: 3000000
                         });
                     }
                 } else {

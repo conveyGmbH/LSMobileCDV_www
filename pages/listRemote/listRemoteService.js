@@ -57,7 +57,9 @@
         },
         _contactDocView: {
             get: function () {
-                return AppData.getFormatView("Kontakt", 20500, false);
+                var ret = AppData.getFormatView("Kontakt", 20500, false);
+                ret.maxPageSize = 20;
+                return ret;
             }
         },
         contactDocView: {
