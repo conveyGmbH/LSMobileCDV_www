@@ -323,6 +323,7 @@
     "info.download"         : "Download",
     "info.portal"           : "Portal",
     "info.useAudioNote"     : "Tonaufnahme",
+    "info.autoShutterTime"  : "Selbstauslöser [ms]",
 
     "infodesk.employee"     : "Mitarbeiter",
     "infodesk.title"        : "Infodesk",

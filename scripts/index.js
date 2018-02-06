@@ -22,6 +22,7 @@
         cameraUseGrayscale: true,
         cameraMaxSize: 2560,
         useClippingCamera: false,
+        autoShutterTime: 0,
         logEnabled: false,
         logLevel: 3,
         logGroup: false,

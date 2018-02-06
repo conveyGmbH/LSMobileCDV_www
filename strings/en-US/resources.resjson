@@ -322,6 +322,7 @@
     "info.download"         : "Download",
     "info.portal"           : "Portal",
     "info.useAudioNote"     : "Audio recording",
+    "info.autoShutterTime"  : "Trigger time [ms]",
 
     "infodesk.employee"     : "Employee",
     "infodesk.title"        : "Infodesk",

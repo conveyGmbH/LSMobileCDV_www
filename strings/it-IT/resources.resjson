@@ -318,6 +318,7 @@
     "info.download"         : "Download",
     "info.portal"           : "Portal",
     "info.useAudioNote"     : "Registrazione audio",
+    "info.autoShutterTime"  : "Tempo di innesco [ms]",
 
     "infodesk.employee"     : "Employee",
     "infodesk.title"        : "Infodesk",
