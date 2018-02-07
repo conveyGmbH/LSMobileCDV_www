@@ -407,16 +407,21 @@
 
             var showPhotoAfterResize = function () {
                 Log.call(Log.l.trace, "ImgSketch.Controller.");
-                var fragmentControl = fragmentElement.winControl;
-                if (fragmentControl && fragmentControl.updateLayout) {
-                    fragmentControl.prevWidth = 0;
-                    fragmentControl.prevHeight = 0;
-                    var promise = fragmentControl.updateLayout.call(fragmentControl, fragmentElement) || WinJS.Promise.as();
-                    promise.then(function () {
-                        showPhoto();
-                    });
-                }
+                var ret = WinJS.Promise.timeout(0).then(function () {
+                    var promise = null;
+                    var fragmentControl = fragmentElement.winControl;
+                    if (fragmentControl && fragmentControl.updateLayout) {
+                        fragmentControl.prevWidth = 0;
+                        fragmentControl.prevHeight = 0;
+                        promise = fragmentControl.updateLayout.call(fragmentControl, fragmentElement) || WinJS.Promise.as();
+                        promise.then(function () {
+                            showPhoto();
+                        });
+                    }
+                    return promise || WinJS.Promise.as();
+                });
                 Log.ret(Log.l.trace);
+                return ret;
             }
 
             var insertCameradata = function (imageData, width, height) {
@@ -492,9 +497,7 @@
                                 that.resultConverter(json.d);
                                 that.binding.dataSketch = json.d;
                                 that.binding.noteId = json.d.KontaktNotizVIEWID;
-                                WinJS.Promise.timeout(0).then(function () {
-                                    showPhotoAfterResize();
-                                }).then(function () {
+                                showPhotoAfterResize().then(function () {
                                     // reload list
                                     if (AppBar.scope && typeof AppBar.scope.loadList === "function") {
                                         AppBar.scope.loadList(that.binding.noteId);

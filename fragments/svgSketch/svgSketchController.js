@@ -79,39 +79,44 @@
 
             var showSvgAfterResize = function () {
                 Log.call(Log.l.trace, "SvgSketch.Controller.");
-                var fragmentControl = fragmentElement.winControl;
-                if (fragmentControl && fragmentControl.updateLayout) {
-                    fragmentControl.prevWidth = 0;
-                    fragmentControl.prevHeight = 0;
-                    var promise = fragmentControl.updateLayout.call(fragmentControl, fragmentElement) || WinJS.Promise.as();
-                    promise.then(function() {
-                        that.svgEditor.fnLoadSVG(getDocData());
-                        if (options && options.isLocal) {
-                            that.svgEditor.registerTouchEvents();
-                        }
-                        return WinJS.Promise.timeout(0);
-                    }).then(function() {
-                        var docContainer = fragmentElement.querySelector(".doc-container");
-                        if (docContainer) {
-                            var sketchElement = docContainer.lastElementChild || docContainer.lastChild;
-                            if (sketchElement) {
-                                //var oldElement;
-                                var animationDistanceX = fragmentElement.clientWidth / 4;
-                                var animationOptions = { top: "0px", left: animationDistanceX.toString() + "px" };
-                                if (sketchElement.style) {
-                                    sketchElement.style.visibility = "";
-                                }
-                                WinJS.UI.Animation.enterContent(sketchElement, animationOptions).then(function () {
-                                    if (sketchElement.style) {
-                                        sketchElement.style.display = "";
-                                        sketchElement.style.position = "";
-                                    }
-                                });
+                var ret = WinJS.Promise.timeout(0).then(function () {
+                    var promise = null;
+                    var fragmentControl = fragmentElement.winControl;
+                    if (fragmentControl && fragmentControl.updateLayout) {
+                        fragmentControl.prevWidth = 0;
+                        fragmentControl.prevHeight = 0;
+                        promise = fragmentControl.updateLayout.call(fragmentControl, fragmentElement) || WinJS.Promise.as();
+                        promise.then(function () {
+                            that.svgEditor.fnLoadSVG(getDocData());
+                            if (options && options.isLocal) {
+                                that.svgEditor.registerTouchEvents();
                             }
-                        }
-                    });
-                }
+                            return WinJS.Promise.timeout(0);
+                        }).then(function () {
+                            var docContainer = fragmentElement.querySelector(".doc-container");
+                            if (docContainer) {
+                                var sketchElement = docContainer.lastElementChild || docContainer.lastChild;
+                                if (sketchElement) {
+                                    //var oldElement;
+                                    var animationDistanceX = fragmentElement.clientWidth / 4;
+                                    var animationOptions = { top: "0px", left: animationDistanceX.toString() + "px" };
+                                    if (sketchElement.style) {
+                                        sketchElement.style.visibility = "";
+                                    }
+                                    WinJS.UI.Animation.enterContent(sketchElement, animationOptions).then(function () {
+                                        if (sketchElement.style) {
+                                            sketchElement.style.display = "";
+                                            sketchElement.style.position = "";
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                    return promise || WinJS.Promise.as();
+                });
                 Log.ret(Log.l.trace);
+                return ret;
             }
             
             var loadData = function (noteId) {
@@ -144,10 +149,8 @@
                                     "SVG Element: " +
                                     getDocData().substr(0, 100) +
                                     "...");
-                                WinJS.Promise.timeout(0).then(function () {
-                                    // reload trigger-generated SVG
-                                    showSvgAfterResize();
-                                });
+                                // reload trigger-generated SVG
+                                showSvgAfterResize();
                             }
                         }
                     },  function (errorResponse) {
@@ -191,18 +194,24 @@
                             dataSketch.Quelltext = quelltext;
                             var doret;
                             if (that.binding.noteId) {
-                                doret = SvgSketch.sketchView.update(function(response) {
+                                doret = SvgSketch.sketchView.update(function (response) {
+                                    var doret2;
                                     // called asynchronously if ok
                                     Log.print(Log.l.trace, "sketchData update: success!");
                                     that.svgEditor.modified = false;
-                                    if (AppBar.scope && typeof AppBar.scope.loadList === "function") {
-                                        AppBar.scope.loadList(that.binding.noteId);
-                                    }
-                                    if (typeof complete === "function") {
-                                        complete(response);
-                                    }
-                                },
-                                function(errorResponse) {
+                                    doret2 = WinJS.Promise.timeout(0).then(function() {
+                                        if (AppBar.scope && typeof AppBar.scope.loadList === "function") {
+                                            return AppBar.scope.loadList(that.binding.noteId);
+                                        } else {
+                                            return WinJS.Promise.as();
+                                        }
+                                    }).then(function() {
+                                        if (typeof complete === "function") {
+                                            complete(response);
+                                        }
+                                    });
+                                    return doret2;
+                                }, function(errorResponse) {
                                     // called asynchronously if an error occurs
                                     // or server returns response with an error status.
                                     AppData.setErrorMsg(that.binding, errorResponse);
@@ -230,7 +239,6 @@
                                         dataSketch.Height = svg.width && svg.width.baseVal && svg.width.baseVal.value;
                                     }
                                 }
-
                                 if (!dataSketch.KontaktID) {
                                     doret = new WinJS.Promise.as().then(function () {
                                         var errorResponse = {
@@ -255,14 +263,20 @@
                                             doret2 = WinJS.Promise.timeout(0).then(function () {
                                                 // reload list
                                                 if (AppBar.scope && typeof AppBar.scope.loadList === "function") {
-                                                    AppBar.scope.loadList(that.binding.noteId);
+                                                    return AppBar.scope.loadList(that.binding.noteId);
+                                                } else {
+                                                    return WinJS.Promise.as();
+                                                }
+                                            }).then(function() {
+                                                if (typeof complete === "function") {
+                                                    complete(json);
                                                 }
                                             });
                                         } else {
+                                            if (typeof complete === "function") {
+                                                complete(json);
+                                            }
                                             doret2 = WinJS.Promise.as();
-                                        }
-                                        if (typeof complete === "function") {
-                                            complete(json);
                                         }
                                         return doret2;
                                     }, function (errorResponse) {

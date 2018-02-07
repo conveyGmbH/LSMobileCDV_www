@@ -217,7 +217,7 @@
                         complete({});
                     }
                 });
-                Log.ret(Log.l.trace, ret);
+                Log.ret(Log.l.trace, "");
                 return ret;
             };
             this.saveData = saveData;
