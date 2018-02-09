@@ -29,6 +29,15 @@
             // now do anything...
             var listView = fragmentElement.querySelector("#sketchList.listview");
 
+            this.dispose = function () {
+                if (listView && listView.winControl) {
+                    listView.winControl.itemDataSource = null;
+                }
+                if (that.sketches) {
+                    that.sketches = null;
+                }
+            }
+
             var scaleItemsAfterResize = function() {
                 Log.call(Log.l.trace, "SketchList.Controller.");
                 if (fragmentElement &&
