@@ -62,7 +62,6 @@
         },
 
         updateLayout: function (element, viewState, lastViewState) {
-            Log.call(Log.l.u1, pageName + ".");
             /// <param name="element" domElement="true" />
             // TODO: Respond to changes in viewState.
         }

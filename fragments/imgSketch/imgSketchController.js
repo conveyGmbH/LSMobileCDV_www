@@ -450,8 +450,8 @@
                             statusText: "missing recordId for table Kontakt"
                         }
                         AppData.setErrorMsg(that.binding, err);
-                        return WinJS.Promise.as();
                         AppBar.busy = false;
+                        return WinJS.Promise.as();
                     } else {
                         // JPEG note
                         dataSketch.ExecAppTypeID = 3;

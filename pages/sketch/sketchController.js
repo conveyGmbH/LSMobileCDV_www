@@ -194,6 +194,7 @@
                         }
                         // reset semaphore
                         inLoadDoc = false;
+                        AppBar.triggerDisableHandlers();
                     });
                 }
                 Log.ret(Log.l.trace);
