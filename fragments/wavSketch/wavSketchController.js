@@ -33,6 +33,12 @@
                 }
                 return "";
             }
+            var getDocType = function () {
+                if (that.binding && that.binding.dataSketch && that.binding.dataSketch.type) {
+                    return that.binding.dataSketch.type;
+                }
+                return "";
+            }
             var hasDoc = function () {
                 return (getDocData() && typeof getDocData() === "string");
             }
@@ -306,16 +312,22 @@
                 if (fragmentElement) {
                     var audio = fragmentElement.querySelector("#noteAudio");
                     if (audio && hasDoc()) {
-                        if (audio.style) {
-                            audio.style.display = "";
+                        try {
+                            if (audio.style) {
+                                audio.style.display = "";
+                            }
+                            audio.src = getDocData();
+                            if (typeof audio.load === "function") {
+                                audio.load();
+                            }
+                            if (typeof audio.play === "function") {
+                                audio.play();
+                            }
+                        } catch (e) {
+                            Log.print(Log.L.error, "audio returned error:" + e);
                         }
-                        audio.src = getDocData();
-                        if (typeof audio.load === "function") {
-                            audio.load();
-                        }
-                        if (typeof audio.play === "function") {
-                            audio.play();
-                        }
+                    } else {
+                        that.removeAudio();
                     }
                 }
                 Log.ret(Log.l.trace);
@@ -447,13 +459,14 @@
                                     getDocData().substr(0, 100) +
                                     "...");
                             }
-                            that.bindAudio();
                         }
+                        that.bindAudio();
                     },
                     function (errorResponse) {
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
                         AppData.setErrorMsg(that.binding, errorResponse);
+                        that.removeAudio();
                     },
                     noteId,
                     that.binding.isLocal);
