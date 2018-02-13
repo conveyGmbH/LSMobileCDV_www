@@ -87,11 +87,14 @@
                     };
                 }
                 if (fragmentElement) {
-                    var audio = fragmentElement.querySelector("#noteAudio");
-                    if (audio) {
-                        audio.src = "";
-                        if (audio.style) {
-                            audio.style.display = "none";
+                    var docContainer = fragmentElement.querySelector(".doc-container");
+                    if (docContainer) {
+                        var audio = docContainer.querySelector("#noteAudio");
+                        if (audio) {
+                            audio.src = "";
+                        }
+                        if (docContainer.style) {
+                            docContainer.style.display = "none";
                         }
                     }
                 }
@@ -310,24 +313,27 @@
             var bindAudio = function () {
                 Log.call(Log.l.trace, "WavSketch.Controller.");
                 if (fragmentElement) {
-                    var audio = fragmentElement.querySelector("#noteAudio");
-                    if (audio && hasDoc()) {
-                        try {
-                            if (audio.style) {
-                                audio.style.display = "";
+                    var docContainer = fragmentElement.querySelector(".doc-container");
+                    if (docContainer) {
+                        var audio = docContainer.querySelector("#noteAudio");
+                        if (audio && hasDoc()) {
+                            try {
+                                if (docContainer.style) {
+                                    docContainer.style.display = "";
+                                }
+                                audio.src = getDocData();
+                                if (typeof audio.load === "function") {
+                                    audio.load();
+                                }
+                                if (typeof audio.play === "function") {
+                                    audio.play();
+                                }
+                            } catch (e) {
+                                Log.print(Log.L.error, "audio returned error:" + e);
                             }
-                            audio.src = getDocData();
-                            if (typeof audio.load === "function") {
-                                audio.load();
-                            }
-                            if (typeof audio.play === "function") {
-                                audio.play();
-                            }
-                        } catch (e) {
-                            Log.print(Log.L.error, "audio returned error:" + e);
+                        } else {
+                            that.removeAudio();
                         }
-                    } else {
-                        that.removeAudio();
                     }
                 }
                 Log.ret(Log.l.trace);
