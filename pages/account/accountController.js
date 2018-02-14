@@ -246,11 +246,16 @@
                     }, {
                         LoginName: that.binding.dataLogin.Login
                     }).then(function () {
+                        var deviceID = "";
+                        if (window.device && window.device.uuid) {
+                            deviceID = "DeviceID=" + window.device.uuid;
+                        }
                         if (!err) {
                             var dataLogin = {
                                 Login: that.binding.dataLogin.Login,
                                 Password: that.binding.dataLogin.Password,
-                                LanguageID: AppData.getLanguageId()
+                                LanguageID: AppData.getLanguageId(),
+                                Aktion: deviceID
                             };
                             return Account.loginView.insert(function (json) {
                                 // this callback will be called asynchronously

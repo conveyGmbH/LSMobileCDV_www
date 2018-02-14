@@ -750,7 +750,7 @@
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
                     var showconfirmbox = that.showConfirmBoxMandatory();
                     if (showconfirmbox) {
-                        var confirmTitle = getResourceText("questionnaire.labelConfirmMandatoryField") + ": " +
+                        var confirmTitle = getResourceText("questionnaire.labelConfirmMandatoryField") + ":\n" +
                             that.actualquestion.FRAGESTELLUNG;
                         confirm(confirmTitle, function (result) {
                            if (result) {

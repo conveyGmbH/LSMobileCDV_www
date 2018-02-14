@@ -159,10 +159,15 @@
                     LoginName: that.binding.dataLogin.Login
                 }).then(function () {
                     if (!err) {
+                        var deviceID = "";
+                        if (window.device && window.device.uuid) {
+                            deviceID = "DeviceID=" + window.device.uuid;
+                        }
                         var dataLogin = {
                             Login: that.binding.dataLogin.Login,
                             Password: that.binding.dataLogin.Password,
-                            LanguageID: AppData.getLanguageId()
+                            LanguageID: AppData.getLanguageId(),
+                            Aktion: deviceID
                         };
                         return Login.loginView.insert(function (json) {
                             // this callback will be called asynchronously
