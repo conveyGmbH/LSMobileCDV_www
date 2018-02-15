@@ -275,7 +275,7 @@
                                 if (json && json.d) {
                                     var prevUserRemoteData = AppData._userRemoteData;
                                     AppData._userRemoteData = json.d;
-                                    AppData.appSettings.odata.timeZoneRemoteAdjustment = AppData._userRemoteData.TimeZoneAdjustment;
+                                    AppData.appSettings.odata.timeZoneRemoteAdjustment = AppData._userRemoteData.TimeZoneAdjustment || 0;
                                     if (AppData._userRemoteData.CurrentTS) {
                                         var msString = AppData._userRemoteData.CurrentTS.replace("\/Date(", "").replace(")\/", "");
                                         var millisecondsRemote = parseInt(msString) - AppData.appSettings.odata.timeZoneRemoteAdjustment * 60000;
