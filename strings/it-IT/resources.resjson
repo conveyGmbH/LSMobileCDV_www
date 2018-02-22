@@ -264,6 +264,12 @@
     "register.confirmation" : "Conferma",
     "register.complete"     : "Grazie per esserti registrato! A breve riceverai una E-Mail di conferma all'indirizzo immesso prima.",
      
+    "recover.title"         : "Password dimenticata",
+    "recover.commentEmail"  : "Per favore inserisci la tua E-Mail. È possibile utilizzarlo per reimpostare la password.",
+    "recover.email"         : "Email",
+    "recover.complete"      : "A breve riceverai una E-Mail di conferma.",
+     
+
     "account.title"         : "Impostazioni di login",
     "account.comment"       : "Attenzione: al momento del log-out o connettendosi con un altro utente, tutti i dati salvati solo localmente verranno cancellati",
     "account.confirmLogOff" : "Attenzione: al momento del log-out o connettendosi con un altro utente, tutti i dati salvati solo localmente verranno cancellati",
@@ -352,6 +358,7 @@
     "label.info"            : "Options",
     "label.login"           : "Login",
     "label.register"        : "Registrazione",
+    "label.recover"         : "Recupero",
     "label.listContact"     : "Contatti",
     "label.contacts"        : "Modifica contatti",
     "label.questionList"    : "Domande/Risposte",

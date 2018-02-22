@@ -269,6 +269,11 @@
     "register.confirmation" : "Bestätigung",
     "register.complete"     : "Vielen Dank für Ihre Registrierung! Sie erhalten in Kürze eine Email zur Bestätigung an die oben angegebene Adresse.",
      
+    "recover.title"         : "Kennwort vergessen",
+    "recover.commentEmail"  : "Bitte geben Sie Ihre Email-Adresse an. Sie können damit ihr Kennwort zurücksetzen.",
+    "recover.email"         : "Email",
+    "recover.complete"      : "Sie erhalten in Kürze eine Email zur Bestätigung an die oben angegebene Adresse.",
+
     "account.title"         : "Angaben zu Ihrer Anmeldung",
     "account.comment"       : "Beachten Sie bitte, daß alle von der App lokal auf dem Gerät gespeicherten Daten gelöscht werden, wenn Sie sich abmelden oder mit einem anderen Konto anmelden!",
     "account.confirmLogOff" : "Beachten Sie bitte, daß alle von der App lokal auf \ndem Gerät gespeicherten Daten gelöscht werden, \nwenn Sie sich abmelden oder mit einem anderen \nKonto anmelden!",
@@ -358,6 +363,7 @@
     "label.info"            : "Optionen",
     "label.login"           : "Anmelden",
     "label.register"        : "Registrieren",
+    "label.recover"         : "Wiederherstellen",
     "label.listContact"     : "Kontakte",
     "label.contacts"        : "Kontakte bearbeiten",
     "label.questionList"    : "Fragen/Antworten",

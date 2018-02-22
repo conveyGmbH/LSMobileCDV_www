@@ -268,6 +268,11 @@
     "register.confirmation" : "Confirmation",
     "register.complete"     : "Merci pour votre inscription! Vous recevrez bientôt un email de confirmation. Il sera envoyé à l'adresse indiquée ci-dessus.",
      
+    "recover.title"         : "Mot de passe oublié",
+    "recover.commentEmail"  : "S'il vous plaît entrer votre adresse e-mail. Vous pouvez l'utiliser pour réinitialiser votre mot de passe.",
+    "recover.email"         : "Adresse e-mail",
+    "recover.complete"      : "Vous recevrez bientôt un email de confirmation.",
+     
     "account.title"         : "Paramètres de connexion",
     "account.comment"       : "Attention, tout les données sauvgarder sur l'application peut'il supprimée si vous disconnester ou connecter avec un autre compte!",
     "account.confirmLogOff" : "Attention, tout les données sauvgarder sur \nl'application peut'il supprimée si vous disconnester \nou connecter avec un autre compte!",
@@ -356,6 +361,7 @@
     "label.info"            : "Paramètres",
     "label.login"           : "Connecter",
     "label.register"        : "Registre",
+    "label.recover"         : "Récupération",
     "label.listContact"     : "Contact",
     "label.contacts"        : "modifier de contact",
     "label.questionList"    : "Questions/Réponses",

@@ -250,7 +250,7 @@
      
     "register.title"        : "Registration",
     "register.welcome"      : "Welcome to LeadSuccess!",
-    "register.commentEmail" : "Pleas enter your email address. Later, You can use it to login as a user.",
+    "register.commentEmail" : "Please enter your email address. Later, You can use it to login as a user.",
     "register.email"        : "Email",
     "register.comment"      : "Please enter the following data to register.",
     "register.company"      : "Company",
@@ -267,6 +267,11 @@
     "register.password"     : "Password",
     "register.confirmation" : "Confirmation",
     "register.complete"     : "Thank you very much for your registration! You will receive an email for confirmation soon. It will be send to the address written above.",
+     
+    "recover.title"         : "Forgot password",
+    "recover.commentEmail"  : "Please enter your email address. You can use it to reset yout password.",
+    "recover.email"         : "Email",
+    "recover.complete"      : "You will receive an email for confirmation soon. It will be send to the address written above.",
      
     "account.title"         : "Logon Settings",
     "account.comment"       : "Please, pay attention to the fact, that all data of the app stored locally on the deviced will be deleted if you logoff or login with another account!",
@@ -356,6 +361,7 @@
     "label.info"            : "Options",
     "label.login"           : "Login",
     "label.register"        : "Register",
+    "label.recover"         : "Recovery",
     "label.listContact"     : "Contacts",
     "label.contacts"        : "Edit Contacts",
     "label.questionList"    : "Questions/Answers",

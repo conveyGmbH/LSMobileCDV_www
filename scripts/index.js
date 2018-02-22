@@ -30,8 +30,10 @@
         prevNavigateNewId: "newContact",
         inputBorder: 1,
         odata: {
-            https: true,
-            hostName: "leadsuccess.convey.de",
+            //https: true,
+            //hostName: "leadsuccess.convey.de",
+            https: false,
+            hostName: "deimos.convey.de",
             onlinePort: 8090,
             urlSuffix: null,
             onlinePath: "odata_online", // serviceRoot online requests
@@ -76,6 +78,7 @@
         { id: "account", group: 3, disabled: false },
         { id: "login", group: 4, disabled: false },
         { id: "register", group: 4, disabled: false },
+        { id: "recover", group: 4, disabled: false },
         { id: "contactRemote", group: 5, disabled: false },
         { id: "questionnaireRemote", group: 5, disabled: true },
         { id: "sketchRemote", group: 5, disabled: true }

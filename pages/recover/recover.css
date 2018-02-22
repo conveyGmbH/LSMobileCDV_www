@@ -1,0 +1,16 @@
+﻿.recover-email {
+    visibility: visible;
+}
+
+.recover-complete, .recover-address {
+    visibility: hidden;
+    display: none;
+}
+
+.recover-message {
+    color: red;
+}
+
+.recover-checkbox {
+    margin-bottom: 0;
+}
