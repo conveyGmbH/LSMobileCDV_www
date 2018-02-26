@@ -31,14 +31,14 @@
 
             // ListView control
             var listView = pageElement.querySelector("#listQuestionnaire.listview");
-            var flipview = null;
+            var flipView = pageElement.querySelector("#imgListQuestionnaire.flipview");
 
             this.dispose = function () {
                 if (listView && listView.winControl) {
                     listView.winControl.itemDataSource = null;
                 }
-                if (flipview && flipview.winControl) {
-                    flipview.winControl.itemDataSource = null;
+                if (flipView && flipView.winControl) {
+                    flipView.winControl.itemDataSource = null;
                 }
                 if (that.questions) {
                     that.questions = null;
@@ -53,6 +53,11 @@
                     that.docIds = null;
                 }
             };
+
+            var hasDoc = function () {
+                return (that.images && that.images.length > 0);
+            }
+            this.hasDoc = hasDoc;
 
             var scrollToRecordId = function (recordId) {
                 Log.call(Log.l.trace, "QuestionList.Controller.", "recordId=" + recordId);
@@ -577,39 +582,6 @@
             };
             this.textFromDateCombobox = textFromDateCombobox;
 
-            var showFlipView = function () {
-                Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
-                flipview = pageElement.querySelector("#imgListQuestionnaire.flipview");
-                if (flipview && flipview.winControl) {
-                    if (that.images && that.images.length > 0) {
-                        Log.print(Log.l.trace, "showFlipView: SHOW images.length=" + that.images.length);
-                        if (flipview.parentElement && flipview.parentElement.style) {
-                            flipview.parentElement.style.display = "inline";
-                        }
-                        flipview.winControl.itemDataSource = that.images.dataSource;
-                        // show flipview in list footer via animation on iOS due to iOS10 bug!
-                        if (typeof device === "object" && device.platform === "iOS") {
-                            WinJS.Promise.timeout(0).then(function () {
-                                var footerContainer = listView.querySelector(".win-footercontainer");
-                                if (footerContainer && footerContainer.style) {
-                                    WinJS.UI.Animation.enterContent(footerContainer);
-                                }
-                            });
-                        }
-                    } else {
-                        Log.print(Log.l.trace, "showFlipView: HIDE");
-                        flipview.winControl.itemDataSource = null;
-                        if (flipview.parentElement && flipview.parentElement.style) {
-                            flipview.parentElement.style.display = "none";
-                        }
-                    }
-                } else {
-                    Log.print(Log.l.error, "NO flipview!");
-                }
-                Log.ret(Log.l.trace);
-            }
-            this.showFlipView = showFlipView;
-
             // define handlers
             this.eventHandlers = {
                 clickBack: function (event) {
@@ -917,15 +889,6 @@
                                             that.resultConverter(item);
                                             that.binding.count = that.questions.push(item);
                                         });
-                                    } else {
-                                        if (progress && progress.style) {
-                                            progress.style.display = "none";
-                                        }
-                                        if (counter && counter.style) {
-                                            counter.style.display = "inline";
-                                        }
-                                        that.loading = false;
-                                        showFlipView();
                                     }
                                 }, function (errorResponse) {
                                     // called asynchronously if an error occurs
@@ -938,7 +901,6 @@
                                         counter.style.display = "inline";
                                     }
                                     that.loading = false;
-                                    that.showFlipView();
                                 }, null, nextUrl);
                             } else {
                                 if (progress && progress.style) {
@@ -948,7 +910,10 @@
                                     counter.style.display = "inline";
                                 }
                                 that.loading = false;
-                                that.showFlipView();
+                                if (flipView &&  flipView.parentElement && flipView.winControl &&
+                                    WinJS.Utilities.hasClass(flipView.parentElement, "img-footer-container")) {
+                                    flipView.winControl.forceLayout();
+                                }
                             }
                         }
                     }
@@ -1032,6 +997,10 @@
                 }
             }
 
+            if (flipView && flipView.winControl) {
+                flipView.winControl.itemDataSource = null;
+            }
+
             // register ListView event handler
             if (listView) {
                 this.addRemovableEventListener(listView, "selectionchanged", this.eventHandlers.onSelectionChanged.bind(this));
@@ -1064,12 +1033,17 @@
                     for (var i = 0; i < that.images.length; i++) {
                         var imageItem = that.images[i];
                         if (imageItem && imageItem.DOC1ZeilenantwortID === pictureId) {
-                            if (flipview && flipview.winControl) {
+                            if (flipView && flipView.winControl) {
                                 if (that.images && that.images.length > 0) {
-                                    flipview.winControl.itemDataSource = that.images.dataSource;
+                                    flipView.winControl.itemDataSource = that.images.dataSource;
                                 }
                             }
-                            that.showFlipView();
+                            var pageControl = pageElement.winControl;
+                            if (pageControl && pageControl.updateLayout) {
+                                pageControl.prevWidth = 0;
+                                pageControl.prevHeight = 0;
+                                pageControl.updateLayout.call(pageControl, pageElement);
+                            }
                             ret = WinJS.Promise.as();
                             break;
                         }
@@ -1086,7 +1060,7 @@
                                 that.images = new WinJS.Binding.List([]);
                             }
                             var docContent;
-                            if (json.d.wFormat === 1) {
+                            if (json.d.PrevContentDOCCNT2) {
                                 docContent = json.d.PrevContentDOCCNT2;
                             } else {
                                 docContent = json.d.DocContentDOCCNT1;
@@ -1103,7 +1077,19 @@
                                 });
                             }
                         }
-                        that.showFlipView();
+                        if (flipView && flipView.winControl) {
+                            if (that.images && that.images.length > 0) {
+                                flipView.winControl.itemDataSource = that.images.dataSource;
+                            }
+                        }
+                        WinJS.Promise.timeout(50).then(function () {
+                            var pageControl = pageElement.winControl;
+                            if (pageControl && pageControl.updateLayout) {
+                                pageControl.prevWidth = 0;
+                                pageControl.prevHeight = 0;
+                                pageControl.updateLayout.call(pageControl, pageElement);
+                            }
+                        });
                     }, function (errorResponse) {
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.

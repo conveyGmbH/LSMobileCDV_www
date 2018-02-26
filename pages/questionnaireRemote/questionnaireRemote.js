@@ -96,20 +96,130 @@
             if (element && !that.inResize) {
                 that.inResize = 1;
                 ret = WinJS.Promise.timeout(0).then(function () {
-                    var listQuestionnaire = element.querySelector("#listQuestionnaire.listview");
-                    if (listQuestionnaire && listQuestionnaire.style) {
+                    var headerInner = element.querySelector(".header-inner");
+                    var flipView = element.querySelector("#imgListQuestionnaire.flipview");
+                    var docContainer = element.querySelector(".doc-container");
+                    var fieldsContainer = element.querySelector(".fields-container");
+                    if (that.controller &&
+                        fieldsContainer && fieldsContainer.style &&
+                        docContainer && docContainer.style) {
                         var contentarea = element.querySelector(".contentarea");
                         if (contentarea) {
                             var width = contentarea.clientWidth;
                             var height = contentarea.clientHeight - 8;
-
+                            var fieldWidth;
+                            var docWidth;
+                            var contentheader = element.querySelector(".header-container .content-header");
+                            if (contentheader) {
+                                height -= contentheader.clientHeight;
+                            }
+                            if (that.controller.hasDoc()) {
+                                if (width > 699) {
+                                    fieldWidth = width / 2;
+                                    var maxDocContainerWidth = height / Math.sqrt(2) - 16;
+                                    if (fieldWidth > maxDocContainerWidth) {
+                                        docWidth = maxDocContainerWidth;
+                                        fieldWidth = width - docWidth - 16;
+                                    } else {
+                                        docWidth = fieldWidth - 16;
+                                    }
+                                } else {
+                                    fieldWidth = width - 16;
+                                    docWidth = 0;
+                                }
+                            } else {
+                                fieldWidth = width;
+                                docWidth = 0;
+                            }
                             if (width !== that.prevWidth) {
                                 that.prevWidth = width;
-                                listQuestionnaire.style.width = width.toString() + "px";
+                                fieldsContainer.style.width = fieldWidth.toString() + "px";
+                                docContainer.style.width = docWidth.toString() + "px";
                             }
                             if (height !== that.prevHeight) {
                                 that.prevHeight = height;
-                                listQuestionnaire.style.height = height.toString() + "px";
+                                docContainer.style.height = height.toString() + "px";
+                                fieldsContainer.style.height = height.toString() + "px";
+                                if (that.controller.hasDoc() && flipView && flipView.style) {
+                                    flipView.style.height = height.toString() + "px";
+                                }
+                            }
+                            if (docWidth > 0) {
+                                docContainer.style.display = "";
+                                var headerContainer = element.querySelector(".header-container");
+                                if (headerContainer && headerInner && (!headerInner.parentElement || !WinJS.Utilities.hasClass(flipView.parentElement, "header-container"))) {
+                                    if (headerInner.parentElement) {
+                                        headerInner.parentElement.removeChild(headerInner);
+                                    }
+                                    headerContainer.appendChild(headerInner);
+                                }
+                            } else {
+                                docContainer.style.display = "none";
+                                var listHeader = element.querySelector("#listQuestionnaire .list-header");
+                                if (listHeader && headerInner && (!headerInner.parentElement || !WinJS.Utilities.hasClass(flipView.parentElement, "list-header"))) {
+                                    if (headerInner.parentElement) {
+                                        headerInner.parentElement.removeChild(headerInner);
+                                    }
+                                    listHeader.appendChild(headerInner);
+                                }
+                            }
+                            var imgFooterContainer = element.querySelector("#listQuestionnaire .img-footer-container");
+                            if (docWidth > 0 || !imgFooterContainer) {
+                                WinJS.Utilities.addClass(element, "view-size-split");
+                                if (flipView &&
+                                    (!flipView.parentElement || !WinJS.Utilities.hasClass(flipView.parentElement, "doc-container"))) {
+                                    if (flipView.parentElement) {
+                                        flipView.parentElement.removeChild(flipView);
+                                    }
+                                    docContainer.appendChild(flipView);
+                                    if (flipView.winControl) {
+                                        flipView.winControl.forceLayout();
+                                    }
+                                }
+                            } else {
+                                WinJS.Utilities.removeClass(element, "view-size-split");
+                                if (flipView && imgFooterContainer &&
+                                    (!flipView.parentElement || !WinJS.Utilities.hasClass(flipView.parentElement, "img-footer-container"))) {
+                                    if (flipView.parentElement) {
+                                        flipView.parentElement.removeChild(flipView);
+                                    }
+                                    imgFooterContainer.appendChild(flipView);
+                                    if (flipView.winControl) {
+                                        flipView.winControl.forceLayout();
+                                    }
+                                }
+                            }
+                            WinJS.Utilities.removeClass(element, "view-size-small");
+                            WinJS.Utilities.removeClass(element, "view-size-medium-small");
+                            WinJS.Utilities.removeClass(element, "view-size-medium");
+                            WinJS.Utilities.removeClass(element, "view-size-bigger");
+                            if (fieldWidth > 499) {
+                                // remove class: view-size-small  
+                                WinJS.Utilities.removeClass(fieldsContainer, "view-size-small");
+                            } else {
+                                // add class: view-size-small    
+                                WinJS.Utilities.addClass(fieldsContainer, "view-size-small");
+                            }
+                            if (fieldWidth > 699) {
+                                // remove class: view-size-medium-small  
+                                WinJS.Utilities.removeClass(fieldsContainer, "view-size-medium-small");
+                            } else {
+                                // add class: view-size-medium-small    
+                                WinJS.Utilities.addClass(fieldsContainer, "view-size-medium-small");
+                            }
+                            if (fieldWidth > 899) {
+                                // remove class: view-size-medium    
+                                WinJS.Utilities.removeClass(fieldsContainer, "view-size-medium");
+                            } else {
+                                // add class: view-size-medium
+                                WinJS.Utilities.addClass(fieldsContainer, "view-size-medium");
+                            }
+                            if (fieldWidth > 1099) {
+                                // remove class: view-size-bigger
+                                WinJS.Utilities.removeClass(fieldsContainer, "view-size-bigger");
+                            } else {
+                                // add class: view-size-bigger
+                                WinJS.Utilities.addClass(fieldsContainer, "view-size-bigger");
                             }
                         }
                     }
@@ -117,7 +227,7 @@
                 });
             }
             Log.ret(Log.l.u1);
-            return ret;
+            return ret || WinJS.Promise.as();
         }
     });
 })();
