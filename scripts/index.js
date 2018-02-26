@@ -30,10 +30,10 @@
         prevNavigateNewId: "newContact",
         inputBorder: 1,
         odata: {
-            //https: true,
-            //hostName: "leadsuccess.convey.de",
-            https: false,
-            hostName: "deimos.convey.de",
+            https: true,
+            hostName: "leadsuccess.convey.de",
+            //https: false,
+            //hostName: "deimos.convey.de",
             onlinePort: 8090,
             urlSuffix: null,
             onlinePath: "odata_online", // serviceRoot online requests

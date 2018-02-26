@@ -14,7 +14,7 @@
         },
         contactView: {
             insert: function (complete, error, viewResponse) {
-                Log.call(Log.l.trace, "contactView.");
+                Log.call(Log.l.trace, "Questionnaire.contactView.");
                 var ret = Questionnaire._contactView.insert(complete, error, viewResponse);
                 Log.ret(Log.l.trace);
                 return ret;

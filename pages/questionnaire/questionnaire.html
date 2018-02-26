@@ -12,8 +12,8 @@
         <div id="questionnaireController" class="data-container">
             <section aria-label="Main content" role="main" class="animationElement">
                 <div class="contentarea win-type-body">
-                    <div class="headerFooterPlaceholder">
-                        <div class="list-header">
+                    <div class="header-container">
+                        <div class="header-inner">
                             <div class="header-separator"></div>
                             <div class="content-header">
                                 <div class="half-circle half-circle-textcolor">&nbsp;</div>
@@ -22,7 +22,12 @@
                                     <span class="caption-field" data-win-res="{textContent: 'questionnaire.title'}"></span>
                                     <span class="date-field" data-win-bind="textContent: generalData.contactDate Binding.Converter.toDateString"></span>
                                 </div>
+                                <div class="line-separator"></div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="headerFooterPlaceholder">
+                        <div class="list-header">
                         </div>
                     </div>
                     <div class="listQuestionnaire-single-rating-template"
@@ -986,7 +991,7 @@
                                     <!--<span data-win-res="{textContent: 'questionnaire.count'}"></span><span>: </span><span data-win-bind="textContent: count"></span>-->
                                 </div>
                             </div>
-                            <div class="img-list-questionnaire-container">
+                            <div class="img-footer-container">
                                 <div class="header-separator"></div>
                                 <div class="content-header">
                                     <div class="half-circle half-circle-textcolor">&nbsp;</div>
@@ -996,24 +1001,30 @@
                                         <span class="date-field"></span>
                                     </div>
                                 </div>
-                                <div id="imgListQuestionnaire"
-                                     class="flipview"
-                                     data-win-control="WinJS.UI.FlipView"
-                                     data-win-options="{
-                                        itemTemplate: select('.img-list-item'),
-                                        itemSpacing : 0
-                                     }">
-                                </div>
                             </div>
                         </div>
                     </div>
-                    <div id="listQuestionnaire"
-                         class="listview"
-                         data-win-control="WinJS.UI.ListView"
-                         data-win-options="{
-                             header: select('.list-header'),
-                             footer: select('.list-footer')
-                         }">
+                    <div class="content-record">
+                        <div class="fields-container">
+                            <div id="listQuestionnaire"
+                                 class="listview"
+                                 data-win-control="WinJS.UI.ListView"
+                                 data-win-options="{
+                                    header: select('.list-header'),
+                                    footer: select('.list-footer')
+                                 }">
+                            </div>
+                        </div>
+                        <div class="doc-container">
+                            <div id="imgListQuestionnaire"
+                                 class="flipview"
+                                 data-win-control="WinJS.UI.FlipView"
+                                 data-win-options="{
+                                    itemTemplate: select('.img-list-item'),
+                                    itemSpacing : 16
+                                 }">
+                            </div>
+                        </div>
                     </div>
                     <div class="error-message"
                          data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
