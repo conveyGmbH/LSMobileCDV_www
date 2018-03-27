@@ -1,6 +1,8 @@
 ﻿// controller for page: questionnaire
 /// <reference path="~/www/lib/WinJS/scripts/base.js" />
 /// <reference path="~/www/lib/WinJS/scripts/ui.js" />
+/// <reference path="~/www/lib/convey/scripts/logging.js" />
+/// <reference path="~/www/lib/convey/scripts/strings.js" />
 /// <reference path="~/www/lib/convey/scripts/appSettings.js" />
 /// <reference path="~/www/lib/convey/scripts/dataService.js" />
 /// <reference path="~/www/lib/convey/scripts/appbar.js" />
@@ -158,6 +160,7 @@
             var maxTrailingPages = 0;
 
             var resultConverter = function (item, index) {
+                var keyValue, keyTitle, iStr, i;
                 if (item.SRMax) {
                     item.type = "single-rating";
                 } else if (item.MRShow01) {
@@ -172,9 +175,8 @@
                         item.type = "single8";
                     }
                     if (typeof item.SSANTWORT !== "undefined") {
-                        for (var i = 1; i <= 28; i++) {
-                            var keyValue, keyTitle;
-                            var iStr = i.toString();
+                        for (i = 1; i <= 28; i++) {
+                            i.toString();
                             if (i < 10) {
                                 keyValue = "SSANTWORT0" + iStr;
                                 keyTitle = "SS0" + iStr;
@@ -248,10 +250,9 @@
                 }
                 // Abfrage welcher Typ um Typ von Antwort, dann alle null werte ignorieren 
                 if (item.type === "single-rating") {
-                    for (var y = 1; y <= 6; y++) {
-                        var keyValue, keyTitle;
-                        var iStr = y.toString();
-                        if (y < 10) {
+                    for (i = 1; i <= 6; i++) {
+                        i.toString();
+                        if (i < 10) {
                             // keyValue = "SRANTWORT0" + iStr;
                             keyTitle = "SR0" + iStr;
                         } else {
@@ -267,10 +268,9 @@
                     }
                 }
                 if (item.type === "multi-rating") {
-                    for (var y = 1; y <= 6; y++) {
-                        var keyValue, keyTitle;
-                        var iStr = y.toString();
-                        if (y < 10) {
+                    for (i = 1; i <= 6; i++) {
+                        i.toString();
+                        if (i < 10) {
                             keyValue = "MRShow0" + iStr;
                             keyTitle = "MR0" + iStr;
                         } else {
