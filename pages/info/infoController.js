@@ -1,12 +1,14 @@
 ﻿// controller for page: info
 /// <reference path="~/www/lib/WinJS/scripts/base.js" />
 /// <reference path="~/www/lib/WinJS/scripts/ui.js" />
+/// <reference path="~/www/lib/convey/scripts/logging.js" />
 /// <reference path="~/www/lib/convey/scripts/appSettings.js" />
 /// <reference path="~/www/lib/convey/scripts/dataService.js" />
 /// <reference path="~/www/lib/convey/scripts/appbar.js" />
 /// <reference path="~/www/lib/convey/scripts/pageController.js" />
 /// <reference path="~/www/scripts/generalData.js" />
 /// <reference path="~/www/pages/info/infoService.js" />
+/// <reference path="~/plugins/cordova-plugin-device/www/device.js" />
 
 (function () {
     "use strict";
@@ -14,11 +16,16 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Info.Controller.");
 
+            var isWindows = false;
             var isAndroid = false;
-            if (typeof device === "object" && device.platform === "Android") {
-                isAndroid = true;
-                if (typeof AppData.generalData.useAudioNote === "undefined") {
-                    AppData._persistentStates.useAudioNote = false;
+            if (typeof device === "object" && typeof device.platform === "string") {
+                if (device.platform === "Android") {
+                    if (typeof AppData.generalData.useAudioNote === "undefined") {
+                        AppData._persistentStates.useAudioNote = false;
+                    }
+                    isAndroid = true;
+                } else if (device.platform.substr(0, 7) === "windows") {
+                    isWindows = true;
                 }
             }
             Application.Controller.apply(this, [pageElement, {
@@ -29,7 +36,8 @@
                 version: Application.version,
                 environment: "Platform: " + navigator.appVersion,
                 showClipping: false,
-                isAndroid: isAndroid
+                isAndroid: isAndroid,
+                isWindows: isWindows
             }, commandList]);
 
             var that = this;
@@ -204,7 +212,7 @@
             AppData.setErrorMsg(this.binding);
             
             if (AppData.appSettings.odata.login &&
-                AppData.appSettings.odata.login.search("convey.de") > 0) {
+                (AppData.appSettings.odata.login.search("convey.de") > 0 || isWindows)) {
                 that.binding.showClipping = true;
             }
 
