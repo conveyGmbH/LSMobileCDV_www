@@ -5,6 +5,7 @@
 /// <reference path="~/www/lib/WinJS/scripts/base.min.js" />
 /// <reference path="~/www/lib/WinJS/scripts/ui.js" />
 /// <reference path="~/www/lib/convey/scripts/logging.js" />
+/// <reference path="~/www/lib/convey/scripts/navigator.js" />
 /// <reference path="~/www/lib/convey/scripts/pageFrame.js" />
 /// <reference path="~/www/scripts/generalData.js" />
 
@@ -80,8 +81,8 @@
         { id: "register", group: 4, disabled: false },
         { id: "recover", group: 4, disabled: false },
         { id: "contactRemote", group: 5, disabled: false },
-        { id: "questionnaireRemote", group: 5, disabled: true },
-        { id: "sketchRemote", group: 5, disabled: true }
+        { id: "questionnaireRemote", group: 5, disabled: false },
+        { id: "sketchRemote", group: 5, disabled: false }
     ];
 
     // init page for app startup

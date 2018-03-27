@@ -1,10 +1,13 @@
 ﻿// controller for page: contact
 /// <reference path="~/www/lib/WinJS/scripts/base.js" />
 /// <reference path="~/www/lib/WinJS/scripts/ui.js" />
+/// <reference path="~/www/lib/convey/scripts/logging.js" />
+/// <reference path="~/www/lib/convey/scripts/strings.js" />
 /// <reference path="~/www/lib/convey/scripts/appSettings.js" />
 /// <reference path="~/www/lib/convey/scripts/dataService.js" />
 /// <reference path="~/www/lib/convey/scripts/appbar.js" />
 /// <reference path="~/www/lib/convey/scripts/pageController.js" />
+/// <reference path="~/www/lib/convey/scripts/replService.js" />
 /// <reference path="~/www/scripts/generalData.js" />
 /// <reference path="~/www/pages/contact/contactService.js" />
 
