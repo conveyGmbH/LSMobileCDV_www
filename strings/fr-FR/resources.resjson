@@ -361,7 +361,7 @@
     "label.info"            : "Paramètres",
     "label.login"           : "Connecter",
     "label.register"        : "Registre",
-    "label.recover"         : "Récupération",
+    "label.recover"         : "Mot de passe neuf",
     "label.listContact"     : "Contact",
     "label.contacts"        : "modifier de contact",
     "label.questionList"    : "Questions/Réponses",
