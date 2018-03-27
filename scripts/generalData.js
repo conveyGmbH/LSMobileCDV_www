@@ -482,8 +482,7 @@
             var color;
             switch (item.INITOptionTypeID) {
                 case 10:
-                    item.colorPickerId = "individualColors";
-                    property = item.colorPickerId;
+                    property = "individualColors";
                     if (item.LocalValue === "1") {
                         AppData._persistentStates.individualColors = true;
                         AppData._persistentStates.serverColors = true;
@@ -493,7 +492,6 @@
                     break;
                 case 11:
                     if (AppData._persistentStates.serverColors) {
-                        item.colorPickerId = "accentColor";
                         property = "accentColor";
                         if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
                             color = AppData.persistentStatesDefaults.colorSettings[property];
@@ -503,7 +501,6 @@
                     break;
                 case 12:
                     if (AppData._persistentStates.serverColors) {
-                        item.colorPickerId = "backgroundColor";
                         property = "backgroundColor";
                         if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
                             color = AppData.persistentStatesDefaults.colorSettings[property];
@@ -513,7 +510,6 @@
                     break;
                 case 13:
                     if (AppData._persistentStates.serverColors) {
-                        item.colorPickerId = "navigationColor";
                         property = "navigationColor";
                         if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
                             color = AppData.persistentStatesDefaults.colorSettings[property];
@@ -523,7 +519,6 @@
                     break;
                 case 14:
                     if (AppData._persistentStates.serverColors) {
-                        item.colorPickerId = "textColor";
                         property = "textColor";
                         if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
                             color = AppData.persistentStatesDefaults.colorSettings[property];
@@ -533,7 +528,6 @@
                     break;
                 case 15:
                     if (AppData._persistentStates.serverColors) {
-                        item.colorPickerId = "labelColor";
                         property = "labelColor";
                         if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
                             color = AppData.persistentStatesDefaults.colorSettings[property];
@@ -543,7 +537,6 @@
                     break;
                 case 16:
                     if (AppData._persistentStates.serverColors) {
-                        item.colorPickerId = "tileTextColor";
                         property = "tileTextColor";
                         if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
                             color = AppData.persistentStatesDefaults.colorSettings[property];
@@ -553,7 +546,6 @@
                     break;
                 case 17:
                     if (AppData._persistentStates.serverColors) {
-                        item.colorPickerId = "tileBackgroundColor";
                         property = "tileBackgroundColor";
                         if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
                             color = AppData.persistentStatesDefaults.colorSettings[property];

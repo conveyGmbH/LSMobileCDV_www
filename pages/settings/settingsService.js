@@ -15,7 +15,7 @@
         },
         CR_VERANSTOPTION_ODataView: {
             select: function (complete, error, restriction) {
-                Log.call(Log.l.trace, "employeeView.");
+                Log.call(Log.l.trace, "CR_VERANSTOPTION_ODataView.");
                 var ret = Settings._CR_VERANSTOPTION_View.select(complete,
                     error,
                     restriction,
