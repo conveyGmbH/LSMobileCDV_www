@@ -262,11 +262,17 @@
                 if (that.binding.generalData.useClippingCamera) {
                     if (navigator.clippingCamera &&
                         typeof navigator.clippingCamera.getPicture === "function") {
+                        var autoShutterTime = 0;
+                        if (typeof that.binding.generalData.autoShutterTime === "string") {
+                            autoShutterTime = parseInt(that.binding.generalData.autoShutterTime);
+                        } else if (typeof that.binding.generalData.autoShutterTime === "number") {
+                            autoShutterTime = that.binding.generalData.autoShutterTime;
+                        }
                         navigator.clippingCamera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                             quality: AppData.generalData.cameraQuality,
                             convertToGrayscale: AppData.generalData.cameraUseGrayscale,
                             maxResolution: 3000000,
-                            autoShutter: that.binding.generalData.autoShutterTime
+                            autoShutter: autoShutterTime
                         });
                     }
                 } else {

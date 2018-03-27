@@ -211,8 +211,8 @@
 
             AppData.setErrorMsg(this.binding);
             
-            if (AppData.appSettings.odata.login &&
-                (AppData.appSettings.odata.login.search("convey.de") > 0 || isWindows)) {
+            if (AppData.appSettings.odata.login && AppData.appSettings.odata.login.search("convey.de") > 0 || 
+                isWindows) {
                 that.binding.showClipping = true;
             }
 
