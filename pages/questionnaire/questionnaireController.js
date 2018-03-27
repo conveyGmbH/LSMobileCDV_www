@@ -1187,7 +1187,7 @@
                                 that.images = new WinJS.Binding.List([]);
                             }
                             var docContent;
-                            if (json.d.wFormat === 1) {
+                            if (json.d.PrevContentDOCCNT2) {
                                 docContent = json.d.PrevContentDOCCNT2;
                             } else {
                                 docContent = json.d.DocContentDOCCNT1;

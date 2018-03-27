@@ -176,7 +176,7 @@
                     }
                     if (typeof item.SSANTWORT !== "undefined") {
                         for (i = 1; i <= 28; i++) {
-                            i.toString();
+                            iStr = i.toString();
                             if (i < 10) {
                                 keyValue = "SSANTWORT0" + iStr;
                                 keyTitle = "SS0" + iStr;
@@ -251,7 +251,7 @@
                 // Abfrage welcher Typ um Typ von Antwort, dann alle null werte ignorieren 
                 if (item.type === "single-rating") {
                     for (i = 1; i <= 6; i++) {
-                        i.toString();
+                        iStr = i.toString();
                         if (i < 10) {
                             // keyValue = "SRANTWORT0" + iStr;
                             keyTitle = "SR0" + iStr;
@@ -269,7 +269,7 @@
                 }
                 if (item.type === "multi-rating") {
                     for (i = 1; i <= 6; i++) {
-                        i.toString();
+                        iStr = i.toString();
                         if (i < 10) {
                             keyValue = "MRShow0" + iStr;
                             keyTitle = "MR0" + iStr;
@@ -474,7 +474,7 @@
                             for (prop in newRecord) {
                                 if (newRecord.hasOwnProperty(prop)) {
                                     if (prop !== "Freitext") {
-                                        if (newRecord[prop].length > 0 && newRecord[prop] !== "0" && newRecord[prop] !== "00") {
+                                        if (newRecord[prop] && newRecord[prop].length > 0 && newRecord[prop] !== "0" && newRecord[prop] !== "00") {
                                             Log.call(Log.l.u1, "QuestionnaireRemote.Controller. Answer not empty" + newRecord.prop);
                                             ret = false;
                                             break;
@@ -600,7 +600,9 @@
                     Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                     var showconfirmbox = that.showConfirmBoxMandatory();
                     if (showconfirmbox) {
-                        confirm("Pflichtfrage nicht ausgefüllt: \n" + that.actualquestion.FRAGESTELLUNG, function (result) {
+                        var confirmTitle = getResourceText("questionnaire.labelConfirmMandatoryField") + ":\n" +
+                            that.actualquestion.FRAGESTELLUNG;
+                        confirm(confirmTitle, function (result) {
                            if (result) {
                                Application.navigateById('sketchRemote', event);
                            } else {
