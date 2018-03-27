@@ -158,7 +158,7 @@
     "search.title"          : "Entrez les critères de recherche",
     "search.comment"        : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "search.ID"             : "ID",
-    "search.deviceID"       : "numéro d'appareil",
+    "search.deviceID"       : "Appareil",
     "search.company"        : "Société",
     "search.firstName"      : "Prénom",
     "search.name"           : "Nom",

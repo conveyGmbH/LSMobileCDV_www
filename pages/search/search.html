@@ -24,50 +24,69 @@
                         </div>
                         <div class="line-separator"></div>
                         <div class="field_line field_line_odd">
-                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.ID'}"></span>
-                            <span class="label landscape_only" data-win-res="{textContent: 'contact.ID'}"></span>
-                            <input class="input_field win-textbox" type="text" data-win-bind="value: restriction.KontaktVIEWID Binding.Mode.twoway" />
+                            <span class="label win-type-caption portrait_only_left" data-win-res="{textContent: 'search.deviceID'}"></span>
+                            <span class="label win-type-caption portrait_only_half" data-win-res="{textContent: 'search.ID'}"></span>
+                            <!--<span class="label win-type-caption portrait_only_half" data-win-res="{textContent: 'reporting.employee'}"></span>-->
+                            <span class="label landscape_only">
+                                <span data-win-res="{textContent: 'search.deviceID'}"></span> / <span data-win-res="{textContent: 'search.ID'}"></span>
+                            </span>
+                            <div class="input_group">
+                                <input class="input_half_left win-textbox" type="number" min="1" max="99999999" data-win-bind="value: restriction.CreatorSiteID Binding.Mode.twoway" />
+                                <input class="input_half_right win-textbox" type="number" min="1" max="99999999" data-win-bind="value: restriction.CreatorRecID Binding.Mode.twoway" />
+                            <!--<div class="input_half_right">
+                                <select id="ErfasserIDSearch"
+                                        class="input_field_noLabel win-dropdown"
+                                        data-win-control="WinJS.UI.Repeater"
+                                        data-win-bind="value: restriction.MitarbeiterID Binding.Mode.twoway">
+                                    
+                                    <option data-win-bind="value: MitarbeiterVIEWID; textContent: Login"></option>
+
+                                </select>
+                            </div>-->
+                            </div>
                         </div>
                         <div class="field_line field_line_even">
-                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.company'}"></span>
-                            <span class="label landscape_only" data-win-res="{textContent: 'contact.company'}"></span>
+                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'search.company'}"></span>
+                            <span class="label landscape_only" data-win-res="{textContent: 'search.company'}"></span>
                             <input class="input_field win-textbox" type="text" data-win-bind="value: restriction.Firmenname Binding.Mode.twoway" />
                         </div>
                         <div class="line-separator"></div>
                         <div class="field_line field_line_odd">
-                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.firstName'}"></span>
-                            <span class="label landscape_only" data-win-res="{textContent: 'contact.firstName'}"></span>
+                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'search.firstName'}"></span>
+                            <span class="label landscape_only" data-win-res="{textContent: 'search.firstName'}"></span>
                             <input type="text" class="input_field win-textbox" data-win-bind="value: restriction.Vorname Binding.Mode.twoway" />
                         </div>
                         <div class="field_line field_line_even">
-                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.name'}"></span>
-                            <span class="label landscape_only" data-win-res="{textContent: 'contact.name'}"></span>
+                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'search.name'}"></span>
+                            <span class="label landscape_only" data-win-res="{textContent: 'search.name'}"></span>
                             <input type="text" class="input_field win-textbox" data-win-bind="value: restriction.Name Binding.Mode.twoway" />
                         </div>
                         <div class="line-separator"></div>
                         <div class="field_line field_line_odd">
-                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.email'}"></span>
-                            <span class="label landscape_only" data-win-res="{textContent: 'contact.email'}"></span>
+                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'search.email'}"></span>
+                            <span class="label landscape_only" data-win-res="{textContent: 'search.email'}"></span>
                             <input type="text" class="input_field win-textbox" data-win-bind="value: restriction.EMail Binding.Mode.twoway" />
                         </div>
                         <div class="field_line field_line_even">
-                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.address'}"></span>
-                            <span class="label landscape_only" data-win-res="{textContent: 'contact.address'}"></span>
+                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'search.address'}"></span>
+                            <span class="label landscape_only" data-win-res="{textContent: 'search.address'}"></span>
                             <input class="input_field win-textbox" type="text" data-win-bind="value: restriction.Strasse Binding.Mode.twoway" />
                         </div>
                         <div class="line-separator"></div>
                         <div class="field_line field_line_odd">
-                            <span class="label win-type-caption portrait_only_left" data-win-res="{textContent: 'contact.zip'}"></span>
-                            <span class="label win-type-caption portrait_only_right" data-win-res="{textContent: 'contact.city'}"></span>
-                            <span class="label landscape_only"><span data-win-res="{textContent: 'contact.zip'}"></span>/<span data-win-res="{textContent: 'contact.city'}"></span></span>
+                            <span class="label win-type-caption portrait_only_left" data-win-res="{textContent: 'search.zip'}"></span>
+                            <span class="label win-type-caption portrait_only_right" data-win-res="{textContent: 'search.city'}"></span>
+                            <span class="label landscape_only">
+                                <span data-win-res="{textContent: 'search.zip'}"></span> / <span data-win-res="{textContent: 'search.city'}"></span>
+                            </span>
                             <div class="input_group">
                                 <input type="text" class="input_small_left win-textbox" data-win-bind="value: restriction.PLZ Binding.Mode.twoway" />
                                 <input type="text" class="input_small_right win-textbox" data-win-bind="value: restriction.Stadt Binding.Mode.twoway" />
                             </div>
                         </div>
                         <div class="field_line field_line_even">
-                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.country'}"></span>
-                            <span class="label landscape_only" data-win-res="{textContent: 'contact.country'}"></span>
+                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'search.country'}"></span>
+                            <span class="label landscape_only" data-win-res="{textContent: 'search.country'}"></span>
                             <select id="InitLandSearch"
                                     class="input_field win-dropdown"
                                     data-win-control="WinJS.UI.Repeater"
@@ -77,32 +96,54 @@
                         </div>
                         <div class="line-separator"></div>
                         <div class="field_line field_line_odd">
-                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.editedOn'}"></span>
-                            <span class="label landscape_only" data-win-res="{textContent: 'contact.editedOn'}"></span>
+                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'search.editedOn'}"></span>
+                            <span class="label landscape_only" data-win-res="{textContent: 'search.editedOn'}"></span>
                             <div class="input_group">
                                 <div data-win-control="WinJS.UI.DatePicker" id="Erfassungsdatum" class="input_big_left"
-                                        data-win-bind="winControl.current: restriction.Erfassungsdatum Binding.Mode.twoway">
+                                     data-win-bind="winControl.current: restriction.Erfassungsdatum Binding.Mode.twoway">
                                 </div>
                                 <label class="input_big_right">
                                     <input type="checkbox" class="win-checkbox" value="1"
-                                            data-win-bind="checked: restriction.useErfassungsdatum"
-                                            onchange="AppBar.handleEvent('change', 'clickErfassungsdatum', event)" />
-                                    <span data-win-res="{textContent: 'contact.useRestriction'}"></span>
+                                           data-win-bind="checked: restriction.useErfassungsdatum"
+                                           onchange="AppBar.handleEvent('change', 'clickErfassungsdatum', event)" />
+                                    <span data-win-res="{textContent: 'search.useRestriction'}"></span>
                                 </label>
                             </div>
                         </div>
                         <div class="field_line field_line_even">
-                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.modifiedOn'}"></span>
-                            <span class="label landscape_only" data-win-res="{textContent: 'contact.modifiedOn'}"></span>
+                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'search.modifiedOn'}"></span>
+                            <span class="label landscape_only" data-win-res="{textContent: 'search.modifiedOn'}"></span>
                             <div class="input_group">
                                 <div data-win-control="WinJS.UI.DatePicker" id="modifiedTS" class="input_big_left"
-                                        data-win-bind="winControl.current: restriction.ModifiedTS Binding.Mode.twoway">
+                                     data-win-bind="winControl.current: restriction.ModifiedTS Binding.Mode.twoway">
                                 </div>
                                 <label class="input_big_right">
                                     <input type="checkbox" class="win-checkbox" value="1"
-                                            data-win-bind="checked: restriction.usemodifiedTS"
-                                            onchange="AppBar.handleEvent('change', 'clickmodifiedTS', event)" />
+                                           data-win-bind="checked: restriction.usemodifiedTS"
+                                           onchange="AppBar.handleEvent('change', 'clickmodifiedTS', event)" />
                                     <span data-win-res="{textContent: 'contact.useRestriction'}"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <!--Auswahlbox für Filter-->
+                        <div class="line-separator"></div>
+                        <div class="field_line field_line_odd">
+                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'search.filter'}"></span>
+                            <div class="input_group">
+                                <label class="radio">
+                                    <input type="radio" name="Erfassungsart" value="1" class="win-checkbox"
+                                           data-win-bind="checked: Erfassungsart1">
+                                    <span data-win-res="{textContent: 'search.barcode'}"></span>
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="Erfassungsart" value="2" class="win-checkbox"
+                                           data-win-bind="checked: Erfassungsart2">
+                                    <span data-win-res="{textContent: 'search.businesscard'}"></span>
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="Erfassungsart" value="0" class="win-checkbox"
+                                           data-win-bind="checked: Erfassungsart0">
+                                    <span data-win-res="{textContent: 'search.default'}"></span>
                                 </label>
                             </div>
                         </div>

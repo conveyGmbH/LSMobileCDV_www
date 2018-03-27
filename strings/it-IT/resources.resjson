@@ -154,7 +154,7 @@
     "search.title"          : "Immettere i criteri di ricerca",
     "search.comment"        : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "search.ID"             : "ID",
-    "search.deviceID"       : "numero di dispositivo",
+    "search.deviceID"       : "Dispositivo",
     "search.company"        : "Azienda",
     "search.firstName"      : "Nome",
     "search.name"           : "Cognome",

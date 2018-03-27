@@ -158,7 +158,7 @@
     "search.title"          : "Enter search criteria",
     "search.comment"        : "On this page, use the Back button to go back!",
     "search.ID"             : "ID",
-    "search.deviceID"       : "Device number",
+    "search.deviceID"       : "Device",
     "search.company"        : "Company",
     "search.firstName"      : "First Name",
     "search.name"           : "Last Name",

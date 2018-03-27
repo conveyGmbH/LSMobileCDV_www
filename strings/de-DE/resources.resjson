@@ -159,7 +159,7 @@
     "search.title"          : "Kriterien zur Suche",
     "search.comment"        : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
     "search.ID"             : "ID",
-    "search.deviceID"       : "Gerätenummer",
+    "search.deviceID"       : "Gerät",
     "search.company"        : "Firma",
     "search.firstName"      : "Vorname",
     "search.name"           : "Name",
