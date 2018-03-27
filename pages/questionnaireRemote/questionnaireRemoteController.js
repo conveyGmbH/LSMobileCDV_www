@@ -865,7 +865,7 @@
                         counter = listView.querySelector(".list-footer .counter");
                         var visible = eventInfo.detail.visible;
                         if (visible) {
-                            if (that.contacts && that.nextUrl) {
+                            if (that.questions && that.nextUrl) {
                                 that.loading = true;
                                 if (progress && progress.style) {
                                     progress.style.display = "inline";
