@@ -224,18 +224,6 @@
                 if (item.Freitext === null) {
                     item.Freitext = "";
                 }
-                if (item.DOC1ZeilenantwortID !== "undefined") {
-                    that.docIds.push({
-                        ZeilenantwortVIEWID: item.ZeilenantwortVIEWID,
-                        DOC1ZeilenantwortID: item.DOC1ZeilenantwortID
-                    });
-                    if (item.DOC1ZeilenantwortID) {
-                        that.docCount++;
-                        WinJS.Promise.timeout(50).then(function () {
-                            that.loadPicture(item.DOC1ZeilenantwortID);
-                        });
-                    }
-                }
                 if (item.DateCombobox) {
                     item["DateComboboxButtonShow"] = true;
                     item["DateComboboxButtonOk"] = false;
@@ -249,6 +237,8 @@
                     } else {
                         item["mandatoryColor"] = "lightyellow";
                     }
+                } else {
+                    item["mandatoryColor"] = AppData._persistentStates.showAppBkg ? "transparent" : Colors.backgroundColor;
                 }
                 // Abfrage welcher Typ um Typ von Antwort, dann alle null werte ignorieren 
                 if (item.type === "single-rating") {
@@ -287,7 +277,18 @@
                         }
                     }
                 }
-
+                if (index >= 0) {
+                    that.docIds[index] = {
+                        ZeilenantwortVIEWID: item.ZeilenantwortVIEWID,
+                        DOC1ZeilenantwortID: item.DOC1ZeilenantwortID
+                    };
+                    if (item.DOC1ZeilenantwortID) {
+                        that.docCount++;
+                        WinJS.Promise.timeout(50).then(function () {
+                            that.loadPicture(item.DOC1ZeilenantwortID);
+                        });
+                    }
+                }
             }
             this.resultConverter = resultConverter;
 
@@ -633,7 +634,7 @@
                         that.mergeRecord(curScope, newRecord);
                         switch (id) {
                             case "showDateCombobox":
-                                that.resultConverter(curScope);
+                                that.resultConverter(curScope, -1);
                                 curScope.DateComboboxButtonShow = false;
                                 curScope.DateComboboxButtonOk = true;
                                 break;
@@ -657,7 +658,7 @@
                                 }, function (errorResponse) {
                                     AppData.setErrorMsg(that.binding, errorResponse);
                                 }, recordId, curScope);
-                                that.resultConverter(curScope);
+                                that.resultConverter(curScope, -1);
                                 curScope.DateComboboxButtonShow = true;
                                 curScope.DateComboboxButtonOk = false;
                                 break;
@@ -1012,7 +1013,7 @@
                                         that.nextUrl = Questionnaire.questionnaireView.getNextUrl(json);
                                         var results = json.d.results;
                                         results.forEach(function (item) {
-                                            that.resultConverter(item);
+                                            that.resultConverter(item, that.binding.count);
                                             that.binding.count = that.questions.push(item);
                                         });
                                     }
@@ -1292,8 +1293,8 @@
                                     that.questions = new WinJS.Binding.List(results);
                                     that.binding.count = that.questions.length;
                                 } else {
-                                    results.forEach(function (item, index) {
-                                        that.resultConverter(item, index);
+                                    results.forEach(function (item) {
+                                        that.resultConverter(item, that.binding.count);
                                         that.binding.count = that.questions.push(item);
                                     });
                                 }

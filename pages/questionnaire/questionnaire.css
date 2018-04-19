@@ -86,11 +86,12 @@
 }
 
 .list-fragengruppe-container {
-    display: block;
+    display: inline-block;
     position: relative;
     margin-left: -26px;
     margin-right: -26px;
     margin-top: -2px;
+    width: calc(100% + 52px);
 }
 .list-fragengruppe-field {
     width: 100%;
@@ -116,11 +117,10 @@
 
 .questionnaire-row {
     /*margin-top: 10px;*/
-    height: auto;
+    display: inline;
 }
 .field_line_questionnaire {
     width: 100%;
-    height: auto;
 }
 .field_row_odd {
     float: left;
@@ -256,6 +256,7 @@ textarea:-ms-input-placeholder { font-style:italic; } /* ie */
     margin-left: -18px;
     margin-right: -18px;
     margin-top: -8px;
+    width: calc(100% + 36px);
 }
 .view-size-medium .field_row_odd {
     float: left;
@@ -318,6 +319,7 @@ textarea:-ms-input-placeholder { font-style:italic; } /* ie */
     margin-left: -10px;
     margin-right: -10px;
     margin-top: -4px;
+    width: calc(100% + 20px);
 }
 .view-size-small .field_line_left {
     float: left;
