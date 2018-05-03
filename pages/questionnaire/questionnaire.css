@@ -34,11 +34,6 @@
     padding-bottom: 16px;
 }
 
-/*.listView .questionnaireLayout */
-#listQuestionnaire .win-selectionbackground {
-  opacity: 0;
-}
-
 #listQuestionnaire .question-button {
     background-color: transparent;  
     /*
@@ -75,12 +70,14 @@
 .list-question-field {
     padding-bottom: 8px;
     padding-top: 10px;
+    min-height: 32px;
     width: 60%;
     float: left;
 }
 .require-field {
     padding-bottom: 8px;
     padding-top: 10px;
+    min-height: 32px;
     width: 5%;
     float: left;
 }
@@ -105,19 +102,18 @@
 .list-question-multi-rating {
     float: left;
     width: 30%;
-    padding-bottom:0;
+    padding-bottom: 0;
     padding-top: 28px;
 }
 .list-question-multi-rating-deep{
     float: left;
     width: 30%;
-    padding-bottom:0;
-    padding-top:12px;
+    padding-bottom: 0;
+    padding-top: 12px;
 }
 
 .questionnaire-row {
     /*margin-top: 10px;*/
-    display: inline;
 }
 .field_line_questionnaire {
     width: 100%;
@@ -142,11 +138,8 @@
 }
 .field-text-comment {
     width: 100%;
-    height:26px;
-}
-.field-text-comment:focus {
-    height: 100px;
-    width: 100%;
+    height: 26px;
+    display: block;
 }
 .field-text-comment-big{/*:focus*/
     height: 100px;
@@ -157,7 +150,7 @@
     max-width: 70px;
     height: 15px;
     display: inline-block;
-    text-align:center;
+    text-align: center;
     margin-bottom: 2px;
 }
 
@@ -165,8 +158,8 @@
    /* display:inline-block; */
     float: right;
     width: 70%;
-    margin-left:0;
-    margin-top:0;
+    margin-left: 0;
+    margin-top: 0;
 
 }
 .rating-field {
@@ -174,20 +167,21 @@
     width: 40%;
 }
 .multi-rating-checkbox{
-    width:100%;
+    width: 100%;
 }
 .multi-rating-span{
-    width:100%;
-    padding-left:3px;
+    width: 100%;
+    padding-left: 3px;
 }
-textarea::-webkit-input-placeholder {font-style:italic; }
-textarea::-moz-placeholder { font-style:italic; } /* firefox 19+ */
-textarea:-ms-input-placeholder { font-style:italic; } /* ie */
+textarea::placeholder { font-style: italic; }
+textarea::-webkit-input-placeholder { font-style: italic; }
+textarea::-moz-placeholder { font-style: italic; } /* firefox 19+ */
+textarea:-ms-input-placeholder { font-style: italic; } /* ie */
 
 /*General Styles used for all FlipViews*/
 #imgListQuestionnaire.flipview {
     background-image: url("/www/images/bkgtexture.png");
-    left:0;
+    left: 0;
     padding: 0;
     width: calc(100% - 16px);
     height: 100%;
@@ -202,8 +196,8 @@ textarea:-ms-input-placeholder { font-style:italic; } /* ie */
     position: absolute;
     width: 100%;
     height: auto;
-    bottom:0;
-    left:0;
+    bottom: 0;
+    left: 0;
 }
 
 .overlaid-item-template .overlay {
@@ -212,9 +206,9 @@ textarea:-ms-input-placeholder { font-style:italic; } /* ie */
     height: 20px;
     padding: 20px 15px;
     overflow: hidden;
-    width:100%;
-    bottom:0;
-    left:0;
+    width: 100%;
+    bottom: 0;
+    left: 0;
 }
 
 .overlaid-item-template .overlay .item-title {
@@ -267,9 +261,9 @@ textarea:-ms-input-placeholder { font-style:italic; } /* ie */
     width: 100%;
 }
 .view-size-medium .field-separator {
-        width:calc(100% - 40px);
-        height:0;
-        float:left;
+    width: calc(100% - 40px);
+    height: 0;
+    float: left;
 }
 /*
     margins/paddings for medium small size screens 
@@ -333,6 +327,6 @@ textarea:-ms-input-placeholder { font-style:italic; } /* ie */
     display: none;
 }
 .view-size-small .rating-question-field {
-    float:left;
+    float: left;
     width: 100%;
 }
