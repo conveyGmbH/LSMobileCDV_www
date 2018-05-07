@@ -148,7 +148,7 @@
                             if (docWidth > 0) {
                                 docContainer.style.display = "";
                                 var headerContainer = element.querySelector(".header-container");
-                                if (headerContainer && headerInner && (!headerInner.parentElement || !WinJS.Utilities.hasClass(flipView.parentElement, "header-container"))) {
+                                if (headerContainer && headerInner && (!headerInner.parentElement || !WinJS.Utilities.hasClass(headerInner.parentElement, "header-container"))) {
                                     if (headerInner.parentElement) {
                                         headerInner.parentElement.removeChild(headerInner);
                                     }
@@ -157,7 +157,7 @@
                             } else {
                                 docContainer.style.display = "none";
                                 var listHeader = element.querySelector("#listQuestionnaire .list-header");
-                                if (listHeader && headerInner && (!headerInner.parentElement || !WinJS.Utilities.hasClass(flipView.parentElement, "list-header"))) {
+                                if (listHeader && headerInner && (!headerInner.parentElement || !WinJS.Utilities.hasClass(headerInner.parentElement, "list-header"))) {
                                     if (headerInner.parentElement) {
                                         headerInner.parentElement.removeChild(headerInner);
                                     }

@@ -768,77 +768,42 @@
                 },
                 pressEnterKey: function (event) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
-
-                    /* if (event && event.target) {
-                         var comboInputFocus = event.target.querySelector(".win-dropdown:focus");
-                         if (comboInputFocus) {
-                             event.preventDefault();
-                         } else {
-                             // set focus into textarea if current mouse cursor is inside of element position
-                             var freitextInput = event.target.querySelector(".field-text-comment");
-                             if (freitextInput) {
-                                 console.log(freitextInput.value);
-                             }
-
-                         }
-
-
-                    var freitextInput = event.target.querySelector(".field-text-comment");
-                    if (freitextInput) {
-                        console.log(freitextInput.value);
-                    }
-                    if (event.keyCode === WinJS.Utilities.Key.enter) {
-                        var textareas = pageElement.getElementsByTagName("textarea");
-                        if (textareas) {
-
-                            if (document.activeElement) {
-                                console.log(event.keyCode);
-
-                                document.activeElement.value += "\n";
-                                event.preventDefault();
-
-
-                            } else {
-                                Log.call(Log.l.trace, "Questionnaire.Controller.");
-                                for (var j = 0; j < AppBar.commandList.length; j++) {
-                                    if (AppBar.commandList[j].id === "clickForward")
-                                        AppBar.commandList[j].key = WinJS.Utilities.Key.enter;
-                                }
-
-                            }
-
-
+                    if (event && event.keyCode === WinJS.Utilities.Key.enter &&
+                        event.target && event.target.tagName &&
+                        event.target.tagName.toLowerCase() === "textarea") {
+                        if (event.stopPropagation) {
+                            event.stopPropagation();
+                        } else {
+                            event.cancelBubble = true;
                         }
-
-                        //}
-
-                    }*/
-                    var textareas = pageElement.getElementsByTagName("textarea");
-                    if (textareas) {
-                        for (var i = 0; i < textareas.length; i++) {
-                            if (textareas[i] === document.activeElement) {
-                                if (event.keyCode === WinJS.Utilities.Key.enter) {
-                                    textareas[i].value += "\n";
-                                }
-
-                            }
-                        }
-
                     }
-
+                    Log.ret(Log.l.trace);
                 },
                 activateEnterKey: function (event) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
                     for (var i = 0; i < AppBar.commandList.length; i++) {
-                        if (AppBar.commandList[i].id === "clickForward")
+                        if (AppBar.commandList[i].id === "clickForward") {
                             AppBar.commandList[i].key = WinJS.Utilities.Key.enter;
+                            break;
+                        }
                     }
+                    if (event && event.target && !event.target.value) {
+                        WinJS.Utilities.removeClass(event.target, "field-text-comment-big");
+                    }
+                    Log.ret(Log.l.trace);
                 },
                 deactivateEnterKey: function (event) {
+                    Log.call(Log.l.trace, "Questionnaire.Controller.");
                     for (var i = 0; i < AppBar.commandList.length; i++) {
-                        if (AppBar.commandList[i].id === "clickForward")
+                        if (AppBar.commandList[i].id === "clickForward") {
                             AppBar.commandList[i].key = null;
+                            break;
+                        }
                     }
+                    if (event && event.target) {
+                        WinJS.Utilities.addClass(event.target, "field-text-comment-big");
+                    }
+                    Log.ret(Log.l.trace);
                 },
                 onPointerDown: function (e) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
@@ -1066,28 +1031,11 @@
                                         that.cursorPos.x <= left + width &&
                                         that.cursorPos.y >= top &&
                                         that.cursorPos.y <= top + height) {
-                                        WinJS.Promise.timeout(0).then(function () {
+                                        WinJS.Promise.timeout(0).then(function() {
                                             // set focus async!
                                             freitextInput.focus();
                                         });
-                                        /* Log.call(Log.l.trace, "Questionnaire.Controller.");
-                                         for (var i = 0; i < AppBar.commandList.length; i++) {
-                                             if (AppBar.commandList[i].id === "clickForward")
-                                                 AppBar.commandList[i].key = null;
-                                         }*/
-                                    } else {
-                                        /* Log.call(Log.l.trace, "Questionnaire.Controller.");
-                                         for (var j = 0; j < AppBar.commandList.length; j++) {
-                                             if (AppBar.commandList[j].id === "clickForward")
-                                                 AppBar.commandList[j].key = WinJS.Utilities.Key.enter;
-                                         }*/
                                     }
-
-                                }
-                                if (freitextInput.value) {
-                                    WinJS.Utilities.addClass(freitextInput, "field-text-comment-big");
-                                } else {
-                                    WinJS.Utilities.removeClass(freitextInput, "field-text-comment-big");
                                 }
                             }
                         }
@@ -1143,7 +1091,11 @@
                             case WinJS.Utilities.Key.leftArrow:
                             case WinJS.Utilities.Key.rightArrow:
                             case WinJS.Utilities.Key.space:
-                                e.stopImmediatePropagation();
+                                if (e.stopPropagation) {
+                                    e.stopPropagation();
+                                } else {
+                                    e.cancelBubble = true;
+                                }
                                 break;
                         }
                     }
