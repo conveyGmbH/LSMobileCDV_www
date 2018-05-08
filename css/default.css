@@ -560,6 +560,9 @@ span.input_field, span.input_small_right, span.large_field, span.input_small_lef
     padding-left: 0;
 }
 */
+span.radio, span.checkbox {
+    display: flex;
+}
 select.input_field, select.input_small_left{
     height: 32px;
 }
