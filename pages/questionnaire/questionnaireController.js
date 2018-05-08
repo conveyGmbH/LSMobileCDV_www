@@ -445,9 +445,8 @@
 
             var showConfirmBoxMandatory = function () {
                 var ret = false;
-                var i;
-                
-                for (i = 0; i < that.questions.length; i++) {
+                Log.call(Log.l.trace, "Questionnaire.Controller.");
+                for (var i = 0; i < that.questions.length; i++) {
                     var question = that.questions.getAt(i);
                     if (question &&
                         typeof question === "object" &&
@@ -460,10 +459,11 @@
                         var prop;
                         
                         ret = true;
-                        if (curScope.type === "multi-rating") {
+                        if (curScope.type.substr(0,5) === "multi") {
                             for (prop in newRecord) {
                                 if (newRecord.hasOwnProperty(prop)) {
-                                    if (prop !== "Freitext") {
+                                    var propPrefix = prop.substr(0, 9);
+                                    if (propPrefix === "MSANTWORT" || propPrefix === "MsAntwort" || propPrefix === "MrAntwort") {
                                         if (newRecord[prop] === "X") {
                                             ret = false;
                                             break;
@@ -475,16 +475,14 @@
                                 break;
                             }
                         } else {
-                            for (prop in newRecord) {
-                                if (newRecord.hasOwnProperty(prop)) {
-                                    if (prop !== "Freitext") {
-                                        if (newRecord[prop] && newRecord[prop].length > 0 && newRecord[prop] !== "0" && newRecord[prop] !== "00") {
-                                            Log.call(Log.l.u1,"Questionnaire.Controller. Answer not empty" + newRecord.prop);
-                                            ret = false;
-                                            break;
-                                        }
-                                    } 
-                                }
+                            if (curScope.type === "single-rating") {
+                                prop = "RRANTWORT";
+                            } else {
+                                prop = "SSANTWORT";
+                            }
+                            if (newRecord[prop] && newRecord[prop].length > 0 && newRecord[prop] !== "0" && newRecord[prop] !== "00") {
+                                Log.call(Log.l.u1, "Questionnaire.Controller. Answer not empty" + newRecord.prop);
+                                ret = false;
                             }
                             if (ret) {
                                 break;
