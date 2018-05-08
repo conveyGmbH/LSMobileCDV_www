@@ -69,14 +69,6 @@
             var that = this;
             Log.call(Log.l.trace, pageName + ".");
             if (this.controller) {
-                var fnSaveData = function() {
-                    return that.controller.saveData(function (response) {
-                        // called asynchronously if ok
-                        complete(response);
-                    }, function (errorResponse) {
-                        error(errorResponse);
-                    });
-                }
                 var showconfirmbox = this.controller.showConfirmBoxMandatory();
                 if (showconfirmbox && this.controller.actualquestion) {
                     var confirmTitle = getResourceText("questionnaire.labelConfirmMandatoryField") + ":\n" +
@@ -93,10 +85,22 @@
                                 that.controller.selectRecordId(that.controller.actualquestion.ZeilenantwortVIEWID);
                                 error(result);
                             }
-                        }).then(fnSaveData);
+                        }).then(function () {
+                            return that.controller.saveData(function (response) {
+                                // called asynchronously if ok
+                                complete(response);
+                            }, function (errorResponse) {
+                                error(errorResponse);
+                            });
+                        });
                     }
                 } else {
-                    ret = fnSaveData;
+                    ret = that.controller.saveData(function (response) {
+                        // called asynchronously if ok
+                        complete(response);
+                    }, function (errorResponse) {
+                        error(errorResponse);
+                    });
                 }
             } else {
                 ret = WinJS.Promise.as().then(function () {
