@@ -450,8 +450,7 @@
                     var question = that.questions.getAt(i);
                     if (question &&
                         typeof question === "object" &&
-                        question.PflichtFeld &&
-                        AppData._persistentStates.showConfirmQuestion) {
+                        question.PflichtFeld) {
 
                         var curScope = question;
                         that.actualquestion = question;
@@ -721,21 +720,7 @@
                 },
                 clickForward: function (event) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
-                    var showconfirmbox = that.showConfirmBoxMandatory();
-                    if (showconfirmbox) {
-                        var confirmTitle = getResourceText("questionnaire.labelConfirmMandatoryField") + ":\n" +
-                            that.actualquestion.FRAGESTELLUNG;
-                        confirm(confirmTitle, function (result) {
-                           if (result) {
-                               Application.navigateById('sketch', event);
-                           } else {
-                               that.selectRecordId(that.actualquestion.ZeilenantwortVIEWID);
-                           }
-                        });   
-                    } else {
-                        Application.navigateById('sketch', event);
-                    }
-                    //Vielleicht hier showconfirmbox?
+                    Application.navigateById('sketch', event);
                     Log.ret(Log.l.trace);
                 },
                 clickRating: function (event) {

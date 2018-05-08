@@ -65,15 +65,39 @@
             Log.ret(Log.l.trace);
         },
         canUnload: function (complete, error) {
+            var ret = null;
+            var that = this;
             Log.call(Log.l.trace, pageName + ".");
-            var ret;
             if (this.controller) {
-                ret = this.controller.saveData(function (response) {
-                    // called asynchronously if ok
-                    complete(response);
-                }, function (errorResponse) {
-                    error(errorResponse);
-                });
+                var fnSaveData = function() {
+                    return that.controller.saveData(function (response) {
+                        // called asynchronously if ok
+                        complete(response);
+                    }, function (errorResponse) {
+                        error(errorResponse);
+                    });
+                }
+                var showconfirmbox = this.controller.showConfirmBoxMandatory();
+                if (showconfirmbox && this.controller.actualquestion) {
+                    var confirmTitle = getResourceText("questionnaire.labelConfirmMandatoryField") + ":\n" +
+                        this.controller.actualquestion.FRAGESTELLUNG;
+                    if (AppData._persistentStates.showConfirmQuestion) {
+                        ret = alert(confirmTitle, function(result) {
+                            that.controller.selectRecordId(that.controller.actualquestion.ZeilenantwortVIEWID);
+                        }).then(function(result) {
+                            error(result);
+                        });
+                    } else {
+                        ret = confirm(confirmTitle, function (result) {
+                            if (!result) {
+                                that.controller.selectRecordId(that.controller.actualquestion.ZeilenantwortVIEWID);
+                                error(result);
+                            }
+                        }).then(fnSaveData);
+                    }
+                } else {
+                    ret = fnSaveData;
+                }
             } else {
                 ret = WinJS.Promise.as().then(function () {
                     var err = { status: 500, statusText: "fatal: page already deleted!" };
