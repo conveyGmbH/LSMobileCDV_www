@@ -29,6 +29,11 @@
             this.images = null;
             this.docIds = null;
 
+            var hasIPhoneBug = false;
+            if (navigator.appVersion && navigator.appVersion.indexOf("iPhone OS 11_3") >= 0) {
+                hasIPhoneBug = true;
+            }
+
             var that = this;
 
             // ListView control
@@ -378,7 +383,7 @@
             this.getFieldEntries = getFieldEntries;
 
             var mergeRecord = function (prevRecord, newRecord) {
-                Log.call(Log.l.u1, "questionnaireController.");
+                Log.call(Log.l.u1, "QuestionnaireRemote.Controller.");
                 var ret = false;
                 for (var prop in newRecord) {
                     if (newRecord.hasOwnProperty(prop)) {
@@ -664,7 +669,7 @@
                             break;
                         }
                     }
-                    if (event && event.target && !event.target.value) {
+                    if (event && event.target && !event.target.value && !hasIPhoneBug) {
                         WinJS.Utilities.removeClass(event.target, "field-text-comment-big");
                     }
                     Log.ret(Log.l.trace);
@@ -677,7 +682,7 @@
                             break;
                         }
                     }
-                    if (event && event.target) {
+                    if (event && event.target && !hasIPhoneBug) {
                         WinJS.Utilities.addClass(event.target, "field-text-comment-big");
                     }
                     Log.ret(Log.l.trace);
