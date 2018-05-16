@@ -386,7 +386,7 @@
     "label.mandatory"       : "Mandatory Fields",
 	  "label.barcodeAdministration" : "Barcode",
     "label.eventcreation"   : "Create an event",
-    "label.products"        : "Products",,
+    "label.products"        : "Products",
     "label.localevents"     : "Create event",
     "label.contactRemote"   : "Contact",
     "label.questionnaireRemote" : "Questionnaire",
