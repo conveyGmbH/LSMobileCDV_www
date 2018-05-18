@@ -140,6 +140,7 @@
     "questionnaire.textarea": "Inserite eventuali commenti in questo spazio",
     "questionnaire.count"   : "Totale",
     "questionnaire.attachments" : "Allegati",
+    "questionnaire.requiredmarker" : "*",
     "questionnaire.labelConfirmMandatoryField" : "Domanda obbligatoria non compilata",
 
     "sketch.title"          : "Disegnare schizzi",
@@ -151,6 +152,7 @@
     "sketch.addNote"        : "Aggiungete una notizia",
     "sketch.addSvg"         : "Aggiungete uno schizzo",
     "sketch.addImg"         : "Aggiungete una foto",
+    "sketch.hideList"       : "Nascondi lista",
     "sketch.questionDelete"	: "Vuoi eliminare questa notizia?",
     "sketch.noPlayer"		    : "Riproduzione non supportata in questo browser",
 
@@ -341,6 +343,7 @@
     "infodesk.search"       : "Ricerca",
     "infodesk.account"      : "Conto",
     "infodesk.info"         : "Messaggio",
+    "infodesk.filter"		: "Filtro",
 
     "infodeskEmpList.title" : "Utenti",
     "infodeskEmpList.count" : "Numero",

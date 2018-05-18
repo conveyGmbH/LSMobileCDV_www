@@ -140,6 +140,7 @@
     "questionnaire.textarea": "Please enter you notes here ",
     "questionnaire.count"   : "Count",
     "questionnaire.attachments" : "Attachments",
+    "questionnaire.requiredmarker" : "*",
     "questionnaire.labelConfirmMandatoryField" : "Mandatory question not fulfilled",
 
     "sketch.title"          : "Captured notes",
@@ -151,6 +152,7 @@
     "sketch.addNote"        : "Add note",
     "sketch.addSvg"         : "Add sketch",
     "sketch.addImg"         : "Add photo",
+    "Sketch.hideList"       : "Hide List",   
     "sketch.questionDelete" : "Do you want to delete the current note?",
     "sketch.noPlayer"       : "Playback not supported on this browser",
 
@@ -341,6 +343,7 @@
     "infodesk.search"       : "Search",
     "infodesk.account"      : "Account",
     "infodesk.info"         : "Message",
+    "infodesk.filter"		: "Filter",
 
     "infodeskEmpList.title" : "User accounts",
     "infodeskEmpList.count" : "Count",

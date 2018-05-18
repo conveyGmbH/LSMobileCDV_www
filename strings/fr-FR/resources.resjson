@@ -1,4 +1,4 @@
-﻿﻿{
+﻿{
     "general.event"         : "Événement",
     "general.today"         : "Aujourd'hui",
     "general.yesterday"     : "Hier",
@@ -140,6 +140,7 @@
     "questionnaire.textarea": "S'il vous plaît entrer votre commentaire ici",
     "questionnaire.count"   : "Nombre",
     "questionnaire.attachments" : "Pièce détachée",
+    "questionnaire.requiredmarker" : "*",
     "questionnaire.labelConfirmMandatoryField" : "Question obligatoire non remplie",
 
     "sketch.title"          : "Dessiner des esquisses",
@@ -151,6 +152,7 @@
     "sketch.addNote"        : "Ajoutez une note",
     "sketch.addSvg"         : "Ajoutez une esquisse",
     "sketch.addImg"         : "Ajoutez une photo",
+    "sketch.hideList"       : "Masquer la liste",
     "sketch.questionDelete"	: "Voulez-vous supprimer cette note?",
     "sketch.noPlayer"		    : "Lecture non prise en charge sur ce navigateur",
 
@@ -341,6 +343,7 @@
     "infodesk.search"       : "Rechercher",
     "infodesk.account"      : "Compte",
     "infodesk.info"         : "Message",
+    "infodesk.filter"		: "Filtre",
 
     "infodeskEmpList.title" : "Comptes utilisateurs",
     "infodeskEmpList.count" : "Nombre",
@@ -490,7 +493,7 @@
     "mailing.mailtext"      : "Texte mail",
     "mailing.standard"      : "standard",
 
-     "mailingProduct.title"        : "Mailing Produit",
+    "mailingProduct.title"         : "Mailing Produit",
     "mailingProduct.event"         : "événement",
     "mailingProduct.language"      : "Langue",
     "mailingProduct.sender"        : "Expéditeur",
@@ -516,6 +519,8 @@
 
 	  "barcodeAdministration.title" : "Barcode",
 	  "barcodeAdministration.count" : "Nombre",
+
+    "eventcreation.title" : "Créer un événement",
 
     "products.title" : "Produits",
 
