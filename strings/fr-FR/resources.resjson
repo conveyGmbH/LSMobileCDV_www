@@ -524,8 +524,12 @@
 
     "products.title" : "Produits",
 
-    "localevents.title" : "Créer un événement",
-    "localevents.event" : "événement",
-    "localevents.begin" : "Début",
-    "localevents.end"   : "Fin"
+    "localeventscreate.title" : "Créer un événement",
+    "localeventscreate.event" : "événement",
+    "localeventscreate.begin" : "Début",
+    "localeventscreate.end"   : "Fin",
+	  "localeventscreate.leadsuccessmobileapp"   : "Nombre d'utilisateurs de l'application mobile",
+	  "localeventscreate.mobilerbarcodescanner"   : "Nombre d'utilisateurs de scanners de codes à barres",
+
+    "localevents.title" : "Événements"
 }
