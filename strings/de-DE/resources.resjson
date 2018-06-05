@@ -67,6 +67,7 @@
     "tooltip.publish"       : "Fragebogen publizieren",
     "tooltip.photo"         : "Foto aufnehmen",
     "tooltip.print"			    : "Drucken",
+	  "tooltip.sendMessage"	: "Nachricht senden",
 
     "start.title"           : "Startseite",
     "start.comment"         : "Verwende die Schaltflächen auf dieser Seite um auf weitere Seiten zu gehen!",

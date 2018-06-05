@@ -67,6 +67,7 @@
     "tooltip.publish"       : "Pubblicare il questionario",
     "tooltip.photo"         : "Scattare foto",
     "tooltip.print"         : "stampa",
+	  "tooltip.sendMessage"	: "Invia un messaggio",
 
     "start.title"           : "Pagina iniziale",
     "start.comment"         : "Utilizzate i pulsanti su questa pagina per muoversi tra le pagine!",
@@ -528,8 +529,8 @@
     "localeventscreate.event" : "evento",
     "localeventscreate.begin" : "inizio",
     "localeventscreate.end"   : "fine",
-	"localeventscreate.leadsuccessmobileapp"   : "Numero di utenti di applicazioni mobili",
-	"localeventscreate.mobilerbarcodescanner"   : "Numero di utenti di barcode scanner",
+	  "localeventscreate.leadsuccessmobileapp"   : "Numero di utenti di applicazioni mobili",
+	  "localeventscreate.mobilerbarcodescanner"   : "Numero di utenti di barcode scanner",
 
     "localevents.title" : "Eventi"
 }

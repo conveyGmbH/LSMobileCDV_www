@@ -67,6 +67,7 @@
     "tooltip.publish"       : "Publier le questionnaire",
     "tooltip.photo"         : "Prendre photo",
     "tooltip.print"         : "imprimer",
+	  "tooltip.sendMessage"	: "Envoyer un message",
 
     "start.title"           : "Accueil",
     "start.comment"         : "Utilisez les boutons sur cette page pour accéder à d'autres pages!",
