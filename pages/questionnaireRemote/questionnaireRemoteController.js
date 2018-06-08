@@ -30,7 +30,9 @@
             this.docIds = null;
 
             var hasIPhoneBug = false;
-            if (navigator.appVersion && navigator.appVersion.indexOf("iPhone OS 11_3") >= 0) {
+            if (navigator.appVersion &&
+                (navigator.appVersion.indexOf("iPhone OS 11_3") >= 0 ||
+                 navigator.appVersion.indexOf("iPhone OS 11_4") >= 0)) {
                 hasIPhoneBug = true;
             }
 
