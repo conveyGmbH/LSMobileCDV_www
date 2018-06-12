@@ -36,6 +36,7 @@
     "command.zoomin"        : "zoom in",
     "command.zoomout"       : "zoom out",
     "command.print"         : "Print",
+	"command.save"			: "Save", 
 
     "tooltip.backward"      : "Browse back",
     "tooltip.edit"          : "Edit current record",
@@ -67,7 +68,13 @@
     "tooltip.publish"       : "Publish questionnaire",
     "tooltip.photo"         : "Capture photo",
     "tooltip.print"         : "Print",
-	  "tooltip.sendMessage"	: "Send Message",
+    "tooltip.sendMessage"	: "Send Message",
+    "tooltip.newevent"		: "Create new event",
+    "tooltip.eventchange"	: "Change event",
+    "tooltip.savepdf"	    : "Save PDF filename",
+    "tooltip.exportpdf"	    : "Export PDF",
+    "tooltip.deletemail"	: "Delete mail",
+    "tooltip.save"			    : "Save",
 
     "start.title"           : "Start Page",
     "start.comment"         : "On this page, use the buttons to go to additional pages!",
@@ -395,6 +402,7 @@
     "label.contactRemote"   : "Contact",
     "label.questionnaireRemote" : "Questionnaire",
     "label.sketchRemote"    : "Notes",
+    "label.pdfExport"     : "PDF Export",
 
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Cancel",
@@ -532,5 +540,19 @@
 	"localeventscreate.leadsuccessmobileapp"   : "Number of mobile app users",
 	"localeventscreate.mobilerbarcodescanner"   : "Number of Barcode scanner users",
 	
-    "localevents.title" : "Events"
+    "localevents.title" : "Events",
+
+    "employeegenpwlist.title"   : "Employee generated passwords",
+	"employeegenpwlist.login" : "Loginname",
+	"employeegenpwlist.password" : "Password",
+
+	"pdfExport.title" : "PDF Export",
+	"pdfExport.filenamepartone" : "First part of the file name",
+	"pdfExport.filenameparttwo" : "Second part of the file name",
+	"pdfExport.filenamepartthree" : "Third part of the file name",
+	"pdfExport.filenamepartfour" : "Fourth part of the file name",
+	"pdfExport.seperator" : "seperator",
+	"pdfExport.samplename" : "example name",
+	"pdfExport.exportPdfMsg" : "Creating your PDF",
+	"pdfExport.msg" : "Edit/Link"
 }

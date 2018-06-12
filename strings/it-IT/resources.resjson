@@ -36,6 +36,7 @@
     "command.zoomin"        : "ingrandire",
     "command.zoomout"       : "ridurre",
     "command.print"         : "stampa",
+	  "command.save"			: "Salvare",
 
     "tooltip.backward"      : "Pagina precedente",
     "tooltip.edit"          : "Modifica Record attuale",
@@ -67,7 +68,13 @@
     "tooltip.publish"       : "Pubblicare il questionario",
     "tooltip.photo"         : "Scattare foto",
     "tooltip.print"         : "stampa",
-	  "tooltip.sendMessage"	: "Invia un messaggio",
+    "tooltip.sendMessage"	: "Invia un messaggio",
+    "tooltip.newevent"		: "Crea un nuovo evento",
+    "tooltip.eventchange"	: "Cambia evento",
+    "tooltip.savepdf"	    : "Salva il nome del file PDF",
+    "tooltip.exportpdf"	    : "Esporta PDF",
+    "tooltip.deletemail"	: "Elimina la posta",
+    "tooltip.save"			    : "Salvare",
 
     "start.title"           : "Pagina iniziale",
     "start.comment"         : "Utilizzate i pulsanti su questa pagina per muoversi tra le pagine!",
@@ -395,6 +402,7 @@
     "label.contactRemote"   : "Contatto",
     "label.questionnaireRemote" : "Questionario",
     "label.sketchRemote"    : "Note",
+    "label.pdfExport"       : "Esportazione PDF",
 
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Annulla",
@@ -529,8 +537,22 @@
     "localeventscreate.event" : "evento",
     "localeventscreate.begin" : "inizio",
     "localeventscreate.end"   : "fine",
-	  "localeventscreate.leadsuccessmobileapp"   : "Numero di utenti di applicazioni mobili",
-	  "localeventscreate.mobilerbarcodescanner"   : "Numero di utenti di barcode scanner",
+	"localeventscreate.leadsuccessmobileapp"   : "Numero di utenti di applicazioni mobili",
+	"localeventscreate.mobilerbarcodescanner"   : "Numero di utenti di barcode scanner",
 
-    "localevents.title" : "Eventi"
+    "localevents.title" : "Eventi",
+
+    "employeegenpwlist.title" : "Le password generate dai dipendenti",
+	"employeegenpwlist.login" : "nome di accesso",
+	"employeegenpwlist.password" : "password",
+
+	"pdfExport.title" : "Esportazione PDF",
+	"pdfExport.filenamepartone" : "Prima parte del nome del file",
+	"pdfExport.filenameparttwo" : "Seconda parte del nome del file",
+	"pdfExport.filenamepartthree" : "Terza parte del nome del file",
+	"pdfExport.filenamepartfour" : "Quarta parte del nome del file",
+	"pdfExport.seperator" : "Seperator",
+	"pdfExport.samplename" : "nome esempio",
+	"pdfExport.exportPdfMsg" : "Creazione del PDF",
+	"pdfExport.msg" : "Modifica/collegamento"
 }

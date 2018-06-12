@@ -36,6 +36,7 @@
     "command.zoomin"        : "agrandir",
     "command.zoomout"       : "diminuer",
     "command.print"         : "imprimer",
+	"command.save"			: "sauver",
 
     "tooltip.backward"      : "Page présédente",
     "tooltip.edit"          : "Modifier le contact en cours",
@@ -67,7 +68,13 @@
     "tooltip.publish"       : "Publier le questionnaire",
     "tooltip.photo"         : "Prendre photo",
     "tooltip.print"         : "imprimer",
-	  "tooltip.sendMessage"	: "Envoyer un message",
+    "tooltip.sendMessage"	: "Envoyer un message",
+    "tooltip.newevent"		: "Créer un nouvel événement",
+    "tooltip.eventchange"	: "Changer d'événement",
+    "tooltip.savepdf"	    : "Enregistrer le nom du fichier PDF",
+    "tooltip.exportpdf"	    : "Exporter PDF",
+    "tooltip.deletemail"	: "Supprimer le mail",
+    "tooltip.save"			    : "Sauver",
 
     "start.title"           : "Accueil",
     "start.comment"         : "Utilisez les boutons sur cette page pour accéder à d'autres pages!",
@@ -395,6 +402,7 @@
     "label.contactRemote"   : "Contact",
     "label.questionnaireRemote" : "Quoitionnaire",
     "label.sketchRemote"    : "Notes",
+    "label.pdfExport"       : "Export PDF",
     
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Annuler",
@@ -529,8 +537,22 @@
     "localeventscreate.event" : "événement",
     "localeventscreate.begin" : "Début",
     "localeventscreate.end"   : "Fin",
-	  "localeventscreate.leadsuccessmobileapp"   : "Nombre d'utilisateurs de l'application mobile",
-	  "localeventscreate.mobilerbarcodescanner"   : "Nombre d'utilisateurs de scanners de codes à barres",
+	"localeventscreate.leadsuccessmobileapp"   : "Nombre d'utilisateurs de l'application mobile",
+	"localeventscreate.mobilerbarcodescanner"   : "Nombre d'utilisateurs de scanners de codes à barres",
 
-    "localevents.title" : "Événements"
+    "localevents.title" : "Événements",
+  
+  "employeegenpwlist.title" : "Mots de passe générés par les employés",
+	"employeegenpwlist.login" : "nom de connexion",
+	"employeegenpwlist.password" : "mot de passe",
+
+	"pdfExport.title" : "Export PDF",
+	"pdfExport.filenamepartone" : "Première partie du nom de fichier",
+	"pdfExport.filenameparttwo" : "Deuxième partie du nom de fichier",
+	"pdfExport.filenamepartthree" : "Troisième partie du nom de fichier",
+	"pdfExport.filenamepartfour" : "Quatrième partie du nom de fichier",
+	"pdfExport.seperator" : "seperator",
+	"pdfExport.samplename" : "Nom de l'exemple",
+	"pdfExport.exportPdfMsg" : "Création de votre PDF",
+	"pdfExport.msg" : "Modifier/lier"
 }
