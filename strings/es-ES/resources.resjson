@@ -338,6 +338,7 @@
     "info.useAudioNote"     : "Tonaufnahme",
     "info.autoShutterTime"  : "Selbstauslöser [ms]",
 
+	  "infodesk.actualEmployee"     : "Aktueller Mitarbeiter",
     "infodesk.employee"     : "Mitarbeiter",
     "infodesk.title"        : "Infodesk",
     "infodesk.language"     : "Sprache",
@@ -358,6 +359,10 @@
 	  "infodeskEmpList.name"  : "Name",
 	  "infodeskEmpList.firstName" : "Vorname",
     "infodeskEmpList.login" : "Benutzer",
+	"infodeskEmpList.firstNameDesc"  : "Vorname(absteigend)",
+	"infodeskEmpList.firstNameAsc"  : "Vorname(aufsteigend)",
+	"infodeskEmpList.nameDesc"  : "Name(absteigend)",
+	"infodeskEmpList.nameAsc"  : "Name(aufsteigend)",
 
     "userinfo.title"        : "Benutzerinfo",
     "userinfo.present"      : "Ich bin jetzt auf dem Gelände",
@@ -457,7 +462,7 @@
     "reporting.employeechart"  : "Mitarbeiterstatistik (Kontakte pro Mitarbeiter)",
     "reporting.countrychart": "Landstatistik (v pro Land)",
     "reporting.nocountry"   : "Kein Land",
-
+    "reporting.pdfExportPath" : "Export link",
     "reportingColumnList.title"       : "Benutzerdefinierter Export",
 
     "employee.title"        : "Benutzerkonten",
@@ -542,7 +547,7 @@
 
     "localevents.title" : "Veranstaltungen", 
 
-	"employeegenpwlist.title" : "Mitarbeiter generierte PasswÃ¶rter",
+	"employeegenpwlist.title" : "Mitarbeiter generierte Passwörter",
 	"employeegenpwlist.login" : "Loginname",
 	"employeegenpwlist.password" : "Passwort",
 

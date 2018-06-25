@@ -338,6 +338,7 @@
     "info.useAudioNote"     : "Enregistrement audio",
     "info.autoShutterTime"  : "Temps de déclenchement [ms]",
 
+    "infodesk.actualEmployee"     : "Personnel actuel",
     "infodesk.employee"     : "Personnel",
     "infodesk.title"        : "Infodesk",
     "infodesk.language"     : "Langue",
@@ -358,6 +359,10 @@
     "infodeskEmpList.name"  : "Nom",
     "infodeskEmpList.firstName" : "Prénom",
     "infodeskEmpList.login" : "Utilisateur",
+	"infodeskEmpList.firstNameDesc"  : " Prénom ↓",
+	"infodeskEmpList.firstNameAsc"  : "Prénom ↑",
+	"infodeskEmpList.nameDesc"  : "Nom ↓",
+	"infodeskEmpList.nameAsc"  : "Nom ↑",
 
     "userinfo.title"        : "Données d'utilisateur",
     "userinfo.present"      : "En site",
@@ -457,7 +462,7 @@
     "reporting.employeechart"  : "Statistiques Employés (contacts par employé)",
     "reporting.countrychart": "Statistiques nationales (contacts par pays)",
     "reporting.nocountry"   : "Aucun pays",
-
+    "reporting.pdfExportPath" : "Lien d'export",
     "reportingColumnList.title"       : "Coutume Export",
 
     "employee.title"        : "Comptes utilisateurs",

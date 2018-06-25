@@ -338,6 +338,7 @@
     "info.useAudioNote"     : "Audio recording",
     "info.autoShutterTime"  : "Trigger time [ms]",
 
+    "infodesk.actualEmployee"     : "Current employee",
     "infodesk.employee"     : "Employee",
     "infodesk.title"        : "Infodesk",
     "infodesk.language"     : "Language",
@@ -355,9 +356,13 @@
 
     "infodeskEmpList.title" : "User accounts",
     "infodeskEmpList.count" : "Count",
-    "infodeskEmpList.name"  : "Last name",
+    "infodeskEmpList.name"  : "Name",
     "infodeskEmpList.firstName" : "First name",
     "infodeskEmpList.login" : "User",
+	  "infodeskEmpList.firstNameDesc"  : "First name ↓",
+	  "infodeskEmpList.firstNameAsc"  : "First name ↑",
+	  "infodeskEmpList.nameDesc"  : "Name ↓",
+	  "infodeskEmpList.nameAsc"  : "Name ↑",
 
     "userinfo.title"        : "User Info",
     "userinfo.present"      : "I'm on site now!",
@@ -457,7 +462,7 @@
     "reporting.employeechart"  : "Employee statistics (contacts per employee)",
     "reporting.countrychart": "Country statistics (contacts per country)",
     "reporting.nocountry"   : "No country",
-
+    "reporting.pdfExportPath" : "Export link",
     "reportingColumnList.title"       : "Custom Export",
 
     "employee.title"        : "User accounts",

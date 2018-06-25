@@ -1,4 +1,4 @@
-{
+﻿{
     "general.event"         : "Veranstaltung",
     "general.today"         : "Heute",
     "general.yesterday"     : "Gestern",
@@ -73,7 +73,7 @@
     "tooltip.eventchange"	: "Veranstaltung wechseln",
     "tooltip.savepdf"	    : "PDF Dateiname speichern",
     "tooltip.exportpdf"	    : "PDF exportieren",
-    "tooltip.deletemail"	: "Mail löschen",
+    "tooltip.deletemail"	: "Mail lÃ¶schen",
     "tooltip.save"			    : "Speichern",
 
     "start.title"           : "Startseite",
@@ -338,6 +338,7 @@
     "info.useAudioNote"     : "Tonaufnahme",
     "info.autoShutterTime"  : "Selbstauslöser [ms]",
 
+	  "infodesk.actualEmployee"     : "Aktueller Mitarbeiter",
     "infodesk.employee"     : "Mitarbeiter",
     "infodesk.title"        : "Infodesk",
     "infodesk.language"     : "Sprache",
@@ -355,9 +356,13 @@
 
     "infodeskEmpList.title" : "Benutzerkonten",
     "infodeskEmpList.count" : "Anzahl",
-    "infodeskEmpList.name"  : "Name",
-    "infodeskEmpList.firstName" : "Vorname",
+	  "infodeskEmpList.name"  : "Name",
+	  "infodeskEmpList.firstName" : "Vorname",
     "infodeskEmpList.login" : "Benutzer",
+	"infodeskEmpList.firstNameDesc"  : "Vorname ↓",
+	"infodeskEmpList.firstNameAsc"  : "Vorname ↑",
+	"infodeskEmpList.nameDesc"  : "Name ↓",
+	"infodeskEmpList.nameAsc"  : "Name ↑",
 
     "userinfo.title"        : "Benutzerinfo",
     "userinfo.present"      : "Ich bin jetzt auf dem Gelände",
@@ -391,7 +396,7 @@
     "label.reportingColumnList"       : "Benutzerdefiniert",
     "label.skills"          : "Fähigkeiten",
     "label.skillentry"      : "Fähigkeit eintragen",
-    "label.mailing"         : "Mail",
+    "label.mailing"         : "Standard Mail",
     "label.mailingProduct"  : "Produkt E-Mail",
     "label.infodesk"        : "Infodesk",
     "label.mandatory"       : "Pflichtfelder",
@@ -457,7 +462,7 @@
     "reporting.employeechart"  : "Mitarbeiterstatistik (Kontakte pro Mitarbeiter)",
     "reporting.countrychart": "Landstatistik (v pro Land)",
     "reporting.nocountry"   : "Kein Land",
-
+	"reporting.pdfExportPath" : "Export-Link",
     "reportingColumnList.title"       : "Benutzerdefinierter Export",
 
     "employee.title"        : "Benutzerkonten",
