@@ -95,6 +95,12 @@
                     </div>
                     <div class="line-separator"
                          data-win-bind="style.display: doEdit Binding.Converter.toDisplay"></div>
+                    <div class="field_line" data-win-bind="style.display: doEdit Binding.Converter.toDisplay">
+                        <input type="checkbox" class="win-checkbox checkbox" data-win-bind="checked: dataLogin.PrivacyPolicyFlag Binding.Mode.twoway; disabled: dataLogin.PrivacyPolicydisabled" onclick="AppBar.handleEvent('click', 'clickPrivacyPolicy', event)" /> <!--data-win-bind="checked: SSANTWORT19"-->
+                        <span data-win-res="{textContent: 'login.privacyPolicy'}"></span>
+                        <span class="large_field"
+                              id="privacyPolicyLink"></span>
+                    </div>
                     <div class="field_line field_line_odd"
                          data-win-bind="style.display: doEdit Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only"

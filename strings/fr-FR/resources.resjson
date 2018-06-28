@@ -253,6 +253,8 @@
     "login.comment"         : "Veuillez s'il vous plaît entrer votre nom d'utilisateur et votre mot de passe. Si vous n'avez pas encore un compte, vous devez vous inscrire pour un nouveau compte!",
     "login.login"           : "Utilisateur",
     "login.password"        : "Mot de passe",
+    "login.privacyPolicy"   : "J'ai lu la déclaration relative à la protection des données et je donne expressément mon accord à ce que mes données soient traitées et stockées par des moyens électroniques. ",
+    "login.privacyPolicyLink": "www.convey.de/privacy-policy/",
     "login.progress"        : "Avancée",
     "login.unknown"         : "Utilisateur spécifié introuvable!",
     "login.inactive"        : "Le service est actuellement inactif!",
@@ -408,6 +410,7 @@
     "label.questionnaireRemote" : "Quoitionnaire",
     "label.sketchRemote"    : "Notes",
     "label.pdfExport"       : "Export PDF",
+    "label.employeeGenPWList"     : "Prégénérée",
     
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Annuler",
@@ -547,10 +550,11 @@
 
     "localevents.title" : "Événements",
   
-  "employeegenpwlist.title" : "Mots de passe générés par les employés",
-	"employeegenpwlist.login" : "nom de connexion",
-	"employeegenpwlist.password" : "mot de passe",
-
+  "employeegenpwlist.title" : "Mots de passe employés pré-générés",
+      "employeegenpwlist.login" : "nom de connexion",
+      "employeegenpwlist.password" : "mot de passe",
+    "employeegenpwlist.passwordchanged" : "Le mot de passe a été changé",
+    
 	"pdfExport.title" : "Export PDF",
 	"pdfExport.filenamepartone" : "Première partie du nom de fichier",
 	"pdfExport.filenameparttwo" : "Deuxième partie du nom de fichier",

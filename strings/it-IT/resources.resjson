@@ -253,6 +253,8 @@
     "login.comment"         : "Per favore inserite il vostro nome utente e password. Se non avete un account, procedete per favore alla registrazione in modo da ottenerne uno",
     "login.login"           : "Nome utente",
     "login.password"        : "Password",
+    "login.privacyPolicy"   : "Ho letto l'informativa sulla privacy e accetto che i miei dati verranno elaborati e archiviati elettronicamente.",
+    "login.privacyPolicyLink": "www.convey.de/datenschutzerklaerung/privacy-policy/",
     "login.progress"        : "Progresso",
     "login.unknown"         : "Nome utente specificato non trovato!",
     "login.inactive"        : "Il servizio è attualmente inattivo!",
@@ -408,6 +410,7 @@
     "label.questionnaireRemote" : "Questionario",
     "label.sketchRemote"    : "Note",
     "label.pdfExport"       : "Esportazione PDF",
+    "label.employeeGenPWList"     : "Pregenerati",
 
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Annulla",
@@ -547,9 +550,10 @@
 
     "localevents.title" : "Eventi",
 
-    "employeegenpwlist.title" : "Le password generate dai dipendenti",
-	"employeegenpwlist.login" : "nome di accesso",
-	"employeegenpwlist.password" : "password",
+    "employeegenpwlist.title" : "Password dei dipendenti pre-generate",
+        "employeegenpwlist.login" : "nome di accesso",
+        "employeegenpwlist.password" : "password",
+    "employeegenpwlist.passwordchanged" : "La password è stata cambiata",
 
 	"pdfExport.title" : "Esportazione PDF",
 	"pdfExport.filenamepartone" : "Prima parte del nome del file",

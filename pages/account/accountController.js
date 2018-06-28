@@ -23,7 +23,11 @@
             Application.Controller.apply(this, [pageElement, {
                 dataLogin: {
                     Login: AppData._persistentStates.odata.login,
-                    Password: AppData._persistentStates.odata.password
+                    Password: AppData._persistentStates.odata.password,
+                    PrivacyPolicyFlag: true,
+                    PrivacyPolicydisabled: true,
+                    INITSpracheID: 0,
+                    LanguageID: null
                 },
                 doEdit: false,
                 doReloadDb: false,
@@ -62,6 +66,11 @@
                 }
             }
             this.resultConverter = resultConverter;
+
+            var privacyPolicyLink = pageElement.querySelector("#privacyPolicyLink");
+            if (privacyPolicyLink) {
+                privacyPolicyLink.innerHTML = "<a href=\"http://" + getResourceText("login.privacyPolicyLink") + "\">" + getResourceText("login.privacyPolicyLink") + "</a>";
+            }
 
             // define handlers
             this.eventHandlers = {
@@ -132,6 +141,12 @@
                         }
                     }
                     Log.ret(Log.l.trace);
+                },
+                clickPrivacyPolicy: function (event) {
+                    Log.call(Log.l.trace, "Login.Controller.");
+                    that.binding.dataLogin.privacyPolicyFlag = event.currentTarget.checked;
+                    AppBar.triggerDisableHandlers();
+                    Log.ret(Log.l.trace);
                 }
             };
 
@@ -151,12 +166,19 @@
                         }
                         that.binding.doEdit = true;
                     }
-                    if (AppBar.busy) {
+                    if (!that.binding.dataLogin.Login || !that.binding.dataLogin.Password) {
+                        that.binding.dataLogin.PrivacyPolicyFlag = false;
+                        that.binding.dataLogin.PrivacyPolicydisabled = false;
+                    }
+                    if (AppBar.busy || (!that.binding.dataLogin.Login || !that.binding.dataLogin.Password || !that.binding.dataLogin.PrivacyPolicyFlag)) {
                         NavigationBar.disablePage("start");
+                        NavigationBar.disablePage("search");
+                        NavigationBar.disablePage("settings");
+                        NavigationBar.disablePage("info");
                     } else {
                         NavigationBar.enablePage("start");
                     }
-                    return AppBar.busy;
+                    return AppBar.busy || (!that.binding.dataLogin.Login || !that.binding.dataLogin.Password || !that.binding.dataLogin.PrivacyPolicyFlag);
                 }
             };
 

@@ -40,6 +40,8 @@
             onlinePath: "odata_online", // serviceRoot online requests
             login: "",
             password: "",
+            privacyPolicyFlag: false,
+            privacyPolicydisabled: true,
             registerPath: "odata_register", // serviceRoot register requests
             registerLogin: "AppRegister",
             registerPassword: "6530bv6OIUed3",
