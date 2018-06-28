@@ -428,6 +428,45 @@
                     }
                     Log.ret(Log.l.trace);
                 },
+                pressEnterKey: function (event) {
+                    Log.call(Log.l.trace, "Questionnaire.Controller.");
+                    if (event && event.keyCode === WinJS.Utilities.Key.enter &&
+                        event.target && event.target.tagName &&
+                        event.target.tagName.toLowerCase() === "textarea") {
+                        if (event.stopPropagation) {
+                            event.stopPropagation();
+                        } else {
+                            event.cancelBubble = true;
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                activateEnterKey: function (event) {
+                    Log.call(Log.l.trace, "Questionnaire.Controller.");
+                    for (var i = 0; i < AppBar.commandList.length; i++) {
+                        if (AppBar.commandList[i].id === "clickOk") {
+                            AppBar.commandList[i].key = WinJS.Utilities.Key.enter;
+                            break;
+                        }
+                    }
+                    if (event && event.target && !event.target.value) {
+                        WinJS.Utilities.removeClass(event.target, "field-text-comment-big");
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                deactivateEnterKey: function (event) {
+                    Log.call(Log.l.trace, "Questionnaire.Controller.");
+                    for (var i = 0; i < AppBar.commandList.length; i++) {
+                        if (AppBar.commandList[i].id === "clickOk") {
+                            AppBar.commandList[i].key = null;
+                            break;
+                        }
+                    }
+                    if (event && event.target) {
+                        WinJS.Utilities.addClass(event.target, "field-text-comment-big");
+                    }
+                    Log.ret(Log.l.trace);
+                },
                 clickChangeState: function (event) {
                     Log.call(Log.l.trace, "UserInfo.Controller.");
                     if (event.currentTarget && AppBar.notifyModified) {

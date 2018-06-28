@@ -51,7 +51,7 @@
                      <div class="field_line field_line_odd">
                          <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'userinfo.message1'}"></span>
                          <span class="label landscape_only" data-win-res="{textContent: 'userinfo.message1'}"></span>
-                         <textarea class="input_field win-textarea" data-win-bind="value: dataBenutzer.Info1 Binding.Mode.twoway"></textarea>
+                         <textarea class="input_field win-textarea" data-win-bind="value: dataBenutzer.Info1 Binding.Mode.twoway" onblur="AppBar.handleEvent('blur', 'activateEnterKey', event)" onfocus="AppBar.handleEvent('focus', 'deactivateEnterKey', event)" onkeydown="AppBar.handleEvent('keydown', 'pressEnterKey', event)"></textarea>
                      </div>
                      <div class="field_line field_line_even" data-win-bind="style.display: dataBenutzer.Info2 Binding.Converter.toDisplay">
                          <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'userinfo.message2'}"></span>
