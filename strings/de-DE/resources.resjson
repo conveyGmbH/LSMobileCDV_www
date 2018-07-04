@@ -339,6 +339,7 @@
     "info.portal"           : "Portal",
     "info.useAudioNote"     : "Tonaufnahme",
     "info.autoShutterTime"  : "Selbstauslöser [ms]",
+	"info.useBarcodeActivity"    : "Integrierter Scanner",
 
 	  "infodesk.actualEmployee"     : "Aktueller Mitarbeiter",
     "infodesk.employee"     : "Mitarbeiter",

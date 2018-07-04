@@ -24,6 +24,7 @@
         cameraMaxSize: 2560,
         useClippingCamera: false,
         autoShutterTime: 0,
+        useBarcodeActivity: false,
         logEnabled: false,
         logLevel: 3,
         logGroup: false,
@@ -128,6 +129,15 @@
                         break;
                     }
                 }
+            }
+        }
+        if (id === "start") {
+            if (typeof device === "object" && device.platform === "Android" &&
+                AppData.generalData.useBarcodeActivity &&
+                !Barcode.listening) {
+                WinJS.Promise.timeout(0).then(function() {
+                    Barcode.startListen();
+                });
             }
         }
         Log.ret(Log.l.trace);

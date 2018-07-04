@@ -36,7 +36,7 @@
     "command.zoomin"        : "ingrandire",
     "command.zoomout"       : "ridurre",
     "command.print"         : "stampa",
-	  "command.save"			: "Salvare",
+	"command.save"			: "Salvare",
 
     "tooltip.backward"      : "Pagina precedente",
     "tooltip.edit"          : "Modifica Record attuale",
@@ -339,6 +339,7 @@
     "info.portal"           : "Portal",
     "info.useAudioNote"     : "Registrazione audio",
     "info.autoShutterTime"  : "Tempo di innesco [ms]",
+    "info.useBarcodeActivity"    : "Scanner integrato",
 
     "infodesk.actualEmployee"     : "Employee attuale",
     "infodesk.employee"     : "Employee",

@@ -10,9 +10,12 @@
 /// <reference path="~/www/lib/convey/scripts/dbinit.js" />
 /// <reference path="~/plugins/cordova-plugin-device/www/device.js" />
 /// <reference path="~/www/pages/appHeader/appHeaderController.js" />
+/// <reference path="~/plugins/phonegap-datawedge-intent/www/broadcast_intent_plugin.js" />
 
 (function () {
     "use strict";
+
+    var nav = WinJS.Navigation;
 
     WinJS.Namespace.define("AppData", {
         __generalUserRemoteView: null,
@@ -724,6 +727,60 @@
     });
     WinJS.Namespace.define("Info", {
         getLogLevelName: null
+    });
+    WinJS.Namespace.define("Barcode", {
+        listening: false,
+        dontScan: false,
+        onBarcodeSuccess: function (result) {
+            Log.call(Log.l.trace, "Barcode.");
+            if (Application.getPageId(nav.location) === "barcode" &&
+                AppBar.scope &&
+                typeof AppBar.scope.onBarcodeSuccess === "function") {
+                Barcode.dontScan = false;
+                AppBar.scope.onBarcodeSuccess(result);
+                WinJS.Promise.timeout(0).then(function () {
+                    Barcode.startListen();
+                });
+            } else {
+                Barcode.dontScan = true;
+                Application.navigateById("barcode");
+                WinJS.Promise.timeout(250).then(function() {
+                    Barcode.onBarcodeSuccess(result);
+                });
+            }
+            Log.ret(Log.l.trace);
+        },
+        onBarcodeError: function (error) {
+            Log.call(Log.l.trace, "Barcode.");
+            if (Application.getPageId(nav.location) === "barcode" &&
+                AppBar.scope && typeof AppBar.scope.onBarcodeError === "function") {
+                Barcode.dontScan = false;
+                AppBar.scope.onBarcodeError(error);
+                WinJS.Promise.timeout(0).then(function () {
+                    Barcode.startListen();
+                });
+            } else {
+                Barcode.dontScan = true;
+                Application.navigateById("barcode");
+                WinJS.Promise.timeout(250).then(function () {
+                    Barcode.onBarcodeSuccess(error);
+                });
+            }
+            Log.ret(Log.l.trace);
+        },
+        startListen: function() {
+            Log.call(Log.l.trace, "Barcode.");
+            if (typeof device === "object" && device.platform === "Android" &&
+                AppData.generalData.useBarcodeActivity &&
+                navigator &&
+                navigator.broadcast_intent_plugin &&
+                typeof navigator.broadcast_intent_plugin.listen === "function") {
+                Log.print(Log.l.trace, "Android: calling  navigator.broadcast_intent_plugin.start...");
+                navigator.broadcast_intent_plugin.listen(Barcode.onBarcodeSuccess, Barcode.onBarcodeError);
+                Barcode.listening = true;
+            }
+            Log.ret(Log.l.trace);
+        }
     });
     // usage of binding converters
     //

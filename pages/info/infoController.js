@@ -134,8 +134,17 @@
                     if (event.currentTarget && AppBar.notifyModified) {
                         var toggle = event.currentTarget.winControl;
                         if (toggle) {
-                            AppData._persistentStates.useAudioNote = toggle.checked;
                             that.binding.generalData.useAudioNote = toggle.checked;
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                clickUseBarcodeActivity: function (event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var toggle = event.currentTarget.winControl;
+                        if (toggle) {
+                            that.binding.generalData.useBarcodeActivity = toggle.checked;
                         }
                     }
                     Log.ret(Log.l.trace);

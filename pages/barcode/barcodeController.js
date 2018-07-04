@@ -11,6 +11,7 @@
 /// <reference path="~/www/pages/barcode/barcodeService.js" />
 /// <reference path="~/plugins/cordova-plugin-device/www/device.js" />
 /// <reference path="~/plugins/phonegap-plugin-barcodescanner/www/barcodescanner.js" />
+/// <reference path="~/plugins/phonegap-datawedge-intent/www/broadcast_intent_plugin.js" />
 
 (function () {
     "use strict";
@@ -246,6 +247,7 @@
                 });
                 Log.ret(Log.l.trace);
             }
+            this.onBarcodeSuccess = onBarcodeSuccess;
 
             var onBarcodeError = function (error) {
                 Log.call(Log.l.error, "Barcode.Controller.");
@@ -257,11 +259,18 @@
                 });
                 Log.ret(Log.l.error);
             }
+            this.onBarcodeError = onBarcodeError;
 
             var scanBarcode = function() {
                 Log.call(Log.l.trace, "Barcode.Controller.");
-                if (typeof cordova !== "undefined" &&
-                    cordova.plugins && cordova.plugins.barcodeScanner &&
+                if (typeof device === "object" && device.platform === "Android" &&
+                    AppData.generalData.useBarcodeActivity &&
+                    navigator &&
+                    navigator.broadcast_intent_plugin &&
+                    typeof navigator.broadcast_intent_plugin.scan === "function") {
+                    Log.print(Log.l.trace, "Android: calling  navigator.broadcast_intent_plugin.start...");
+                    navigator.broadcast_intent_plugin.scan(Barcode.onBarcodeSuccess, Barcode.onBarcodeError);
+                } else if (cordova && cordova.plugins && cordova.plugins.barcodeScanner &&
                     typeof cordova.plugins.barcodeScanner.scan === "function") {
 
                     if (typeof device === "object" && device.platform === "Android") {
@@ -302,7 +311,9 @@
             that.processAll().then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Binding wireup page complete");
-                that.scanBarcode();
+                if (!Barcode.dontScan) {
+                    that.scanBarcode();
+                }
             });
             Log.ret(Log.l.trace);
         })
