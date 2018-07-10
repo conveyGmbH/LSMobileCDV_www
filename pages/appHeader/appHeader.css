@@ -126,7 +126,7 @@
     position: relative;
     left: 0;
     top: -40px;
-    width: 40px;
+    width: auto;
     height: 40px;
     border-radius: 20px;
     z-index: 9901;
@@ -158,8 +158,38 @@
     left: -14px;
     top: -15px;
 }
+.new-message {
+    width: 16px;
+    height: 16px;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: white;
+    display: block;
+    position: relative;
+    left: 22px;
+    top: -96px;
+    z-index: 10000;
+    padding: 0;
+    text-align: center;
+    vertical-align: top;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+.new-message-symbol {
+    font-family: "Symbols";
+    padding: 16px;
+    display: block;
+    position: relative;
+    left: -14px;
+    top: -15px;
+}
+.statusNew {
+    background-color: blue;
+    color: white;
+}
 .statusOn {
-    background-color:forestgreen;
+    background-color: forestgreen;
     color: white;
 }
 
