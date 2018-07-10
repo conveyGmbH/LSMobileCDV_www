@@ -374,6 +374,8 @@
     "userinfo.message2"     : "Messaggio per me",
     "userinfo.state"        : "Stato",
     "userinfo.presence"     : "Presenza",
+    "userinfo.message1time" : "Spedita",
+    "userinfo.message2time" : "Ottenuto",
 
     "label.start"           : "Inizio",
     "label.contact"         : "Contatto",

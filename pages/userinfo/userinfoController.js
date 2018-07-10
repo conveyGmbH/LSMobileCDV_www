@@ -20,7 +20,8 @@
             Application.Controller.apply(this, [pageElement, {
                 dataBenutzer: UserInfo.benutzerView && UserInfo.benutzerView.defaultValue,
                 dataPhoto: {},
-                photoData: null
+                photoData: null,
+                newInfo2Flag: 0
             }, commandList]);
             this.img = null;
 
@@ -79,6 +80,11 @@
                 AppBar.notifyModified = false;
                 if (newDataBenutzer.Info1 === null) {
                     newDataBenutzer.Info1 = "";
+                }
+                if (newDataBenutzer.Info2 && !newDataBenutzer.Info2TSRead) {
+                    that.binding.newInfo2Flag = 1;
+                } else {
+                    that.binding.newInfo2Flag = 0;
                 }
                 that.binding.dataBenutzer = newDataBenutzer;
                 AppBar.modified = false;
@@ -511,13 +517,14 @@
             }).then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Data loaded");
-                // toggle state (undefined becomes 1)
                 if (that.binding.dataBenutzer.Present === 1) {
-                    that.binding.dataBenutzer.Present = 0;
+                    // leave present state 1 
                 } else {
-                    that.binding.dataBenutzer.Present = 1;
+                    // undefined present state becomes 0
+                    that.binding.dataBenutzer.Present = 0;
                 }
                 if (!AppBar.modified) {
+                    // always set modified for timestamp!
                     AppBar.modified = true;
                 }
                 return WinJS.Promise.as();
