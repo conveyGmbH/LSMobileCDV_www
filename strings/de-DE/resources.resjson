@@ -35,8 +35,9 @@
     "command.photo"         : "Foto",
     "command.zoomin"        : "Vergrößern",
     "command.zoomout"       : "Verkleinern",
-    "command.print"			    : "Drucken",
-    "command.save"			    : "Speichern",
+    "command.print"			: "Drucken",
+    "command.save"			: "Speichern",
+    "command.share"			: "Teilen",
 
     "tooltip.backward"      : "Zurück blättern",
     "tooltip.edit"          : "Aktuellen Datensatz bearbeiten",
@@ -74,7 +75,8 @@
     "tooltip.savepdf"	    : "PDF Dateiname speichern",
     "tooltip.exportpdf"	    : "PDF exportieren",
     "tooltip.deletemail"	: "Mail lÃ¶schen",
-    "tooltip.save"			    : "Speichern",
+    "tooltip.save"			: "Speichern",
+    "tooltip.share"			: "Teilen",
 
     "start.title"           : "Startseite",
     "start.comment"         : "Verwende die Schaltflächen auf dieser Seite um auf weitere Seiten zu gehen!",

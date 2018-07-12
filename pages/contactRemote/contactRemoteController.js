@@ -182,6 +182,11 @@
                     Log.call(Log.l.trace, "ContactRemote.Controller.");
                     Application.navigateById("userinfo", event);
                     Log.ret(Log.l.trace);
+                },
+                clickShare: function (event) {
+                    Log.call(Log.l.trace, "ContactRemote.Controller.");
+                    AppData.shareContact(that.binding.dataContact, that.binding.InitLandItem.Alpha3_ISOCode);
+                    Log.ret(Log.l.trace);
                 }
             };
 
@@ -216,6 +221,13 @@
                 },
                 clickForward: function () {
                     return AppBar.busy;
+                },
+                clickShare: function () {
+                    if (that.binding.dataContact && that.binding.dataContact.KontaktVIEWID) {
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }
             }
 

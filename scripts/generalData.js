@@ -11,11 +11,14 @@
 /// <reference path="~/plugins/cordova-plugin-device/www/device.js" />
 /// <reference path="~/www/pages/appHeader/appHeaderController.js" />
 /// <reference path="~/plugins/phonegap-datawedge-intent/www/broadcast_intent_plugin.js" />
+/// <reference path="~/plugins/cordova-plugin-x-socialsharing/www/SocialSharing.js" />
+/// <reference path="~/www/lib/vcard/scripts/vcard.js" />
 
 (function () {
     "use strict";
 
     var nav = WinJS.Navigation;
+    var b64 = window.base64js;
 
     WinJS.Namespace.define("AppData", {
         __generalUserRemoteView: null,
@@ -717,6 +720,49 @@
                 var ret = AppData._initLandView.map;
                 Log.ret(Log.l.trace);
                 return ret;
+            }
+        },
+        shareContact: function (dataContact, country) {
+            if (dataContact && dataContact.KontaktVIEWID) {
+                var vCard = new VCard.VCard();
+                vCard.organization = dataContact.Firmenname;
+                vCard.namePrefix = dataContact.Titel;
+                vCard.firstName = dataContact.Vorname;
+                vCard.middleName = dataContact.Vorname2;
+                vCard.lastName = dataContact.Name;
+                vCard.title = dataContact.Position;
+                vCard.workAddress = {
+                    street: dataContact.Strasse,
+                    postalCode: dataContact.PLZ,
+                    city: dataContact.Stadt,
+                    countryRegion: country
+                };
+                vCard.email = dataContact.EMail;
+                vCard.workPhone = dataContact.TelefonFestnetz;
+                vCard.cellPhone = dataContact.TelefonMobil;
+                vCard.workFax = dataContact.Fax;
+                vCard.url = dataContact.WebAdresse;
+                vCard.note = dataContact.Bemerkungen;
+
+                var formattedName = "";
+                [vCard.firstName, vCard.middleName, vCard.lastName]
+                    .forEach(function (name) {
+                        if (name) {
+                            if (formattedName) {
+                                formattedName += ' ';
+                            }
+                            formattedName += name;
+                        }
+                    });
+                var content = vCard.getFormattedString();
+                var blob = utf8_decode(content);
+                var encoded = b64.fromByteArray(blob);
+                var data = "data:text/vcf;base64," + encoded;
+                var subject = formattedName;
+                var message = getResourceText("contact.title") + 
+                    " ID: " + dataContact.CreatorSiteID + "/" + dataContact.CreatorRecID + " \r\n" +
+                    formattedName;
+                window.plugins.socialsharing.share(message, subject, data, null);
             }
         }
     });
