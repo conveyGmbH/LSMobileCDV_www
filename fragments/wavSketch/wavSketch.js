@@ -24,6 +24,7 @@
 
             // add page specific commands to AppBar
             var commandList = [
+                { id: "clickShare", label: getResourceText("command.share"), tooltip: getResourceText("tooltip.share"), section: "primary", svg: "share" }
             ];
             this.controller = new WavSketch.Controller(element, options, commandList);
 

@@ -750,6 +750,19 @@
                     });
                     AppBar.triggerDisableHandlers();
                     Log.ret(Log.l.trace);
+                },
+                clickShare: function (event) {
+                    Log.call(Log.l.trace, "ImgSketch.Controller.");
+                    if (getDocData()) {
+                        var data = getDocData();
+                        var formattedName = "Photo" + that.binding.dataSketch.KontaktID + "_" + that.binding.dataSketch.KontaktNotizVIEWID;
+                        var subject = formattedName;
+                        var message = getResourceText("contact.title") + 
+                            " ID: " + AppData.generalData.globalContactID + " \r\n" +
+                            formattedName;
+                        window.plugins.socialsharing.share(message, subject, data, null);
+                    }
+                    Log.ret(Log.l.trace);
                 }
             };
 
@@ -778,6 +791,13 @@
                     }
                 },
                 clickRotateRight: function () {
+                    if (getDocData()) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                clickShare: function () {
                     if (getDocData()) {
                         return false;
                     } else {

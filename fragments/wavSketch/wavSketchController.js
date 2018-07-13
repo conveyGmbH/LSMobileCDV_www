@@ -551,9 +551,29 @@
 
             // define handlers
             this.eventHandlers = {
+                clickShare: function (event) {
+                    Log.call(Log.l.trace, "WavSketch.Controller.");
+                    if (getDocData()) {
+                        var data = getDocData();
+                        var formattedName = "Audio" + that.binding.dataSketch.KontaktID + "_" + that.binding.dataSketch.KontaktNotizVIEWID;
+                        var subject = formattedName;
+                        var message = getResourceText("contact.title") + 
+                            " ID: " + AppData.generalData.globalContactID + " \r\n" +
+                            formattedName;
+                        window.plugins.socialsharing.share(message, subject, data, null);
+                    }
+                    Log.ret(Log.l.trace);
+                }
             };
 
             this.disableHandlers = {
+                clickShare: function () {
+                    if (getDocData()) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
             }
 
             that.processAll().then(function () {

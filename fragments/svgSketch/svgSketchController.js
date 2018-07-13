@@ -11,6 +11,8 @@
 (function () {
     "use strict";
 
+    var b64 = window.base64js;
+
     WinJS.Namespace.define("SvgSketch", {
         Controller: WinJS.Class.derive(Fragments.Controller, function Controller(fragmentElement, options, commandList) {
             Log.call(Log.l.trace, "SvgSketch.Controller.", "noteId=" + (options && options.noteId));
@@ -452,6 +454,21 @@
                         }
                     }
                     Log.ret(Log.l.trace);
+                },
+                clickShare: function (event) {
+                    Log.call(Log.l.trace, "SvgSketch.Controller.");
+                    if (getDocData()) {
+                        var blob = utf8_decode(getDocData());
+                        var encoded = b64.fromByteArray(blob);
+                        var data = "data:text/svg;base64," + encoded;
+                        var formattedName = "Drawing" + that.binding.dataSketch.KontaktID + "_" + that.binding.dataSketch.KontaktNotizVIEWID;
+                        var subject = formattedName;
+                        var message = getResourceText("contact.title") +
+                            " ID: " + AppData.generalData.globalContactID + " \r\n" +
+                            formattedName;
+                        window.plugins.socialsharing.share(message, subject, data, null);
+                    }
+                    Log.ret(Log.l.trace);
                 }
             }
             this.eventHandlers = eventHandlers;
@@ -466,6 +483,13 @@
                 },
                 clickRedo: function () {
                     if (options && options.isLocal && that.svgEditor && that.svgEditor.fnCanRedo()) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                clickShare: function () {
+                    if (getDocData()) {
                         return false;
                     } else {
                         return true;
