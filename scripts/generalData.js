@@ -12,6 +12,7 @@
 /// <reference path="~/www/pages/appHeader/appHeaderController.js" />
 /// <reference path="~/plugins/phonegap-datawedge-intent/www/broadcast_intent_plugin.js" />
 /// <reference path="~/plugins/cordova-plugin-x-socialsharing/www/SocialSharing.js" />
+/// <reference path="~/www/lib/vcard/scripts/vcardformatter.js" />
 /// <reference path="~/www/lib/vcard/scripts/vcard.js" />
 
 (function () {
