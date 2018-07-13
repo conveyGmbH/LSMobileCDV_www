@@ -185,7 +185,12 @@
                 },
                 clickShare: function (event) {
                     Log.call(Log.l.trace, "ContactRemote.Controller.");
-                    AppData.shareContact(that.binding.dataContact, that.binding.InitLandItem.Alpha3_ISOCode);
+                    that.saveData(function (response) {
+                        // called asynchronously if ok
+                        AppData.shareContact(that.binding.dataContact, that.binding.InitLandItem.Alpha3_ISOCode);
+                    }, function (errorResponse) {
+                        // error occured...
+                    });
                     Log.ret(Log.l.trace);
                 }
             };
