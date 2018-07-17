@@ -74,6 +74,45 @@
                           data-win-bind="style.display: photoData Binding.Converter.toDisplay"></div>
                      <div class="line-separator"
                           data-win-bind="style.display: photoData Binding.Converter.toDisplay"></div>
+                     <div class="line-separator"></div>
+                     <div class="field_line field_line_odd">
+                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.academicTitle'}"></span>
+                         <span class="label landscape_only" data-win-res="{textContent: 'contact.academicTitle'}"></span>
+                         <input class="input_field win-textbox" type="text" data-win-bind="value: dataBenutzer.Titel Binding.Mode.twoway" />
+                     </div>
+                     <div class="line-separator"></div>
+                     <div class="field_line field_line_odd">
+                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.firstName'}"></span>
+                         <span class="label landscape_only" data-win-res="{textContent: 'contact.firstName'}"></span>
+                         <input class="input_field win-textbox" type="text" data-win-bind="value: dataBenutzer.Vorname Binding.Mode.twoway" />
+                     </div>
+                     <div class="field_line field_line_even" style="overflow-y: hidden">
+                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.name'}"></span>
+                         <span class="label landscape_only" data-win-res="{textContent: 'contact.name'}"></span>
+                         <input class="input_field win-textbox" type="text" data-win-bind="value: dataBenutzer.Name Binding.Mode.twoway" />
+                     </div>
+                     <div class="line-separator"></div>
+                     <div class="field_line field_line_odd">
+                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.position'}"></span>
+                         <span class="label landscape_only" data-win-res="{textContent: 'contact.position'}"></span>
+                         <input class="input_field win-textbox" type="text" data-win-bind="value: dataBenutzer.Position Binding.Mode.twoway" />
+                     </div>
+                     <div class="field_line field_line_even">
+                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.email'}"></span>
+                         <span class="label landscape_only" data-win-res="{textContent: 'contact.email'}"></span>
+                         <input class="input_field win-textbox" type="text" data-win-bind="value: dataBenutzer.EMail Binding.Mode.twoway" />
+                     </div>
+                     <div class="line-separator"></div>
+                     <div class="field_line field_line_odd">
+                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.phone'}"></span>
+                         <span class="label landscape_only" data-win-res="{textContent: 'contact.phone'}"></span>
+                         <input class="input_field win-textbox" type="text" data-win-bind="value: dataBenutzer.TelefonFestnetz Binding.Mode.twoway" />
+                     </div>
+                     <div class="field_line field_line_even">
+                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.mobile'}"></span>
+                         <span class="label landscape_only" data-win-res="{textContent: 'contact.mobile'}"></span>
+                         <input class="input_field win-textbox" type="text" data-win-bind="value: dataBenutzer.TelefonMobil Binding.Mode.twoway" />
+                     </div>
                      <div class="error-message"
                           data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
                  </div>
