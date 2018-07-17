@@ -24,10 +24,10 @@
 
             // add page specific commands to AppBar
             var commandList = [
-                { id: "clickZoomIn", label: getResourceText("command.zoomin"), tooltip: getResourceText("tooltip.zoomin"), section: "primary", svg: "zoom_in" },
-                { id: "clickZoomOut", label: getResourceText("command.zoomout"), tooltip: getResourceText("tooltip.zoomout"), section: "primary", svg: "zoom_out" },
                 { id: "clickRotateLeft", label: getResourceText("command.rotate"), tooltip: getResourceText("tooltip.rotateLeft"), section: "primary", svg: "rotate_left" },
                 { id: "clickRotateRight", label: getResourceText("command.rotate"), tooltip: getResourceText("tooltip.rotateRight"), section: "primary", svg: "rotate_right" },
+                { id: "clickZoomIn", label: getResourceText("command.zoomin"), tooltip: getResourceText("tooltip.zoomin"), section: "primary", svg: "zoom_in" },
+                { id: "clickZoomOut", label: getResourceText("command.zoomout"), tooltip: getResourceText("tooltip.zoomout"), section: "primary", svg: "zoom_out" },
                 { id: "clickShare", label: getResourceText("command.share"), tooltip: getResourceText("tooltip.share"), section: "primary", svg: "share" }
             ];
             this.controller = new ImgSketch.Controller(element, options, commandList);
