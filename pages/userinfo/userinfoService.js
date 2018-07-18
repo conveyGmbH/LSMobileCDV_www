@@ -39,7 +39,15 @@
              },
              defaultValue: {
                  Info1: "",
-                 Info2: ""
+                 Info2: "",
+                 Vorname: "",
+                 Name: "",
+                 Titel: "",
+                 Position: "",
+                 TelefonFestnetz: "",
+                 TelefonMobil: "",
+                 EMail: "",
+                 Bemerkungen: ""
              }
         },
         initBenAnwView: {

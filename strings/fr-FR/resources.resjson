@@ -38,6 +38,7 @@
     "command.print"         : "Imprimer",
 	"command.save"			: "Sauver",
     "command.share"			: "Partager",
+    "command.qrcode"		: "QR-Code",
 
     "tooltip.backward"      : "Page présédente",
     "tooltip.edit"          : "Modifier le contact en cours",
@@ -77,6 +78,7 @@
     "tooltip.deletemail"	: "Supprimer le mail",
     "tooltip.save"			: "Sauver",
     "tooltip.share"			: "Partager",
+    "tooltip.qrcode"		: "Partager comme QR-Code ou VCard",
 
     "start.title"           : "Accueil",
     "start.comment"         : "Utilisez les boutons sur cette page pour accéder à d'autres pages!",
@@ -378,6 +380,8 @@
     "userinfo.presence"     : "Présence",
     "userinfo.message1time" : "Envoyé",
     "userinfo.message2time" : "Reçu",
+
+    "uservcard.title"       : "Mes coordonnées en tant que QR-Code",
 
     "label.start"           : "Accueil",
     "label.contact"         : "Contact",

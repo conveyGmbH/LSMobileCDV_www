@@ -38,6 +38,7 @@
     "command.print"			: "Drucken",
 	"command.save"			: "Speichern",
     "command.share"			: "Teilen",
+    "command.qrcode"		: "QR-Code",
 
     "tooltip.backward"      : "Zurück blättern",
     "tooltip.edit"          : "Aktuellen Datensatz bearbeiten",
@@ -77,6 +78,7 @@
     "tooltip.deletemail"	: "Mail lÃ¶schen",
     "tooltip.save"			    : "Speichern",
     "tooltip.share"			: "Teilen",
+    "tooltip.qrcode"		: "Share as QR-Code or VCard",
 
     "start.title"           : "Startseite",
     "start.comment"         : "Verwende die Schaltflächen auf dieser Seite um auf weitere Seiten zu gehen!",
@@ -376,6 +378,8 @@
     "userinfo.presence"     : "Anwesenheit",
     "userinfo.message1time" : "Sent",
     "userinfo.message2time" : "Received",
+
+    "uservcard.title"       : "My contact info as QR-Code",
 
     "label.start"           : "Start",
     "label.contact"         : "Kontakt",

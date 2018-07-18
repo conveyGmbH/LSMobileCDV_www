@@ -724,7 +724,7 @@
             }
         },
         shareContact: function (dataContact, country) {
-            if (dataContact && dataContact.KontaktVIEWID) {
+            if (dataContact) {
                 var vCard = new VCard.VCard();
                 vCard.organization = dataContact.Firmenname;
                 vCard.namePrefix = dataContact.Titel;
@@ -760,9 +760,11 @@
                 var encoded = b64.fromByteArray(blob);
                 var data = "data:text/vcf;base64," + encoded;
                 var subject = formattedName;
-                var message = getResourceText("contact.title") + 
-                    " ID: " + dataContact.CreatorSiteID + "/" + dataContact.CreatorRecID + " \r\n" +
-                    formattedName;
+                var message = getResourceText("contact.title");
+                if (dataContact.CreatorSiteID && dataContact.CreatorRecID) {
+                    message += " ID: " + dataContact.CreatorSiteID + "/" + dataContact.CreatorRecID;
+                }
+                message +=  " \r\n" + formattedName;
                 window.plugins.socialsharing.share(message, subject, data, null);
             }
         }

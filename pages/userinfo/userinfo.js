@@ -10,7 +10,7 @@
 (function () {
     "use strict";
 
-    var pageName = Application.getPagePath("userInfo");
+    var pageName = Application.getPagePath("userinfo");
 
     WinJS.UI.Pages.define(pageName, {
         // This function is called whenever a user navigates to this page. It
@@ -20,8 +20,9 @@
             // TODO: Initialize the page here.
             // add page specific commands to AppBar
             var commandList = [
-                { id: 'clickOk', label: getResourceText('command.ok'), tooltip: getResourceText('tooltip.ok'), section: 'primary', svg: 'paper_jet2', key: WinJS.Utilities.Key.enter },
-                { id: 'clickPhoto', label: getResourceText('command.photo'), tooltip: getResourceText('tooltip.photo'), section: 'primary', svg: 'camera' }
+                { id: 'clickPhoto', label: getResourceText('command.photo'), tooltip: getResourceText('tooltip.photo'), section: 'primary', svg: 'camera' },
+                { id: 'clickVcard', label: getResourceText('command.qrcode'), tooltip: getResourceText('tooltip.qrcode'), section: 'primary', svg: 'id_card' },
+                { id: 'clickOk', label: getResourceText('command.ok'), tooltip: getResourceText('tooltip.ok'), section: 'primary', svg: 'paper_jet2', key: WinJS.Utilities.Key.enter }
             ];
 
             this.controller = new UserInfo.Controller(element, commandList);

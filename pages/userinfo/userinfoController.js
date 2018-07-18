@@ -422,6 +422,11 @@
                     }
                     Log.ret(Log.l.trace);
                 },
+                clickVcard: function(event) {
+                    Log.call(Log.l.trace, "UserInfo.Controller.");
+                    Application.navigateById("uservcard", event);
+                    Log.ret(Log.l.trace);
+                },
                 clickPhoto: function(event) {
                     Log.call(Log.l.trace, "UserInfo.Controller.");
                     that.takePhoto();
@@ -499,6 +504,10 @@
 
             this.disableHandlers = {
                 clickOk: function() {
+                    // always enabled!
+                    return false;
+                },
+                clickVcard: function () {
                     // always enabled!
                     return false;
                 },
