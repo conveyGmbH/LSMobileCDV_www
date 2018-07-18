@@ -723,7 +723,7 @@
                 return ret;
             }
         },
-        shareContact: function (dataContact, country) {
+        createVCardFromContact: function(dataContact, country) {
             if (dataContact) {
                 var vCard = new VCard.VCard();
                 vCard.organization = dataContact.Firmenname;
@@ -744,7 +744,13 @@
                 vCard.workFax = dataContact.Fax;
                 vCard.url = dataContact.WebAdresse;
                 vCard.note = dataContact.Bemerkungen;
-
+                return vCard;
+            }
+            return null;
+        },
+        shareContact: function (dataContact, country) {
+            if (dataContact) {
+                var vCard = AppData.createVCardFromContact(dataContact, country);
                 var formattedName = "";
                 [vCard.firstName, vCard.middleName, vCard.lastName]
                     .forEach(function (name) {
