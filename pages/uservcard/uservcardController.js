@@ -10,6 +10,7 @@
 /// <reference path="~/www/pages/uservcard/uservcardService.js" />
 /// <reference path="~/plugins/cordova-plugin-camera/www/CameraConstants.js" />
 /// <reference path="~/plugins/cordova-plugin-camera/www/Camera.js" />
+/// <reference path="~/www/lib/jQueryQRCode/scripts/jquery.qrcode.min.js" />
 
 (function () {
     "use strict";
@@ -22,12 +23,13 @@
                 dataVeranstaltung: UserVcard.veranstaltungView && getEmptyDefaultValue(UserVcard.veranstaltungView.defaultValue),
                 InitLandItem: { InitLandID: 0, TITLE: "" }
             }, commandList]);
-            this.img = null;
+            this.qrcodeWidth = 0;
+            this.qrcodeContent = "";
 
             var that = this;
 
             // show business card photo
-            var qrcodeContainer = pageElement.querySelector(".qrcode-container");
+            var qrcodeContainer = pageElement.querySelector(".userinfo-qrcode-container");
 
 
             this.dispose = function () {
@@ -36,10 +38,13 @@
             var getDataContact = function() {
                 Log.call(Log.l.trace, "UserVcard.Controller.");
                 var prop;
-                var dataContact = {};
-                if (UserVcard.benutzerView && that.binding.dataBenutzer) {
+                var dataContact = null;
+                if (UserVcard.benutzerView && that.binding.dataBenutzer && that.binding.dataBenutzer.BenutzerVIEWID) {
                     for (prop in UserVcard.benutzerView.defaultValue) {
                         if (UserVcard.benutzerView.defaultValue.hasOwnProperty(prop)) {
+                            if (!dataContact) {
+                                dataContact = {};
+                            }
                             if (that.binding.dataBenutzer[prop]) {
                                 dataContact[prop] = that.binding.dataBenutzer[prop];
                             } else {
@@ -48,9 +53,12 @@
                         }
                     }
                 }
-                if (UserVcard.veranstaltungView && that.binding.dataVeranstaltung) {
+                if (UserVcard.veranstaltungView && that.binding.dataVeranstaltung && that.binding.dataVeranstaltung.VeranstaltungVIEWID) {
                     for (prop in UserVcard.veranstaltungView.defaultValue) {
                         if (UserVcard.veranstaltungView.defaultValue.hasOwnProperty(prop)) {
+                            if (!dataContact) {
+                                dataContact = {};
+                            }
                             if (that.binding.dataVeranstaltung[prop]) {
                                 dataContact[prop] = that.binding.dataVeranstaltung[prop];
                             } else {
@@ -179,6 +187,45 @@
             };
             this.loadData = loadData;
 
+            var drawQrcode = function() {
+                Log.call(Log.l.trace, "UserVcard.Controller.");
+                var ret = new WinJS.Promise.as().then(function() {
+                    var dataContact = getDataContact();
+                    var vCard = AppData.createVCardFromContact(dataContact, that.binding.InitLandItem.Alpha3_ISOCode);
+                    if (vCard && qrcodeContainer) {
+                        var width = qrcodeContainer.clientWidth - 36;
+                        if (width > pageElement.clientHeight - 60) {
+                            width = pageElement.clientHeight - 60;
+                        }
+                        var content = vCard.getFormattedString();
+                        Log.print(Log.l.trace, "width=" + width + " content=" + content);
+                        if (that.qrcodeContent !== content ||
+                            that.qrcodeWidth !== width) {
+                            var qrcodeViewer = document.createElement("div");
+                            WinJS.Utilities.addClass(qrcodeViewer, "userinfo-qrcode");
+                            $(qrcodeViewer).qrcode({
+                                text: utf8_decode(content),
+                                width: width,
+                                height: width
+                            });
+                            that.qrcodeContent = content;
+                            that.qrcodeWidth = width;
+                            qrcodeContainer.appendChild(qrcodeViewer);
+                            if (qrcodeContainer.childElementCount > 1) {
+                                var oldElement = qrcodeContainer.firstElementChild;
+                                if (oldElement) {
+                                    qrcodeContainer.removeChild(oldElement);
+                                    oldElement.innerHTML = "";
+                                }
+                            }
+                        }
+                    }
+                });
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+            that.drawQrcode = drawQrcode;
+
             // define handlers
             this.eventHandlers = {
                 clickBack: function (event) {
@@ -218,7 +265,12 @@
                 return that.loadData();
             }).then(function () {
                 AppBar.notifyModified = true;
-                return WinJS.Promise.as();
+                var pageControl = pageElement.winControl;
+                if (pageControl && pageControl.updateLayout) {
+                    pageControl.prevWidth = 0;
+                    pageControl.prevHeight = 0;
+                    pageControl.updateLayout.call(pageControl, pageElement);
+                }
             });
             Log.ret(Log.l.trace);
         })
