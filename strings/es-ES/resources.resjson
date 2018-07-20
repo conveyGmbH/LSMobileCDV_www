@@ -39,6 +39,7 @@
 	"command.save"			: "Speichern",
     "command.share"			: "Teilen",
     "command.qrcode"		: "QR-Code",
+    "command.barcodeEdit"	: "Enter barcode",
 
     "tooltip.backward"      : "Zurück blättern",
     "tooltip.edit"          : "Aktuellen Datensatz bearbeiten",
@@ -79,6 +80,7 @@
     "tooltip.save"			    : "Speichern",
     "tooltip.share"			: "Teilen",
     "tooltip.qrcode"		: "Share as QR-Code or VCard",
+    "tooltip.barcodeEdit"	: "Enter barcode manually",
 
     "start.title"           : "Startseite",
     "start.comment"         : "Verwende die Schaltflächen auf dieser Seite um auf weitere Seiten zu gehen!",
@@ -218,6 +220,10 @@
 
     "camera.title"          : "Kamera",
     "camera.comment"        : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
+
+    "barcodeEdit.title"     : "Enter barcode manually",
+    "barcodeEdit.comment"   : "Bitte erfassen Sie den Barcode von Hand in das Eingabefeld!",
+    "barcodeEdit.barcode"   : "Barcode",
 
     "barcode.title"         : "Barcode",
     "barcode.comment"       : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",

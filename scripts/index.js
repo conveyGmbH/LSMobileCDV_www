@@ -71,6 +71,7 @@
     // static array of pages for the navigation bar 
     Application.navigationBarPages = [
         { id: "start", group: -6, disabled: false },
+        { id: "barcodeEdit", group: -7, disabled: false },
         { id: "contact", group: 1, disabled: false },
         { id: "questionnaire", group: 1, disabled: false },
         { id: "sketch", group: 1, disabled: false },

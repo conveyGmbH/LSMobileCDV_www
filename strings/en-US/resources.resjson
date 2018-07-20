@@ -39,6 +39,7 @@
 	"command.save"			: "Save", 
     "command.share"			: "Share",
     "command.qrcode"		: "QR-Code",
+    "command.barcodeEdit"	: "Enter barcode",
 
     "tooltip.backward"      : "Browse back",
     "tooltip.edit"          : "Edit current record",
@@ -79,6 +80,7 @@
     "tooltip.save"			: "Save",
     "tooltip.share"			: "Share",
     "tooltip.qrcode"		: "Share as QR-Code or VCard",
+    "tooltip.barcodeEdit"	: "Enter barcode manually",
 
     "start.title"           : "Start Page",
     "start.comment"         : "On this page, use the buttons to go to additional pages!",
@@ -218,6 +220,10 @@
 
     "camera.title"          : "Camera",
     "camera.comment"        : "On this page, use the Back button to go back!",
+
+    "barcodeEdit.title"     : "Enter barcode manually",
+    "barcodeEdit.comment"   : "Please enter the barcode manually in the input field!",
+    "barcodeEdit.barcode"   : "Barcode",
 
     "barcode.title"         : "Barcode",
     "barcode.comment"       : "On this page, use the Back button to go back!",
