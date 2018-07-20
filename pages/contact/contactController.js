@@ -246,6 +246,11 @@
                     });
                     Log.ret(Log.l.trace);
                 },
+                clickBarcodeEdit: function (event) {
+                    Log.call(Log.l.trace, "Contact.Controller.");
+                    Application.navigateById("barcodeEdit", event);
+                    Log.ret(Log.l.trace);
+                },
                 clickForward: function (event) {
                     Log.call(Log.l.trace, "Contact.Controller.");
                     Application.navigateById("questionnaire", event);
@@ -301,6 +306,9 @@
                     } else {
                         return true;
                     }
+                },
+                clickBarcodeEdit: function () {
+                    return AppBar.busy;
                 },
                 clickForward: function () {
                     return AppBar.busy;

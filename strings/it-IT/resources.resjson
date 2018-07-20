@@ -39,6 +39,7 @@
 	"command.save"			: "Salvare",
     "command.share"			: "Condividere",
     "command.qrcode"		: "QR-Code",
+    "command.barcodeEdit"	: "Inserisci barcode",
 
     "tooltip.backward"      : "Pagina precedente",
     "tooltip.edit"          : "Modifica Record attuale",
@@ -79,6 +80,7 @@
     "tooltip.save"			: "Salvare",
     "tooltip.share"			: "Condividere",
     "tooltip.qrcode"		: "Condividi come QR-Code o VCard",
+    "tooltip.barcodeEdit"	: "Inserimento manuale del codice a barre",
 
     "start.title"           : "Pagina iniziale",
     "start.comment"         : "Utilizzate i pulsanti su questa pagina per muoversi tra le pagine!",
@@ -218,6 +220,10 @@
 
     "camera.title"          : "Camera",
     "camera.comment"        : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
+
+    "barcodeEdit.title"     : "Inserimento manuale del codice a barre",
+    "barcodeEdit.comment"   : "Immettere il codice a barre manualmente nel campo d'immissione!",
+    "barcodeEdit.barcode"   : "Barcode",
 
     "barcode.title"         : "Barcode",
     "barcode.comment"       : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",

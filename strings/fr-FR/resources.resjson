@@ -39,6 +39,7 @@
 	"command.save"			: "Sauver",
     "command.share"			: "Partager",
     "command.qrcode"		: "QR-Code",
+    "command.barcodeEdit"	: "Entrer code-barres",
 
     "tooltip.backward"      : "Page présédente",
     "tooltip.edit"          : "Modifier le contact en cours",
@@ -79,6 +80,7 @@
     "tooltip.save"			: "Sauver",
     "tooltip.share"			: "Partager",
     "tooltip.qrcode"		: "Partager comme QR-Code ou VCard",
+    "tooltip.barcodeEdit"	: "Saisie manuelle du code-barres",
 
     "start.title"           : "Accueil",
     "start.comment"         : "Utilisez les boutons sur cette page pour accéder à d'autres pages!",
@@ -218,6 +220,10 @@
 
     "camera.title"          : "Camera",
     "camera.comment"        : "Utilisez le bouton Retour sur cette page pour y retourner!",
+
+    "barcodeEdit.title"     : "Saisie manuelle du code-barres",
+    "barcodeEdit.comment"   : "Veuillez entrer le code à barres manuellement dans le champ de saisie !",
+    "barcodeEdit.barcode"   : "Barcode",
 
     "barcode.title"         : "Code barre",
     "barcode.comment"       : "Utilisez le bouton Retour sur cette page pour y retourner!",
