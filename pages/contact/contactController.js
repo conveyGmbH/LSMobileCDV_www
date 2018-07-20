@@ -308,7 +308,7 @@
                     }
                 },
                 clickBarcodeEdit: function () {
-                    return AppBar.busy;
+                    return AppData._persistentStates.hideBarcodeScan || AppBar.busy;
                 },
                 clickForward: function () {
                     return AppBar.busy;
