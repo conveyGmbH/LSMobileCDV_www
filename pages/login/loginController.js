@@ -89,7 +89,10 @@
                     } else {
                         NavigationBar.enablePage("start");
                     }
-
+                    if (!that.binding.dataLogin.Login || !that.binding.dataLogin.Password) {
+                        that.binding.dataLogin.privacyPolicyFlag = false;
+                        that.binding.dataLogin.privacyPolicydisabled = false;
+                    }
                     return AppBar.busy || (that.binding.dataLogin.Login.length === 0 || that.binding.dataLogin.Password.length === 0 || !that.binding.dataLogin.privacyPolicyFlag);
                 }
             };
