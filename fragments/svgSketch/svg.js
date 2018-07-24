@@ -192,7 +192,14 @@
                     this.outline = null;
                     while (this.prevOutlines.length) {
                         if (this.sketchpad) {
-                            this.sketchpad.remove(this.prevOutlines[this.prevOutlines.length - 1]);
+                            try {
+                                var prevOutline = this.prevOutlines[this.prevOutlines.length - 1];
+                                if (prevOutline) {
+                                    this.sketchpad.remove(prevOutline);
+                                }
+                            } catch (e) {
+                                // ignore...
+                            }
                         }
                         this.prevOutlines.splice(this.prevOutlines.length - 1, 1);
                     }
