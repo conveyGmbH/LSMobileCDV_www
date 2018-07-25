@@ -321,7 +321,7 @@
     "account.inactive"      : "The service is currently inactive!",
     
     "info.title"            : "Information about the app",
-    "info.comment"          : "&copy; convey Information Systems GmbH 2015-2017",
+    "info.comment"          : "&copy; convey Information Systems GmbH",
     "info.homepage"         : "www.convey.de",
     "info.logOptions"       : "Logging options",
     "info.on"               : "On",
