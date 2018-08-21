@@ -29,6 +29,7 @@
             this.actualquestion = null;
             this.images = null;
             this.docIds = null;
+            this.selectQuestionIdxs = null;
 
             var hasIPhoneBug = false;
             if (navigator.appVersion && 
@@ -250,7 +251,7 @@
                 // Abfrage welcher Typ um Typ von Antwort, dann alle null werte ignorieren 
                 if (item.type === "single-rating") {
                     for (i = 1; i <= 6; i++) {
-                        i.toString();
+                        iStr = i.toString();
                         if (i < 10) {
                             // keyValue = "SRANTWORT0" + iStr;
                             keyTitle = "SR0" + iStr;
@@ -268,7 +269,7 @@
                 }
                 if (item.type === "multi-rating") {
                     for (i = 1; i <= 6; i++) {
-                        i.toString();
+                        iStr = i.toString();
                         if (i < 10) {
                             keyValue = "MRShow0" + iStr;
                             keyTitle = "MR0" + iStr;
@@ -309,6 +310,169 @@
                 }
             }
             this.resultMandatoryConverter = resultMandatoryConverter;
+
+            var getHideQuestion = function (item, sortIdx) {
+                var hideQuestion = false;
+                if (item && typeof sortIdx === "number") {
+                    var value, key;
+                    if (sortIdx > 0 && sortIdx < 9) {
+                        value = "0" + sortIdx.toString();
+                    } else {
+                        value = sortIdx.toString();
+                    }
+                    switch (item.type) {
+                        case "single-rating":
+                            if (sortIdx >= 1 && sortIdx <= 6) {
+                                if (item.RRANTWORT === value) {
+                                    hideQuestion = false;
+                                } else {
+                                    hideQuestion = true;
+                                }
+                            }
+                        break;
+                        case "multi-rating":
+                            if (sortIdx >= 1 && sortIdx <= 6) {
+                                key = "MrAntwort" + value;
+                                if (item[key] === "X") {
+                                    hideQuestion = false;
+                                } else {
+                                    hideQuestion = true;
+                                }
+                            }
+                        break;
+                        case "multi":
+                            key = "MSANTWORT" + value;
+                            if (item[key] === "X") {
+                                hideQuestion = false;
+                            } else {
+                                hideQuestion = true;
+                            }
+                        break;
+                        case "multi8":
+                            if (sortIdx >= 1 && sortIdx <= 8) {
+                                key = "MSANTWORT" + value;
+                                if (item[key] === "X") {
+                                    hideQuestion = false;
+                                } else {
+                                    hideQuestion = true;
+                                }
+                            }
+                        break;
+                        case "combo":
+                            if (item.SSANTWORT === value) {
+                                hideQuestion = false;
+                            } else {
+                                hideQuestion = true;
+                            }
+                        break;
+                        case "single":
+                            if (item.SSANTWORT === value) {
+                                hideQuestion = false;
+                            } else {
+                                hideQuestion = true;
+                            }
+                        break;
+                        case "single8":
+                            if (sortIdx >= 1 && sortIdx <= 8) {
+                                if (item.SSANTWORT === value) {
+                                    hideQuestion = false;
+                                } else {
+                                    hideQuestion = true;
+                                }
+                            }
+                        break;
+                    }
+                }
+                return hideQuestion;
+            }
+            this.getHideQuestion = getHideQuestion;
+
+            var checkForHideQuestion = function (items) {
+                var i, item, selItem, selQuestionIdx;
+                if (items) {
+                    for (i = 0; i < items.length; i++) {
+                        item = items[i];
+                        if (!item.PflichtFeld &&
+                            item.SelektierteFrageIdx > 0 &&
+                            item.SelektierteFrageIdx <= items.length &&
+                            item.SelektierteFrageIdx !== i + 1) {
+                            selQuestionIdx = item.SelektierteFrageIdx - 1;
+                            selItem = items[selQuestionIdx];
+                            item.hideQuestion = getHideQuestion(selItem, item.SelektierteAntwortIdx);
+                            if (!that.selectQuestionIdxs) {
+                                that.selectQuestionIdxs = [];
+                            }
+                            if (!that.selectQuestionIdxs[selQuestionIdx]) {
+                                that.selectQuestionIdxs[selQuestionIdx] = [i];
+                            } else {
+                                that.selectQuestionIdxs[selQuestionIdx].push(i);
+                            }
+                        } else {
+                            item.hideQuestion = false;
+                        }
+                    }
+                } else if (that.questions) {
+                    for (i = 0; i < that.questions.length; i++) {
+                        item = that.questions.getAt(i);
+                        if (!item.PflichtFeld &&
+                            item.SelektierteFrageIdx > 0 &&
+                            item.SelektierteFrageIdx <= that.questions.length &&
+                            item.SelektierteFrageIdx !== i + 1) {
+                            selQuestionIdx = item.SelektierteFrageIdx - 1;
+                            selItem = that.questions.getAt(selQuestionIdx);
+                            var hideQuestion = getHideQuestion(selItem, item.SelektierteAntwortIdx);
+                            if (hideQuestion !== item.hideQuestion) {
+                                item.hideQuestion = hideQuestion;
+                                that.questions.setAt(i, item);
+                            }
+                            if (!that.selectQuestionIdxs) {
+                                that.selectQuestionIdxs = [];
+                            }
+                            if (!that.selectQuestionIdxs[selQuestionIdx]) {
+                                that.selectQuestionIdxs[selQuestionIdx] = [i];
+                            } else {
+                                that.selectQuestionIdxs[selQuestionIdx].push(i);
+                            }
+                        } else {
+                            item.hideQuestion = false;
+                        }
+                    }
+                }
+            }
+            this.checkForHideQuestion = checkForHideQuestion;
+
+            var checkForSelectionQuestion = function (selIdx) {
+                if (that.selectQuestionIdxs && that.questions) {
+                    var curScope = null;
+                    var question = that.questions.getAt(selIdx);
+                    if (question && typeof question === "object" &&
+                        typeof that.selectQuestionIdxs[selIdx] === "object") {
+                        curScope = copyByValue(question);
+                    }
+                    if (curScope) {
+                        var newRecord = that.getFieldEntries(selIdx, curScope.type);
+                        if (that.mergeRecord(curScope, newRecord)) {
+                            Log.print(Log.l.trace, "handle changes of item[" + selIdx + "]");
+                            var optionQuestionIdxs = that.selectQuestionIdxs[selIdx];
+                            for (var i = 0; i < optionQuestionIdxs.length; i++) {
+                                var idx = optionQuestionIdxs[i];
+                                var item = that.questions.getAt(idx);
+                                var selQuestionIdx = item.SelektierteFrageIdx > 0 ? item.SelektierteFrageIdx - 1 : -1;
+                                if (!item.PflichtFeld &&
+                                    selQuestionIdx === selIdx &&
+                                    selQuestionIdx !== idx) {
+                                    var hideQuestion = getHideQuestion(curScope, item.SelektierteAntwortIdx);
+                                    if (hideQuestion !== item.hideQuestion) {
+                                        item.hideQuestion = hideQuestion;
+                                        that.questions.setAt(idx, item);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            this.checkForSelectionQuestion = checkForSelectionQuestion;
 
             // get field entries
             var getFieldEntries = function (index, type) {
@@ -730,16 +894,6 @@
                     Application.navigateById('sketch', event);
                     Log.ret(Log.l.trace);
                 },
-                clickRating: function (event) {
-                    Log.call(Log.l.trace, "Questionnaire.Controller.");
-                    WinJS.Promise.timeout(0).then(function () {
-                        var recordId = that.curRecId;
-                        if (recordId) {
-                            // handle setDirty
-                        }
-                    });
-                    Log.ret(Log.l.trace);
-                },
                 clickChangeUserState: function (event) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
                     Application.navigateById("userinfo", event);
@@ -971,6 +1125,7 @@
                                             that.resultConverter(item, that.binding.count);
                                             that.binding.count = that.questions.push(item);
                                         });
+                                        that.checkForHideQuestion();
                                     }
                                 }, function (errorResponse) {
                                     // called asynchronously if an error occurs
@@ -1031,6 +1186,20 @@
                         }
                     }
                     Log.ret(Log.l.trace);
+                },
+                onModified: function (event) {
+                    if (that.selectQuestionIdxs && event && event.currentTarget &&
+                        listView && listView.winControl) {
+                        var element = event.currentTarget.parentElement;
+                        while (element && element !== listView) {
+                            if (element.className === "questionnaire-row") {
+                                var i = listView.winControl.indexOfElement(element.parentElement);
+                                that.checkForSelectionQuestion(i);
+                                break;
+                            }
+                            element = element.parentElement;
+                        }
+                    }
                 }
             };
 
@@ -1223,6 +1392,7 @@
                             // this callback will be called asynchronously
                             // when the response is available
                             Log.print(Log.l.trace, "Questionnaire.questionnaireView: success!");
+                            that.selectQuestionIdxs = null;
                             // startContact returns object already parsed from json file in response
                             if (json && json.d) {
                                 that.nextUrl = Questionnaire.questionnaireView.getNextUrl(json);
@@ -1231,6 +1401,7 @@
                                     results.forEach(function (item, index) {
                                         that.resultConverter(item, index);
                                     });
+                                    that.checkForHideQuestion(results);
                                     // Now, we call WinJS.Binding.List to get the bindable list
                                     that.questions = new WinJS.Binding.List(results);
                                     that.binding.count = that.questions.length;
@@ -1239,6 +1410,7 @@
                                         that.resultConverter(item, that.binding.count);
                                         that.binding.count = that.questions.push(item);
                                     });
+                                    that.checkForHideQuestion();
                                 }
                                 if (listView && listView.winControl) {
                                     var getTextareaForFocus = function (element) {
