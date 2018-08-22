@@ -208,7 +208,7 @@
                                         item[checked] = false;
                                     }
                                 }
-                                
+
                             }
                         }
                         var name = "SSANTWORT" + item.ZeilenantwortVIEWID.toString();
@@ -229,6 +229,9 @@
                 item.textarea = getResourceText("questionnaire.textarea");
                 if (item.Freitext === null) {
                     item.Freitext = "";
+                }
+                if (item.FreitextAktiv === null && hasIPhoneBug) { //  && device.version === "11.3"
+                    item.FreitextAktiv = 3;
                 }
                 if (item.DateCombobox) {
                     item["DateComboboxButtonShow"] = true;
@@ -969,6 +972,15 @@
                                                             useDateCombobox.parentElement.insertBefore(dateComboboxElement, useDateCombobox);
                                                         }
                                                     }
+                                                }
+                                            }
+                                        }
+                                        if (hasIPhoneBug) {
+                                            element = listView.winControl.elementFromIndex(i);
+                                            if (element) {
+                                                var textarea = element.querySelector(".win-textarea.field-text-comment");
+                                                if (item.FreitextAktiv === 3) {
+                                                    textarea.readOnly = true;
                                                 }
                                             }
                                         }
