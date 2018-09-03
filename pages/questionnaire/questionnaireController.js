@@ -30,6 +30,7 @@
             this.images = null;
             this.docIds = null;
             this.selectQuestionIdxs = null;
+            this.showHideModified = false;
 
             var hasIPhoneBug = false;
             if (navigator.appVersion && 
@@ -454,7 +455,7 @@
                     }
                     if (curScope) {
                         var newRecord = that.getFieldEntries(selIdx, curScope.type);
-                        if (that.mergeRecord(curScope, newRecord)) {
+                        if (that.mergeRecord(curScope, newRecord) || that.showHideModified) {
                             Log.print(Log.l.trace, "handle changes of item[" + selIdx + "]");
                             var optionQuestionIdxs = that.selectQuestionIdxs[selIdx];
                             for (var i = 0; i < optionQuestionIdxs.length; i++) {
@@ -468,6 +469,7 @@
                                     if (hideQuestion !== item.hideQuestion) {
                                         item.hideQuestion = hideQuestion;
                                         that.questions.setAt(idx, item);
+                                        that.showHideModified = true;
                                     }
                                 }
                             }
@@ -976,6 +978,7 @@
                                         var newRecId = item.data.ZeilenantwortVIEWID;
                                         Log.print(Log.l.trace, "newRecId:" + newRecId + " curRecId:" + that.curRecId);
                                         if (newRecId !== 0 && newRecId !== that.curRecId) {
+                                            that.showHideModified = false;
                                             AppData.setRecordId('Zeilenantwort', newRecId);
                                             if (that.curRecId) {
                                                 that.prevRecId = that.curRecId;
