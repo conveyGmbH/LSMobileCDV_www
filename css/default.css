@@ -50,7 +50,7 @@ img .field_line {
     display: inline-block;
     width: 100%;
     height: 100%;
-    background: url(/www/images/leadsuccess_white.png) no-repeat center center fixed;
+    background: url(../images/leadsuccess_white.svg) no-repeat center center fixed;
     -webkit-background-size: 50%;
     -moz-background-size: 50%;
     -o-background-size: 50%;
@@ -65,7 +65,7 @@ img .field_line {
     width: 100%;
     height: 100%;
     opacity: 0.2;
-    background: url(/www/images/app-bkg.png) no-repeat center center fixed; 
+    background: url(../images/app-bkg.png) no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -1354,7 +1354,7 @@ textarea:-ms-input-placeholder { font-style: italic; } /* ie */
 
 /*General Styles used for all FlipViews*/
 #imgListQuestionnaire.flipview {
-    background-image: url("/www/images/bkgtexture.png");
+    background-image: url("../images/bkgtexture.png");
     left: 0;
     padding: 0;
     width: calc(100% - 16px);

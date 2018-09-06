@@ -8,6 +8,7 @@
 /// <reference path="~/www/scripts/generalData.js" />
 /// <reference path="~/www/pages/camera/cameraService.js" />
 /// <reference path="~/plugins/cordova-plugin-camera/www/Camera.js" />
+/// <reference path="~/plugins/cordova-plugin-device/www/device.js" />
 
 /*
  Structure of states to be set from external modules:
@@ -278,6 +279,13 @@
                 } else {
                     if (navigator.camera &&
                         typeof navigator.camera.getPicture === "function") {
+                        var isWindows10 = false;
+                        if (typeof device === "object" && typeof device.platform === "string" && typeof device.version === "string") {
+                            if (device.platform.substr(0, 7) === "windows" &&
+                                device.version.substr(0, 4) === "10.0") {
+                                isWindows10 = true;
+                            }
+                        }
                         // shortcuts for camera definitions
                         //pictureSource: navigator.camera.PictureSourceType,   // picture source
                         //destinationType: navigator.camera.DestinationType, // sets the format of returned value
@@ -286,7 +294,7 @@
                         navigator.camera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                             destinationType: Camera.DestinationType.DATA_URL,
                             sourceType: Camera.PictureSourceType.CAMERA,
-                            allowEdit: true,
+                            allowEdit: !isWindows10,
                             quality: AppData.generalData.cameraQuality,
                             targetWidth: -1,
                             targetHeight: -1,
