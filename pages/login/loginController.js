@@ -65,12 +65,18 @@
             this.eventHandlers = {
                 clickOk: function (event) {
                     Log.call(Log.l.trace, "Login.Controller.");
-                    Application.navigateById("start", event);
+                    Application.navigateById("start", event, true);
                     Log.ret(Log.l.trace);
                 },
                 clickAccount: function (event) {
                     Log.call(Log.l.trace, "Login.Controller.");
                     Application.navigateById("newAccount", event, true);
+                    Log.ret(Log.l.trace);
+                },
+                clickChangeUserState: function (event) {
+                    Log.call(Log.l.trace, "Account.Controller.");
+                    //ignore that here!
+                    //Application.navigateById("userinfo", event);
                     Log.ret(Log.l.trace);
                 },
                 clickPrivacyPolicy: function (event) {

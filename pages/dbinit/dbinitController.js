@@ -115,7 +115,7 @@
                     }).then(function () {
                         WinJS.Promise.timeout(0).then(function () {
                             // navigate async here to ensure load of navigation menu!
-                            Application.navigateById(getStartPage());
+                            Application.navigateById(getStartPage(), null, true);
                         });
                     });
                 }

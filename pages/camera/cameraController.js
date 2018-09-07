@@ -33,9 +33,6 @@
 
             var that = this;
 
-            // First, we call WinJS.Binding.as to get the bindable proxy object
-            this.binding = WinJS.Binding.as(this.pageData);
-
             var updateStates = function(states) {
                 Log.call(Log.l.trace, "Camera.Controller.", "errorMessage=" + states.errorMessage + "");
                 // nothing to do for now
@@ -53,12 +50,12 @@
             // define handlers
             this.eventHandlers = {
                 clickBack: function (event) {
-                    if (WinJS.Navigation.canGoBack === true) {
+                    if (!AppBar.busy && WinJS.Navigation.canGoBack === true) {
                         WinJS.Navigation.back(1).done( /* Your success and error handlers */);
                     }
                 },
                 clickChangeUserState: function (event) {
-                    Log.call(Log.l.trace, "Account.Controller.");
+                    Log.call(Log.l.trace, "Camera.Controller.");
                     Application.navigateById("userinfo", event);
                     Log.ret(Log.l.trace);
                 }
@@ -67,7 +64,7 @@
             this.disableHandlers = {
                 clickBack: function() {
                     if (WinJS.Navigation.canGoBack === true) {
-                        return false;
+                        return AppBar.busy;
                     } else {
                         return true;
                     }
@@ -219,6 +216,10 @@
                         // or server returns response with an error status.
                         AppData.setErrorMsg(that.binding, errorResponse);
                     }, newPicture);
+                }).then(function() {
+                    AppBar.busy = false;
+                }, function () {
+                    AppBar.busy = false;
                 });
                 Log.ret(Log.l.trace);
                 return ret;
@@ -248,10 +249,13 @@
                 Log.call(Log.l.error, "Camera.Controller.");
                 //message: The message is provided by the device's native code
                 that.updateStates({ errorMessage: message });
-
+                AppBar.busy = false;
                 WinJS.Promise.timeout(2000).then(function () {
                     // go back to start
-                    WinJS.Navigation.back(1).done( /* Your success and error handlers */);
+                    if (WinJS.Navigation.location === Application.getPagePath("camera") &&
+                        WinJS.Navigation.canGoBack === true) {
+                        WinJS.Navigation.back(1).done( /* Your success and error handlers */);
+                    }
                 });
                 Log.ret(Log.l.error);
             }
@@ -260,37 +264,48 @@
             AppData.setErrorMsg(that.binding);
             var takePhoto = function() {
                 Log.call(Log.l.trace, "Camera.Controller.");
-                if (that.binding.generalData.useClippingCamera) {
-                    if (navigator.clippingCamera &&
-                        typeof navigator.clippingCamera.getPicture === "function") {
-                        var autoShutterTime = 0;
-                        if (typeof that.binding.generalData.autoShutterTime === "string") {
-                            autoShutterTime = parseInt(that.binding.generalData.autoShutterTime);
-                        } else if (typeof that.binding.generalData.autoShutterTime === "number") {
-                            autoShutterTime = that.binding.generalData.autoShutterTime;
+                if (that.binding.generalData.useClippingCamera &&
+                    navigator.clippingCamera &&
+                    typeof navigator.clippingCamera.getPicture === "function") {
+                    var autoShutterTime = 0;
+                    if (typeof that.binding.generalData.autoShutterTime === "string") {
+                        autoShutterTime = parseInt(that.binding.generalData.autoShutterTime);
+                    } else if (typeof that.binding.generalData.autoShutterTime === "number") {
+                        autoShutterTime = that.binding.generalData.autoShutterTime;
+                    }
+                    AppBar.busy = true;
+                    navigator.clippingCamera.getPicture(onPhotoDataSuccess,onPhotoDataFail, {
+                        quality: AppData.generalData.cameraQuality,
+                        convertToGrayscale: AppData.generalData.cameraUseGrayscale,
+                        maxResolution: 3000000,
+                        autoShutter: autoShutterTime
+                    });
+                } else {
+                    var isWindows10 = false;
+                    if (typeof device === "object" && typeof device.platform === "string" && typeof device.version === "string") {
+                        if (device.platform.substr(0, 7) === "windows" && device.version.substr(0, 4) === "10.0") {
+                            isWindows10 = true;
                         }
+                    }
+                    if (isWindows10 &&
+                        !WinJS.Utilities.isPhone &&
+                        navigator.clippingCamera &&
+                        typeof navigator.clippingCamera.getPicture === "function") {
+                        AppBar.busy = true;
                         navigator.clippingCamera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                             quality: AppData.generalData.cameraQuality,
                             convertToGrayscale: AppData.generalData.cameraUseGrayscale,
-                            maxResolution: 3000000,
-                            autoShutter: autoShutterTime
+                            maxResolution: 2000000,
+                            autoShutter: 0,
+                            dontClip: true
                         });
-                    }
-                } else {
-                    if (navigator.camera &&
-                        typeof navigator.camera.getPicture === "function") {
-                        var isWindows10 = false;
-                        if (typeof device === "object" && typeof device.platform === "string" && typeof device.version === "string") {
-                            if (device.platform.substr(0, 7) === "windows" &&
-                                device.version.substr(0, 4) === "10.0") {
-                                isWindows10 = true;
-                            }
-                        }
+                    } else if (navigator.camera && typeof navigator.camera.getPicture === "function") {
                         // shortcuts for camera definitions
                         //pictureSource: navigator.camera.PictureSourceType,   // picture source
                         //destinationType: navigator.camera.DestinationType, // sets the format of returned value
                         Log.print(Log.l.trace, "calling camera.getPicture...");
                         // Take picture using device camera and retrieve image as base64-encoded string
+                        AppBar.busy = true;
                         navigator.camera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                             destinationType: Camera.DestinationType.DATA_URL,
                             sourceType: Camera.PictureSourceType.CAMERA,

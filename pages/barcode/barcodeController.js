@@ -188,7 +188,10 @@
                     // go back to start
                     WinJS.Promise.timeout(0).then(function () {
                         // go back to start
-                        WinJS.Navigation.back(1).done( /* Your success and error handlers */);
+                        if (WinJS.Navigation.location === Application.getPagePath("barcode") &&
+                            WinJS.Navigation.canGoBack === true) {
+                            WinJS.Navigation.back(1).done( /* Your success and error handlers */);
+                        }
                     });
                     Log.ret(Log.l.trace, "User cancelled");
                     return;
@@ -255,7 +258,10 @@
 
                 WinJS.Promise.timeout(2000).then(function () {
                     // go back to start
-                    WinJS.Navigation.back(1).done( /* Your success and error handlers */);
+                    if (WinJS.Navigation.location === Application.getPagePath("barcode") &&
+                        WinJS.Navigation.canGoBack === true) {
+                        WinJS.Navigation.back(1).done( /* Your success and error handlers */);
+                    }
                 });
                 Log.ret(Log.l.error);
             }

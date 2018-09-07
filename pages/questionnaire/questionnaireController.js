@@ -847,29 +847,45 @@
             AppData.setErrorMsg(that.binding);
             var takePhoto = function () {
                 Log.call(Log.l.trace, "Questionnaire.Controller.");
-                if (navigator.camera &&
-                    typeof navigator.camera.getPicture === "function") {
+                var isWindows10 = false;
+                if (typeof device === "object" && typeof device.platform === "string" && typeof device.version === "string") {
+                    if (device.platform.substr(0, 7) === "windows" && device.version.substr(0, 4) === "10.0") {
+                        isWindows10 = true;
+                    }
+                }
+                if (isWindows10 &&
+                    !WinJS.Utilities.isPhone &&
+                    navigator.clippingCamera &&
+                    typeof navigator.clippingCamera.getPicture === "function") {
+                    navigator.clippingCamera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
+                        quality: AppData.generalData.cameraQuality,
+                        convertToGrayscale: AppData.generalData.cameraUseGrayscale,
+                        maxResolution: 2000000,
+                        autoShutter: 0,
+                        dontClip: true
+                    });
+                } else if (navigator.camera && typeof navigator.camera.getPicture === "function") {
                     // shortcuts for camera definitions
                     //pictureSource: navigator.camera.PictureSourceType,   // picture source
                     //destinationType: navigator.camera.DestinationType, // sets the format of returned value
                     Log.print(Log.l.trace, "calling camera.getPicture...");
                     // Take picture using device camera and retrieve image as base64-encoded string
-                    AppBar.busy = true;
                     navigator.camera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                         destinationType: Camera.DestinationType.DATA_URL,
                         sourceType: Camera.PictureSourceType.CAMERA,
-                        allowEdit: true,
+                        allowEdit: !isWindows10,
                         quality: AppData.generalData.cameraQuality,
                         targetWidth: -1,
                         targetHeight: -1,
                         encodingType: Camera.EncodingType.JPEG,
                         saveToPhotoAlbum: false,
                         cameraDirection: Camera.Direction.BACK,
+                        convertToGrayscale: AppData.generalData.cameraUseGrayscale,
                         variableEditRect: true
                     });
                 } else {
                     Log.print(Log.l.error, "camera.getPicture not supported...");
-                    AppData.setErrorMsg(that.binding, { errorMessage: "Camera plugin not supported" });
+                    that.updateStates({ errorMessage: "Camera plugin not supported" });
                 }
                 Log.ret(Log.l.trace);
             }

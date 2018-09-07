@@ -76,7 +76,7 @@
             this.eventHandlers = {
                 clickOk: function (event) {
                     Log.call(Log.l.trace, "Account.Controller.");
-                    Application.navigateById("start", event);
+                    Application.navigateById("start", event, true);
                     Log.ret(Log.l.trace);
                 },
                 clickLogoff: function (event) {
@@ -96,7 +96,8 @@
                 },
                 clickChangeUserState: function (event) {
                     Log.call(Log.l.trace, "Account.Controller.");
-                    Application.navigateById("userinfo", event);
+                    //ignore that here!
+                    //Application.navigateById("userinfo", event);
                     Log.ret(Log.l.trace);
                 },
                 clickDoEdit: function (event) {
