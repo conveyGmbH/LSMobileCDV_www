@@ -185,6 +185,12 @@
                         item.type = "single8";
                     }
                     if (typeof item.SSANTWORT !== "undefined") {
+                        if (item.Combobox) {
+                            ssItems.push({
+                                title: "",
+                                value: null
+                            });
+                        }
                         for (i = 1; i <= 28; i++) {
                             iStr = i.toString();
                             if (i < 10) {
@@ -216,10 +222,6 @@
                         var name = "SSANTWORT" + item.ZeilenantwortVIEWID.toString();
                         item.SSNAME = name;
                         if (item.Combobox) {
-                            ssItems.push({
-                                title: "",
-                                value: null
-                            });
                             item.SSITEMS = ssItems;
                         }
                     }
