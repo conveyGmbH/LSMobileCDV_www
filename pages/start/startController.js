@@ -464,7 +464,7 @@
                 onLoadingStateChanged: function (eventInfo) {
                     Log.call(Log.l.trace, "Start.Controller.");
                     if (listView && listView.winControl) {
-                        var i, buttonElements;
+                        var i, buttonElements, buttonElement;
                         Log.print(Log.l.trace, "onLoadingStateChanged called loadingState=" + listView.winControl.loadingState);
                         // no list selection
                         if (listView.winControl.selectionMode !== WinJS.UI.SelectionMode.none) {
@@ -479,8 +479,9 @@
                             if (inReload) {
                                 buttonElements = listView.querySelectorAll(".tile-button-wide, .tile-button");
                                 for (i = 0; i < buttonElements.length; i++) {
-                                    if (buttonElements[i].style) {
-                                        buttonElements[i].style.visibility = "hidden";
+                                    buttonElement = buttonElements[i];
+                                    if (buttonElement.style) {
+                                        buttonElement.style.visibility = "hidden";
                                     }
                                 }
                             }
@@ -488,18 +489,40 @@
                             if (inReload) {
                                 buttonElements = listView.querySelectorAll(".tile-button-wide, .tile-button");
                                 for (i = 0; i < buttonElements.length; i++) {
-                                    if (buttonElements[i].style) {
-                                        buttonElements[i].style.visibility = "hidden";
+                                    buttonElement = buttonElements[i];
+                                    if (buttonElement.style) {
+                                        buttonElement.style.visibility = "hidden";
                                     }
                                 }
                             }
                         } else if (listView.winControl.loadingState === "complete") {
+                            buttonElements = listView.querySelectorAll(".tile-button-wide, .tile-button");
                             if (inReload) {
                                 inReload = false;
-                                buttonElements = listView.querySelectorAll(".tile-button-wide, .tile-button");
                                 for (i = 0; i < buttonElements.length; i++) {
-                                    if (buttonElements[i].style) {
-                                        buttonElements[i].style.visibility = "hidden";
+                                    buttonElement = buttonElements[i];
+                                    if (buttonElement.style) {
+                                        buttonElement.style.visibility = "hidden";
+                                    }
+                                }
+                            } 
+                            var pageControl = pageElement.winControl;
+                            if (pageControl && pageControl.prevWidth && pageControl.prevTileWidth && pageControl.prevTileHeight) {
+                                for (i = 0; i < buttonElements.length; i++) {
+                                    buttonElement = buttonElements[i];
+                                    if (buttonElement.style) {
+                                        if (WinJS.Utilities.hasClass(buttonElement, "tile-button-wide")) {
+                                            buttonElement.style.width = pageControl.prevWidth + "px";
+                                        } else {
+                                            buttonElement.style.width = pageControl.prevTileWidth + "px";
+                                        }
+                                    }
+                                }
+                                var tileRows = listView.querySelectorAll(".tile-row, .start-photo-container");
+                                for (i = 0; i < tileRows.length; i++) {
+                                    var tileRow = tileRows[i];
+                                    if (tileRow.style) {
+                                        tileRow.style.height = pageControl.prevTileHeight + "px";
                                     }
                                 }
                             }

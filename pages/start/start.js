@@ -48,6 +48,7 @@
             this.inResize = 0;
             this.prevWidth = 0;
             this.prevHeight = 0;
+            this.prevTileWidth = 0;
             this.prevTileHeight = 0;
 
             // add page specific commands to AppBar
@@ -110,14 +111,15 @@
                             var startActionListSurface = startActionList.querySelector("#startActions .win-surface");
                             var width = contentarea.clientWidth - 4;
                             var height = contentarea.clientHeight;
+                            var tileWidth = Math.floor(width / 3.0 * 100) / 100;
                             var tileHeight = 0;
                             if (height > 420) {
-                                tileHeight = height / 3 - 2;
-                                if (tileHeight > 198) {
-                                    tileHeight = 198;
+                                tileHeight = Math.floor(height / 3.0 * 100) / 100 - 46;
+                                if (tileHeight > 154) {
+                                    tileHeight = 154;
                                 }
                             } else {
-                                tileHeight = 140;
+                                tileHeight = 96;
                             }
                             if (startActionListSurface) {
                                 // ensure no scrolling except main direction
@@ -127,27 +129,16 @@
                             if (width !== that.prevWidth) {
                                 that.prevWidth = width;
                                 startActionList.style.width = width.toString() + "px";
-                                if (width > 4) {
-                                    var strTileWidth = (Math.floor(width * 100) / 100).toString();
-                                    //Colors.changeCSS(".tile", "width", strTileWidth + "px");
-                                    //strTileWidth = (Math.floor((width - 4) * 100)/100).toString();
-                                    //Colors.changeCSS(".tile-header", "width", strTileWidth + "px");
-                                    //Colors.changeCSS(".tile-row", "width", strTileWidth + "px");
-                                    Colors.changeCSS(".tile-content-wide", "width", strTileWidth + "px");
-                                    //strTileWidth = (Math.floor((width - 4) / 3.0 * 100) / 100).toString();
-                                    strTileWidth = (Math.floor(width / 3.0 * 100) / 100).toString();
-                                    Colors.changeCSS(".tile-content", "width", strTileWidth + "px");
+                                if (tileWidth !== that.prevTileWidth) {
+                                    that.prevTileWidth = tileWidth;
                                 }
                             }
                             if (height !== that.prevHeight) {
                                 that.prevHeight = height;
                                 startActionList.style.height = height.toString() + "px";
-                            }
-                            if (tileHeight !== that.prevTileHeight && tileHeight > 44) {
-                                that.prevTileHeight = tileHeight;
-                                var strTileHeight = (Math.floor((tileHeight - 44) * 100)/100).toString();
-                                Colors.changeCSS(".tile-row", "height", strTileHeight + "px");
-                                Colors.changeCSS(".start-photo-container", "height", strTileHeight + "px");
+                                if (tileHeight !== that.prevTileHeight) {
+                                    that.prevTileHeight = tileHeight;
+                                }
                             }
                             var businessCardImage = startActionList.querySelector("#startImage.start-business-card");
                             if (businessCardImage && businessCardImage.clientWidth) {

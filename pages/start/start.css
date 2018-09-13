@@ -215,16 +215,12 @@
     margin: 0;
     text-align: left;
 }
-
- .action-label {
-     /*float: left;*/
-     /*
-     position: relative;
-     top: 4px;
-     */
-     margin-top: 4px;
-     width: 100%;
-     text-align: center;
+.action-label-container {
+    margin-top: 4px;
+    width: 100%;
+    text-align: center;
+}
+.action-label {
  }
  .action-image-container {
      display: inline-block;
