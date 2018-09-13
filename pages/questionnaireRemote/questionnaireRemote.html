@@ -169,20 +169,22 @@
                             <div data-win-bind="style.display: FreitextAktiv Binding.Converter.toDisplay">
                                 <textarea class="win-textarea field-text-comment"
                                           data-win-bind="placeholder: textarea; value: Freitext" onblur="AppBar.handleEvent('blur', 'activateEnterKey', event)" onfocus="AppBar.handleEvent('focus', 'deactivateEnterKey', event)" onkeydown="AppBar.handleEvent('keydown', 'pressEnterKey', event)"></textarea>
-                                <button id="showDateCombobox" class="win-button question-button"
-                                        data-win-bind="style.display: DateComboboxButtonShow Binding.Converter.toDisplay"
-                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
-                                    <div class="question-image-container">
-                                        <div class="question-image" id="calendar_1"></div>
-                                    </div>
-                                </button>
-                                <button id="useDateCombobox" class="win-button question-button"
-                                        data-win-bind="style.display: DateComboboxButtonOk Binding.Converter.toDisplay"
-                                        onclick="AppBar.handleEvent('click', 'clickButton', event)">
-                                    <div class="question-image-container">
-                                        <div class="question-image" id="navigate_check"></div>
-                                    </div>
-                                </button>
+                                <div data-win-bind="style.display: DateComboboxButtonShow Binding.Converter.toDisplay">
+                                    <button id="showDateCombobox" class="win-button question-button"
+                                            onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                        <div class="question-image-container">
+                                            <div class="question-image" id="calendar_1"></div>
+                                        </div>
+                                    </button>
+                                </div>
+                                <div data-win-bind="style.display: DateComboboxButtonOk Binding.Converter.toDisplay">
+                                    <button id="useDateCombobox" class="win-button question-button"
+                                            onclick="AppBar.handleEvent('click', 'clickButton', event)">
+                                        <div class="question-image-container">
+                                            <div class="question-image" id="navigate_check"></div>
+                                        </div>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
