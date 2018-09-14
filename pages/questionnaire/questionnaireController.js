@@ -73,6 +73,57 @@
             }
             this.hasDoc = hasDoc;
 
+            var addImage = function(json) {
+                Log.call(Log.l.trace, "QuestionList.Controller.");
+                if (json && json.d) {
+                    if (!that.images) {
+                        // Now, we call WinJS.Binding.List to get the bindable list
+                        that.images = new WinJS.Binding.List([]);
+                        if (flipView && flipView.winControl) {
+                            flipView.winControl.itemDataSource = that.images.dataSource;
+                        }
+                    }
+                    var docContent;
+                    if (json.d.PrevContentDOCCNT2) {
+                        docContent = json.d.PrevContentDOCCNT2;
+                    } else {
+                        docContent = json.d.DocContentDOCCNT1;
+                    }
+                    if (docContent) {
+                        var sub = docContent.search("\r\n\r\n");
+                        var title = (that.images.length + 1).toString() + " / " + that.docCount;
+                        var picture = "data:image/jpeg;base64," + docContent.substr(sub + 4);
+                        that.images.push({
+                            type: "item",
+                            DOC1ZeilenantwortID: json.d.DOC1ZeilenantwortVIEWID,
+                            title: title,
+                            picture: picture
+                        });
+                        if (that.images.length === 1) {
+                            WinJS.Promise.timeout(50).then(function() {
+                                var pageControl = pageElement.winControl;
+                                if (pageControl && pageControl.updateLayout) {
+                                    pageControl.prevWidth = 0;
+                                    pageControl.prevHeight = 0;
+                                    return pageControl.updateLayout.call(pageControl, pageElement);
+                                } else {
+                                    return WinJS.Promise.as();
+                                }
+                            }).then(function() {
+                                if (flipView && flipView.parentElement && flipView.winControl) {
+                                    flipView.winControl.currentPage = 0;
+                                    flipView.winControl.forceLayout();
+                                }
+                            });
+                        } else {
+                            flipView.winControl.currentPage = that.images.length - 1;
+                        }
+                    }
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.addImage = addImage;
+
             var scrollToRecordId = function (recordId) {
                 Log.call(Log.l.trace, "QuestionList.Controller.", "recordId=" + recordId);
                 if (that.loading) {
@@ -708,14 +759,48 @@
             that.setNextDocId = setNextDocId;
 
             var insertCameradata = function (imageData, width, height) {
+                var ovwEdge = 256;
+                var prvEdge = 512;
                 Log.call(Log.l.trace, "Questionnaire.Controller.");
+                var prvData = null;
                 var ret = new WinJS.Promise.as().then(function () {
+                    if (imageData.length < 500000) {
+                        // keep original 
+                        return WinJS.Promise.as();
+                    }
+                    return Colors.resizeImageBase64(imageData, "image/jpeg", 2560, AppData.generalData.cameraQuality, 0.25);
+                }).then(function (resizeData) {
+                    if (resizeData) {
+                        Log.print(Log.l.trace, "resized image");
+                        imageData = resizeData;
+                    }
+                    if (imageData.length < 200000) {
+                        // keep original 
+                        return WinJS.Promise.as();
+                    }
+                    return Colors.resizeImageBase64(imageData, "image/jpeg", prvEdge, AppData.generalData.cameraQuality);
+                }).then(function (resizeData) {
+                    if (resizeData) {
+                        Log.print(Log.l.trace, "resized preview");
+                        prvData = resizeData;
+                    }
+                    if (!prvData || prvData.length < 50000) {
+                        // keep original 
+                        return WinJS.Promise.as();
+                    }
+                    return Colors.resizeImageBase64(prvData, "image/jpeg", ovwEdge, AppData.generalData.cameraQuality);
+                }).then(function (ovwData) {
+                    if (ovwData) {
+                        Log.print(Log.l.trace, "resized overview");
+                    }
                     // UTC-Zeit in Klartext
                     var now = new Date();
                     var dateStringUtc = now.toUTCString();
 
                     // decodierte Dateigröße
                     var contentLength = Math.floor(imageData.length * 3 / 4);
+                    var prvLength = prvData ? Math.floor(imageData.length * 3 / 4) : 0;
+                    var ovwLength = ovwData ? Math.floor(imageData.length * 3 / 4) : 0;
 
                     var newPicture = {
                         DOC1ZeilenantwortVIEWID: that.getNextDocId(),
@@ -726,11 +811,11 @@
                         ulDpm: 0,
                         szOriFileNameDOC1: "Question.jpg",
                         DocContentDOCCNT1:
-                        "Content-Type: image/jpegAccept-Ranges: bytes\x0D\x0ALast-Modified: " + dateStringUtc + "\x0D\x0AContent-Length: " + contentLength + "\x0D\x0A\x0D\x0A" + imageData,
-                        PrevContentDOCCNT2: null,
-                        OvwContentDOCCNT3: null,
-                        szOvwPathDOC3: null,
-                        szPrevPathDOC4: null,
+                            "Content-Type: image/jpegAccept-Ranges: bytes\x0D\x0ALast-Modified: " + dateStringUtc + "\x0D\x0AContent-Length: " + contentLength + "\x0D\x0A\x0D\x0A" + imageData,
+                        PrevContentDOCCNT2: prvData ? 
+                            "Content-Type: image/jpegAccept-Ranges: bytes\x0D\x0ALast-Modified: " + dateStringUtc + "\x0D\x0AContent-Length: " + prvLength + "\x0D\x0A\x0D\x0A" + prvData : null,
+                        OvwContentDOCCNT3: ovwData ? 
+                            "Content-Type: image/jpegAccept-Ranges: bytes\x0D\x0ALast-Modified: " + dateStringUtc + "\x0D\x0AContent-Length: " + ovwLength + "\x0D\x0A\x0D\x0A" + ovwData : null,
                         ContentEncoding: 4096
                     };
                     //load of format relation record data
@@ -743,6 +828,7 @@
                         if (json && json.d) {
                             that.setNextDocId(json.d.DOC1ZeilenantwortVIEWID);
                             Log.print(Log.l.info, "DOC1ZeilenantwortVIEWID=" + json.d.DOC1ZeilenantwortVIEWID);
+                            that.addImage(json);
                             that.docCount++;
                             WinJS.Promise.timeout(50).then(function () {
                                 that.loadPicture(json.d.DOC1ZeilenantwortVIEWID);
@@ -863,8 +949,7 @@
                     typeof navigator.clippingCamera.getPicture === "function") {
                     navigator.clippingCamera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                         quality: AppData.generalData.cameraQuality,
-                        convertToGrayscale: AppData.generalData.cameraUseGrayscale,
-                        maxResolution: 2000000,
+                        maxResolution: 5000000,
                         autoShutter: 0,
                         dontClip: true
                     });
@@ -884,7 +969,6 @@
                         encodingType: Camera.EncodingType.JPEG,
                         saveToPhotoAlbum: false,
                         cameraDirection: Camera.Direction.BACK,
-                        convertToGrayscale: AppData.generalData.cameraUseGrayscale,
                         variableEditRect: true
                     });
                 } else {
@@ -1267,10 +1351,6 @@
                 }
             }
 
-            if (flipView && flipView.winControl) {
-                flipView.winControl.itemDataSource = null;
-            }
-
             // register ListView event handler
             if (listView) {
                 this.addRemovableEventListener(listView, "selectionchanged", this.eventHandlers.onSelectionChanged.bind(this));
@@ -1305,19 +1385,9 @@
                 }
                 if (that.images && that.images.length > 0) {
                     for (var i = 0; i < that.images.length; i++) {
-                        var imageItem = that.images[i];
+                        var imageItem = that.images.getAt(i);
                         if (imageItem && imageItem.DOC1ZeilenantwortID === pictureId) {
-                            if (flipView && flipView.winControl) {
-                                if (that.images && that.images.length > 0) {
-                                    flipView.winControl.itemDataSource = that.images.dataSource;
-                                }
-                            }
-                            var pageControl = pageElement.winControl;
-                            if (pageControl && pageControl.updateLayout) {
-                                pageControl.prevWidth = 0;
-                                pageControl.prevHeight = 0;
-                                pageControl.updateLayout.call(pageControl, pageElement);
-                            }
+                            Log.print(Log.l.trace, "questionnaireDocView: success!");
                             ret = WinJS.Promise.as();
                             break;
                         }
@@ -1328,42 +1398,7 @@
                         // this callback will be called asynchronously
                         // when the response is available
                         Log.print(Log.l.trace, "questionnaireDocView: success!");
-                        if (json.d) {
-                            if (!that.images) {
-                                // Now, we call WinJS.Binding.List to get the bindable list
-                                that.images = new WinJS.Binding.List([]);
-                            }
-                            var docContent;
-                            if (json.d.PrevContentDOCCNT2) {
-                                docContent = json.d.PrevContentDOCCNT2;
-                            } else {
-                                docContent = json.d.DocContentDOCCNT1;
-                            }
-                            if (docContent) {
-                                var sub = docContent.search("\r\n\r\n");
-                                var title = (that.images.length + 1).toString() + " / " + that.docCount;
-                                var picture = "data:image/jpeg;base64," + docContent.substr(sub + 4);
-                                that.images.push({
-                                    type: "item",
-                                    DOC1ZeilenantwortID: json.d.DOC1ZeilenantwortVIEWID,
-                                    title: title,
-                                    picture: picture
-                                });
-                            }
-                        }
-                        if (flipView && flipView.winControl) {
-                            if (that.images && that.images.length > 0) {
-                                flipView.winControl.itemDataSource = that.images.dataSource;
-                            }
-                        }
-                        WinJS.Promise.timeout(50).then(function () {
-                            var pageControl = pageElement.winControl;
-                            if (pageControl && pageControl.updateLayout) {
-                                pageControl.prevWidth = 0;
-                                pageControl.prevHeight = 0;
-                                pageControl.updateLayout.call(pageControl, pageElement);
-                            }
-                        });
+                        that.addImage(json);
                     }, function (errorResponse) {
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
@@ -1627,6 +1662,7 @@
                             for (var i = 0; i < this.images.length; i++) {
                                 var item = this.images.getAt(i);
                                 item.title = (i + 1).toString() + " / " + this._docCount;
+                                this.images.setAt(i, item);
                             }
                         }
                     }

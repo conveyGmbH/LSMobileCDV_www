@@ -570,8 +570,7 @@
                     typeof navigator.clippingCamera.getPicture === "function") {
                     navigator.clippingCamera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                         quality: AppData.generalData.cameraQuality,
-                        convertToGrayscale: AppData.generalData.cameraUseGrayscale,
-                        maxResolution: 2000000,
+                        maxResolution: 5000000,
                         autoShutter: 0,
                         dontClip: true
                     });
@@ -591,7 +590,6 @@
                         encodingType: Camera.EncodingType.JPEG,
                         saveToPhotoAlbum: false,
                         cameraDirection: Camera.Direction.BACK,
-                        convertToGrayscale: AppData.generalData.cameraUseGrayscale,
                         variableEditRect: true
                     });
                 } else {

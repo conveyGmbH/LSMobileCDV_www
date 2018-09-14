@@ -106,9 +106,9 @@
                 ret = WinJS.Promise.timeout(0).then(function() {
                     var contentarea = element.querySelector(".contentarea");
                     if (contentarea) {
-                        var startActionList = contentarea.querySelector("#startActions.listview");
-                        if (startActionList && startActionList.winControl) {
-                            var startActionListSurface = startActionList.querySelector("#startActions .win-surface");
+                        var listView = contentarea.querySelector("#startActions.listview");
+                        if (listView && listView.winControl) {
+                            var listSurface = listView.querySelector("#startActions .win-surface");
                             var width = contentarea.clientWidth - 4;
                             var height = contentarea.clientHeight;
                             var tileWidth = Math.floor(width / 3.0 * 100) / 100;
@@ -121,47 +121,27 @@
                             } else {
                                 tileHeight = 96;
                             }
-                            if (startActionListSurface) {
+                            if (listSurface) {
                                 // ensure no scrolling except main direction
-                                startActionListSurface.style.overflowX = "hidden";
-                                startActionListSurface.style.overflowY = "visible";
+                                listSurface.style.overflowX = "hidden";
+                                listSurface.style.overflowY = "visible";
                             }
                             if (width !== that.prevWidth) {
                                 that.prevWidth = width;
-                                startActionList.style.width = width.toString() + "px";
+                                Start.prevWidth = width;
+                                listView.style.width = width.toString() + "px";
                                 if (tileWidth !== that.prevTileWidth) {
                                     that.prevTileWidth = tileWidth;
+                                    Start.prevTileWidth = tileWidth;
                                 }
                             }
                             if (height !== that.prevHeight) {
                                 that.prevHeight = height;
-                                startActionList.style.height = height.toString() + "px";
+                                Start.prevHeight = height;
+                                listView.style.height = height.toString() + "px";
                                 if (tileHeight !== that.prevTileHeight) {
                                     that.prevTileHeight = tileHeight;
-                                }
-                            }
-                            var businessCardImage = startActionList.querySelector("#startImage.start-business-card");
-                            if (businessCardImage && businessCardImage.clientWidth) {
-                                var marginLeft = Math.floor((width - 16 - businessCardImage.clientWidth) / 2);
-                                if (marginLeft < 0) {
-                                    marginLeft = 0;
-                                }
-                                businessCardImage.setAttribute("style", "margin-left: " + marginLeft.toString() + "px");
-                            }
-                            var recentTile = startActionList.querySelector(".tile-recent");
-                            if (recentTile && recentTile.style) {
-                                var tiles = startActionList.querySelectorAll(".tile");
-                                if (tiles && tiles.length > 0) {
-                                    if (height > 420) {
-                                        var tilesHeight = 0;
-                                        for (var i = tiles.length - 1; i > 0; i--) {
-                                            tilesHeight += tiles[i].clientHeight + 2;
-                                        }
-                                        recentTile.style.height = (height - tilesHeight).toString() + "px";
-                                    } else {
-                                        recentTile.style.height = tileHeight.toString() + "px";
-                                    }
-                                    startActionList.style.visibility = "";
+                                    Start.prevTileHeight = tileHeight;
                                 }
                             }
                         }

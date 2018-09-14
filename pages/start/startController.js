@@ -18,6 +18,10 @@
     "use strict";
 
     WinJS.Namespace.define("Start", {
+        prevWidth: 0,
+        prevHeight: 0,
+        prevTileWidth: 0,
+        prevTileHeight: 0,
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Start.Controller.");
             Application.Controller.apply(this, [pageElement, {
@@ -60,29 +64,48 @@
             this.getRecordId = getRecordId;
 
 
+            var showButtonElement = function (buttonElement) {
+                Log.call(Log.l.trace, "Start.Controller.");
+                var ret = null;
+                if (buttonElement) {
+                    var headerElements = listView.querySelectorAll(".tile-header");
+                    for (var i = 0; i < headerElements.length; i++) {
+                        var headerElement = headerElements[i];
+                        if (headerElement.style &&
+                            headerElement.style.visibility !== "visible") {
+                            headerElement.style.visibility = "visible";
+                        }
+                    }
+                    if (buttonElement.parentElement && buttonElement.parentElement.style &&
+                        buttonElement.parentElement.style.visibility !== "visible") {
+                        buttonElement.parentElement.style.visibility = "visible";
+                        ret = WinJS.UI.Animation.enterPage(buttonElement);
+                    }
+                }
+                if (!ret) {
+                    ret = WinJS.Promise.as();
+                }
+                Log.ret(Log.l.trace);
+                return ret;
+            }
             // show business card photo
             var showPhoto = function() {
-                var businessCardContainer;
-                if (AppData._photoData) {
-                    businessCardContainer = listView.querySelector("#businessCardContact");
-                    if (businessCardContainer && !businessCardContainer.firstChild) {
+                Log.call(Log.l.trace, "Start.Controller.");
+                var businessCardContainer = listView.querySelector("#businessCardContact");
+                if (!businessCardContainer) {
+                    WinJS.Promise.timeout(150).then(function() {
+                        showPhoto();
+                    });
+                } else if (!businessCardContainer.firstChild) {
+                    if (AppData._photoData) {
                         that.img = new Image();
                         that.img.id = "startImage";
-                        //if (businessCardContainer.style) {
-                        //    businessCardContainer.style.display = "inline";
-                        //}
                         businessCardContainer.appendChild(that.img);
                         WinJS.Utilities.addClass(that.img, "start-business-card");
                         that.img.src = "data:image/jpeg;base64," + AppData._photoData;
-                    }
-                } else if (AppData._barcodeRequest) {
-                    businessCardContainer = listView.querySelector("#businessCardContact");
-                    if (businessCardContainer && !businessCardContainer.firstChild) {
+                    } else if (AppData._barcodeRequest) {
                         that.img = new Image();
                         that.img.id = "startImage";
-                        //if (businessCardContainer.style) {
-                        //    businessCardContainer.style.display = "inline";
-                        //}
                         businessCardContainer.appendChild(that.img);
                         switch (AppData._barcodeType) {
                             case "barcode":
@@ -107,7 +130,9 @@
                                 break;
                         }
                     }
+                    showButtonElement(businessCardContainer.parentElement);
                 }
+                Log.ret(Log.l.trace);
             };
 
             var disableButton = function (button, bDisabled) {
@@ -158,6 +183,7 @@
                 }
                 Log.ret(Log.l.trace);
             };
+
             var resetSvgLoaded = function () {
                 Log.call(Log.l.trace, "Start.Controller.");
                 var buttons = listView.querySelectorAll("button");
@@ -464,7 +490,7 @@
                 onLoadingStateChanged: function (eventInfo) {
                     Log.call(Log.l.trace, "Start.Controller.");
                     if (listView && listView.winControl) {
-                        var i, buttonElements, buttonElement;
+                        var i, buttonElements, buttonElement, headerElements, headerElement;
                         Log.print(Log.l.trace, "onLoadingStateChanged called loadingState=" + listView.winControl.loadingState);
                         // no list selection
                         if (listView.winControl.selectionMode !== WinJS.UI.SelectionMode.none) {
@@ -477,21 +503,35 @@
                             }
                         } else if (listView.winControl.loadingState === "itemsLoaded") {
                             if (inReload) {
+                                headerElements = listView.querySelectorAll(".tile-header");
+                                for (i = 0; i < headerElements.length; i++) {
+                                    headerElement = headerElements[i];
+                                    if (headerElement.style) {
+                                        headerElement.style.visibility = "hidden";
+                                    }
+                                }
                                 buttonElements = listView.querySelectorAll(".tile-button-wide, .tile-button");
                                 for (i = 0; i < buttonElements.length; i++) {
                                     buttonElement = buttonElements[i];
-                                    if (buttonElement.style) {
-                                        buttonElement.style.visibility = "hidden";
+                                    if (buttonElement.parentElement && buttonElement.parentElement.style) {
+                                        buttonElement.parentElement.style.visibility = "hidden";
                                     }
                                 }
                             }
                         } else if (listView.winControl.loadingState === "viewportLoaded") {
                             if (inReload) {
+                                headerElements = listView.querySelectorAll(".tile-header");
+                                for (i = 0; i < headerElements.length; i++) {
+                                    headerElement = headerElements[i];
+                                    if (headerElement.style) {
+                                        headerElement.style.visibility = "hidden";
+                                    }
+                                }
                                 buttonElements = listView.querySelectorAll(".tile-button-wide, .tile-button");
                                 for (i = 0; i < buttonElements.length; i++) {
                                     buttonElement = buttonElements[i];
-                                    if (buttonElement.style) {
-                                        buttonElement.style.visibility = "hidden";
+                                    if (buttonElement.parentElement && buttonElement.parentElement.style) {
+                                        buttonElement.parentElement.style.visibility = "hidden";
                                     }
                                 }
                             }
@@ -499,22 +539,29 @@
                             buttonElements = listView.querySelectorAll(".tile-button-wide, .tile-button");
                             if (inReload) {
                                 inReload = false;
+                                headerElements = listView.querySelectorAll(".tile-header");
+                                for (i = 0; i < headerElements.length; i++) {
+                                    headerElement = headerElements[i];
+                                    if (headerElement.style) {
+                                        headerElement.style.visibility = "hidden";
+                                    }
+                                }
                                 for (i = 0; i < buttonElements.length; i++) {
                                     buttonElement = buttonElements[i];
-                                    if (buttonElement.style) {
-                                        buttonElement.style.visibility = "hidden";
+                                    if (buttonElement.parentElement && buttonElement.parentElement.style) {
+                                        buttonElement.parentElement.style.visibility = "hidden";
                                     }
                                 }
                             } 
-                            var pageControl = pageElement.winControl;
-                            if (pageControl && pageControl.prevWidth && pageControl.prevTileWidth && pageControl.prevTileHeight) {
+                            var recentTile = listView.querySelector(".tile-recent");
+                            if (Start.prevWidth && Start.prevHeight && Start.prevTileWidth && Start.prevTileHeight) {
                                 for (i = 0; i < buttonElements.length; i++) {
                                     buttonElement = buttonElements[i];
                                     if (buttonElement.style) {
                                         if (WinJS.Utilities.hasClass(buttonElement, "tile-button-wide")) {
-                                            buttonElement.style.width = pageControl.prevWidth + "px";
-                                        } else {
-                                            buttonElement.style.width = pageControl.prevTileWidth + "px";
+                                            buttonElement.style.width = Start.prevWidth + "px";
+                                        } else if (WinJS.Utilities.hasClass(buttonElement, "tile-button")) {
+                                            buttonElement.style.width = Start.prevTileWidth + "px";
                                         }
                                     }
                                 }
@@ -522,21 +569,40 @@
                                 for (i = 0; i < tileRows.length; i++) {
                                     var tileRow = tileRows[i];
                                     if (tileRow.style) {
-                                        tileRow.style.height = pageControl.prevTileHeight + "px";
+                                        if (WinJS.Utilities.hasClass(tileRow, "start-photo-container")) {
+                                            tileRow.style.height = (Start.prevTileHeight - 24) + "px";
+                                        } else if (WinJS.Utilities.hasClass(tileRow, "tile-row")) {
+                                            tileRow.style.height = Start.prevTileHeight + "px";
+                                        }
+                                    }
+                                }
+                                var businessCardImage = listView.querySelector("#startImage.start-business-card");
+                                if (businessCardImage && businessCardImage.clientWidth) {
+                                    var marginLeft = Math.floor((Start.prevWidth - 16 - businessCardImage.clientWidth) / 2);
+                                    if (marginLeft < 0) {
+                                        marginLeft = 0;
+                                    }
+                                    businessCardImage.setAttribute("style", "margin-left: " + marginLeft + "px");
+                                }
+                                if (recentTile && recentTile.style) {
+                                    var tiles = listView.querySelectorAll(".tile");
+                                    if (tiles && tiles.length > 0) {
+                                        if (Start.prevHeight > 420) {
+                                            var tilesHeight = 0;
+                                            for (i = tiles.length - 1; i > 0; i--) {
+                                                tilesHeight += tiles[i].clientHeight + 2;
+                                            }
+                                            recentTile.style.height = (Start.prevHeight - tilesHeight) + "px";
+                                        } else {
+                                            recentTile.style.height = (Start.prevTileHeight + 46) + "px";
+                                        }
                                     }
                                 }
                             }
-                            var recentTile = pageElement.querySelector(".tile-recent");
                             if (recentTile) {
                                 var elements = recentTile.querySelectorAll("span");
                                 for (i = 0; i < elements.length; i++) {
                                     elements[i].style.color = Colors.textColor;
-                                }
-                                if (recentTile.style) {
-                                    var tiles = listView.querySelectorAll(".tile");
-                                    if (!tiles || !tiles.length) {
-                                        listView.style.visibility = "hidden";
-                                    }
                                 }
                             }
                             var showTileButton = function (svgInfo) {
@@ -546,11 +612,9 @@
                                     var buttonElement = svgInfo.element.parentNode.parentNode;
                                     if (buttonElement) {
                                         checkListButtonStates(buttonElement);
-                                        if (buttonElement.style &&
-                                            buttonElement.style.visibility !== "visible") {
-                                            buttonElement.style.visibility = "visible";
-                                            ret = WinJS.UI.Animation.enterPage(buttonElement);
-                                        }
+                                        ret = WinJS.Promise.timeout(20).then(function() {
+                                            return showButtonElement(buttonElement);
+                                        });
                                     }
                                 }
                                 if (!ret) {
@@ -579,7 +643,7 @@
                                 return WinJS.Promise.join(js);
                             }).then(function () {
                                 if (!Application.pageframe.splashScreenDone) {
-                                    return WinJS.Promise.timeout(100).then(function () {
+                                    return WinJS.Promise.timeout(200).then(function () {
                                         return Application.pageframe.hideSplashScreen();
                                     });
                                 } else {
