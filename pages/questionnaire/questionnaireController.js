@@ -74,7 +74,7 @@
             this.hasDoc = hasDoc;
 
             var addImage = function(json) {
-                Log.call(Log.l.trace, "QuestionList.Controller.");
+                Log.call(Log.l.trace, "Questionnaire.Controller.");
                 if (json && json.d) {
                     if (!that.images) {
                         // Now, we call WinJS.Binding.List to get the bindable list
@@ -125,7 +125,7 @@
             this.addImage = addImage;
 
             var scrollToRecordId = function (recordId) {
-                Log.call(Log.l.trace, "QuestionList.Controller.", "recordId=" + recordId);
+                Log.call(Log.l.trace, "Questionnaire.Controller.", "recordId=" + recordId);
                 if (that.loading) {
                     WinJS.Promise.timeout(50).then(function () {
                         that.scrollToRecordId(recordId);
@@ -147,7 +147,7 @@
             this.scrollToRecordId = scrollToRecordId;
 
             var selectRecordId = function (recordId) {
-                Log.call(Log.l.trace, "QuestionList.Controller.", "recordId=" + recordId);
+                Log.call(Log.l.trace, "Questionnaire.Controller.", "recordId=" + recordId);
                 if (recordId && listView && listView.winControl && listView.winControl.selection) {
                     for (var i = 0; i < that.questions.length; i++) {
                         var question = that.questions.getAt(i);

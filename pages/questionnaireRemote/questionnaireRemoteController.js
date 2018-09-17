@@ -71,8 +71,59 @@
             }
             this.hasDoc = hasDoc;
 
+            var addImage = function (json) {
+                Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
+                if (json && json.d) {
+                    if (!that.images) {
+                        // Now, we call WinJS.Binding.List to get the bindable list
+                        that.images = new WinJS.Binding.List([]);
+                        if (flipView && flipView.winControl) {
+                            flipView.winControl.itemDataSource = that.images.dataSource;
+                        }
+                    }
+                    var docContent;
+                    if (json.d.PrevContentDOCCNT2) {
+                        docContent = json.d.PrevContentDOCCNT2;
+                    } else {
+                        docContent = json.d.DocContentDOCCNT1;
+                    }
+                    if (docContent) {
+                        var sub = docContent.search("\r\n\r\n");
+                        var title = (that.images.length + 1).toString() + " / " + that.docCount;
+                        var picture = "data:image/jpeg;base64," + docContent.substr(sub + 4);
+                        that.images.push({
+                            type: "item",
+                            DOC1ZeilenantwortID: json.d.DOC1ZeilenantwortVIEWID,
+                            title: title,
+                            picture: picture
+                        });
+                        if (that.images.length === 1) {
+                            WinJS.Promise.timeout(50).then(function () {
+                                var pageControl = pageElement.winControl;
+                                if (pageControl && pageControl.updateLayout) {
+                                    pageControl.prevWidth = 0;
+                                    pageControl.prevHeight = 0;
+                                    return pageControl.updateLayout.call(pageControl, pageElement);
+                                } else {
+                                    return WinJS.Promise.as();
+                                }
+                            }).then(function () {
+                                if (flipView && flipView.parentElement && flipView.winControl) {
+                                    flipView.winControl.currentPage = 0;
+                                    flipView.winControl.forceLayout();
+                                }
+                            });
+                        } else {
+                            flipView.winControl.currentPage = that.images.length - 1;
+                        }
+                    }
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.addImage = addImage;
+
             var scrollToRecordId = function (recordId) {
-                Log.call(Log.l.trace, "QuestionList.Controller.", "recordId=" + recordId);
+                Log.call(Log.l.trace, "QuestionnaireRemote.Controller.", "recordId=" + recordId);
                 if (that.loading) {
                     WinJS.Promise.timeout(50).then(function () {
                         that.scrollToRecordId(recordId);
@@ -94,7 +145,7 @@
             this.scrollToRecordId = scrollToRecordId;
 
             var selectRecordId = function (recordId) {
-                Log.call(Log.l.trace, "QuestionList.Controller.", "recordId=" + recordId);
+                Log.call(Log.l.trace, "QuestionnaireRemote.Controller.", "recordId=" + recordId);
                 if (recordId && listView && listView.winControl && listView.winControl.selection) {
                     for (var i = 0; i < that.questions.length; i++) {
                         var question = that.questions.getAt(i);
@@ -1189,19 +1240,9 @@
                 }
                 if (that.images && that.images.length > 0) {
                     for (var i = 0; i < that.images.length; i++) {
-                        var imageItem = that.images[i];
+                        var imageItem = that.images.getAt(i);
                         if (imageItem && imageItem.DOC1ZeilenantwortID === pictureId) {
-                            if (flipView && flipView.winControl) {
-                                if (that.images && that.images.length > 0) {
-                                    flipView.winControl.itemDataSource = that.images.dataSource;
-                                }
-                            }
-                            var pageControl = pageElement.winControl;
-                            if (pageControl && pageControl.updateLayout) {
-                                pageControl.prevWidth = 0;
-                                pageControl.prevHeight = 0;
-                                pageControl.updateLayout.call(pageControl, pageElement);
-                            }
+                            Log.print(Log.l.trace, "questionnaireDocView: success!");
                             ret = WinJS.Promise.as();
                             break;
                         }
@@ -1212,42 +1253,7 @@
                         // this callback will be called asynchronously
                         // when the response is available
                         Log.print(Log.l.trace, "questionnaireDocView: success!");
-                        if (json.d) {
-                            if (!that.images) {
-                                // Now, we call WinJS.Binding.List to get the bindable list
-                                that.images = new WinJS.Binding.List([]);
-                            }
-                            var docContent;
-                            if (json.d.PrevContentDOCCNT2) {
-                                docContent = json.d.PrevContentDOCCNT2;
-                            } else {
-                                docContent = json.d.DocContentDOCCNT1;
-                            }
-                            if (docContent) {
-                                var sub = docContent.search("\r\n\r\n");
-                                var title = (that.images.length + 1).toString() + " / " + that.docCount;
-                                var picture = "data:image/jpeg;base64," + docContent.substr(sub + 4);
-                                that.images.push({
-                                    type: "item",
-                                    DOC1ZeilenantwortID: json.d.DOC1ZeilenantwortVIEWID,
-                                    title: title,
-                                    picture: picture
-                                });
-                            }
-                        }
-                        if (flipView && flipView.winControl) {
-                            if (that.images && that.images.length > 0) {
-                                flipView.winControl.itemDataSource = that.images.dataSource;
-                            }
-                        }
-                        WinJS.Promise.timeout(50).then(function () {
-                            var pageControl = pageElement.winControl;
-                            if (pageControl && pageControl.updateLayout) {
-                                pageControl.prevWidth = 0;
-                                pageControl.prevHeight = 0;
-                                pageControl.updateLayout.call(pageControl, pageElement);
-                            }
-                        });
+                        that.addImage(json);
                     }, function (errorResponse) {
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
@@ -1480,6 +1486,7 @@
                             for (var i = 0; i < this.images.length; i++) {
                                 var item = this.images.getAt(i);
                                 item.title = (i + 1).toString() + " / " + this._docCount;
+                                this.images.setAt(i, item);
                             }
                         }
                     }
