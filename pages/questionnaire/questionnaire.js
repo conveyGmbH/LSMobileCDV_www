@@ -173,6 +173,12 @@
                                     flipView.style.height = height.toString() + "px";
                                 }
                             }
+                            if (navigator.appVersion &&
+                            (navigator.appVersion.indexOf("iPhone OS") >= 0 ||
+                                navigator.appVersion.indexOf("iPod OS") >= 0)) {
+                                WinJS.Utilities.addClass(headerInner, "no-transform");
+                                WinJS.Utilities.addClass(flipView, "no-transform");
+                            }
                             if (docWidth > 0) {
                                 docContainer.style.display = "";
                                 var headerContainer = element.querySelector(".header-container");

@@ -1174,6 +1174,10 @@ input.win-textbox, input.win-checkbox, input.win-radio, textarea.win-textarea, s
 /*
     Questionnaire local/remote-styles:
 */
+.no-transform {
+    -webkit-transform: translate3d(0, 0, 0);
+}
+
 #listQuestionnaire .win-itemcontainer .win-itembox,
 #listQuestionnaire .win-listview .win-itembox {
     background-color: transparent;
