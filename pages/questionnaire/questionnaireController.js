@@ -66,7 +66,7 @@
                 if (that.docIds) {
                     that.docIds = null;
                 }
-            };
+            }
 
             var hasDoc = function () {
                 return (that.images && that.images.length > 0);
@@ -177,8 +177,7 @@
                         return comboTemplate.renderItem(itemPromise);
                     } else if (item.data.type === "single8") {
                         if (!singleTemplate8) {
-                            singleTemplate8 = pageElement.querySelector(".listQuestionnaire-single-template8")
-                                .winControl;
+                            singleTemplate8 = pageElement.querySelector(".listQuestionnaire-single-template8").winControl;
                         }
                         return singleTemplate8.renderItem(itemPromise);
                     } else if (item.data.type === "multi8") {
@@ -188,31 +187,27 @@
                         return multiTemplate8.renderItem(itemPromise);
                     } else if (item.data.type === "single-rating") {
                         if (!singleRatingTemplate) {
-                            singleRatingTemplate = pageElement
-                                .querySelector(".listQuestionnaire-single-rating-template").winControl;
+                            singleRatingTemplate = pageElement.querySelector(".listQuestionnaire-single-rating-template").winControl;
                         }
                         return singleRatingTemplate.renderItem(itemPromise);
                     } else if (item.data.type === "multi-rating") {
                         if (!multiRatingTemplate) {
-                            multiRatingTemplate = pageElement.querySelector(".listQuestionnaire-multi-rating-template")
-                                .winControl;
+                            multiRatingTemplate = pageElement.querySelector(".listQuestionnaire-multi-rating-template").winControl;
                         }
                         return multiRatingTemplate.renderItem(itemPromise);
                     } else if (item.data.type === "single") {
                         if (!singleTemplate28) {
-                            singleTemplate28 = pageElement.querySelector(".listQuestionnaire-single-template28")
-                                .winControl;
+                            singleTemplate28 = pageElement.querySelector(".listQuestionnaire-single-template28").winControl;
                         }
                         return singleTemplate28.renderItem(itemPromise);
                     } else {
                         if (!multiTemplate28) {
-                            multiTemplate28 = pageElement.querySelector(".listQuestionnaire-multi-template28")
-                                .winControl;
+                            multiTemplate28 = pageElement.querySelector(".listQuestionnaire-multi-template28").winControl;
                         }
                         return multiTemplate28.renderItem(itemPromise);
                     }
                 });
-            };
+            }
             this.listQuestionnaireRenderer = listQuestionnaireRenderer;
 
             var progress = null;
@@ -270,7 +265,6 @@
                                         item[checked] = false;
                                     }
                                 }
-                                
                             }
                         }
                         var name = "SSANTWORT" + item.ZeilenantwortVIEWID.toString();
@@ -981,24 +975,24 @@
 
             // define handlers
             this.eventHandlers = {
-                clickBack: function (event) {
+                clickBack: function(event) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
                     if (WinJS.Navigation.canGoBack === true) {
-                        WinJS.Navigation.back(1).done( /* Your success and error handlers */);
+                        WinJS.Navigation.back(1).done(/* Your success and error handlers */);
                     }
                     Log.ret(Log.l.trace);
                 },
-                clickNew: function (event) {
+                clickNew: function(event) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
                     Application.navigateById(Application.navigateNewId, event);
                     Log.ret(Log.l.trace);
                 },
-                clickPhoto: function (event) {
+                clickPhoto: function(event) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
                     that.takePhoto();
                     Log.ret(Log.l.trace);
                 },
-                clickForward: function (event) {
+                clickForward: function(event) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
                     Application.navigateById('sketch', event);
                     Log.ret(Log.l.trace);
@@ -1008,12 +1002,12 @@
                     Application.navigateById("userinfo", event);
                     Log.ret(Log.l.trace);
                 },
-                clickButton: function (event) {
+                clickButton: function(event) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
                     if (event.currentTarget) {
                         var id = event.currentTarget.id;
                         var element = event.currentTarget;
-                        WinJS.Promise.timeout(50).then(function () {
+                        WinJS.Promise.timeout(50).then(function() {
                             that.textFromDateCombobox(id, element);
                         });
                     }
