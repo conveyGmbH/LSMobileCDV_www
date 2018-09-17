@@ -47,6 +47,11 @@
             var listView = pageElement.querySelector("#listQuestionnaire.listview");
             var flipView = pageElement.querySelector("#imgListQuestionnaire.flipview");
 
+            if (hasIPhoneBug && listView) {
+                WinJS.Utilities.addClass(listView, "no-transform");
+                hasIPhoneBug = false;
+            }
+
             this.dispose = function () {
                 if (listView && listView.winControl) {
                     listView.winControl.itemDataSource = null;
