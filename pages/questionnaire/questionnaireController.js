@@ -120,7 +120,7 @@
                                     flipView.winControl.forceLayout();
                                 }
                             });
-                        } else {
+                        } else if (flipView && flipView.winControl) {
                             flipView.winControl.currentPage = that.images.length - 1;
                         }
                     }
