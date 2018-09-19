@@ -118,7 +118,7 @@
                                     flipView.winControl.forceLayout();
                                 }
                             });
-                        } else {
+                        } else if (flipView && flipView.winControl) {
                             flipView.winControl.currentPage = that.images.length - 1;
                         }
                     }
@@ -1205,10 +1205,6 @@
                         return false;
                     }
                 }
-            }
-
-            if (flipView && flipView.winControl) {
-                flipView.winControl.itemDataSource = null;
             }
 
             // register ListView event handler

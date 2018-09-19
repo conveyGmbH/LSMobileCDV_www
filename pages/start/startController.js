@@ -6,6 +6,7 @@
 /// <reference path="~/www/lib/convey/scripts/pageController.js" />
 /// <reference path="~/www/scripts/generalData.js" />
 /// <reference path="~/www/pages/start/startService.js" />
+/// <reference path="~/plugins/com.syonet.mobile.featuredetection/www/featureDetection.js" />
 
 /*
  Structure of states to be set from external modules:
@@ -170,11 +171,16 @@
                             }
                             break;
                             case "barcode": {
-                                disableButton(button, AppData._persistentStates.hideBarcodeScan);
+                                disableButton(button,
+                                    AppData._persistentStates.hideBarcodeScan ||
+                                    (!AppData._persistentStates.cameraFeatureSupported &&
+                                     !AppData._persistentStates.useBarcodeActivity));
                             }
                             break;
                             case "camera": {
-                                disableButton(button, AppData._persistentStates.hideCameraScan);
+                                disableButton(button,
+                                    AppData._persistentStates.hideCameraScan ||
+                                    !AppData._persistentStates.cameraFeatureSupported);
                             }
                             break;
                         }
@@ -669,6 +675,18 @@
             if (listView) {
                 // add ListView event handler
                 this.addRemovableEventListener(listView, "loadingstatechanged", this.eventHandlers.onLoadingStateChanged.bind(this));
+            }
+            if (device && device.platform === "Android" &&
+                cordova && cordova.plugins &&
+                cordova.plugins.featureDetection &&
+                typeof cordova.plugins.featureDetection.camera === "function") {
+                cordova.plugins.featureDetection.camera(function ( result ) {
+                    Log.print(Log.l.trace, "featureDetection.camera returned: " + result);
+                    AppData._persistentStates.cameraFeatureSupported = result;
+                    updateActions();
+                }, function ( err ) {
+                    Log.print(Log.l.error, "featureDetection.camera failed: " + err );
+                });
             }
 
             // finally, load the data

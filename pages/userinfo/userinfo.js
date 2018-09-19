@@ -19,11 +19,19 @@
             Log.call(Log.l.trace, pageName + ".");
             // TODO: Initialize the page here.
             // add page specific commands to AppBar
-            var commandList = [
-                { id: 'clickPhoto', label: getResourceText('command.photo'), tooltip: getResourceText('tooltip.photo'), section: 'primary', svg: 'camera' },
-                { id: 'clickVcard', label: getResourceText('command.qrcode'), tooltip: getResourceText('tooltip.qrcode'), section: 'primary', svg: 'id_card' },
-                { id: 'clickOk', label: getResourceText('command.ok'), tooltip: getResourceText('tooltip.ok'), section: 'primary', svg: 'paper_jet2', key: WinJS.Utilities.Key.enter }
-            ];
+            var commandList;
+            if (AppData._persistentStates.cameraFeatureSupported) {
+                commandList = [
+                    { id: 'clickPhoto', label: getResourceText('command.photo'), tooltip: getResourceText('tooltip.photo'), section: 'primary',svg: 'camera' },
+                    { id: 'clickVcard', label: getResourceText('command.qrcode'), tooltip: getResourceText('tooltip.qrcode'), section: 'primary', svg: 'id_card' },
+                    { id: 'clickOk', label: getResourceText('command.ok'), tooltip: getResourceText('tooltip.ok'), section: 'primary', svg: 'paper_jet2', key: WinJS.Utilities.Key.enter }
+                ];
+            } else {
+                commandList = [
+                    { id: 'clickVcard', label: getResourceText('command.qrcode'), tooltip: getResourceText('tooltip.qrcode'), section: 'primary', svg: 'id_card' },
+                    { id: 'clickOk', label: getResourceText('command.ok'), tooltip: getResourceText('tooltip.ok'), section: 'primary', svg: 'paper_jet2', key: WinJS.Utilities.Key.enter }
+                ];
+            }
 
             this.controller = new UserInfo.Controller(element, commandList);
             if (this.controller.eventHandlers) {

@@ -25,6 +25,7 @@
         useClippingCamera: false,
         autoShutterTime: 0,
         useBarcodeActivity: false,
+        cameraFeatureSupported: true,
         logEnabled: false,
         logLevel: 3,
         logGroup: false,
