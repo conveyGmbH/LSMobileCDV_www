@@ -32,14 +32,26 @@
             this.selectQuestionIdxs = null;
             this.showHideModified = false;
 
-            var hasIPhoneBug = false;
-            if (navigator.appVersion && 
-                (navigator.appVersion.indexOf("iPhone OS 11_3") >= 0 ||
-                navigator.appVersion.indexOf("iPhone OS 11_4") >= 0 ||
-                navigator.appVersion.indexOf("iPod OS 11_3") >= 0 ||
-                navigator.appVersion.indexOf("iPod OS 11_4") >= 0)) {
-                hasIPhoneBug = true;
-            }
+            var checkIPhoneBug = function() {
+                if (navigator.appVersion) {
+                    var testDevice = ["iPhone OS", "iPod OS"];
+                    for (var i = 0; i < testDevice.length; i++) {
+                        var iPhonePod = navigator.appVersion.indexOf(testDevice[i]);
+                        if (iPhonePod >= 0) {
+                            var strVersion = navigator.appVersion.substr(iPhonePod + testDevice[i].length);
+                            var testVersion = ["11_3", "11_4", "12"];
+                            for (var j = 0; j < testVersion.length; j++) {
+                                if (strVersion.indexOf(testVersion[j]) === 1) {
+                                    return true;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+                return false;
+            };
+            var hasIPhoneBug = checkIPhoneBug();
 
             var that = this;
 
