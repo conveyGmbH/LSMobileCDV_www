@@ -35,9 +35,7 @@
         odata: {
             https: true,
             hostName: "leadsuccess.convey.de",
-            //https: false,
-            //hostName: "deimos.convey.de",
-            onlinePort: 8090,
+            onlinePort: 443,
             urlSuffix: null,
             onlinePath: "odata_online", // serviceRoot online requests
             login: "",
