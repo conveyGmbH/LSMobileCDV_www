@@ -32,14 +32,14 @@
             this.selectQuestionIdxs = null;
             this.showHideModified = false;
 
-            var checkIPhoneBug = function() {
+            var checkIPhoneBug = function () {
                 if (navigator.appVersion) {
                     var testDevice = ["iPhone OS", "iPod OS"];
                     for (var i = 0; i < testDevice.length; i++) {
                         var iPhonePod = navigator.appVersion.indexOf(testDevice[i]);
                         if (iPhonePod >= 0) {
                             var strVersion = navigator.appVersion.substr(iPhonePod + testDevice[i].length);
-                            var testVersion = ["11_3", "11_4", "12"];
+                            var testVersion = ["11_3", "11_4"];
                             for (var j = 0; j < testVersion.length; j++) {
                                 if (strVersion.indexOf(testVersion[j]) === 1) {
                                     return true;
