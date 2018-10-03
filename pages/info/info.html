@@ -84,6 +84,18 @@
                                data-win-bind="value: generalData.autoShutterTime"
                                onchange="AppBar.handleEvent('change', 'changedAutoShutterTime', event)" />
                     </div>
+                    <div class="line-separator" data-win-bind="style.display: hasPicturesDirectory Binding.Converter.toDisplay"></div>
+                    <div class="field_line field_line_odd" data-win-bind="style.display: hasPicturesDirectory Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.useExternalCamera'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.useExternalCamera'}"></span>
+                        <div class="input_field toggle-switch-parent">
+                            <div id="useExternalCamera" class="input_field"
+                                 data-win-control="WinJS.UI.ToggleSwitch"
+                                 data-win-bind="winControl.checked: generalData.useExternalCamera; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
+                                 onchange="AppBar.handleEvent('change', 'clickUseExternalCamera', event)">
+                            </div>
+                        </div>
+                    </div>
                     <div class="line-separator" data-win-bind="style.display: isAndroid Binding.Converter.toDisplay"></div>
                     <div class="field_line field_line_odd" data-win-bind="style.display: isAndroid Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.useAudioNote'}"></span>

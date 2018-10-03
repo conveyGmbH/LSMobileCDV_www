@@ -16,6 +16,7 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Info.Controller.");
 
+            var hasPicturesDirectory = !!cordova.file.picturesDirectory;
             var isWindows = false;
             var isAndroid = false;
             if (typeof device === "object" && typeof device.platform === "string") {
@@ -37,7 +38,8 @@
                 environment: "Platform: " + navigator.appVersion,
                 showClipping: false,
                 isAndroid: isAndroid,
-                isWindows: isWindows
+                isWindows: isWindows,
+                hasPicturesDirectory: hasPicturesDirectory
             }, commandList]);
 
             var that = this;
@@ -135,6 +137,16 @@
                         var toggle = event.currentTarget.winControl;
                         if (toggle) {
                             that.binding.generalData.useAudioNote = toggle.checked;
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                clickUseExternalCamera: function (event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var toggle = event.currentTarget.winControl;
+                        if (toggle) {
+                            that.binding.generalData.useExternalCamera = toggle.checked;
                         }
                     }
                     Log.ret(Log.l.trace);

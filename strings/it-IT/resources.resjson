@@ -340,6 +340,7 @@
     "info.cameraQuality"    : "Qualità",
     "info.cameraUseGrayscale" : "Scala di grigi",
     "info.useClippingCamera": "Riconoscimento automatico",
+    "info.useExternalCamera": "Scanner per biglietti da visita",
     "info.replication"      : "Opzioni di sincronizzazione",
     "info.replActive"       : "Sincronizzazione",
     "info.replInterval"     : "Intervallo in s",

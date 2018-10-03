@@ -340,6 +340,7 @@
     "info.cameraQuality"    : "Quality",
     "info.cameraUseGrayscale" : "Grayscale",
     "info.useClippingCamera": "Automatic recognition",
+    "info.useExternalCamera": "Businesscard scanner",
     "info.replication"      : "Synchronisation options",
     "info.replActive"       : "Synchronisation",
     "info.replInterval"     : "Interval in s",

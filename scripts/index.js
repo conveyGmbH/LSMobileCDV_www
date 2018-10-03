@@ -25,6 +25,7 @@
         useClippingCamera: false,
         autoShutterTime: 0,
         useBarcodeActivity: false,
+        useExternalCamera: false,
         cameraFeatureSupported: true,
         logEnabled: false,
         logLevel: 3,
@@ -132,11 +133,19 @@
             }
         }
         if (id === "start") {
-            if (typeof device === "object" && device.platform === "Android" &&
+            if (device && device.platform === "Android" &&
                 AppData.generalData.useBarcodeActivity &&
-                !Barcode.listening) {
-                WinJS.Promise.timeout(0).then(function() {
+                Barcode && !Barcode.listening) {
+                WinJS.Promise.timeout(0).then(function () {
                     Barcode.startListen();
+                });
+            }
+            if (AppData.generalData.cameraFeatureSupported &&
+                AppData.generalData.useExternalCamera &&
+                cordova.file.picturesDirectory &&
+                CameraGlobals && !CameraGlobals.listening) {
+                WinJS.Promise.timeout(0).then(function () {
+                    CameraGlobals.startListen();
                 });
             }
         }

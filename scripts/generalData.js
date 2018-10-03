@@ -818,7 +818,7 @@
                 Barcode.dontScan = true;
                 Application.navigateById("barcode");
                 WinJS.Promise.timeout(250).then(function () {
-                    Barcode.onBarcodeSuccess(error);
+                    Barcode.onBarcodeError(error);
                 });
             }
             Log.ret(Log.l.trace);
@@ -837,6 +837,120 @@
             Log.ret(Log.l.trace);
         }
     });
+    WinJS.Namespace.define("CameraGlobals", {
+        listening: false,
+        dontCapture: false,
+        onPhotoDataSuccess: function (result) {
+            Log.call(Log.l.trace, "CameraGlobals.");
+            if (Application.getPageId(nav.location) === "camera" &&
+                AppBar.scope &&
+                typeof AppBar.scope.onPhotoDataSuccess === "function") {
+                CameraGlobals.dontCapture = false;
+                AppBar.scope.onPhotoDataSuccess(result);
+                WinJS.Promise.timeout(1000).then(function () {
+                    CameraGlobals.startListen();
+                });
+            } else {
+                CameraGlobals.dontCapture = true;
+                Application.navigateById("camera");
+                WinJS.Promise.timeout(250).then(function () {
+                    CameraGlobals.onPhotoDataSuccess(result);
+                });
+            }
+            Log.ret(Log.l.trace);
+        },
+        onPhotoDataFail: function (error) {
+            Log.call(Log.l.trace, "CameraGlobals.");
+            if (Application.getPageId(nav.location) === "camera" &&
+                AppBar.scope && typeof AppBar.scope.onPhotoDataFail === "function") {
+                CameraGlobals.dontCapture = false;
+                AppBar.scope.onPhotoDataFail(error);
+                WinJS.Promise.timeout(1000).then(function () {
+                    CameraGlobals.startListen();
+                });
+            } else {
+                CameraGlobals.dontCapture = true;
+                Application.navigateById("camera");
+                WinJS.Promise.timeout(250).then(function () {
+                    CameraGlobals.onPhotoDataFail(error);
+                });
+            }
+            Log.ret(Log.l.trace);
+        },
+        startListen: function () {
+            Log.call(Log.l.trace, "CameraGlobals.");
+            if (AppData.generalData.cameraFeatureSupported &&
+                AppData.generalData.useExternalCamera &&
+                cordova.file.picturesDirectory &&
+                typeof window.resolveLocalFileSystemURL === "function") {
+                var picturesDirectory = cordova.file.picturesDirectory + "/LeadSuccess";
+                Log.print(Log.l.trace, "Windows: calling window.resolveLocalFileSystemURL=" + picturesDirectory);
+                if (typeof window.resolveLocalFileSystemURL === "function") {
+                    window.resolveLocalFileSystemURL(picturesDirectory, function (dirEntry) {
+                        Log.print(Log.l.info, "resolveLocalFileSystemURL: file system open name=" + dirEntry.name);
+                        var dirReader = dirEntry.createReader("*.jpg");
+                        dirReader.readEntries(function (entries) {
+                            var fileEntry = null;
+                            for (var i = 0; i < entries.length; i++) {
+                                if (entries[i].isFile) {
+                                    fileEntry = entries[i];
+                                    Log.print(Log.l.info, "found name=" + fileEntry.name);
+                                    break;
+                                }
+                            }
+                            if (fileEntry) {
+                                var deleteFile = function (fe) {
+                                    fe.remove(function () {
+                                        Log.print(Log.l.info, "file deleted!");
+                                    },
+                                    function (errorResponse) {
+                                        Log.print(Log.l.error, "file delete: Failed remove file " + fe.name + " error: " + JSON.stringify(errorResponse));
+                                    },
+                                    function () {
+                                        Log.print(Log.l.trace, "file delete: extra ignored!");
+                                    });
+                                }
+                                fileEntry.file(function (file) {
+                                    var fileReader = new FileReader("*.jpg");
+                                    fileReader.onerror = function(e) {
+                                        Log.print(Log.l.error, "Failed file read: " + e.toString());
+                                        CameraGlobals.onPhotoDataFail(e);
+                                    };
+                                    fileReader.onloadend = function () {
+                                        var data = new Uint8Array(this.result);
+                                        Log.print(Log.l.info,
+                                            "Successful file read! data-length=" + data.length);
+                                        var encoded = b64.fromByteArray(data);
+                                        CameraGlobals.onPhotoDataSuccess(encoded);
+                                        deleteFile(fileEntry);
+                                    };
+                                    fileReader.readAsArrayBuffer(file);
+                                }, function(errorResponse) {
+                                    Log.print(Log.l.error, "file read error " + errorResponse.toString());
+                                    CameraGlobals.onPhotoDataFail(errorResponse);
+                                });
+                            } else {
+                                Log.print(Log.l.trace, "No file found - try again!");
+                                WinJS.Promise.timeout(1000).then(function () {
+                                    CameraGlobals.startListen();
+                                });
+                            }
+                        }, function (errorResponse) {
+                            Log.print(Log.l.error, "readEntries: error " + errorResponse.toString());
+                            WinJS.Promise.timeout(1000).then(function () {
+                                CameraGlobals.startListen();
+                            });
+                        });
+                        CameraGlobals.listening = true;
+                    }, function (errorResponse) {
+                        Log.print(Log.l.error, "resolveLocalFileSystemURL error " + errorResponse.toString());
+                    });
+                }
+            }
+            Log.ret(Log.l.trace);
+        }
+    });
+    
     // usage of binding converters
     //
     //<span 

@@ -340,6 +340,7 @@
     "info.cameraQuality"    : "Qualität",
     "info.cameraUseGrayscale" : "Graustufen",
     "info.useClippingCamera": "Automatische Erkennung",
+    "info.useExternalCamera": "Visitenkarten Scanner",
     "info.replication"      : "Synchronisationsoptionen",
     "info.replActive"       : "Synchronisation",
     "info.replInterval"     : "Intervall in s",

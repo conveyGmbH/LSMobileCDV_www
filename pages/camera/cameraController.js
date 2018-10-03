@@ -228,22 +228,31 @@
 
             var onPhotoDataSuccess = function (imageData) {
                 Log.call(Log.l.trace, "Camera.Controller.");
-                // Get image handle
-                //
-                var cameraImage = new Image();
-                // Show the captured photo
-                // The inline CSS rules are used to resize the image
-                //
-                cameraImage.src = "data:image/jpeg;base64," + imageData;
 
-                var width = cameraImage.width;
-                var height = cameraImage.height;
-                Log.print(Log.l.trace, "width=" + width + " height=" + height);
-
-                // todo: create preview from imageData
-                that.insertCameradata(imageData, width, height);
+                if (imageData && imageData.length > 0) {
+                    // Get image handle
+                    //
+                    var cameraImage = new Image();
+                    // Show the captured photo
+                    // The inline CSS rules are used to resize the image
+                    //
+                    cameraImage.src = "data:image/jpeg;base64," + imageData;
+                    WinJS.Promise.timeout(50).then(function() {
+                        var width = cameraImage.width;
+                        var height = cameraImage.height;
+                        Log.print(Log.l.trace, "width=" + width + " height=" + height);
+                        if (width > 0 && height > 0) {
+                            that.insertCameradata(imageData, width, height);
+                        } else {
+                            that.onPhotoDataFail("Invalid image data!");
+                        }
+                    });
+                } else {
+                    that.onPhotoDataFail("No data received!");
+                }
                 Log.ret(Log.l.trace);
             }
+            this.onPhotoDataSuccess = onPhotoDataSuccess;
 
             var onPhotoDataFail = function (message) {
                 Log.call(Log.l.error, "Camera.Controller.");
@@ -259,6 +268,7 @@
                 });
                 Log.ret(Log.l.error);
             }
+            this.onPhotoDataFail = onPhotoDataFail;
 
             //start native Camera async
             AppData.setErrorMsg(that.binding);
@@ -331,7 +341,9 @@
             that.processAll().then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Binding wireup page complete");
-                that.takePhoto();
+                if (!CameraGlobals.dontCapture) {
+                    that.takePhoto();
+                }
             });
             Log.ret(Log.l.trace);
         })
