@@ -16,9 +16,9 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Info.Controller.");
 
-            var hasPicturesDirectory = !!cordova.file.picturesDirectory;
             var isWindows = false;
             var isAndroid = false;
+            var hasPicturesDirectory = (cordova.file.picturesDirectory ? true : false);
             if (typeof device === "object" && typeof device.platform === "string") {
                 if (device.platform === "Android") {
                     if (typeof AppData.generalData.useAudioNote === "undefined") {
@@ -42,7 +42,20 @@
                 hasPicturesDirectory: hasPicturesDirectory
             }, commandList]);
 
+            this.picturesDirectorySubFolder = AppData.generalData.picturesDirectorySubFolder;
+            this.binding.generalData.picturesDirectorySubFolder = "";
+
+            var picturesFolderSelect = pageElement.querySelector("#picturesFolderSelect");
+            var picturesDirectoryFolders = [{ name: "" }];
+            // save for later preselection
+
             var that = this;
+
+            this.dispose = function () {
+                if (picturesFolderSelect && picturesFolderSelect.winControl) {
+                    picturesFolderSelect.winControl.data = null;
+                }
+            }
 
             var homepageLink = pageElement.querySelector("#homepageLink");
             if (homepageLink) {
@@ -68,11 +81,7 @@
             this.eventHandlers = {
                 clickOk: function (event) {
                     Log.call(Log.l.trace, "Info.Controller.");
-                    if (WinJS.Navigation.canGoBack === true) {
-                        WinJS.Navigation.back(1).done( /* Your success and error handlers */);
-                    } else {
-                        Application.navigateById("start", event);
-                    }
+                    Application.navigateById("start", event);
                     Log.ret(Log.l.trace);
                 },
                 clickChangeUserState: function (event) {
@@ -237,9 +246,55 @@
                 that.binding.showClipping = true;
             }
 
-            that.processAll().then(function () {
-                AppBar.notifyModified = true;
+            var loadData = function() {
+                Log.call(Log.l.trace, "info.Controller.");
+                var ret = new WinJS.Promise.as().then(function() {
+                    if (picturesFolderSelect &&
+                        picturesFolderSelect.winControl &&
+                        hasPicturesDirectory &&
+                        typeof window.resolveLocalFileSystemURL === "function") {
+                        window.resolveLocalFileSystemURL(cordova.file.picturesDirectory, function(dirEntry) {
+                            Log.print(Log.l.info, "resolveLocalFileSystemURL: file system open name=" + dirEntry.name);
+                            var dirReader = dirEntry.createReader();
+                            dirReader.readEntries(function (entries) {
+                                var bFound = false;
+                                for (var i = 0; i < entries.length; i++) {
+                                    if (entries[i].isDirectory) {
+                                        picturesDirectoryFolders.push({
+                                            name: entries[i].name
+                                        });
+                                        if (entries[i].name === that.picturesDirectorySubFolder) {
+                                            bFound = true;
+                                        }
+                                    }
+                                }
+                                if (!bFound) {
+                                    that.picturesDirectorySubFolder = "";
+                                }
+                                if (picturesDirectoryFolders.length > 1) {
+                                    picturesFolderSelect.winControl.data = new WinJS.Binding.List(picturesDirectoryFolders);
+                                }
+                                that.binding.generalData.picturesDirectorySubFolder = that.picturesDirectorySubFolder;
+                            },
+                            function(errorResponse) {
+                                Log.print(Log.l.error, "readEntries: error " + errorResponse.toString());
+                            });
+                        }, function(errorResponse) {
+                            Log.print(Log.l.error, "resolveLocalFileSystemURL error " + errorResponse.toString());
+                        });
+                    };
+                });
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+            this.loadData = loadData;
+
+            that.processAll().then(function() {
                 Log.print(Log.l.trace, "Binding wireup page complete");
+                return that.loadData();
+            }).then(function () {
+                Log.print(Log.l.trace, "Data loadad");
+                AppBar.notifyModified = true;
             });
             Log.ret(Log.l.trace);
         }),

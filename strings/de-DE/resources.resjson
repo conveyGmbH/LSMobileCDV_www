@@ -351,6 +351,7 @@
     "info.useAudioNote"     : "Tonaufnahme",
     "info.autoShutterTime"  : "Selbstauslöser [ms]",
 	"info.useBarcodeActivity"    : "Integrierter Scanner",
+	"info.picturesDirectorySubFolder" : "Ordner",
 
 	  "infodesk.actualEmployee"     : "Aktueller Mitarbeiter",
     "infodesk.employee"     : "Mitarbeiter",

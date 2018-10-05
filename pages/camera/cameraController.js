@@ -227,6 +227,7 @@
             this.insertCameradata = insertCameradata;
 
             var onPhotoDataSuccess = function (imageData) {
+                var ret = null;
                 Log.call(Log.l.trace, "Camera.Controller.");
 
                 if (imageData && imageData.length > 0) {
@@ -237,20 +238,17 @@
                     // The inline CSS rules are used to resize the image
                     //
                     cameraImage.src = "data:image/jpeg;base64," + imageData;
-                    WinJS.Promise.timeout(50).then(function() {
-                        var width = cameraImage.width;
-                        var height = cameraImage.height;
+                    var width = cameraImage.width;
+                    var height = cameraImage.height;
+                    if (width > 0 && height > 0) {
                         Log.print(Log.l.trace, "width=" + width + " height=" + height);
-                        if (width > 0 && height > 0) {
-                            that.insertCameradata(imageData, width, height);
-                        } else {
-                            that.onPhotoDataFail("Invalid image data!");
-                        }
-                    });
+                        ret= that.insertCameradata(imageData, width, height);
+                    }
                 } else {
-                    that.onPhotoDataFail("No data received!");
+                    return that.onPhotoDataFail("No data received!");
                 }
                 Log.ret(Log.l.trace);
+                return ret;
             }
             this.onPhotoDataSuccess = onPhotoDataSuccess;
 
@@ -267,6 +265,7 @@
                     }
                 });
                 Log.ret(Log.l.error);
+                return WinJS.Promise.as();
             }
             this.onPhotoDataFail = onPhotoDataFail;
 

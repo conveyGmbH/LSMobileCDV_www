@@ -26,6 +26,7 @@
         autoShutterTime: 0,
         useBarcodeActivity: false,
         useExternalCamera: false,
+        picturesDirectorySubFolder: "",
         cameraFeatureSupported: true,
         logEnabled: false,
         logLevel: 3,
@@ -139,9 +140,8 @@
                 WinJS.Promise.timeout(0).then(function () {
                     Barcode.startListen();
                 });
-            }
-            if (AppData.generalData.cameraFeatureSupported &&
-                AppData.generalData.useExternalCamera &&
+            } 
+            if (AppData.generalData.useExternalCamera &&
                 cordova.file.picturesDirectory &&
                 CameraGlobals && !CameraGlobals.listening) {
                 WinJS.Promise.timeout(0).then(function () {

@@ -105,11 +105,7 @@
             this.eventHandlers = {
                 clickOk: function (event) {
                     Log.call(Log.l.trace, "Settings.Controller.");
-                    if (WinJS.Navigation.canGoBack === true) {
-                        WinJS.Navigation.back(1).done( /* Your success and error handlers */);
-                    } else {
-                        Application.navigateById("start", event);
-                    }
+                    Application.navigateById("start", event);
                     Log.ret(Log.l.trace);
                 },
                 clickChangeUserState: function (event) {

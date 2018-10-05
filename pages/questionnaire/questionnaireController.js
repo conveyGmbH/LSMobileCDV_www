@@ -148,7 +148,7 @@
                         that.scrollToRecordId(recordId);
                     });
                 } else {
-                    if (recordId && listView && listView.winControl) {
+                    if (recordId && listView && listView.winControl && that.questions) {
                         for (var i = 0; i < that.questions.length; i++) {
                             var question = that.questions.getAt(i);
                             if (question && typeof question === "object" &&
@@ -165,7 +165,7 @@
 
             var selectRecordId = function (recordId) {
                 Log.call(Log.l.trace, "Questionnaire.Controller.", "recordId=" + recordId);
-                if (recordId && listView && listView.winControl && listView.winControl.selection) {
+                if (recordId && listView && listView.winControl && listView.winControl.selection && that.questions) {
                     for (var i = 0; i < that.questions.length; i++) {
                         var question = that.questions.getAt(i);
                         if (question && typeof question === "object" &&
@@ -648,7 +648,7 @@
                     recordId = that.curRecId;
                 }
                 that.prevRecId = 0;
-                if (recordId) {
+                if (recordId && that.questions) {
                     var i;
                     var curScope = null;
                     for (i = 0; i < that.questions.length; i++) {
@@ -688,45 +688,47 @@
             var showConfirmBoxMandatory = function () {
                 var ret = false;
                 Log.call(Log.l.trace, "Questionnaire.Controller.");
-                for (var i = 0; i < that.questions.length; i++) {
-                    var question = that.questions.getAt(i);
-                    if (question &&
-                        typeof question === "object" &&
-                        question.PflichtFeld) {
+                if (that.questions) {
+                    for (var i = 0; i < that.questions.length; i++) {
+                        var question = that.questions.getAt(i);
+                        if (question &&
+                            typeof question === "object" &&
+                            question.PflichtFeld) {
 
-                        var curScope = question;
-                        that.actualquestion = question;
-                        var newRecord = that.getFieldEntries(i, curScope.type);
-                        var prop;
-                        
-                        ret = true;
-                        if (curScope.type.substr(0,5) === "multi") {
-                            for (prop in newRecord) {
-                                if (newRecord.hasOwnProperty(prop)) {
-                                    var propPrefix = prop.substr(0, 9);
-                                    if (propPrefix === "MSANTWORT" || propPrefix === "MsAntwort" || propPrefix === "MrAntwort") {
-                                        if (newRecord[prop] === "X") {
-                                            ret = false;
-                                            break;
+                            var curScope = question;
+                            that.actualquestion = question;
+                            var newRecord = that.getFieldEntries(i, curScope.type);
+                            var prop;
+
+                            ret = true;
+                            if (curScope.type.substr(0, 5) === "multi") {
+                                for (prop in newRecord) {
+                                    if (newRecord.hasOwnProperty(prop)) {
+                                        var propPrefix = prop.substr(0, 9);
+                                        if (propPrefix === "MSANTWORT" || propPrefix === "MsAntwort" || propPrefix === "MrAntwort") {
+                                            if (newRecord[prop] === "X") {
+                                                ret = false;
+                                                break;
+                                            }
                                         }
-                                    }    
+                                    }
                                 }
-                            }
-                            if (ret) {
-                                break;
-                            }
-                        } else {
-                            if (curScope.type === "single-rating") {
-                                prop = "RRANTWORT";
+                                if (ret) {
+                                    break;
+                                }
                             } else {
-                                prop = "SSANTWORT";
-                            }
-                            if (newRecord[prop] && newRecord[prop].length > 0 && newRecord[prop] !== "0" && newRecord[prop] !== "00") {
-                                Log.call(Log.l.u1, "Questionnaire.Controller. Answer not empty" + newRecord.prop);
-                                ret = false;
-                            }
-                            if (ret) {
-                                break;
+                                if (curScope.type === "single-rating") {
+                                    prop = "RRANTWORT";
+                                } else {
+                                    prop = "SSANTWORT";
+                                }
+                                if (newRecord[prop] && newRecord[prop].length > 0 && newRecord[prop] !== "0" && newRecord[prop] !== "00") {
+                                    Log.call(Log.l.u1, "Questionnaire.Controller. Answer not empty" + newRecord.prop);
+                                    ret = false;
+                                }
+                                if (ret) {
+                                    break;
+                                }
                             }
                         }
                     }
@@ -890,7 +892,7 @@
 
             var textFromDateCombobox = function (id, element) {
                 Log.call(Log.l.error, "Questionnaire.Controller.");
-                if (element && element.parentElement) {
+                if (element && element.parentElement && that.questions) {
                     var recordId = that.curRecId;
                     var curScope = null;
                     var i;
@@ -1248,7 +1250,7 @@
                                     // when the response is available
                                     Log.print(Log.l.trace, "Questionnaire.questionnaireView: success!");
                                     // startContact returns object already parsed from json file in response
-                                    if (json && json.d) {
+                                    if (json && json.d && that.questions) {
                                         that.nextUrl = Questionnaire.questionnaireView.getNextUrl(json);
                                         var results = json.d.results;
                                         results.forEach(function (item) {
@@ -1614,7 +1616,7 @@
                                     // add ListView itemTemplate
                                     listView.winControl.itemTemplate = that.listQuestionnaireRenderer.bind(that);
                                     // add ListView dataSource
-                                    listView.winControl.itemDataSource = that.questions.dataSource;
+                                    listView.winControl.itemDataSource = that.questions && that.questions.dataSource;
                                 }
                             }
                         }, function (errorResponse) {

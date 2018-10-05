@@ -351,6 +351,7 @@
     "info.useAudioNote"     : "Registrazione audio",
     "info.autoShutterTime"  : "Tempo di innesco [ms]",
     "info.useBarcodeActivity"    : "Scanner integrato",
+	"info.picturesDirectorySubFolder" : "Repertorio",
 
     "infodesk.actualEmployee"     : "Employee attuale",
     "infodesk.employee"     : "Employee",

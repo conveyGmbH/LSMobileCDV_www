@@ -840,16 +840,25 @@
     WinJS.Namespace.define("CameraGlobals", {
         listening: false,
         dontCapture: false,
-        onPhotoDataSuccess: function (result) {
-            Log.call(Log.l.trace, "CameraGlobals.");
+        onPhotoDataSuccess: function (result, retryCount) {
+            retryCount = retryCount || 0;
+            Log.call(Log.l.trace, "CameraGlobals.", "retryCount=" + retryCount);
             if (Application.getPageId(nav.location) === "camera" &&
                 AppBar.scope &&
                 typeof AppBar.scope.onPhotoDataSuccess === "function") {
                 CameraGlobals.dontCapture = false;
-                AppBar.scope.onPhotoDataSuccess(result);
-                WinJS.Promise.timeout(1000).then(function () {
-                    CameraGlobals.startListen();
-                });
+                var ret = AppBar.scope.onPhotoDataSuccess(result);
+                if (!ret && retryCount < 2) {
+                    WinJS.Promise.timeout(250).then(function () {
+                        CameraGlobals.onPhotoDataSuccess(result, retryCount + 1);
+                    });
+                } else {
+                    ret.then(function() {
+                        return WinJS.Promise.timeout(1000);
+                    }).then(function () {
+                        CameraGlobals.startListen();
+                    });
+                }
             } else {
                 CameraGlobals.dontCapture = true;
                 Application.navigateById("camera");
@@ -879,11 +888,11 @@
         },
         startListen: function () {
             Log.call(Log.l.trace, "CameraGlobals.");
-            if (AppData.generalData.cameraFeatureSupported &&
-                AppData.generalData.useExternalCamera &&
+            if (AppData.generalData.useExternalCamera &&
+                AppData.generalData.picturesDirectorySubFolder &&
                 cordova.file.picturesDirectory &&
                 typeof window.resolveLocalFileSystemURL === "function") {
-                var picturesDirectory = cordova.file.picturesDirectory + "/LeadSuccess";
+                var picturesDirectory = cordova.file.picturesDirectory + "/" + AppData.generalData.picturesDirectorySubFolder;
                 Log.print(Log.l.trace, "Windows: calling window.resolveLocalFileSystemURL=" + picturesDirectory);
                 if (typeof window.resolveLocalFileSystemURL === "function") {
                     window.resolveLocalFileSystemURL(picturesDirectory, function (dirEntry) {
