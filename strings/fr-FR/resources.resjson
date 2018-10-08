@@ -352,6 +352,7 @@
     "info.autoShutterTime"  : "Temps de déclenchement [ms]",
     "info.useBarcodeActivity"    : "Scanner intégré",
 	"info.picturesDirectorySubFolder" : "Répertoire",
+	"info.logOffOptionActive"  : "Autoriser la déconnexion",
 
     "infodesk.actualEmployee"     : "Personnel actuel",
     "infodesk.employee"     : "Personnel",

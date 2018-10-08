@@ -352,6 +352,7 @@
     "info.autoShutterTime"  : "Tempo di innesco [ms]",
     "info.useBarcodeActivity"    : "Scanner integrato",
 	"info.picturesDirectorySubFolder" : "Repertorio",
+	"info.logOffOptionActive"  : "Consentire il logout",
 
     "infodesk.actualEmployee"     : "Employee attuale",
     "infodesk.employee"     : "Employee",

@@ -120,6 +120,16 @@
                     }
                     Log.ret(Log.l.trace);
                 },
+                clicklogOffOptionActive: function(event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var toggle = event.currentTarget.winControl;
+                        if (toggle) {
+                            that.binding.generalData.logOffOptionActive = toggle.checked;
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
                 clickUseClippingCamera: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
                     if (event.currentTarget && AppBar.notifyModified) {

@@ -350,6 +350,7 @@
     "info.autoShutterTime"  : "Selbstauslöser [ms]",
     "info.useBarcodeActivity"    : "Integrated scanner",
 	"info.picturesDirectorySubFolder" : "Folder",
+	"info.logOffOptionActive"  : "Abmelden erlauben",
 
     "infodesk.actualEmployee"     : "Aktueller Mitarbeiter",
     "infodesk.employee"     : "Mitarbeiter",

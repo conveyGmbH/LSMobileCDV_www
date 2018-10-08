@@ -352,6 +352,7 @@
     "info.autoShutterTime"  : "Trigger time [ms]",
     "info.useBarcodeActivity"    : "Integrated scanner",
 	"info.picturesDirectorySubFolder" : "Folder",
+	"info.logOffOptionActive"  : "Allow logoff",
 
     "infodesk.actualEmployee"     : "Current employee",
     "infodesk.employee"     : "Employee",

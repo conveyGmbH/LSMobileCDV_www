@@ -50,9 +50,9 @@
                                     // called asynchronously if ok
                                     complete(response);
                                 },
-                                    function (errorResponse) {
-                                        error(errorResponse);
-                                    });
+                                function (errorResponse) {
+                                    error(errorResponse);
+                                });
                             } else {
                                 Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");
                                 error("canceled");
