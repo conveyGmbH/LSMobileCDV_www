@@ -182,6 +182,17 @@
                         <span class="input_field win-type-subtitle"
                               data-win-bind="textContent: downloadTS Binding.Converter.toDateString"></span>
                     </div>
+                    <div class="field_line field_line_odd">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.logOffOptionActive'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.logOffOptionActive'}"></span>
+                        <div class="input_field toggle-switch-parent">
+                            <div id="logOffOptionActive" class="input_field"
+                                 data-win-control="WinJS.UI.ToggleSwitch"
+                                 data-win-bind="winControl.checked: generalData.logOffOptionActive; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
+                                 onchange="AppBar.handleEvent('change', 'clicklogOffOptionActive', event)">
+                            </div>
+                        </div>
+                    </div>
                     <div class="line-separator"></div>
                     <div class="field_line field_line_full">
                         &nbsp;
