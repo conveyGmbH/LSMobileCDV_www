@@ -1203,6 +1203,15 @@
                                     }
                                 }
                             }
+                            if (device.platform === "windows" || device.platform === "Android") {
+                                var scrollSurface = listView.querySelector(".win-viewport");
+                                var inputs = listView.querySelectorAll("input, textarea");
+                                if (inputs && inputs.length > 0) {
+                                    for (var j = 0; j < inputs.length; j++) {
+                                        that.addScrollIntoViewCheck(inputs[j], scrollSurface);
+                                    }
+                                }
+                            }
                         }
                     }
                     Log.ret(Log.l.trace);
@@ -1496,121 +1505,8 @@
                                     that.checkForHideQuestion();
                                 }
                                 if (listView && listView.winControl) {
-                                    var getTextareaForFocus = function (element) {
-                                        var focusElement = null;
-                                        if (element) {
-                                            var freitextInputs = element.querySelectorAll(".win-textarea, .win-textbox");
-                                            if (freitextInputs) for (var i = 0; i < freitextInputs.length; i++) {
-                                                var freitextInput = freitextInputs[i];
-                                                if (freitextInput) {
-                                                    var position = WinJS.Utilities.getPosition(freitextInput);
-                                                    if (position) {
-                                                        var left = position.left;
-                                                        var top = position.top;
-                                                        var width = position.width;
-                                                        var height = position.height;
-                                                        if (that.cursorPos.x >= left && that.cursorPos.x <= left + width &&
-                                                            that.cursorPos.y >= top && that.cursorPos.y <= top + height + 2) {
-                                                            focusElement = freitextInput;
-                                                            break;
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        Log.ret(Log.l.trace);
-                                        return focusElement;
-                                    }
-                                    var trySetActive = function (element, scroller) {
-                                        var success = true;
-                                        // don't call setActive() if a dropdown control has focus!
-                                        var comboInputFocus = element.querySelector(".win-dropdown:focus");
-                                        if (!comboInputFocus) {
-                                            try {
-                                                var focusElement;
-                                                if (typeof element.setActive === "function") {
-                                                    focusElement = getTextareaForFocus(element);
-                                                    element.setActive();
-                                                    if (focusElement && focusElement !== element) {
-                                                        focusElement.focus();
-                                                    }
-                                                } else {
-                                                    // check for existence of WinRT
-                                                    var resources = Resources.get();
-                                                    if (resources) {
-                                                        focusElement = getTextareaForFocus(element);
-                                                        if (focusElement && focusElement !== element) {
-                                                            WinJS.Promise.timeout(0).then(function () {
-                                                                focusElement.focus();
-                                                            });
-                                                        }
-                                                    }
-                                                }
-                                            } catch (e) {
-                                                // setActive() raises an exception when trying to focus an invisible item. Checking visibility is non-trivial, so it's best
-                                                // just to catch the exception and ignore it. focus() on the other hand, does not raise exceptions.
-                                                success = false;
-                                            }
-                                        }
-                                        return success;
-                                    };
-                                    // overwrite _setFocusOnItem for this ListView to supress automatic
-                                    // scroll-into-view when calling item.focus() in base.js implementation
-                                    // by prevent the call of _ElementUtilities._setActive(item);
-                                    listView.winControl._setFocusOnItem = function ListView_setFocusOnItem(entity) {
-                                        this._writeProfilerMark("_setFocusOnItem,info");
-                                        if (this._focusRequest) {
-                                            this._focusRequest.cancel();
-                                        }
-                                        if (this._isZombie()) {
-                                            return;
-                                        }
-                                        var winControl = this;
-                                        var setFocusOnItemImpl = function (item) {
-                                            if (winControl._isZombie()) {
-                                                return;
-                                            }
-
-                                            if (winControl._tabManager.childFocus !== item) {
-                                                winControl._tabManager.childFocus = item;
-                                            }
-                                            winControl._focusRequest = null;
-                                            if (winControl._hasKeyboardFocus && !winControl._itemFocused) {
-                                                if (winControl._selection._keyboardFocused()) {
-                                                    winControl._drawFocusRectangle(item);
-                                                }
-                                                // The requestItem promise just completed so _cachedCount will
-                                                // be initialized.
-                                                if (entity.type === WinJS.UI.ObjectType.groupHeader ||
-                                                    entity.type === WinJS.UI.ObjectType.item) {
-                                                    winControl._view
-                                                        .updateAriaForAnnouncement(item,
-                                                        (
-                                                            entity.type === WinJS.UI.ObjectType.groupHeader
-                                                                ? winControl._groups.length()
-                                                                : winControl._cachedCount));
-                                                }
-
-                                                // Some consumers of ListView listen for item invoked events and hide the listview when an item is clicked.
-                                                // Since keyboard interactions rely on async operations, sometimes an invoke event can be received before we get
-                                                // to WinJS.Utilities._setActive(item), and the listview will be made invisible. If that happens and we call item.setActive(), an exception
-                                                // is raised for trying to focus on an invisible item. Checking visibility is non-trivial, so it's best
-                                                // just to catch the exception and ignore it.
-                                                winControl._itemFocused = true;
-                                                trySetActive(item);
-                                            }
-                                        };
-
-                                        if (entity.type === WinJS.UI.ObjectType.item) {
-                                            this._focusRequest = this._view.items.requestItem(entity.index);
-                                        } else if (entity.type === WinJS.UI.ObjectType.groupHeader) {
-                                            this._focusRequest = this._groups.requestHeader(entity.index);
-                                        } else {
-                                            this._focusRequest = WinJS.Promise.wrap(entity.type === WinJS.UI.ObjectType.header ? this._header : this._footer);
-                                        }
-                                        this._focusRequest.then(setFocusOnItemImpl);
-                                    };
-
+                                    // fix focus handling
+                                    that.setFocusOnItemInListView(listView);
 
                                     listView.winControl._supressScrollIntoView = true;
                                     // add ListView itemTemplate
