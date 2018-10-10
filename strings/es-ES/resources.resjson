@@ -338,6 +338,7 @@
     "info.cameraQuality"    : "Qualität",
     "info.cameraUseGrayscale" : "Graustufen",
     "info.useClippingCamera": "Automatische Erkennung",
+    "info.scannerOptions"   : "Scanner options",
     "info.useExternalCamera": "Businesscard scanner",
     "info.replication"      : "Synchronisationsoptionen",
     "info.replActive"       : "Synchronisation",
@@ -351,6 +352,10 @@
     "info.useBarcodeActivity"    : "Integrated scanner",
 	"info.picturesDirectorySubFolder" : "Folder",
 	"info.logOffOptionActive"  : "Abmelden erlauben",
+    "info.barcodeDevice"    : "Barcode scanner",
+    "info.notesOptions"     : "Aufnahmeoptionen",
+    "info.barcodeDeviceId"  : "Gerät",
+    "info.barcodeDeviceStatus" : "Status",
 
     "infodesk.actualEmployee"     : "Aktueller Mitarbeiter",
     "infodesk.employee"     : "Mitarbeiter",
