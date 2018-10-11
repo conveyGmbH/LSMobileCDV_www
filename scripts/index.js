@@ -1,6 +1,6 @@
 ﻿// For an introduction to the Blank template, see the following documentation:
 // http://go.microsoft.com/fwlink/?LinkID=397704
-// To debug code on page load in Ripple or on Android devices/emulators: launch your app, set breakpoints, 
+// To debug code on page load in Ripple or on Android devices/emulators: launch your app, set breakpoints,
 // and then run "window.location.reload()" in the JavaScript Console.
 /// <reference path="~/www/lib/WinJS/scripts/base.min.js" />
 /// <reference path="~/www/lib/WinJS/scripts/ui.js" />
@@ -25,6 +25,7 @@
         useClippingCamera: false,
         autoShutterTime: 0,
         useBarcodeActivity: false,
+        barcodeDevice: "",
         useExternalCamera: false,
         picturesDirectorySubFolder: "",
         cameraFeatureSupported: true,
@@ -69,7 +70,7 @@
         { id: "info", group: 3, svg: "gearwheel", disabled: false }
     ];
 
-    // static array of pages for the navigation bar 
+    // static array of pages for the navigation bar
     Application.navigationBarPages = [
         { id: "start", group: -6, disabled: false },
         { id: "barcodeEdit", group: -7, disabled: false },
@@ -122,7 +123,7 @@
                         return Application.navigateByIdOverride(id);
                     }
                 }
-            }  
+            }
         } else if (id === "sketch") {
             for (var y = 0; y < Application.navigationBarPages.length; y++) {
                 if (Application.navigationBarPages[y].id === id) {
@@ -140,7 +141,7 @@
                 WinJS.Promise.timeout(0).then(function () {
                     Barcode.startListen();
                 });
-            } 
+            }
             if (AppData.generalData.useExternalCamera &&
                 cordova.file.picturesDirectory &&
                 CameraGlobals && !CameraGlobals.listening) {

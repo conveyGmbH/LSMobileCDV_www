@@ -1203,15 +1203,7 @@
                                     }
                                 }
                             }
-                            if (device.platform === "windows" || device.platform === "Android") {
-                                var scrollSurface = listView.querySelector(".win-viewport");
-                                var inputs = listView.querySelectorAll("input, textarea");
-                                if (inputs && inputs.length > 0) {
-                                    for (var j = 0; j < inputs.length; j++) {
-                                        that.addScrollIntoViewCheck(inputs[j], scrollSurface);
-                                    }
-                                }
-                            }
+                            that.addScrollIntoViewCheckForInputElements(listView);
                         }
                     }
                     Log.ret(Log.l.trace);

@@ -1059,6 +1059,7 @@
                                     }
                                 }
                             }
+                            that.addScrollIntoViewCheckForInputElements(listView);
                         }
                     }
                     Log.ret(Log.l.trace);

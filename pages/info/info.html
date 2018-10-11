@@ -84,7 +84,15 @@
                                data-win-bind="value: generalData.autoShutterTime"
                                onchange="AppBar.handleEvent('change', 'changedAutoShutterTime', event)" />
                     </div>
-                    <div class="line-separator" data-win-bind="style.display: hasPicturesDirectory Binding.Converter.toDisplay"></div>
+                    <div class="header-separator float-left"></div>
+                    <div class="content-header float-left">
+                        <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                        <div class="idAndDate win-type-caption">
+                            <span class="id-field"></span>
+                            <span class="caption-field" data-win-res="{textContent: 'info.scannerOptions'}"></span>
+                            <span class="date-field"></span>
+                        </div>
+                    </div>
                     <div class="field_line field_line_odd" data-win-bind="style.display: hasPicturesDirectory Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.useExternalCamera'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.useExternalCamera'}"></span>
@@ -98,7 +106,7 @@
                     </div>
                     <div class="field_line field_line_even" data-win-bind="style.display: hasPicturesDirectory Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.picturesDirectorySubFolder'}"></span>
-                        <span class="label landscape_only" data-win-res="{textContent: 'contact.picturesDirectorySubFolder'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.picturesDirectorySubFolder'}"></span>
                         <select id="picturesFolderSelect"
                                 class="input_field win-dropdown"
                                 data-win-control="WinJS.UI.Repeater"
@@ -106,19 +114,8 @@
                             <option data-win-bind="value: name; textContent: name"></option>
                         </select>
                     </div>
-                    <div class="line-separator" data-win-bind="style.display: isAndroid Binding.Converter.toDisplay"></div>
-                    <div class="field_line field_line_odd" data-win-bind="style.display: isAndroid Binding.Converter.toDisplay">
-                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.useAudioNote'}"></span>
-                        <span class="label landscape_only" data-win-res="{textContent: 'info.useAudioNote'}"></span>
-                        <div class="input_field toggle-switch-parent">
-                            <div id="useAudioNote" class="input_field"
-                                 data-win-control="WinJS.UI.ToggleSwitch"
-                                 data-win-bind="winControl.checked: generalData.useAudioNote; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
-                                 onchange="AppBar.handleEvent('change', 'clickUseAudioNote', event)">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field_line field_line_even" data-win-bind="style.display: isAndroid Binding.Converter.toDisplay">
+                    <div class="line-separator" data-win-bind="style.display: hasBarcodeScanner Binding.Converter.toDisplay"></div>
+                    <div class="field_line field_line_odd" data-win-bind="style.display: hasBarcodeScanner Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.useBarcodeActivity'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.useBarcodeActivity'}"></span>
                         <div class="input_field toggle-switch-parent">
@@ -129,9 +126,46 @@
                             </div>
                         </div>
                     </div>
-                    <div class="line-separator"></div>
-                    <div class="field_line field_line_full">
-                        &nbsp;
+                    <div class="field_line field_line_even" data-win-bind="style.display: hasSerialDevice Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.barcodeDevice'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.barcodeDevice'}"></span>
+                        <select id="barcodeDeviceSelect"
+                                class="input_field win-dropdown"
+                                data-win-control="WinJS.UI.Repeater"
+                                data-win-bind="value: generalData.barcodeDevice"
+                                onchange="AppBar.handleEvent('change', 'changeBarcodeDeviceSelect', event)">
+                            <option data-win-bind="value: id; textContent: name"></option>
+                        </select>
+                    </div>
+                    <div class="field_line field_line_odd" data-win-bind="style.display: hasSerialDevice Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.barcodeDeviceId'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.barcodeDeviceId'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: generalData.barcodeDevice"></span>
+                    </div>
+                    <div class="field_line field_line_even" data-win-bind="style.display: hasSerialDevice Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.barcodeDeviceStatus'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.barcodeDeviceStatus'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: barcodeDeviceStatus"></span>
+                    </div>
+                    <div class="header-separator float-left" data-win-bind="style.display: isAndroid Binding.Converter.toDisplay"></div>
+                    <div class="content-header float-left" data-win-bind="style.display: isAndroid Binding.Converter.toDisplay">
+                        <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                        <div class="idAndDate win-type-caption">
+                            <span class="id-field"></span>
+                            <span class="caption-field" data-win-res="{textContent: 'info.notesOptions'}"></span>
+                            <span class="date-field"></span>
+                        </div>
+                    </div>
+                    <div class="field_line field_line_odd" data-win-bind="style.display: isAndroid Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.useAudioNote'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.useAudioNote'}"></span>
+                        <div class="input_field toggle-switch-parent">
+                            <div id="useAudioNote" class="input_field"
+                                 data-win-control="WinJS.UI.ToggleSwitch"
+                                 data-win-bind="winControl.checked: generalData.useAudioNote; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
+                                 onchange="AppBar.handleEvent('change', 'clickUseAudioNote', event)">
+                            </div>
+                        </div>
                     </div>
                     <div class="header-separator float-left"></div>
                     <div class="content-header float-left">
@@ -182,6 +216,7 @@
                         <span class="input_field win-type-subtitle"
                               data-win-bind="textContent: downloadTS Binding.Converter.toDateString"></span>
                     </div>
+                    <div class="line-separator"></div>
                     <div class="field_line field_line_odd">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.logOffOptionActive'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.logOffOptionActive'}"></span>
@@ -192,10 +227,6 @@
                                  onchange="AppBar.handleEvent('change', 'clicklogOffOptionActive', event)">
                             </div>
                         </div>
-                    </div>
-                    <div class="line-separator"></div>
-                    <div class="field_line field_line_full">
-                        &nbsp;
                     </div>
                     <div class="header-separator float-left"></div>
                     <div class="content-header float-left">

@@ -16,6 +16,7 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Info.Controller.");
 
+            var isDeviceListOpened = false;
             var isWindows = false;
             var isAndroid = false;
             var hasPicturesDirectory = (cordova.file.picturesDirectory ? true : false);
@@ -25,10 +26,12 @@
                         AppData._persistentStates.useAudioNote = false;
                     }
                     isAndroid = true;
-                } else if (device.platform.substr(0, 7) === "windows") {
+                } else if (device.platform === "windows") {
                     isWindows = true;
                 }
             }
+            var hasBarcodeScanner = (isAndroid || isWindows) ? true : false;
+            var hasSerialDevice = (isWindows && AppData.generalData.useBarcodeActivity) ? true : false;
             Application.Controller.apply(this, [pageElement, {
                 uploadTS: (AppData.appSettings.odata.replPrevPostMs ?
                 "\/Date(" + AppData.appSettings.odata.replPrevPostMs + ")\/" : null),
@@ -39,7 +42,10 @@
                 showClipping: false,
                 isAndroid: isAndroid,
                 isWindows: isWindows,
-                hasPicturesDirectory: hasPicturesDirectory
+                hasPicturesDirectory: hasPicturesDirectory,
+                hasBarcodeScanner: hasBarcodeScanner,
+                hasSerialDevice: hasSerialDevice,
+                barcodeDeviceStatus: Barcode.deviceStatus
             }, commandList]);
 
             this.picturesDirectorySubFolder = AppData.generalData.picturesDirectorySubFolder;
@@ -47,13 +53,28 @@
 
             var picturesFolderSelect = pageElement.querySelector("#picturesFolderSelect");
             var picturesDirectoryFolders = [{ name: "" }];
-            // save for later preselection
+
+            this.barcodeDevice = AppData.generalData.barcodeDevice;
+            this.binding.generalData.barcodeDevice = "";
+
+            var barcodeDeviceSelect = pageElement.querySelector("#barcodeDeviceSelect");
+            var nullDevice = { name: "", id: "" };
+            var deviceList = null;
 
             var that = this;
 
             this.dispose = function () {
                 if (picturesFolderSelect && picturesFolderSelect.winControl) {
                     picturesFolderSelect.winControl.data = null;
+                }
+                if (barcodeDeviceSelect && barcodeDeviceSelect.winControl) {
+                    barcodeDeviceSelect.winControl.data = null;
+                }
+                if (isDeviceListOpened &&
+                    isWindows &&
+                    navigator.serialDevice &&
+                    typeof navigator.serialDevice.closeDeviceList === "function") {
+                    navigator.serialDevice.closeDeviceList();
                 }
             }
 
@@ -176,6 +197,39 @@
                         var toggle = event.currentTarget.winControl;
                         if (toggle) {
                             that.binding.generalData.useBarcodeActivity = toggle.checked;
+                            that.binding.hasSerialDevice = (isWindows && AppData.generalData.useBarcodeActivity) ? true : false;
+                            if (that.binding.hasSerialDevice) {
+                                WinJS.Promise.timeout(0).then(function () {
+                                    that.loadData();
+                                });
+                            }
+                            if (device &&
+                                (device.platform === "Android" || device.platform === "windows") &&
+                                AppData.generalData.useBarcodeActivity &&
+                                AppData.generalData.barcodeDevice &&
+                                !Barcode.listening) {
+                                Barcode.startListen();
+                            }
+                        } else if (Barcode.listening) {
+                            Barcode.stopListen();
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                changeBarcodeDeviceSelect: function(event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var value = event.currentTarget.value;
+                        var prevValue = that.binding.generalData.barcodeDevice;
+                        if (prevValue !== value) {
+                            if (Barcode.listening) {
+                                Barcode.stopListen(value);
+                            } else {
+                                that.binding.generalData.barcodeDevice = value;
+                                if (!prevValue) {
+                                    Barcode.startListen();
+                                }
+                            }
                         }
                     }
                     Log.ret(Log.l.trace);
@@ -256,6 +310,52 @@
                 that.binding.showClipping = true;
             }
 
+            var setDeviceList = function (newDeviceList) {
+                Log.call(Log.l.trace, "info.Controller.");
+                if (newDeviceList) {
+                    var i, j, numDeviceEntries, bFound = false;
+                    var foundEntries = [];
+                    if (!deviceList) {
+                        deviceList = new WinJS.Binding.List([nullDevice]);
+                        if (barcodeDeviceSelect &&
+                            barcodeDeviceSelect.winControl) {
+                            barcodeDeviceSelect.winControl.data = deviceList;
+                        }
+                    }
+                    // empty entry at start remain2 in list!
+                    for (i = 1, numDeviceEntries = deviceList.length; i < numDeviceEntries; i++) {
+                        var deviceInformation = deviceList.getAt(i);
+                        if (deviceInformation) {
+                            for (j = 0; j < newDeviceList.length; j++) {
+                                if (newDeviceList[j].id === deviceInformation.id) {
+                                    foundEntries[j] = true;
+                                    if (newDeviceList[j].id === that.barcodeDevice) {
+                                        bFound = true;
+                                    }
+                                    break;
+                                }
+                            }
+                            if (!foundEntries[j]) {
+                                deviceList.splice(i, 1);
+                            }
+                        }
+                    }
+                    for (j = 0; j < newDeviceList.length; j++) {
+                        if (!foundEntries[j]) {
+                            deviceList.push(newDeviceList[j]);
+                            if (newDeviceList[j].id === that.barcodeDevice) {
+                                bFound = true;
+                            }
+                        }
+                    }
+                    if (bFound) {
+                        that.binding.generalData.barcodeDevice = that.barcodeDevice;
+                    }
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.setDeviceList = setDeviceList;
+
             var loadData = function() {
                 Log.call(Log.l.trace, "info.Controller.");
                 var ret = new WinJS.Promise.as().then(function() {
@@ -263,36 +363,53 @@
                         picturesFolderSelect.winControl &&
                         hasPicturesDirectory &&
                         typeof window.resolveLocalFileSystemURL === "function") {
-                        window.resolveLocalFileSystemURL(cordova.file.picturesDirectory, function(dirEntry) {
-                            Log.print(Log.l.info, "resolveLocalFileSystemURL: file system open name=" + dirEntry.name);
-                            var dirReader = dirEntry.createReader();
-                            dirReader.readEntries(function (entries) {
-                                var bFound = false;
-                                for (var i = 0; i < entries.length; i++) {
-                                    if (entries[i].isDirectory) {
-                                        picturesDirectoryFolders.push({
-                                            name: entries[i].name
-                                        });
-                                        if (entries[i].name === that.picturesDirectorySubFolder) {
-                                            bFound = true;
+                        window.resolveLocalFileSystemURL(cordova.file.picturesDirectory,
+                            function(dirEntry) {
+                                Log.print(Log.l.info,
+                                    "resolveLocalFileSystemURL: file system open name=" + dirEntry.name);
+                                var dirReader = dirEntry.createReader();
+                                dirReader.readEntries(function(entries) {
+                                        var bFound = false;
+                                        for (var i = 0; i < entries.length; i++) {
+                                            if (entries[i].isDirectory) {
+                                                picturesDirectoryFolders.push({
+                                                    name: entries[i].name
+                                                });
+                                                if (entries[i].name === that.picturesDirectorySubFolder) {
+                                                    bFound = true;
+                                                }
+                                            }
                                         }
-                                    }
-                                }
-                                if (!bFound) {
-                                    that.picturesDirectorySubFolder = "";
-                                }
-                                if (picturesDirectoryFolders.length > 1) {
-                                    picturesFolderSelect.winControl.data = new WinJS.Binding.List(picturesDirectoryFolders);
-                                }
-                                that.binding.generalData.picturesDirectorySubFolder = that.picturesDirectorySubFolder;
+                                        if (!bFound) {
+                                            that.picturesDirectorySubFolder = "";
+                                        }
+                                        if (picturesDirectoryFolders.length > 1) {
+                                            picturesFolderSelect.winControl.data =
+                                                new WinJS.Binding.List(picturesDirectoryFolders);
+                                        }
+                                        that.binding.generalData.picturesDirectorySubFolder =
+                                            that.picturesDirectorySubFolder;
+                                    },
+                                    function(errorResponse) {
+                                        Log.print(Log.l.error, "readEntries: error " + errorResponse.toString());
+                                    });
                             },
                             function(errorResponse) {
-                                Log.print(Log.l.error, "readEntries: error " + errorResponse.toString());
+                                Log.print(Log.l.error, "resolveLocalFileSystemURL error " + errorResponse.toString());
                             });
-                        }, function(errorResponse) {
-                            Log.print(Log.l.error, "resolveLocalFileSystemURL error " + errorResponse.toString());
-                        });
                     };
+                }).then(function() {
+                    if (that.binding.hasSerialDevice &&
+                        navigator.serialDevice &&
+                        typeof navigator.serialDevice.openDeviceList === "function") {
+                        navigator.serialDevice.openDeviceList(that.setDeviceList, function(error) {
+                            Log.print(Log.l.error, "openDeviceList returned " + error);
+                            isDeviceListOpened = false;
+                        }, {
+                            onDeviceListChange: that.setDeviceList
+                        });
+                        isDeviceListOpened = true;
+                    }
                 });
                 Log.ret(Log.l.trace);
                 return ret;

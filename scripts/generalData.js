@@ -799,7 +799,7 @@
             } else {
                 Barcode.dontScan = true;
                 Application.navigateById("barcode");
-                WinJS.Promise.timeout(250).then(function() {
+                WinJS.Promise.timeout(250).then(function () {
                     Barcode.onBarcodeSuccess(result);
                 });
             }
@@ -823,16 +823,107 @@
             }
             Log.ret(Log.l.trace);
         },
-        startListen: function() {
+        onDeviceConnected: function (result) {
+            var id = result && result.id;
+            var status = result && result.status;
+            Log.call(Log.l.trace, "Barcode.", "id=" + id + " status=" + status);
+            Log.ret(Log.l.trace);
+        },
+        onDeviceConnectFailed: function (error) {
+            var id = error && error.id;
+            var status = error && error.status;
+            Log.call(Log.l.trace, "Barcode.", "id=" + id + " status=" + status);
+            Log.ret(Log.l.trace);
+        },
+        DeviceConstants: {
+            connectionStatus: {}
+        },
+        deviceStatus: "",
+        startListen: function () {
             Log.call(Log.l.trace, "Barcode.");
+            var generalData = AppData.generalData;
             if (typeof device === "object" && device.platform === "Android" &&
-                AppData.generalData.useBarcodeActivity &&
+                generalData.useBarcodeActivity &&
                 navigator &&
                 navigator.broadcast_intent_plugin &&
                 typeof navigator.broadcast_intent_plugin.listen === "function") {
                 Log.print(Log.l.trace, "Android: calling  navigator.broadcast_intent_plugin.start...");
                 navigator.broadcast_intent_plugin.listen(Barcode.onBarcodeSuccess, Barcode.onBarcodeError);
                 Barcode.listening = true;
+            } else if (typeof device === "object" && device.platform === "windows" &&
+                generalData.useBarcodeActivity &&
+                navigator &&
+                navigator.serialDevice) {
+                if (generalData.barcodeDevice && !Barcode.listening) {
+                    navigator.serialDevice.enumConnectionStatus(function(result) {
+                        Barcode.DeviceConstants.connectionStatus = result;
+                    });
+                    navigator.serialDevice.connectDevice(
+                        Barcode.onDeviceConnected,
+                        Barcode.onDeviceConnectFailed, {
+                            id: generalData.barcodeDevice,
+                            onDeviceConnectionStatusChange: Barcode.connectionStatusChange
+                        });
+                    Barcode.listening = true;
+                } else {
+                    WinJS.Promise.timeout(1000).then(function() {
+                        Barcode.startListen();
+                    });
+                }
+            }
+            Log.ret(Log.l.trace);
+        },
+        stopListen: function(newBarcodeDevice) {
+            Log.call(Log.l.trace, "Barcode.");
+            var generalData = AppData.generalData;
+            if (typeof device === "object" && device.platform === "windows" &&
+                navigator &&
+                navigator.serialDevice &&
+                Barcode.listening) {
+                if (generalData.barcodeDevice) {
+                    navigator.serialDevice.disconnectDevice(function(result) {
+                        Barcode.connectionStatusChange(result);
+                        AppData.generalData.barcodeDevice = newBarcodeDevice;
+                        if (newBarcodeDevice) {
+                            Barcode.startListen();
+                        }
+                    },function(error) {
+                        Barcode.connectionStatusChange(error);
+                        AppData.generalData.barcodeDevice = newBarcodeDevice;
+                        if (newBarcodeDevice) {
+                            Barcode.startListen();
+                        }
+                    },{
+                        id: generalData.barcodeDevice,
+                        onDeviceConnectionStatusChange: Barcode.connectionStatusChange
+                    });
+                    generalData.barcodeDevice = null;
+                } else {
+                    Barcode.listening = false;
+                    AppData.generalData.barcodeDevice = newBarcodeDevice;
+                    if (newBarcodeDevice) {
+                        Barcode.startListen();
+                    }
+                }
+            }
+            Log.ret(Log.l.trace);
+        },
+        connectionStatusChange: function (result) {
+            var id = result && result.id;
+            var status = result && result.status;
+            Log.call(Log.l.trace, "Barcode.", "id=" + id + " status=" + status);
+            Barcode.deviceStatus = status;
+            if (Application.getPageId(nav.location) === "info" &&
+                AppBar.scope && AppBar.scope.binding) {
+                AppBar.scope.binding.barcodeDeviceStatus = Barcode.deviceStatus;
+            }
+            switch (status) {
+            case Barcode.DeviceConstants.connectionStatus.connecting:
+            case Barcode.DeviceConstants.connectionStatus.connected:
+            case Barcode.DeviceConstants.connectionStatus.disconnecting:
+                break;
+            default:
+                Barcode.listening = false;
             }
             Log.ret(Log.l.trace);
         }
@@ -888,11 +979,12 @@
         },
         startListen: function () {
             Log.call(Log.l.trace, "CameraGlobals.");
-            if (AppData.generalData.useExternalCamera &&
-                AppData.generalData.picturesDirectorySubFolder &&
+            var generalData = AppData.generalData;
+            if (generalData.useExternalCamera &&
+                generalData.picturesDirectorySubFolder &&
                 cordova.file.picturesDirectory &&
                 typeof window.resolveLocalFileSystemURL === "function") {
-                var picturesDirectory = cordova.file.picturesDirectory + "/" + AppData.generalData.picturesDirectorySubFolder;
+                var picturesDirectory = cordova.file.picturesDirectory + "/" + generalData.picturesDirectorySubFolder;
                 Log.print(Log.l.trace, "Windows: calling window.resolveLocalFileSystemURL=" + picturesDirectory);
                 if (typeof window.resolveLocalFileSystemURL === "function") {
                     window.resolveLocalFileSystemURL(picturesDirectory, function (dirEntry) {
