@@ -38,6 +38,12 @@
             var layout = null;
             var inReload = false;
 
+            this.dispose = function() {
+                if (listView && listView.winControl) {
+                    listView.winControl.itemDataSource = null;
+                }
+            }
+
             var recentTemplate = pageElement.querySelector(".startActions-recent-template").winControl;
             var listTemplate = pageElement.querySelector(".startActions-list-template").winControl;
             var newTemplate = pageElement.querySelector(".startActions-new-template").winControl;
@@ -432,7 +438,11 @@
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
-                    updateActions();
+                    if (listView && listView.winControl &&
+                        listView.winControl.itemDataSource) {
+                        updateActions();
+                    }
+                    return WinJS.Promise.timeout(50);
                 });
                 Log.ret(Log.l.trace);
                 return ret;
@@ -689,6 +699,9 @@
                 });
             }
 
+            if (listView && listView.winControl) {
+                listView.winControl.itemDataSource = null;
+            }
             // finally, load the data
             that.processAll().then(function() {
                 Log.print(Log.l.trace, "Binding wireup page complete, now load data");
