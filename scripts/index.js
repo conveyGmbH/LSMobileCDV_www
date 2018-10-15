@@ -135,19 +135,16 @@
             }
         }
         if (id === "start") {
-            if (device && device.platform === "Android" &&
+            if (device &&
+                (device.platform === "Android" || device.platform === "windows") &&
                 AppData.generalData.useBarcodeActivity &&
                 Barcode && !Barcode.listening) {
-                WinJS.Promise.timeout(0).then(function () {
-                    Barcode.startListen();
-                });
+                Barcode.startListenDelayed(250);
             }
             if (AppData.generalData.useExternalCamera &&
                 cordova.file.picturesDirectory &&
                 CameraGlobals && !CameraGlobals.listening) {
-                WinJS.Promise.timeout(0).then(function () {
-                    CameraGlobals.startListen();
-                });
+                CameraGlobals.startListenDelayed(1000);
             }
         }
         Log.ret(Log.l.trace);

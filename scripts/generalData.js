@@ -793,9 +793,7 @@
                 typeof AppBar.scope.onBarcodeSuccess === "function") {
                 Barcode.dontScan = false;
                 AppBar.scope.onBarcodeSuccess(result);
-                WinJS.Promise.timeout(0).then(function () {
-                    Barcode.startListen();
-                });
+                Barcode.startListenDelayed(0);
             } else {
                 Barcode.dontScan = true;
                 Application.navigateById("barcode");
@@ -811,9 +809,7 @@
                 AppBar.scope && typeof AppBar.scope.onBarcodeError === "function") {
                 Barcode.dontScan = false;
                 AppBar.scope.onBarcodeError(error);
-                WinJS.Promise.timeout(0).then(function () {
-                    Barcode.startListen();
-                });
+                Barcode.startListenDelayed(0);
             } else {
                 Barcode.dontScan = true;
                 Application.navigateById("barcode");
@@ -827,18 +823,41 @@
             var id = result && result.id;
             var status = result && result.status;
             Log.call(Log.l.trace, "Barcode.", "id=" + id + " status=" + status);
+            Barcode.startListenDelayed(250);
             Log.ret(Log.l.trace);
         },
         onDeviceConnectFailed: function (error) {
             var id = error && error.id;
             var status = error && error.status;
             Log.call(Log.l.trace, "Barcode.", "id=" + id + " status=" + status);
+            Barcode.startListenDelayed(2000);
             Log.ret(Log.l.trace);
         },
         DeviceConstants: {
             connectionStatus: {}
         },
-        deviceStatus: "",
+        connectionStatus: "",
+        ioStatus: "",
+        deviceStatus: {
+            get: function() {
+                if (typeof Barcode === "object") {
+                    return Barcode.connectionStatus + (Barcode.ioStatus ? (" / " + Barcode.ioStatus) : "");
+                } else {
+                    return "";
+                }
+            }
+        },
+        startListenDelayed: function(delay) {
+            Log.call(Log.l.trace, "Barcode.", "delay=" + delay);
+            if (Barcode.listenPromise) {
+                Barcode.listenPromise.cancel();
+            }
+            Barcode.listenPromise = WinJS.Promise.timeout(delay).then(function () {
+                Barcode.listenPromise = null;
+                Barcode.startListen();
+            });
+            Log.ret(Log.l.trace);
+        },
         startListen: function () {
             Log.call(Log.l.trace, "Barcode.");
             var generalData = AppData.generalData;
@@ -852,74 +871,106 @@
                 Barcode.listening = true;
             } else if (typeof device === "object" && device.platform === "windows" &&
                 generalData.useBarcodeActivity &&
+                generalData.barcodeDevice &&
                 navigator &&
                 navigator.serialDevice) {
-                if (generalData.barcodeDevice && !Barcode.listening) {
-                    navigator.serialDevice.enumConnectionStatus(function(result) {
+                if (Barcode.connectionStatus === Barcode.DeviceConstants.connectionStatus.connected &&
+                    Barcode.ioStatus === Barcode.DeviceConstants.ioStatus.read) {
+                    Log.print(Log.l.trace, "Windows: already reading...");
+                } else if (Barcode.connectionStatus === Barcode.DeviceConstants.connectionStatus.connected) {
+                    Barcode.startRead();
+                } else if (!Barcode.listening) {
+                    navigator.serialDevice.enumConnectionStatus(function (result) {
                         Barcode.DeviceConstants.connectionStatus = result;
                     });
+                    navigator.serialDevice.enumIoStatus(function (result) {
+                        Barcode.DeviceConstants.ioStatus = result;
+                    });
                     navigator.serialDevice.connectDevice(
-                        Barcode.onDeviceConnected,
+                        Barcode.connectionStatusChange,
                         Barcode.onDeviceConnectFailed, {
                             id: generalData.barcodeDevice,
                             onDeviceConnectionStatusChange: Barcode.connectionStatusChange
                         });
                     Barcode.listening = true;
                 } else {
-                    WinJS.Promise.timeout(1000).then(function() {
-                        Barcode.startListen();
-                    });
+                    Barcode.startListenDelayed(2000);
                 }
             }
             Log.ret(Log.l.trace);
         },
-        stopListen: function(newBarcodeDevice) {
+        stopListen: function (id) {
             Log.call(Log.l.trace, "Barcode.");
-            var generalData = AppData.generalData;
-            if (typeof device === "object" && device.platform === "windows" &&
+            if (id &&
+                typeof device === "object" && device.platform === "windows" &&
                 navigator &&
-                navigator.serialDevice &&
-                Barcode.listening) {
-                if (generalData.barcodeDevice) {
-                    navigator.serialDevice.disconnectDevice(function(result) {
+                navigator.serialDevice) {
+                navigator.serialDevice.disconnectDevice(function (result) {
+                    if (!AppData.generalData.barcodeDevice) {
                         Barcode.connectionStatusChange(result);
-                        AppData.generalData.barcodeDevice = newBarcodeDevice;
-                        if (newBarcodeDevice) {
-                            Barcode.startListen();
-                        }
-                    },function(error) {
-                        Barcode.connectionStatusChange(error);
-                        AppData.generalData.barcodeDevice = newBarcodeDevice;
-                        if (newBarcodeDevice) {
-                            Barcode.startListen();
-                        }
-                    },{
-                        id: generalData.barcodeDevice,
-                        onDeviceConnectionStatusChange: Barcode.connectionStatusChange
-                    });
-                    generalData.barcodeDevice = null;
-                } else {
-                    Barcode.listening = false;
-                    AppData.generalData.barcodeDevice = newBarcodeDevice;
-                    if (newBarcodeDevice) {
-                        Barcode.startListen();
                     }
-                }
+                }, function (error) {
+                    if (!AppData.generalData.barcodeDevice) {
+                        Barcode.connectionStatusChange(error);
+                    }
+                }, {
+                    id: id,
+                    onDeviceConnectionStatusChange: Barcode.connectionStatusChange
+                });
+            }
+            Log.ret(Log.l.trace);
+        },
+        startRead: function() {
+            var generalData = AppData.generalData;
+            Log.call(Log.l.trace, "Barcode.");
+            if (navigator &&
+                navigator.serialDevice) {
+                navigator.serialDevice.readFromDevice(function(readResult) {
+                    var data = readResult && readResult.data;
+                    Log.print(Log.l.trace, "readFromDevice: success! data=" + data);
+                    if (data) {
+                        Barcode.onBarcodeSuccess({
+                            text: data
+                        });
+                    } else {
+                        WinJS.Promise.timeout(0) .then(function() {
+                            Barcode.startRead();
+                        });
+                    }
+                }, function(readError) {
+                    Log.print(Log.l.error, "readFromDevice: failed!");
+                    if (readError && readError.id && readError.id === generalData.barcodeDevice) {
+                        Barcode.onBarcodeError(readError.status);
+                    }
+                }, {
+                    id: generalData.barcodeDevice,
+                    onDeviceConnectionStatusChange: Barcode.connectionStatusChange,
+                    prefixBinary: "#LSAD",
+                    prefixLengthAdd: 2
+                });
             }
             Log.ret(Log.l.trace);
         },
         connectionStatusChange: function (result) {
             var id = result && result.id;
-            var status = result && result.status;
-            Log.call(Log.l.trace, "Barcode.", "id=" + id + " status=" + status);
-            Barcode.deviceStatus = status;
+            var connectionStatus = result && result.connectionStatus;
+            var ioStatus = result && result.ioStatus;
+            Log.call(Log.l.trace, "Barcode.", "id=" + id + " connectionStatus=" + connectionStatus + " ioStatus=" + ioStatus);
+            var prevConnectionStatus = Barcode.connectionStatus;
+
+            Barcode.connectionStatus = connectionStatus;
+            Barcode.ioStatus = ioStatus;
             if (Application.getPageId(nav.location) === "info" &&
                 AppBar.scope && AppBar.scope.binding) {
                 AppBar.scope.binding.barcodeDeviceStatus = Barcode.deviceStatus;
             }
-            switch (status) {
-            case Barcode.DeviceConstants.connectionStatus.connecting:
+            switch (connectionStatus) {
             case Barcode.DeviceConstants.connectionStatus.connected:
+                if (prevConnectionStatus !== Barcode.DeviceConstants.connectionStatus.connected) {
+                    Barcode.onDeviceConnected();
+                }
+                break;
+            case Barcode.DeviceConstants.connectionStatus.connecting:
             case Barcode.DeviceConstants.connectionStatus.disconnecting:
                 break;
             default:
@@ -944,11 +995,7 @@
                         CameraGlobals.onPhotoDataSuccess(result, retryCount + 1);
                     });
                 } else {
-                    ret.then(function() {
-                        return WinJS.Promise.timeout(1000);
-                    }).then(function () {
-                        CameraGlobals.startListen();
-                    });
+                    CameraGlobals.startListenDelayed(1000);
                 }
             } else {
                 CameraGlobals.dontCapture = true;
@@ -965,9 +1012,7 @@
                 AppBar.scope && typeof AppBar.scope.onPhotoDataFail === "function") {
                 CameraGlobals.dontCapture = false;
                 AppBar.scope.onPhotoDataFail(error);
-                WinJS.Promise.timeout(1000).then(function () {
-                    CameraGlobals.startListen();
-                });
+                CameraGlobals.startListenDelayed(1000);
             } else {
                 CameraGlobals.dontCapture = true;
                 Application.navigateById("camera");
@@ -975,6 +1020,17 @@
                     CameraGlobals.onPhotoDataFail(error);
                 });
             }
+            Log.ret(Log.l.trace);
+        },
+        startListenDelayed: function(delay) {
+            Log.call(Log.l.trace, "Barcode.", "delay=" + delay);
+            if (CameraGlobals.listenPromise) {
+                CameraGlobals.listenPromise.cancel();
+            }
+            CameraGlobals.listenPromise = WinJS.Promise.timeout(delay).then(function () {
+                CameraGlobals.listenPromise = null;
+                CameraGlobals.startListen();
+            });
             Log.ret(Log.l.trace);
         },
         startListen: function () {
@@ -1032,15 +1088,11 @@
                                 });
                             } else {
                                 Log.print(Log.l.trace, "No file found - try again!");
-                                WinJS.Promise.timeout(1000).then(function () {
-                                    CameraGlobals.startListen();
-                                });
+                                CameraGlobals.startListenDelayed(1000);
                             }
                         }, function (errorResponse) {
                             Log.print(Log.l.error, "readEntries: error " + errorResponse.toString());
-                            WinJS.Promise.timeout(1000).then(function () {
-                                CameraGlobals.startListen();
-                            });
+                            CameraGlobals.startListenDelayed(1000);
                         });
                         CameraGlobals.listening = true;
                     }, function (errorResponse) {

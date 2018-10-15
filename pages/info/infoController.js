@@ -208,7 +208,7 @@
                                 AppData.generalData.useBarcodeActivity &&
                                 AppData.generalData.barcodeDevice &&
                                 !Barcode.listening) {
-                                Barcode.startListen();
+                                Barcode.startListenDelayed(250);
                             }
                         } else if (Barcode.listening) {
                             Barcode.stopListen();
@@ -219,17 +219,19 @@
                 changeBarcodeDeviceSelect: function(event) {
                     Log.call(Log.l.trace, "info.Controller.");
                     if (event.currentTarget && AppBar.notifyModified) {
-                        var value = event.currentTarget.value;
                         var prevValue = that.binding.generalData.barcodeDevice;
+                        var value = event.currentTarget.value;
                         if (prevValue !== value) {
-                            if (Barcode.listening) {
-                                Barcode.stopListen(value);
-                            } else {
-                                that.binding.generalData.barcodeDevice = value;
-                                if (!prevValue) {
-                                    Barcode.startListen();
+                            WinJS.Promise.timeout(0).then(function() {
+                                Barcode.stopListen(prevValue);
+                                return WinJS.Promise.timeout(500);
+                            }).then(function () {
+                                if (prevValue !== value) {
+                                    that.binding.generalData.barcodeDevice = value;
+                                    Barcode.listening = false;
+                                    Barcode.startListenDelayed(0);
                                 }
-                            }
+                            });
                         }
                     }
                     Log.ret(Log.l.trace);
