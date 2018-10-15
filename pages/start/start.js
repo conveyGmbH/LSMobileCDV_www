@@ -48,8 +48,6 @@
             this.inResize = 0;
             this.prevWidth = 0;
             this.prevHeight = 0;
-            this.prevTileWidth = 0;
-            this.prevTileHeight = 0;
 
             // add page specific commands to AppBar
             var commandList = [];
@@ -111,37 +109,38 @@
                             var listSurface = listView.querySelector("#startActions .win-surface");
                             var width = contentarea.clientWidth - 4;
                             var height = contentarea.clientHeight;
-                            var tileWidth = Math.floor(width / 3.0 * 100) / 100;
-                            var tileHeight = 0;
-                            if (height > 420) {
-                                tileHeight = Math.floor(height / 3.0 * 100) / 100 - 46;
-                                if (tileHeight > 154) {
-                                    tileHeight = 154;
+                            var numTiles = Start.actions.length;
+                            if (width > 0 && height > 0 && numTiles > 0) {
+                                var tileWidth = Math.floor(width / numTiles * 100) / 100;
+                                var tileHeight;
+                                if (height > numTiles * 140) {
+                                    tileHeight = Math.floor(height / numTiles * 100) / 100 - 46;
+                                    if (tileHeight > 154) {
+                                        tileHeight = 154;
+                                    }
+                                } else {
+                                    tileHeight = 96;
                                 }
-                            } else {
-                                tileHeight = 96;
-                            }
-                            if (listSurface) {
-                                // ensure no scrolling except main direction
-                                listSurface.style.overflowX = "hidden";
-                                listSurface.style.overflowY = "visible";
-                            }
-                            if (width !== that.prevWidth) {
-                                that.prevWidth = width;
-                                Start.prevWidth = width;
-                                listView.style.width = width.toString() + "px";
-                                if (tileWidth !== that.prevTileWidth) {
-                                    that.prevTileWidth = tileWidth;
-                                    Start.prevTileWidth = tileWidth;
+                                if (listSurface) {
+                                    // ensure no scrolling except main direction
+                                    listSurface.style.overflowX = "hidden";
+                                    listSurface.style.overflowY = "visible";
                                 }
-                            }
-                            if (height !== that.prevHeight) {
-                                that.prevHeight = height;
-                                Start.prevHeight = height;
-                                listView.style.height = height.toString() + "px";
-                                if (tileHeight !== that.prevTileHeight) {
-                                    that.prevTileHeight = tileHeight;
-                                    Start.prevTileHeight = tileHeight;
+                                if (width !== that.prevWidth) {
+                                    that.prevWidth = width;
+                                    Start.prevWidth = width;
+                                    listView.style.width = width.toString() + "px";
+                                    if (tileWidth !== Start.prevTileWidth) {
+                                        Start.prevTileWidth = tileWidth;
+                                    }
+                                }
+                                if (height !== that.prevHeight) {
+                                    that.prevHeight = height;
+                                    Start.prevHeight = height;
+                                    listView.style.height = height.toString() + "px";
+                                    if (tileHeight !== Start.prevTileHeight) {
+                                        Start.prevTileHeight = tileHeight;
+                                    }
                                 }
                             }
                         }

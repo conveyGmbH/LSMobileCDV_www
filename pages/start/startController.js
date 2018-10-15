@@ -35,6 +35,9 @@
             var that = this;
 
             var listView = pageElement.querySelector("#startActions.listview");
+            if (listView && listView.winControl) {
+                listView.winControl.itemDataSource = null;
+            }
             var layout = null;
             var inReload = false;
 
@@ -85,8 +88,10 @@
                     }
                     if (buttonElement.parentElement && buttonElement.parentElement.style &&
                         buttonElement.parentElement.style.visibility !== "visible") {
-                        buttonElement.parentElement.style.visibility = "visible";
-                        ret = WinJS.UI.Animation.enterPage(buttonElement);
+                        ret = WinJS.Promise.timeout(Math.floor(Math.random() * 100)).then(function() {
+                            buttonElement.parentElement.style.visibility = "visible";
+                            return WinJS.UI.Animation.enterPage(buttonElement);
+                        });
                     }
                 }
                 if (!ret) {
@@ -442,12 +447,61 @@
                         listView.winControl.itemDataSource) {
                         updateActions();
                     }
-                    return WinJS.Promise.timeout(50);
+                    return WinJS.Promise.as();
                 });
                 Log.ret(Log.l.trace);
                 return ret;
             };
             this.loadData = loadData;
+
+            var resizeTiles = function() {
+                var i;
+                if (Start.prevWidth && Start.prevHeight && Start.prevTileWidth && Start.prevTileHeight) {
+                    var buttonElements = listView.querySelectorAll(".tile-button-wide, .tile-button");
+                    for (i = 0; i < buttonElements.length; i++) {
+                        var buttonElement = buttonElements[i];
+                        if (buttonElement.style) {
+                            if (WinJS.Utilities.hasClass(buttonElement, "tile-button-wide")) {
+                                buttonElement.style.width = Start.prevWidth + "px";
+                            } else if (WinJS.Utilities.hasClass(buttonElement, "tile-button")) {
+                                buttonElement.style.width = Start.prevTileWidth + "px";
+                            }
+                        }
+                    }
+                    var tileRows = listView.querySelectorAll(".tile-row, .start-photo-container");
+                    for (i = 0; i < tileRows.length; i++) {
+                        var tileRow = tileRows[i];
+                        if (tileRow.style) {
+                            if (WinJS.Utilities.hasClass(tileRow, "start-photo-container")) {
+                                tileRow.style.height = (Start.prevTileHeight - 24) + "px";
+                            } else if (WinJS.Utilities.hasClass(tileRow, "tile-row")) {
+                                tileRow.style.height = Start.prevTileHeight + "px";
+                            }
+                        }
+                    }
+                    var businessCardImage = listView.querySelector("#startImage.start-business-card");
+                    if (businessCardImage && businessCardImage.clientWidth) {
+                        var marginLeft = Math.floor((Start.prevWidth - 16 - businessCardImage.clientWidth) / 2);
+                        if (marginLeft < 0) {
+                            marginLeft = 0;
+                        }
+                        businessCardImage.setAttribute("style", "margin-left: " + marginLeft + "px");
+                    }
+                    var numTiles = Start.actions.length;
+                    var recentTile = listView.querySelector(".tile-recent");
+                    if (numTiles > 1 && recentTile && recentTile.style) {
+                        var fullTileHeight = Start.prevTileHeight + 46;
+                        var recentTileHight;
+                        if (Start.prevHeight > numTiles * 140) {
+                            recentTileHight = Start.prevHeight - ((numTiles - 1) * fullTileHeight);
+                        } else {
+                            recentTileHight = fullTileHeight;
+                        }
+                        recentTile.style.height = recentTileHight + "px";
+                    }
+                }
+            }
+            this.resizeTiles = resizeTiles;
 
             // define handlers
             this.eventHandlers = {
@@ -534,6 +588,7 @@
                                     }
                                 }
                             }
+                            that.resizeTiles();
                         } else if (listView.winControl.loadingState === "viewportLoaded") {
                             if (inReload) {
                                 headerElements = listView.querySelectorAll(".tile-header");
@@ -551,6 +606,7 @@
                                     }
                                 }
                             }
+                            that.resizeTiles();
                         } else if (listView.winControl.loadingState === "complete") {
                             buttonElements = listView.querySelectorAll(".tile-button-wide, .tile-button");
                             if (inReload) {
@@ -568,53 +624,9 @@
                                         buttonElement.parentElement.style.visibility = "hidden";
                                     }
                                 }
-                            } 
-                            var recentTile = listView.querySelector(".tile-recent");
-                            if (Start.prevWidth && Start.prevHeight && Start.prevTileWidth && Start.prevTileHeight) {
-                                for (i = 0; i < buttonElements.length; i++) {
-                                    buttonElement = buttonElements[i];
-                                    if (buttonElement.style) {
-                                        if (WinJS.Utilities.hasClass(buttonElement, "tile-button-wide")) {
-                                            buttonElement.style.width = Start.prevWidth + "px";
-                                        } else if (WinJS.Utilities.hasClass(buttonElement, "tile-button")) {
-                                            buttonElement.style.width = Start.prevTileWidth + "px";
-                                        }
-                                    }
-                                }
-                                var tileRows = listView.querySelectorAll(".tile-row, .start-photo-container");
-                                for (i = 0; i < tileRows.length; i++) {
-                                    var tileRow = tileRows[i];
-                                    if (tileRow.style) {
-                                        if (WinJS.Utilities.hasClass(tileRow, "start-photo-container")) {
-                                            tileRow.style.height = (Start.prevTileHeight - 24) + "px";
-                                        } else if (WinJS.Utilities.hasClass(tileRow, "tile-row")) {
-                                            tileRow.style.height = Start.prevTileHeight + "px";
-                                        }
-                                    }
-                                }
-                                var businessCardImage = listView.querySelector("#startImage.start-business-card");
-                                if (businessCardImage && businessCardImage.clientWidth) {
-                                    var marginLeft = Math.floor((Start.prevWidth - 16 - businessCardImage.clientWidth) / 2);
-                                    if (marginLeft < 0) {
-                                        marginLeft = 0;
-                                    }
-                                    businessCardImage.setAttribute("style", "margin-left: " + marginLeft + "px");
-                                }
-                                if (recentTile && recentTile.style) {
-                                    var tiles = listView.querySelectorAll(".tile");
-                                    if (tiles && tiles.length > 0) {
-                                        if (Start.prevHeight > 420) {
-                                            var tilesHeight = 0;
-                                            for (i = tiles.length - 1; i > 0; i--) {
-                                                tilesHeight += tiles[i].clientHeight + 2;
-                                            }
-                                            recentTile.style.height = (Start.prevHeight - tilesHeight) + "px";
-                                        } else {
-                                            recentTile.style.height = (Start.prevTileHeight + 46) + "px";
-                                        }
-                                    }
-                                }
                             }
+                            that.resizeTiles();
+                            var recentTile = listView.querySelector(".tile-recent");
                             if (recentTile) {
                                 var elements = recentTile.querySelectorAll("span");
                                 for (i = 0; i < elements.length; i++) {
@@ -646,16 +658,6 @@
                             js.new = Colors.loadSVGImageElements(listView, "action-image-new", 40, "#f0f0f0", "name", showTileButton);
 
                             var promise = new WinJS.Promise.as().then(function () {
-                                var pageControl = pageElement.winControl;
-                                if (pageControl && pageControl.updateLayout) {
-                                    pageControl.prevTileHeight = 0;
-                                    pageControl.prevWidth = 0;
-                                    pageControl.prevHeight = 0;
-                                    return pageControl.updateLayout.call(pageControl, pageElement);
-                                } else {
-                                    return WinJS.Promise.as();
-                                }
-                            }).then(function () {
                                 return WinJS.Promise.join(js);
                             }).then(function () {
                                 if (!Application.pageframe.splashScreenDone) {
@@ -686,6 +688,7 @@
                 // add ListView event handler
                 this.addRemovableEventListener(listView, "loadingstatechanged", this.eventHandlers.onLoadingStateChanged.bind(this));
             }
+
             if (device && device.platform === "Android" &&
                 cordova && cordova.plugins &&
                 cordova.plugins.featureDetection &&
@@ -699,9 +702,6 @@
                 });
             }
 
-            if (listView && listView.winControl) {
-                listView.winControl.itemDataSource = null;
-            }
             // finally, load the data
             that.processAll().then(function() {
                 Log.print(Log.l.trace, "Binding wireup page complete, now load data");
