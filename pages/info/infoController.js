@@ -18,6 +18,7 @@
 
             var isDeviceListOpened = false;
             var isWindows = false;
+            var isWindows10 = false;
             var isAndroid = false;
             var hasPicturesDirectory = (cordova.file.picturesDirectory ? true : false);
             if (typeof device === "object" && typeof device.platform === "string") {
@@ -28,10 +29,13 @@
                     isAndroid = true;
                 } else if (device.platform === "windows") {
                     isWindows = true;
+                    if (typeof device.version === "string" && device.version.substr(0, 4) === "10.0") {
+                        isWindows10 = true;
+                    }
                 }
             }
-            var hasBarcodeScanner = (isAndroid || isWindows) ? true : false;
-            var hasSerialDevice = (isWindows && AppData.generalData.useBarcodeActivity) ? true : false;
+            var hasBarcodeScanner = (isAndroid || isWindows10) ? true : false;
+            var hasSerialDevice = (isWindows10 && AppData.generalData.useBarcodeActivity) ? true : false;
             Application.Controller.apply(this, [pageElement, {
                 uploadTS: (AppData.appSettings.odata.replPrevPostMs ?
                 "\/Date(" + AppData.appSettings.odata.replPrevPostMs + ")\/" : null),
@@ -197,7 +201,7 @@
                         var toggle = event.currentTarget.winControl;
                         if (toggle) {
                             that.binding.generalData.useBarcodeActivity = toggle.checked;
-                            that.binding.hasSerialDevice = (isWindows && AppData.generalData.useBarcodeActivity) ? true : false;
+                            that.binding.hasSerialDevice = (isWindows10 && AppData.generalData.useBarcodeActivity) ? true : false;
                             if (that.binding.hasSerialDevice) {
                                 WinJS.Promise.timeout(0).then(function () {
                                     that.loadData();
