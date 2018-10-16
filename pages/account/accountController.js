@@ -69,7 +69,7 @@
 
             var privacyPolicyLink = pageElement.querySelector("#privacyPolicyLink");
             if (privacyPolicyLink) {
-                privacyPolicyLink.innerHTML = "<a href=\"http://" + getResourceText("login.privacyPolicyLink") + "\">" + getResourceText("login.privacyPolicyLink") + "</a>";
+                privacyPolicyLink.innerHTML = "<a href=\"https://" + getResourceText("login.privacyPolicyLink") + "\">" + getResourceText("login.privacyPolicyLink") + "</a>";
             }
 
             // define handlers
