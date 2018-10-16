@@ -81,6 +81,7 @@
     */
     border: none;
     display: table-caption;
+    visibility: hidden;
 }
 
  .start-header-field {
@@ -181,6 +182,7 @@
     width: 100%;
     height: 100%;
     border: none;
+    visibility: hidden;
 }
 
 .action-image-recent {

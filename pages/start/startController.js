@@ -88,7 +88,7 @@
                     }
                     if (buttonElement.parentElement && buttonElement.parentElement.style &&
                         buttonElement.parentElement.style.visibility !== "visible") {
-                        ret = WinJS.Promise.timeout(Math.floor(Math.random() * 100)).then(function() {
+                        ret = WinJS.Promise.timeout(Math.floor(Math.random() * 150)).then(function() {
                             buttonElement.parentElement.style.visibility = "visible";
                             return WinJS.UI.Animation.enterPage(buttonElement);
                         });
@@ -572,59 +572,10 @@
                                 listView.winControl.layout = { type: layout };
                             }
                         } else if (listView.winControl.loadingState === "itemsLoaded") {
-                            if (inReload) {
-                                headerElements = listView.querySelectorAll(".tile-header");
-                                for (i = 0; i < headerElements.length; i++) {
-                                    headerElement = headerElements[i];
-                                    if (headerElement.style) {
-                                        headerElement.style.visibility = "hidden";
-                                    }
-                                }
-                                buttonElements = listView.querySelectorAll(".tile-button-wide, .tile-button");
-                                for (i = 0; i < buttonElements.length; i++) {
-                                    buttonElement = buttonElements[i];
-                                    if (buttonElement.parentElement && buttonElement.parentElement.style) {
-                                        buttonElement.parentElement.style.visibility = "hidden";
-                                    }
-                                }
-                            }
                             that.resizeTiles();
                         } else if (listView.winControl.loadingState === "viewportLoaded") {
-                            if (inReload) {
-                                headerElements = listView.querySelectorAll(".tile-header");
-                                for (i = 0; i < headerElements.length; i++) {
-                                    headerElement = headerElements[i];
-                                    if (headerElement.style) {
-                                        headerElement.style.visibility = "hidden";
-                                    }
-                                }
-                                buttonElements = listView.querySelectorAll(".tile-button-wide, .tile-button");
-                                for (i = 0; i < buttonElements.length; i++) {
-                                    buttonElement = buttonElements[i];
-                                    if (buttonElement.parentElement && buttonElement.parentElement.style) {
-                                        buttonElement.parentElement.style.visibility = "hidden";
-                                    }
-                                }
-                            }
                             that.resizeTiles();
                         } else if (listView.winControl.loadingState === "complete") {
-                            buttonElements = listView.querySelectorAll(".tile-button-wide, .tile-button");
-                            if (inReload) {
-                                inReload = false;
-                                headerElements = listView.querySelectorAll(".tile-header");
-                                for (i = 0; i < headerElements.length; i++) {
-                                    headerElement = headerElements[i];
-                                    if (headerElement.style) {
-                                        headerElement.style.visibility = "hidden";
-                                    }
-                                }
-                                for (i = 0; i < buttonElements.length; i++) {
-                                    buttonElement = buttonElements[i];
-                                    if (buttonElement.parentElement && buttonElement.parentElement.style) {
-                                        buttonElement.parentElement.style.visibility = "hidden";
-                                    }
-                                }
-                            }
                             that.resizeTiles();
                             var recentTile = listView.querySelector(".tile-recent");
                             if (recentTile) {
