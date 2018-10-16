@@ -989,9 +989,10 @@
                 AppBar.scope &&
                 typeof AppBar.scope.onPhotoDataSuccess === "function") {
                 CameraGlobals.dontCapture = false;
-                var ret = AppBar.scope.onPhotoDataSuccess(result);
-                if (!ret && retryCount < 2) {
-                    WinJS.Promise.timeout(250).then(function () {
+                var ret = AppBar.scope.onPhotoDataSuccess(result, -1);
+                if (!ret && retryCount < 5) {
+                    Log.print(Log.l.info, "Invalid data retry");
+                    WinJS.Promise.timeout(100).then(function () {
                         CameraGlobals.onPhotoDataSuccess(result, retryCount + 1);
                     });
                 } else {

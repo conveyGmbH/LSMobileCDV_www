@@ -226,32 +226,6 @@
             };
             this.insertCameradata = insertCameradata;
 
-            var onPhotoDataSuccess = function (imageData) {
-                var ret = null;
-                Log.call(Log.l.trace, "Camera.Controller.");
-
-                if (imageData && imageData.length > 0) {
-                    // Get image handle
-                    //
-                    var cameraImage = new Image();
-                    // Show the captured photo
-                    // The inline CSS rules are used to resize the image
-                    //
-                    cameraImage.src = "data:image/jpeg;base64," + imageData;
-                    var width = cameraImage.width;
-                    var height = cameraImage.height;
-                    if (width > 0 && height > 0) {
-                        Log.print(Log.l.trace, "width=" + width + " height=" + height);
-                        ret= that.insertCameradata(imageData, width, height);
-                    }
-                } else {
-                    return that.onPhotoDataFail("No data received!");
-                }
-                Log.ret(Log.l.trace);
-                return ret;
-            }
-            this.onPhotoDataSuccess = onPhotoDataSuccess;
-
             var onPhotoDataFail = function (message) {
                 Log.call(Log.l.error, "Camera.Controller.");
                 //message: The message is provided by the device's native code
@@ -269,6 +243,44 @@
             }
             this.onPhotoDataFail = onPhotoDataFail;
 
+            var onPhotoDataSuccess = function (imageData, retryCount) {
+                retryCount = retryCount || 0;
+                var ret = null;
+                Log.call(Log.l.trace, "Camera.Controller.", "retryCount=" + retryCount);
+
+                if (imageData && imageData.length > 0) {
+                    // Get image handle
+                    //
+                    var cameraImage = new Image();
+                    // Show the captured photo
+                    // The inline CSS rules are used to resize the image
+                    //
+                    cameraImage.src = "data:image/jpeg;base64," + imageData;
+                    var width = cameraImage.width;
+                    var height = cameraImage.height;
+                    Log.print(Log.l.trace, "width=" + width + " height=" + height);
+                    if (width > 0 && height > 0) {
+                        Log.print(Log.l.trace, "width=" + width + " height=" + height);
+                        ret = that.insertCameradata(imageData, width, height);
+                    } else if (retryCount < 0) {
+                        Log.print(Log.l.trace, "Invalid data ignored");
+                    } else if (retryCount < 5) {
+                        Log.print(Log.l.info, "Invalid data retry");
+                        WinJS.Promise.timeout(100).then(function () {
+                            onPhotoDataSuccess(imageData, retryCount + 1);
+                        });
+                    } else {
+                        Log.print(Log.l.error, "Invalid data error");
+                        return onPhotoDataFail("Invalid data received!");
+                    }
+                } else {
+                    return onPhotoDataFail("No data received!");
+                }
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+            this.onPhotoDataSuccess = onPhotoDataSuccess;
+
             //start native Camera async
             AppData.setErrorMsg(that.binding);
             var takePhoto = function() {
@@ -283,7 +295,7 @@
                         autoShutterTime = that.binding.generalData.autoShutterTime;
                     }
                     AppBar.busy = true;
-                    navigator.clippingCamera.getPicture(onPhotoDataSuccess,onPhotoDataFail, {
+                    navigator.clippingCamera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                         quality: AppData.generalData.cameraQuality,
                         convertToGrayscale: AppData.generalData.cameraUseGrayscale,
                         maxResolution: 3000000,
@@ -340,6 +352,8 @@
             that.processAll().then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Binding wireup page complete");
+                return WinJS.Promise.timeout(0);
+            }).then(function() {
                 if (!CameraGlobals.dontCapture) {
                     that.takePhoto();
                 }
