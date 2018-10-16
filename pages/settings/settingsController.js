@@ -241,7 +241,7 @@
                 return Settings.CR_VERANSTOPTION_ODataView.select(function (json) {
                     // this callback will be called asynchronously
                     // when the response is available
-                    Log.print(Log.l.trace, "Reporting: success!");
+                    Log.print(Log.l.trace, "CR_VERANSTOPTION: success!");
                     // CR_VERANSTOPTION_ODataView returns object already parsed from json file in response
 
                     if (json && json.d && json.d.results && json.d.results.length > 0) {

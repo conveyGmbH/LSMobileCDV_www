@@ -46,15 +46,6 @@
                 return startPage;
             }
 
-            var resultConverter = function (item, index) {
-                var property = AppData.getPropertyFromInitoptionTypeID(item);
-                if (property && property !== "individualColors" && (!item.pageProperty) && item.LocalValue) {
-                    item.colorValue = "#" + item.LocalValue;
-                    AppData.applyColorSetting(property, item.colorValue);
-                }
-            }
-            this.resultConverter = resultConverter;
-
             var openDb = function () {
                 AppBar.busy = true;
 
@@ -85,18 +76,25 @@
                             }
                         }
                     }).then(function () {
-                        if (getStartPage() === "start") {
+                        if (getStartPage() === "start" &&
+                            !AppData.appSettings.odata.serverFailure) {
                             // load color settings
                             return DBInit.CR_VERANSTOPTION_ODataView.select(function (json) {
+                                function resultConverter(item, index) {
+                                    var property = AppData.getPropertyFromInitoptionTypeID(item);
+                                    if (property && property !== "individualColors" && (!item.pageProperty) && item.LocalValue) {
+                                        item.colorValue = "#" + item.LocalValue;
+                                        AppData.applyColorSetting(property, item.colorValue);
+                                    }
+                                } var results = json.d.results;
                                 // this callback will be called asynchronously
                                 // when the response is available
-                                Log.print(Log.l.trace, "Account: success!");
+                                Log.print(Log.l.trace, "CR_VERANSTOPTION: success!");
                                 // CR_VERANSTOPTION_ODataView returns object already parsed from json file in response
                                 if (json && json.d && json.d.results && json.d.results.length > 0) {
-                                    var results = json.d.results;
                                     AppData._persistentStates.serverColors = false;
                                     results.forEach(function (item, index) {
-                                        that.resultConverter(item, index);
+                                        resultConverter(item, index);
                                     });
                                     Application.pageframe.savePersistentStates();
                                 }
