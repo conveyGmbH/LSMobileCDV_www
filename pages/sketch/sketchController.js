@@ -120,9 +120,11 @@
                         ret = WinJS.Promise.as();
                     } else {
                         Log.print(Log.l.trace, "busy - try later again");
-                        ret = WinJS.Promise.timeout(50).then(function () {
+                        var loadDocPromise = WinJS.Promise.timeout(50).then(function () {
+                            that.removeDisposablePromise(loadDocPromise);
                             return loadDoc(noteId, docGroup, docFormat);
                         });
+                        ret = that.addDisposablePromise(loadDocPromise);
                     }
                 } else {
                     // set semaphore

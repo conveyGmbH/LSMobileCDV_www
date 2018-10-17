@@ -293,7 +293,8 @@
                             Log.print(Log.l.trace, "calling select ListRemote.contactView...");
                             var nextUrl = that.nextUrl;
                             that.nextUrl = null;
-                            ListRemote.contactView.selectNext(function (json) {
+                            var nextContactSelectPromise = ListRemote.contactView.selectNext(function (json) {
+                                that.removeDisposablePromise(nextContactSelectPromise);
                                 // this callback will be called asynchronously
                                 // when the response is available
                                 Log.print(Log.l.trace, "ListRemote.contactView: success!");
@@ -306,12 +307,14 @@
                                         that.binding.count = that.contacts.push(item);
                                     });
                                 }
-                                WinJS.Promise.timeout(250).then(function () {
+                                var nextContactDocSelectPromise = WinJS.Promise.timeout(250).then(function () {
+                                    that.removeDisposablePromise(nextContactDocSelectPromise);
                                     if (that.nextDocUrl) {
                                         var nextDocUrl = that.nextDocUrl;
                                         that.nextDocUrl = null;
                                         Log.print(Log.l.trace, "calling select ContactList.contactDocView...");
-                                        ListRemote.contactDocView.selectNext(function (jsonDoc) { 
+                                        nextContactDocSelectPromise = ListRemote.contactDocView.selectNext(function (jsonDoc) {
+                                            that.removeDisposablePromise(nextContactDocSelectPromise);
                                             // this callback will be called asynchronously
                                             // when the response is available
                                             Log.print(Log.l.trace, "ContactList.contactDocView: success!");
@@ -325,14 +328,18 @@
                                                 });
                                             }
                                         }, function (errorResponse) {
+                                            that.removeDisposablePromise(nextContactDocSelectPromise);
                                             // called asynchronously if an error occurs
                                             // or server returns response with an error status.
                                             Log.print(Log.l.error, "ContactList.contactDocView: error!");
                                             AppData.setErrorMsg(that.binding, errorResponse);
                                         }, null, nextDocUrl);
+                                        that.addDisposablePromise(nextContactDocSelectPromise);
                                     }
                                 });
+                                that.addDisposablePromise(nextContactDocSelectPromise);
                             }, function (errorResponse) {
+                                that.removeDisposablePromise(nextContactSelectPromise);
                                 // called asynchronously if an error occurs
                                 // or server returns response with an error status.
                                 AppData.setErrorMsg(that.binding, errorResponse);
@@ -344,6 +351,7 @@
                                 }
                                 that.loading = false;
                             }, null, nextUrl);
+                            that.addDisposablePromise(nextContactSelectPromise);
                         } else {
                             if (progress && progress.style) {
                                 progress.style.display = "none";
@@ -395,21 +403,24 @@
                     if (!AppData.initLandView.getResults().length) {
                         Log.print(Log.l.trace, "calling select initLandData...");
                         //@nedra:25.09.2015: load the list of INITLand for Combobox
-                        return AppData.initLandView.select(function (json) {
+                        var initLandSelectPromise = AppData.initLandView.select(function (json) {
+                            that.removeDisposablePromise(initLandSelectPromise);
                             // this callback will be called asynchronously
                             // when the response is available
                             Log.print(Log.l.trace, "initLandView: success!");
                         }, function (errorResponse) {
+                            that.removeDisposablePromise(initLandSelectPromise);
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
                             AppData.setErrorMsg(that.binding, errorResponse);
                         });
+                        return that.addDisposablePromise(initLandSelectPromise);
                     } else {
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
                     Log.print(Log.l.trace, "calling select contactView...");
-                    return ListRemote.contactView.select(function (json) {
+                    var contactSelectPromise = ListRemote.contactView.select(function (json) {
                         // this callback will be called asynchronously
                         // when the response is available
                         Log.print(Log.l.trace, "listRemoteContact: success!");
@@ -453,25 +464,27 @@
                             }
                             that.loading = false;
                         }
+                    }, function (errorResponse) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        AppData.setErrorMsg(that.binding, errorResponse);
+                        progress = listView.querySelector(".list-footer .progress");
+                        counter = listView.querySelector(".list-footer .counter");
+                        if (progress && progress.style) {
+                            progress.style.display = "none";
+                        }
+                        if (counter && counter.style) {
+                            counter.style.display = "inline";
+                        }
+                        that.loading = false;
                     },
-                        function (errorResponse) {
-                            // called asynchronously if an error occurs
-                            // or server returns response with an error status.
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                            progress = listView.querySelector(".list-footer .progress");
-                            counter = listView.querySelector(".list-footer .counter");
-                            if (progress && progress.style) {
-                                progress.style.display = "none";
-                            }
-                            if (counter && counter.style) {
-                                counter.style.display = "inline";
-                            }
-                            that.loading = false;
-                        },
-                        restriction);
+                    restriction);
+                    return that.addDisposablePromise(contactSelectPromise);
                 }).then(function () {
-                    WinJS.Promise.timeout(250).then(function () {
-                        ListRemote.contactDocView.select(function (json) {
+                    var contactDocSelectPromise = WinJS.Promise.timeout(250).then(function () {
+                        that.removeDisposablePromise(contactDocSelectPromise);
+                        contactDocSelectPromise = ListRemote.contactDocView.select(function (json) {
+                            that.removeDisposablePromise(contactDocSelectPromise);
                             // this callback will be called asynchronously
                             // when the response is available
                             Log.print(Log.l.trace, "contactDocView: success!");
@@ -488,13 +501,16 @@
                                 Log.print(Log.l.trace, "contactDocView: no data found!");
                             }
                         }, function (errorResponse) {
+                            that.removeDisposablePromise(contactDocSelectPromise);
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
                             Log.print(Log.l.error, "ContactList.contactDocView: error!");
                             AppData.setErrorMsg(that.binding, errorResponse);
                         },
                         restriction);
+                        that.addDisposablePromise(contactDocSelectPromise);
                     });
+                    that.addDisposablePromise(contactDocSelectPromise);
                 });
                 Log.ret(Log.l.trace);
                 return ret;

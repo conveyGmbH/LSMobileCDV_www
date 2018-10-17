@@ -144,9 +144,11 @@
             var scrollToRecordId = function (recordId) {
                 Log.call(Log.l.trace, "Questionnaire.Controller.", "recordId=" + recordId);
                 if (that.loading) {
-                    WinJS.Promise.timeout(50).then(function () {
+                    var scrollToPromise = WinJS.Promise.timeout(50).then(function () {
+                        that.removeDisposablePromise(scrollToPromise);
                         that.scrollToRecordId(recordId);
                     });
+                    that.addDisposablePromise(scrollToPromise);
                 } else {
                     if (recordId && listView && listView.winControl && that.questions) {
                         for (var i = 0; i < that.questions.length; i++) {
@@ -171,9 +173,11 @@
                         if (question && typeof question === "object" &&
                             question.ZeilenantwortVIEWID === recordId) {
                             listView.winControl.selection.set(i).done(function () {
-                                WinJS.Promise.timeout(50).then(function () {
+                                var scrollToPromise = WinJS.Promise.timeout(50).then(function () {
+                                    that.removeDisposablePromise(scrollToPromise);
                                     that.scrollToRecordId(recordId);
                                 });
+                                that.addDisposablePromise(scrollToPromise);
                             });
                             break;
                         }
@@ -362,9 +366,11 @@
                     };
                     if (item.DOC1ZeilenantwortID) {
                         that.docCount++;
-                        WinJS.Promise.timeout(50).then(function () {
+                        var loadPicturePromise = WinJS.Promise.timeout(50).then(function () {
+                            that.removeDisposablePromise(loadPicturePromise);
                             that.loadPicture(item.DOC1ZeilenantwortID);
                         });
+                        that.addDisposablePromise(loadPicturePromise);
                     }
                 }
             }
@@ -843,9 +849,11 @@
                             Log.print(Log.l.info, "DOC1ZeilenantwortVIEWID=" + json.d.DOC1ZeilenantwortVIEWID);
                             that.addImage(json);
                             that.docCount++;
-                            WinJS.Promise.timeout(50).then(function () {
+                            var loadPicturePromise = WinJS.Promise.timeout(50).then(function () {
+                                that.removeDisposablePromise(loadPicturePromise);
                                 that.loadPicture(json.d.DOC1ZeilenantwortVIEWID);
                             });
+                            that.addDisposablePromise(loadPicturePromise);
                         } else {
                             AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
                         }
@@ -1408,16 +1416,19 @@
                     }
                 }
                 if (!ret) {
-                    ret = Questionnaire.questionnaireDocView.select(function (json) {
+                    var loadPicturePromise = Questionnaire.questionnaireDocView.select(function (json) {
+                        that.removeDisposablePromise(loadPicturePromise);
                         // this callback will be called asynchronously
                         // when the response is available
                         Log.print(Log.l.trace, "questionnaireDocView: success!");
                         that.addImage(json);
                     }, function (errorResponse) {
+                        that.removeDisposablePromise(loadPicturePromise);
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
                         AppData.setErrorMsg(that.binding, errorResponse);
                     }, pictureId);
+                    ret = that.addDisposablePromise(loadPicturePromise);
                 }
                 Log.ret(Log.l.trace);
                 return ret;
@@ -1472,7 +1483,8 @@
                         AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
                         return WinJS.Promise.as();
                     } else {
-                        return Questionnaire.questionnaireView.select(function (json) {
+                        var questionnaireSelectPromise = Questionnaire.questionnaireView.select(function (json) {
+                            that.removeDisposablePromise(questionnaireSelectPromise);
                             // this callback will be called asynchronously
                             // when the response is available
                             Log.print(Log.l.trace, "Questionnaire.questionnaireView: success!");
@@ -1508,16 +1520,19 @@
                                 }
                             }
                         }, function (errorResponse) {
+                            that.removeDisposablePromise(questionnaireSelectPromise);
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
                             AppData.setErrorMsg(that.binding, errorResponse);
                         }, {
                             KontaktID: contactId
                         });
+                        return that.addDisposablePromise(questionnaireSelectPromise);
                     }
                 }).then(function () {
                     if (!AppData.appSettings.odata.serverFailure) {
-                        ret = Questionnaire.CR_VERANSTOPTION_ODataView.select(function(json) {
+                        var veranstoptionSelectPromise = Questionnaire.CR_VERANSTOPTION_ODataView.select(function(json) {
+                            that.removeDisposablePromise(veranstoptionSelectPromise);
                             // this callback will be called asynchronously
                             // when the response is available
                             Log.print(Log.l.trace, "CR_VERANSTOPTION: success!");
@@ -1530,7 +1545,10 @@
                             } else {
                                 AppData._persistentStates.showConfirmQuestion = false;
                             }
+                        }, function(error) {
+                            that.removeDisposablePromise(veranstoptionSelectPromise);
                         });
+                        return that.addDisposablePromise(veranstoptionSelectPromise);
                     } else {
                         return WinJS.Promise.as();
                     }

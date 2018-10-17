@@ -278,7 +278,8 @@
                     if (!AppData.initAnredeView.getResults().length) {
                         Log.print(Log.l.trace, "calling select initAnredeData...");
                         //@nedra:25.09.2015: load the list of INITAnrede for Combobox
-                        return AppData.initAnredeView.select(function (json) {
+                        var initAnredeSelectPromise = AppData.initAnredeView.select(function (json) {
+                            that.removeDisposablePromise(initAnredeSelectPromise);
                             Log.print(Log.l.trace, "initAnredeView: success!");
                             if (json && json.d && json.d.results) {
                                 // Now, we call WinJS.Binding.List to get the bindable list
@@ -287,10 +288,12 @@
                                 }
                             }
                         }, function (errorResponse) {
+                            that.removeDisposablePromise(initAnredeSelectPromise);
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
                             AppData.setErrorMsg(that.binding, errorResponse);
                         });
+                        return that.addDisposablePromise(initAnredeSelectPromise);
                     } else {
                         if (initAnrede && initAnrede.winControl) {
                             initAnrede.winControl.data = new WinJS.Binding.List(AppData.initAnredeView.getResults());
@@ -301,7 +304,8 @@
                     if (!AppData.initLandView.getResults().length) {
                         Log.print(Log.l.trace, "calling select initLandData...");
                         //@nedra:25.09.2015: load the list of INITLand for Combobox
-                        return AppData.initLandView.select(function (json) {
+                        var initLandSelectPromise = AppData.initLandView.select(function (json) {
+                            that.removeDisposablePromise(initLandSelectPromise);
                             // this callback will be called asynchronously
                             // when the response is available
                             Log.print(Log.l.trace, "initLandView: success!");
@@ -312,10 +316,12 @@
                                 }
                             }
                         }, function (errorResponse) {
+                            that.removeDisposablePromise(initLandSelectPromise);
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
                             AppData.setErrorMsg(that.binding, errorResponse);
                         });
+                        return that.addDisposablePromise(initLandSelectPromise);
                     } else {
                         if (initLand && initLand.winControl) {
                             initLand.winControl.data = new WinJS.Binding.List(AppData.initLandView.getResults());
@@ -323,7 +329,8 @@
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
-                    return ContactRemote.mandatoryView.select(function (json) {
+                    var contactMandatorySelectPromise = ContactRemote.mandatoryView.select(function (json) {
+                        that.removeDisposablePromise(contactMandatorySelectPromise);
                         // this callback will be called asynchronously
                         // when the response is available
                         Log.print(Log.l.trace, "MandatoryList.mandatoryView: success!");
@@ -342,18 +349,21 @@
                             }*/
                         }
                     }, function (errorResponse) {
+                        that.removeDisposablePromise(contactMandatorySelectPromise);
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
                         AppData.setErrorMsg(that.binding, errorResponse);
                     }, {
                         LanguageSpecID: AppData.getLanguageId()
                     });
+                    return that.addDisposablePromise(contactMandatorySelectPromise);
                 }).then(function () {
                     var recordId = getRecordId();
                     if (recordId) {
                         //load of format relation record data
                         Log.print(Log.l.trace, "calling select contactView...");
-                        return ContactRemote.contactView.select(function (json) {
+                        var contactSelectPromise = ContactRemote.contactView.select(function (json) {
+                            that.removeDisposablePromise(contactSelectPromise);
                             AppData.setErrorMsg(that.binding);
                             Log.print(Log.l.trace, "contactView: success!");
                             if (json && json.d) {
@@ -364,15 +374,18 @@
                                 loadInitSelection();
                             }
                         }, function (errorResponse) {
+                            that.removeDisposablePromise(contactSelectPromise);
                             AppData.setErrorMsg(that.binding, errorResponse);
                         }, recordId);
+                        return that.addDisposablePromise(contactSelectPromise);
                     } else {
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
                     var recordId = getRecordId();
                     if (recordId) {
-                        return ContactRemote.sketchView.select(function (jsonSketch) {
+                        var sketchSelectPromise = ContactRemote.sketchView.select(function (jsonSketch) {
+                            that.removeDisposablePromise(sketchSelectPromise);
                             Log.print(Log.l.trace, "sketchView: success!");
                             if (jsonSketch.d && jsonSketch.d.results && jsonSketch.d.results.length > 0) {
                                 NavigationBar.enablePage("sketchRemote");
@@ -380,11 +393,13 @@
                                 NavigationBar.disablePage("sketchRemote");
                             }
                         }, function () {
+                            that.removeDisposablePromise(sketchSelectPromise);
                             Log.print(Log.l.error, "sketchView: error!");
                             NavigationBar.disablePage("sketchRemote");
                         }, {
                             KontaktID: recordId
                         });
+                        return that.addDisposablePromise(sketchSelectPromise);
                     } else {
                         return WinJS.Promise.as();
                     }
@@ -394,7 +409,8 @@
                         if (importCardscanId) {
                             // todo: load image data and set src of img-element
                             Log.print(Log.l.trace, "calling select contactView...");
-                            return ContactRemote.cardScanView.select(function (json) {
+                            var cardscanSelectPromise = ContactRemote.cardScanView.select(function (json) {
+                                that.removeDisposablePromise(cardscanSelectPromise);
                                 AppData.setErrorMsg(that.binding);
                                 Log.print(Log.l.trace, "cardScanData: success!");
                                 if (json && json.d) {
@@ -410,9 +426,11 @@
                                         showPhoto();
                                     }
                                 }
-                            }, function(errorResponse) {
+                            }, function (errorResponse) {
+                                that.removeDisposablePromise(cardscanSelectPromise);
                                 AppData.setErrorMsg(that.binding, errorResponse);
                             }, importCardscanId);
+                            return that.addDisposablePromise(cardscanSelectPromise);
                         } else {
                             return WinJS.Promise.as();
                         }

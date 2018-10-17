@@ -133,7 +133,8 @@
                         if (importCardscanId) {
                             // todo: load image data and set src of img-element
                             Log.print(Log.l.trace, "calling select contactView...");
-                            return PhotoRemote.cardScanView.select(function (json) {
+                            var cardscanSelectPromise = PhotoRemote.cardScanView.select(function (json) {
+                                that.removeDisposablePromise(cardscanSelectPromise);
                                 AppData.setErrorMsg(that.binding);
                                 Log.print(Log.l.trace, "cardScanData: success!");
                                 if (json && json.d) {
@@ -150,8 +151,10 @@
                                     }
                                 }
                             }, function (errorResponse) {
+                                that.removeDisposablePromise(cardscanSelectPromise);
                                 AppData.setErrorMsg(that.binding, errorResponse);
                             }, importCardscanId);
+                            return that.addDisposablePromise(cardscanSelectPromise);
                         } else {
                             return WinJS.Promise.as();
                         }

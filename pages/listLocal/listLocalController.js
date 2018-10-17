@@ -298,7 +298,8 @@
                             Log.print(Log.l.trace, "calling select ListLocal.contactView...");
                             var nextUrl = that.nextUrl;
                             that.nextUrl = null;
-                            ListLocal.contactView.selectNext(function (json) {
+                            var nextContactSelectPromise = ListLocal.contactView.selectNext(function (json) {
+                                that.removeDisposablePromise(nextContactSelectPromise);
                                 // this callback will be called asynchronously
                                 // when the response is available
                                 Log.print(Log.l.trace, "ListLocal.contactView: success!");
@@ -311,12 +312,14 @@
                                         that.binding.count = that.contacts.push(item);
                                     });
                                 }
-                                WinJS.Promise.timeout(250).then(function () {
+                                var nextContactDocSelectPromise = WinJS.Promise.timeout(250).then(function () {
+                                    that.removeDisposablePromise(nextContactDocSelectPromise);
                                     if (that.nextDocUrl) {
                                         var nextDocUrl = that.nextDocUrl;
                                         that.nextDocUrl = null;
                                         Log.print(Log.l.trace, "calling select ContactList.contactDocView...");
-                                        ListLocal.contactDocView.selectNext(function (json) { //json is undefined
+                                        nextContactDocSelectPromise = ListLocal.contactDocView.selectNext(function (json) { //json is undefined
+                                            that.removeDisposablePromise(nextContactDocSelectPromise);
                                             // this callback will be called asynchronously
                                             // when the response is available
                                             Log.print(Log.l.trace, "ContactList.contactDocView: success!");
@@ -330,14 +333,18 @@
                                                 });
                                             }
                                         }, function (errorResponse) {
+                                            that.removeDisposablePromise(nextContactDocSelectPromise);
                                             // called asynchronously if an error occurs
                                             // or server returns response with an error status.
                                             Log.print(Log.l.error, "ContactList.contactDocView: error!");
                                             AppData.setErrorMsg(that.binding, errorResponse);
                                         }, null, nextDocUrl);
+                                        that.addDisposablePromise(nextContactDocSelectPromise);
                                     }
                                 });
+                                that.addDisposablePromise(nextContactDocSelectPromise);
                             }, function (errorResponse) {
+                                that.removeDisposablePromise(nextContactSelectPromise);
                                 // called asynchronously if an error occurs
                                 // or server returns response with an error status.
                                 AppData.setErrorMsg(that.binding, errorResponse);
@@ -349,6 +356,7 @@
                                 }
                                 that.loading = false;
                             }, null, nextUrl);
+                            that.addDisposablePromise(nextContactSelectPromise);
                         } else {
                             if (progress && progress.style) {
                                 progress.style.display = "none";
@@ -392,20 +400,24 @@
                     if (!AppData.initLandView.getResults().length) {
                         Log.print(Log.l.trace, "calling select initLandData...");
                         //@nedra:25.09.2015: load the list of INITLand for Combobox
-                        return AppData.initLandView.select(function (json) {
+                        var initLandSelectPromise = AppData.initLandView.select(function (json) {
+                            that.removeDisposablePromise(initLandSelectPromise);
                             // this callback will be called asynchronously
                             // when the response is available
                             Log.print(Log.l.trace, "initLandView: success!");
                         }, function (errorResponse) {
+                            that.removeDisposablePromise(initLandSelectPromise);
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
                             AppData.setErrorMsg(that.binding, errorResponse);
                         });
+                        return that.addDisposablePromise(initLandSelectPromise);
                     } else {
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
-                    return ListLocal.contactView.select(function (json) {
+                    var contactSelectPromise = ListLocal.contactView.select(function (json) {
+                        that.removeDisposablePromise(contactSelectPromise);
                         // this callback will be called asynchronously
                         // when the response is available
                         Log.print(Log.l.trace, "ListLocal.contactView: success!");
@@ -449,6 +461,7 @@
                             that.loading = false;
                         }
                     }, function (errorResponse) {
+                        that.removeDisposablePromise(contactSelectPromise);
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
                         AppData.setErrorMsg(that.binding, errorResponse);
@@ -463,34 +476,40 @@
                         that.loading = false;
                     }, {
                         MitarbeiterID: AppData.generalData.getRecordId("Mitarbeiter")
-                    }).then(function () {
-                        WinJS.Promise.timeout(250).then(function () {
-                            ListLocal.contactDocView.select(function (json) {
-                                // this callback will be called asynchronously
-                                // when the response is available
-                                Log.print(Log.l.trace, "contactDocView: success!");
-                                // startContact returns object already parsed from json file in response
-                                if (json && json.d && json.d.results && json.d.results.length) {
-                                    that.binding.doccount = json.d.results.length;
-                                    that.nextDocUrl = ListLocal.contactDocView.getNextUrl(json);
-                                    var results = json.d.results;
-                                    results.forEach(function (item, index) {
-                                        that.resultDocConverter(item, index);
-                                    });
-                                    that.docs = results;
-                                } else {
-                                    Log.print(Log.l.trace, "contactDocView: no data found!");
-                                }
-                            }, function (errorResponse) {
-                                // called asynchronously if an error occurs
-                                // or server returns response with an error status.
-                                Log.print(Log.l.error, "ContactList.contactDocView: error!");
-                                AppData.setErrorMsg(that.binding, errorResponse);
-                            }, {
-                                MitarbeiterID: AppData.generalData.getRecordId("Mitarbeiter")
-                            });
-                        });
                     });
+                    return that.addDisposablePromise(contactSelectPromise);
+                }).then(function () {
+                    var contactDocSelectPromise = WinJS.Promise.timeout(250).then(function () {
+                        that.removeDisposablePromise(contactDocSelectPromise);
+                        contactDocSelectPromise = ListLocal.contactDocView.select(function (json) {
+                            that.removeDisposablePromise(contactDocSelectPromise);
+                            // this callback will be called asynchronously
+                            // when the response is available
+                            Log.print(Log.l.trace, "contactDocView: success!");
+                            // startContact returns object already parsed from json file in response
+                            if (json && json.d && json.d.results && json.d.results.length) {
+                                that.binding.doccount = json.d.results.length;
+                                that.nextDocUrl = ListLocal.contactDocView.getNextUrl(json);
+                                var results = json.d.results;
+                                results.forEach(function (item, index) {
+                                    that.resultDocConverter(item, index);
+                                });
+                                that.docs = results;
+                            } else {
+                                Log.print(Log.l.trace, "contactDocView: no data found!");
+                            }
+                        }, function (errorResponse) {
+                            that.removeDisposablePromise(contactDocSelectPromise);
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            Log.print(Log.l.error, "ContactList.contactDocView: error!");
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        }, {
+                            MitarbeiterID: AppData.generalData.getRecordId("Mitarbeiter")
+                        });
+                        that.addDisposablePromise(contactDocSelectPromise);
+                    });
+                    that.addDisposablePromise(contactDocSelectPromise);
                 });
                 Log.ret(Log.l.trace);
                 return ret;
