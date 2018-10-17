@@ -355,7 +355,7 @@
                         }
                     }
                 }
-                if (index >= 0) {
+                if (index >= 0 && that.docIds) {
                     that.docIds[index] = {
                         ZeilenantwortVIEWID: item.ZeilenantwortVIEWID,
                         DOC1ZeilenantwortID: item.DOC1ZeilenantwortID
