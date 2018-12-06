@@ -193,13 +193,15 @@
                                     AppData._persistentStates.hideCameraScan ||
                                     !AppData._persistentStates.cameraFeatureSupported);
                             }
+                        }
+                        if (buttonElement) {
                             break;
                         }
-                        break;
                     }
                 }
                 Log.ret(Log.l.trace);
             };
+            this.checkListButtonStates = checkListButtonStates;
 
             var resetSvgLoaded = function () {
                 Log.call(Log.l.trace, "Start.Controller.");

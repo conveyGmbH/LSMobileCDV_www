@@ -321,18 +321,22 @@
                                     AppData.appSettings.odata.serverFailure = true;
                                     NavigationBar.disablePage("listRemote");
                                     NavigationBar.disablePage("search");
-                                    if (AppBar.scope && typeof AppBar.scope.updateActions === "function") {
-                                        AppBar.scope.updateActions();
+                                    if (AppBar.scope && typeof AppBar.scope.checkListButtonStates === "function") {
+                                        AppBar.scope.checkListButtonStates();
                                     }
                                 }
                                 // called asynchronously if an error occurs
                                 // or server returns response with an error status.
                                 Log.print(Log.l.error, "error in select generalUserRemoteView statusText=" + errorResponse.statusText);
-                                AppData._curGetUserRemoteDataId = 0;
                                 var timeout = AppData._persistentStates.odata.replInterval || 30;
                                 Log.print(Log.l.info, "getUserRemoteData: Now, wait for timeout=" + timeout + "s");
-                                WinJS.Promise.timeout(timeout * 1000).then(function () {
+                                if (AppData._userRemoteDataPromise) {
+                                    Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                                    AppData._userRemoteDataPromise.cancel();
+                                }
+                                AppData._userRemoteDataPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
                                     Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");
+                                    AppData._curGetUserRemoteDataId = 0;
                                     AppData.getUserRemoteData();
                                 });
                             }, userId);

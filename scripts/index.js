@@ -155,5 +155,30 @@
 
     // initiate the page frame class
     var pageframe = new Application.PageFrame();
+    pageframe.onOnlineHandler = function (eventInfo) {
+        Log.call(Log.l.trace, "Application.PageFrame.");
+        if (AppData._userRemoteDataPromise) {
+            Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+            AppData._userRemoteDataPromise.cancel();
+        }
+        AppData._userRemoteDataPromise = WinJS.Promise.timeout(1000).then(function () {
+            Log.print(Log.l.info, "getUserRemoteData: Now, timeout=1s is over!");
+            AppData._curGetUserRemoteDataId = 0;
+            AppData.getUserRemoteData();
+        });
+        Log.ret(Log.l.trace);
+    };
+    pageframe.onOfflineHandler = function (eventInfo) {
+        Log.call(Log.l.trace, "Application.PageFrame.");
+        if (!AppData.appSettings.odata.serverFailure) {
+            AppData.appSettings.odata.serverFailure = true;
+            NavigationBar.disablePage("listRemote");
+            NavigationBar.disablePage("search");
+            if (AppBar.scope && typeof AppBar.scope.checkListButtonStates === "function") {
+                AppBar.scope.checkListButtonStates();
+            }
+        }
+        Log.ret(Log.l.trace);
+    };
 })();
 
