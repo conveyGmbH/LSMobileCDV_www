@@ -822,15 +822,24 @@
         onBarcodeError: function (error, repeatCount) {
             repeatCount = repeatCount || 0;
             Log.call(Log.l.trace, "Barcode.", "repeatCount=" + repeatCount);
-            if (Application.getPageId(nav.location) === "barcode" &&
-                AppBar.scope && typeof AppBar.scope.onBarcodeError === "function") {
-                Barcode.dontScan = false;
-                AppBar.scope.onBarcodeError(error);
+            if (Application.getPageId(nav.location) === "barcode") {
+                if (Barcode.dontScan &&
+                    AppBar.scope &&
+                    typeof AppBar.scope.onBarcodeError === "function") {
+                    Barcode.dontScan = false;
+                    AppBar.scope.onBarcodeError(error);
+                } else {
+                    Barcode.waitingScans++;
+                    WinJS.Promise.timeout(250).then(function () {
+                        Barcode.waitingScans--;
+                        Barcode.onBarcodeError(error, repeatCount + 1);
+                    });
+                }
             } else {
                 Barcode.dontScan = true;
                 Application.navigateById("barcode");
                 WinJS.Promise.timeout(250).then(function () {
-                    Barcode.onBarcodeError(error, repeatCount+1);
+                    Barcode.onBarcodeError(error, repeatCount + 1);
                 });
             }
             if (!repeatCount) {
