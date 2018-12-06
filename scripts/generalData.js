@@ -790,36 +790,51 @@
     WinJS.Namespace.define("Barcode", {
         listening: false,
         dontScan: false,
-        onBarcodeSuccess: function (result) {
-            Log.call(Log.l.trace, "Barcode.");
-            if (Application.getPageId(nav.location) === "barcode" &&
-                AppBar.scope &&
-                typeof AppBar.scope.onBarcodeSuccess === "function") {
-                Barcode.dontScan = false;
-                AppBar.scope.onBarcodeSuccess(result);
-                Barcode.startListenDelayed(0);
+        waitingScans: 0,
+        onBarcodeSuccess: function (result, repeatCount) {
+            repeatCount = repeatCount || 0;
+            Log.call(Log.l.trace, "Barcode.", "repeatCount=" + repeatCount);
+            if (Application.getPageId(nav.location) === "barcode") {
+                if (Barcode.dontScan &&
+                    AppBar.scope &&
+                    typeof AppBar.scope.onBarcodeSuccess === "function") {
+                    Barcode.dontScan = false;
+                    AppBar.scope.onBarcodeSuccess(result);
+                } else {
+                    Barcode.waitingScans++;
+                    WinJS.Promise.timeout(250).then(function () {
+                        Barcode.waitingScans--;
+                        Barcode.onBarcodeSuccess(result, repeatCount + 1);
+                    });
+                }
             } else {
                 Barcode.dontScan = true;
                 Application.navigateById("barcode");
                 WinJS.Promise.timeout(250).then(function () {
-                    Barcode.onBarcodeSuccess(result);
+                    Barcode.onBarcodeSuccess(result, repeatCount + 1);
                 });
+            }
+            if (!repeatCount) {
+                Barcode.startListenDelayed(0);
             }
             Log.ret(Log.l.trace);
         },
-        onBarcodeError: function (error) {
-            Log.call(Log.l.trace, "Barcode.");
+        onBarcodeError: function (error, repeatCount) {
+            repeatCount = repeatCount || 0;
+            Log.call(Log.l.trace, "Barcode.", "repeatCount=" + repeatCount);
             if (Application.getPageId(nav.location) === "barcode" &&
                 AppBar.scope && typeof AppBar.scope.onBarcodeError === "function") {
                 Barcode.dontScan = false;
                 AppBar.scope.onBarcodeError(error);
-                Barcode.startListenDelayed(0);
             } else {
                 Barcode.dontScan = true;
                 Application.navigateById("barcode");
                 WinJS.Promise.timeout(250).then(function () {
-                    Barcode.onBarcodeError(error);
+                    Barcode.onBarcodeError(error, repeatCount+1);
                 });
+            }
+            if (!repeatCount) {
+                Barcode.startListenDelayed(0);
             }
             Log.ret(Log.l.trace);
         },
@@ -856,10 +871,15 @@
             if (Barcode.listenPromise) {
                 Barcode.listenPromise.cancel();
             }
-            Barcode.listenPromise = WinJS.Promise.timeout(delay).then(function () {
+            if (!delay) {
                 Barcode.listenPromise = null;
                 Barcode.startListen();
-            });
+            } else {
+                Barcode.listenPromise = WinJS.Promise.timeout(delay).then(function () {
+                    Barcode.listenPromise = null;
+                    Barcode.startListen();
+                });
+            }
             Log.ret(Log.l.trace);
         },
         startListen: function () {

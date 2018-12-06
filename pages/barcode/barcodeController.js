@@ -124,11 +124,15 @@
                                 return WinJS.Promise.timeout(0).then(function() {
                                     // do the following in case of success:
                                     // go on to questionnaire
-                                    Application.navigateById("questionnaire", null, true);
-                                    // accelarate replication
-                                    if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
-                                        var numFastReqs = 10;
-                                        AppRepl.replicator.run(numFastReqs);
+                                    if (Barcode.waitingScans > 0) {
+                                        Barcode.dontScan = true;
+                                    } else {
+                                        Application.navigateById("questionnaire", null, true);
+                                        // accelarate replication
+                                        if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
+                                            var numFastReqs = 10;
+                                            AppRepl.replicator.run(numFastReqs);
+                                        }
                                     }
                                 });
                             } else {
@@ -160,11 +164,15 @@
                                 WinJS.Promise.timeout(0).then(function () {
                                     // do the following in case of success:
                                     // go on to questionnaire
-                                    Application.navigateById("questionnaire", null, true);
-                                    // accelarate replication
-                                    if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
-                                        var numFastReqs = 10;
-                                        AppRepl.replicator.run(numFastReqs);
+                                    if (Barcode.waitingScans > 0) {
+                                        Barcode.dontScan = true;
+                                    } else {
+                                        Application.navigateById("questionnaire", null, true);
+                                        // accelarate replication
+                                        if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
+                                            var numFastReqs = 10;
+                                            AppRepl.replicator.run(numFastReqs);
+                                        }
                                     }
                                 });
                             } else {
