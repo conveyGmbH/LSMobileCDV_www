@@ -206,7 +206,8 @@
                             $(qrcodeViewer).qrcode({
                                 text: utf8_decode(content),
                                 width: width,
-                                height: width
+                                height: width,
+                                correctLevel: 0 //QRErrorCorrectLevel.M
                             });
                             that.qrcodeContent = content;
                             that.qrcodeWidth = width;
