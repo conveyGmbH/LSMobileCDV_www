@@ -19,6 +19,10 @@
         ready: function(element, options) {
             Log.call(Log.l.trace, pageName + ".");
             // TODO: Initialize the page here.
+            if (AppData._persistentStates.odata.dbinitIncomplete) {
+                NavigationBar.disablePage("search");
+                NavigationBar.disablePage("info");
+            }
             // add page specific commands to AppBar
             var commandList = [];
 
@@ -26,7 +30,35 @@
             Log.ret(Log.l.trace);
         },
 
-        unload: function() {
+        canUnload: function (complete, error) {
+            Log.call(Log.l.trace, pageName + ".");
+            var ret;
+            if (this.controller) {
+                if (AppData._persistentStates.odata.dbinitIncomplete &&
+                    this.controller.getStartPage() === "start") {
+                    ret = this.controller.saveData(function(response) {
+                            // called asynchronously if ok
+                            NavigationBar.enablePage("search");
+                            NavigationBar.enablePage("info");
+                            complete(response);
+                        },
+                        function(errorResponse) {
+                            error(errorResponse);
+                        });
+                } else {
+                    ret = this.controller.openDb(complete, error);
+                }
+            } else {
+                ret = WinJS.Promise.as().then(function () {
+                    var err = { status: 500, statusText: "fatal: page already deleted!" };
+                    error(err);
+                });
+            }
+            Log.ret(Log.l.trace);
+            return ret;
+        },
+
+        unload: function () {
             Log.call(Log.l.trace, pageName + ".");
             // TODO: Respond to navigations away from this page.
             Log.ret(Log.l.trace);

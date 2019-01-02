@@ -228,7 +228,7 @@
                 }
                 that.binding.messageText = null;
                 AppData.setErrorMsg(that.binding);
-                if (!that.binding.doEdit) {
+                if (!that.binding.doEdit && !AppData._persistentStates.odata.dbinitIncomplete) {
                     ret = WinJS.Promise.as();
                     complete({});
                 } else {
@@ -298,6 +298,7 @@
                                         var doReloadDb = false;
                                         if (!AppData._persistentStates.odata.dbSiteId ||
                                             prevMitarbeiterId !== dataLogin.MitarbeiterID ||
+                                            AppData._persistentStates.odata.dbinitIncomplete ||
                                             that.binding.doReloadDb) {
                                             doReloadDb = true;
                                         }

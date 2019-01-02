@@ -610,15 +610,11 @@
                             js.list = Colors.loadSVGImageElements(listView, "action-image-list", 40, "#f0f0f0", "name", showTileButton);
                             js.new = Colors.loadSVGImageElements(listView, "action-image-new", 40, "#f0f0f0", "name", showTileButton);
 
-                            var promise = new WinJS.Promise.as().then(function () {
-                                return WinJS.Promise.join(js);
-                            }).then(function () {
+                            WinJS.Promise.join(js).then(function() {
                                 if (!Application.pageframe.splashScreenDone) {
-                                    return WinJS.Promise.timeout(200).then(function () {
+                                    WinJS.Promise.timeout(20).then(function() {
                                         return Application.pageframe.hideSplashScreen();
                                     });
-                                } else {
-                                    return WinJS.Promise.as();
                                 }
                             });
                         }

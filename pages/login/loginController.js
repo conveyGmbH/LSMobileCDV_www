@@ -110,20 +110,24 @@
                     AppRepl.replicator.state === "running") {
                     Log.print(Log.l.info, "replicator still running - try later!");
                     ret = WinJS.Promise.timeout(500).then(function () {
-                        that.openDb(complete, error);
+                        return that.openDb(complete, error);
                     });
                 } else {
                     ret = AppData.openDB(function (json) {
                         AppBar.busy = false;
                         AppData._curGetUserDataId = 0;
                         AppData.getUserData();
-                        complete(json);
-                    }, function (curerr) {
+                        if (typeof complete === "function") {
+                            complete(json);
+                        }
+                    }, function (err) {
                         AppBar.busy = false;
-                        AppData.setErrorMsg(that.binding, curerr);
+                        AppData.setErrorMsg(that.binding, err);
                         AppData._persistentStates.odata.dbSiteId = 0;
                         Application.pageframe.savePersistentStates();
-                        error(curerr);
+                        if (typeof error === "function") {
+                            error(err);
+                        }
                     }, function (res) {
                         if (res) {
                             that.binding.progress = {
@@ -203,14 +207,14 @@
                                 if (dataLogin.OK_Flag === "X" && dataLogin.MitarbeiterID) {
                                     AppData._persistentStates.odata.login = that.binding.dataLogin.Login;
                                     AppData._persistentStates.odata.password = that.binding.dataLogin.Password;
-                                    AppData.setRecordId("Mitarbeiter", dataLogin.MitarbeiterID);
+                                    var prevMitarbeiterId = AppData.generalData.getRecordId("Mitarbeiter");
                                     NavigationBar.enablePage("settings");
                                     NavigationBar.enablePage("info");
                                     NavigationBar.enablePage("search");
-                                    var prevMitarbeiterId = AppData.generalData.getRecordId("Mitarbeiter");
                                     var doReloadDb = false;
                                     if (!AppData._persistentStates.odata.dbSiteId ||
-                                        prevMitarbeiterId !== dataLogin.MitarbeiterID) {
+                                        prevMitarbeiterId !== dataLogin.MitarbeiterID ||
+                                        AppData._persistentStates.odata.dbinitIncomplete) {
                                         doReloadDb = true;
                                     }
                                     Log.print(Log.l.info, "loginData: doReloadDb=" + doReloadDb + " useOffline=" + that.binding.appSettings.odata.useOffline);
