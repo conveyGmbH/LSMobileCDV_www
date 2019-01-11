@@ -103,6 +103,17 @@
     font-size: 15px;
 }
 
+.user-overlay-container {
+    display: block;
+    position: absolute;
+    top: 2px;
+    left: calc(100% - 40px);
+    width: 40px;
+    height: 40px;
+    border: none;
+    padding: 0;
+}
+
 .user-image-container {
     display: block;
     position: absolute;
@@ -118,7 +129,7 @@
     display: block;
     position: relative;
     left: 0;
-    top: -14px;
+    top: 6px;
     z-index: 9900;
 }
 .user-photo {
@@ -168,7 +179,7 @@
     display: block;
     position: relative;
     left: 22px;
-    top: -96px;
+    top: -24px;
     z-index: 10000;
     padding: 0;
     text-align: center;

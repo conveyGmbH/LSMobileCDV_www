@@ -79,6 +79,7 @@
                 return ret;
             }
         },
+        _userDataPromise: null,
         _userRemoteDataPromise: null,
         _curGetUserDataId: 0,
         _curGetRemoteUserDataId: 0,
@@ -196,6 +197,10 @@
         getUserData: function () {
             var ret;
             Log.call(Log.l.trace, "AppData.");
+            if (AppData._userDataPromise) {
+                Log.print(Log.l.info, "Cancelling previous userDataPromise");
+                AppData._userDataPromise.cancel();
+            }
             var userId = AppData.getRecordId("Mitarbeiter");
             if (!AppData.appSettings.odata.login ||
                 !AppData.appSettings.odata.password ||
@@ -234,11 +239,31 @@
                                 Log.print(Log.l.info, "timeZoneAdjustment=" + AppData.appSettings.odata.timeZoneAdjustment);
                             }
                             AppData._curGetUserDataId = 0;
+                            var timeout = AppData._persistentStates.odata.replInterval || 30;
+                            Log.print(Log.l.info, "getUserData: Now, wait for timeout=" + timeout + "s");
+                            if (AppData._userDataPromise) {
+                                Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                                AppData._userDataPromise.cancel();
+                            }
+                            AppData._userDataPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
+                                Log.print(Log.l.info, "getUserData: Now, timeout=" + timeout + "s is over!");
+                                AppData.getUserData();
+                            });
                         }, function (errorResponse) {
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
                             Log.print(Log.l.error, "error in select generalUserView statusText=" + errorResponse.statusText);
                             AppData._curGetUserDataId = 0;
+                            var timeout = AppData._persistentStates.odata.replInterval || 30;
+                            Log.print(Log.l.info, "getUserData: Now, wait for timeout=" + timeout + "s");
+                            if (AppData._userDataPromise) {
+                                Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                                AppData._userDataPromise.cancel();
+                            }
+                            AppData._userDataPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
+                                Log.print(Log.l.info, "getUserData: Now, timeout=" + timeout + "s is over!");
+                                AppData.getUserData();
+                            });
                         }, userId);
                     });
                 }
@@ -251,7 +276,10 @@
         getUserRemoteData: function () {
             var ret;
             Log.call(Log.l.trace, "AppData.");
-            AppData._userRemoteDataPromise = null;
+            if (AppData._userRemoteDataPromise) {
+                Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                AppData._userRemoteDataPromise.cancel();
+            }
             if (!AppData.appSettings.odata.login ||
                 !AppData.appSettings.odata.password ||
                 !AppData.appSettings.odata.dbSiteId) {

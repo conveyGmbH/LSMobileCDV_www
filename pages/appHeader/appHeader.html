@@ -30,13 +30,15 @@
                                   data-win-bind="textContent: userData.Login"></span>
                         </div>
                         <div class="user-image-container">
+                            <div class="user-image" id="user"></div>
+                        </div>
+                        <div class="user-overlay-container">
                             <div class="onsite-offsite win-type-caption">
                                 <span class="onsite-offsite-symbol statusOn"
                                       data-win-bind="style.display: userData.Present Binding.Converter.toDisplay">&#xe10b;</span>
                                 <span class="onsite-offsite-symbol statusOff"
                                       data-win-bind="style.display: userData.Present Binding.Converter.toDisplayNone">&#xe108;</span>
                             </div>
-                            <div class="user-image" id="user"></div>
                             <div class="new-message win-type-caption"
                                  data-win-bind="style.display: userData.NewNoteCount Binding.Converter.toDisplay">
                                 <span class="new-message-symbol statusNew">&#xe134;</span>
