@@ -16,7 +16,8 @@
 div#svgsketch {
     border: 1px solid #E4E4E4;
     -ms-touch-action: none; /* Disable touch behaviors, like pan and zoom */
-    background-image: url(Hatch16.gif);
+    /*background-image: url(Hatch16.gif);*/
+    background: white;
     width: 100%;
     height: calc(100% - 8px);
     /*

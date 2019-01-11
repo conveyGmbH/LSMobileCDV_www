@@ -151,7 +151,7 @@
 
     "questionnaire.title"   : "Answered questions",
     "questionnaire.comment" : "On this page, use the Back button to go back!",
-    "questionnaire.textarea": "Please enter you notes here ",
+    "questionnaire.textarea": "Please enter your notes here ",
     "questionnaire.count"   : "Count",
     "questionnaire.attachments" : "Attachments",
     "questionnaire.requiredmarker" : "*",

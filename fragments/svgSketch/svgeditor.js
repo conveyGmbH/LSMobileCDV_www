@@ -200,7 +200,7 @@
                         myBody.innerHTML = '<div id="sketch" class="feature" style="margin: 0; padding: 0; border: none;">'+prevHTML+"</div>";
                     }*/
                     this.fnPaintColors();
-                    this.fnSetColor(0);
+                    this.fnSetColor(1); //0
                     this.fnSetShape(0);
                 },
                 fnStartSketch: function () {
