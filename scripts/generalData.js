@@ -821,7 +821,7 @@
         waitingScans: 0,
         onBarcodeSuccess: function (result, repeatCount) {
             repeatCount = repeatCount || 0;
-            Log.call(Log.l.trace, "Barcode.", "repeatCount=" + repeatCount);
+            Log.call(Log.l.trace, "Barcode.", "repeatCount=" + repeatCount + " result=" + result);
             if (Application.getPageId(nav.location) === "barcode") {
                 if (Barcode.dontScan &&
                     AppBar.scope &&
@@ -849,7 +849,7 @@
         },
         onBarcodeError: function (error, repeatCount) {
             repeatCount = repeatCount || 0;
-            Log.call(Log.l.trace, "Barcode.", "repeatCount=" + repeatCount);
+            Log.call(Log.l.error, "Barcode.", "repeatCount=" + repeatCount + " error=" + error);
             if (Application.getPageId(nav.location) === "barcode") {
                 if (Barcode.dontScan &&
                     AppBar.scope &&
@@ -877,15 +877,17 @@
         },
         onDeviceConnected: function (result) {
             var id = result && result.id;
-            var status = result && result.status;
-            Log.call(Log.l.trace, "Barcode.", "id=" + id + " status=" + status);
+            var connectionStatus = result && result.connectionStatus;
+            var ioStatus = result && result.ioStatus;
+            Log.call(Log.l.trace, "Barcode.", "id=" + id + " connectionStatus=" + connectionStatus + " ioStatus=" + ioStatus);
             Barcode.startListenDelayed(250);
             Log.ret(Log.l.trace);
         },
         onDeviceConnectFailed: function (error) {
             var id = error && error.id;
-            var status = error && error.status;
-            Log.call(Log.l.trace, "Barcode.", "id=" + id + " status=" + status);
+            var connectionStatus = error && error.connectionStatus;
+            var ioStatus = error && error.ioStatus;
+            Log.call(Log.l.trace, "Barcode.", "id=" + id + " connectionStatus=" + connectionStatus + " ioStatus=" + ioStatus);
             Barcode.startListenDelayed(2000);
             Log.ret(Log.l.trace);
         },
@@ -994,14 +996,14 @@
                             text: data
                         });
                     } else {
-                        WinJS.Promise.timeout(0) .then(function() {
+                        WinJS.Promise.timeout(0).then(function() {
                             Barcode.startRead();
                         });
                     }
                 }, function(readError) {
                     Log.print(Log.l.error, "readFromDevice: failed!");
-                    if (readError && readError.id && readError.id === generalData.barcodeDevice) {
-                        Barcode.onBarcodeError(readError.status);
+                    if (readError && readError.id && readError.id === generalData.barcodeDevice && readError.stack) {
+                        Barcode.onBarcodeError(readError.stack);
                     }
                 }, {
                     id: generalData.barcodeDevice,
