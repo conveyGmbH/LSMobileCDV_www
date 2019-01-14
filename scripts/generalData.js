@@ -604,6 +604,13 @@
                         Colors.isDarkTheme = AppData._persistentStates.isDarkTheme;
                     }
                     break;
+                case 19:
+                    if (item.LocalValue === "1") {
+                        AppData._persistentStates.hideCameraQuestionnaire = true;
+                    } else {
+                        AppData._persistentStates.hideCameraQuestionnaire = false;
+                    }
+                    break;
                 case 20:
                     item.pageProperty = "questionnaire";
                     if (item.LocalValue === "1") {
@@ -1028,16 +1035,16 @@
                 AppBar.scope.binding.barcodeDeviceStatus = Barcode.deviceStatus;
             }
             switch (connectionStatus) {
-            case Barcode.DeviceConstants.connectionStatus.connected:
-                if (prevConnectionStatus !== Barcode.DeviceConstants.connectionStatus.connected) {
-                    Barcode.onDeviceConnected();
-                }
-                break;
-            case Barcode.DeviceConstants.connectionStatus.connecting:
-            case Barcode.DeviceConstants.connectionStatus.disconnecting:
-                break;
-            default:
-                Barcode.listening = false;
+                case Barcode.DeviceConstants.connectionStatus.connected:
+                    if (prevConnectionStatus !== Barcode.DeviceConstants.connectionStatus.connected) {
+                        Barcode.onDeviceConnected();
+                    }
+                    break;
+                case Barcode.DeviceConstants.connectionStatus.connecting:
+                case Barcode.DeviceConstants.connectionStatus.disconnecting:
+                    break;
+                default:
+                    Barcode.listening = false;
             }
             Log.ret(Log.l.trace);
         }

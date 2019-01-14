@@ -1079,6 +1079,32 @@
                     }
                     Log.ret(Log.l.trace);
                 },
+                activateOnlyNumberKey: function (event) {
+                    Log.call(Log.l.trace, "Questionnaire.Controller.");
+                    var recordId = that.curRecId;
+                    var curScope = null;
+                    var i;
+                    for (i = 0; i < that.questions.length; i++) {
+                        var question = that.questions.getAt(i);
+                        if (question &&
+                            typeof question === "object" &&
+                            question.ZeilenantwortVIEWID === recordId) {
+                            curScope = question;
+                            break;
+                        }
+                    }
+                    if (curScope && curScope.FreitextAktiv === "2") {
+                        var charCode = event.keyCode;
+                        if ((charCode >=8 && charCode <= 46) || !event.shiftKey && (charCode >= 48 && charCode <= 57) || (charCode >= 91 && charCode <= 105)) {
+                            //return true;
+                        }
+                        else{
+                            // a.push(charCode);
+                            event.preventDefault();
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
                 onPointerDown: function (e) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
                     that.cursorPos = { x: e.pageX, y: e.pageY };
@@ -1207,6 +1233,9 @@
                                                     textarea.readOnly = true;
                                                 }
                                             }
+                                        }
+                                        if (item.FreitextAktiv === "2") {
+                                            
                                         }
                                     }
                                 }
@@ -1365,6 +1394,9 @@
                     return false;
                 },
                 clickPhoto: function () {
+                    if (AppData._persistentStates.hideCameraQuestionnaire) {
+                        return true;
+                    }
                     if (AppBar.busy || !that.getNextDocId()) {
                         return true;
                     } else {
