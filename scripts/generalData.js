@@ -355,6 +355,45 @@
                                     if (AppBar.scope && typeof AppBar.scope.checkListButtonStates === "function") {
                                         AppBar.scope.checkListButtonStates();
                                     }
+                                    if (AppRepl.replicator &&
+                                        AppRepl.replicator.networkState !== "Offline" &&
+                                        AppRepl.replicator.networkState !== "Unknown" &&
+                                        DBInit && DBInit.loginRequest) {
+                                        var err;
+                                        DBInit.loginRequest.insert(function(json) {
+                                            // this callback will be called asynchronously
+                                            // when the response is available
+                                            Log.call(Log.l.trace, "loginRequest: success!");
+                                            // loginData returns object already parsed from json file in response
+                                            if (json && json.d && json.d.ODataLocation) {
+                                                if (json.d.InactiveFlag) {
+                                                    if (AppBar.scope) {
+                                                        err = { status: 503, statusText: getResourceText("login.inactive") };
+                                                        AppData.setErrorMsg(AppBar.scope.binding, err);
+                                                    }
+                                                } else if (json.d.ODataLocation !== AppData._persistentStates.odata.onlinePath) {
+                                                    if (AppBar.scope) {
+                                                        err = { status: 404, statusText: getResourceText("login.modified") };
+                                                        AppData.setErrorMsg(AppBar.scope.binding, err);
+                                                    }
+                                                }
+                                            } else {
+                                                if (AppBar.scope) {
+                                                    err = { status: 404, statusText: getResourceText("login.unknown") };
+                                                    AppData.setErrorMsg(AppBar.scope.binding, err);
+                                                }
+                                            }
+                                        },
+                                        function(errorResponse) {
+                                            // called asynchronously if an error occurs
+                                            // or server returns response with an error status.
+                                            Log.print(Log.l.error, "loginRequest error: " + AppData.getErrorMsgFromResponse(errorResponse));
+                                            // ignore this error here for compatibility!
+                                        },
+                                        {
+                                            LoginName: AppData._persistentStates.odata.login
+                                        });
+                                    }
                                 }
                                 // called asynchronously if an error occurs
                                 // or server returns response with an error status.

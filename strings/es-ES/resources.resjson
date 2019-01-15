@@ -265,7 +265,8 @@
     "login.password"        : "Kennwort",
     "login.progress"        : "Fortschritt",
     "login.unknown"         : "Angegebener Benutzer nicht gefunden!",
-    "login.inactive"        : "Der Dienst ist zur Zeit inaktiv!",
+    "login.inactive"        : "Angegebener Benutzer ist zur Zeit inaktiv!",
+    "login.modified"        : "Specified user has been modified!",
 
     "register.title"        : "Neuregistrierung",
     "register.welcome"      : "Willkommen bei LeadSuccess!",

@@ -159,7 +159,7 @@
                     if (json && json.d && json.d.ODataLocation) {
                         if (json.d.InactiveFlag) {
                             AppBar.busy = false;
-                            err = { status: 503, statusText: getResourceText("account.inactive") };
+                            err = { status: 503, statusText: getResourceText("login.inactive") };
                             AppData.setErrorMsg(that.binding, err);
                             error(err);
                         } else {

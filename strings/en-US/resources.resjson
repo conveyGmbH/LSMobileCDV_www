@@ -267,7 +267,8 @@
     "login.privacyPolicyLink": "www.convey.de/privacy-policy/",
     "login.progress"        : "Progress",
     "login.unknown"         : "Specified user not found!",
-    "login.inactive"        : "The service is currently inactive!",
+    "login.inactive"        : "Specified user is currently inactive!",
+    "login.modified"        : "Specified user has been modified!",
      
     "register.title"        : "Registration",
     "register.welcome"      : "Welcome to LeadSuccess!",
