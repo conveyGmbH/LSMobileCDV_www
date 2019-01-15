@@ -41,23 +41,9 @@
                 return ret;
             }
         },
-        _contactView20498: {
-            get: function () {
-                return AppData.getFormatView("Kontakt", 20498, false);
-            }
-        },
-        contactView20498: {
-            select: function (complete, error) {
-                Log.call(Log.l.trace, "ListRemote.");
-                var ret = ListRemote._contactView20498.select(complete, error);
-                // this will return a promise to controller
-                Log.ret(Log.l.trace);
-                return ret;
-            }
-        },
         _contactDocView: {
             get: function () {
-                var ret = AppData.getFormatView("Kontakt", 20500, false);
+                var ret = AppData.getFormatView("Kontakt", 20499, false);
                 ret.maxPageSize = 20;
                 return ret;
             }
