@@ -316,7 +316,7 @@
                         navigator.clippingCamera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                             quality: AppData.generalData.cameraQuality,
                             convertToGrayscale: AppData.generalData.cameraUseGrayscale,
-                            maxResolution: 3000000,
+                            maxResolution: 2500000,
                             autoShutter: 0,
                             dontClip: true
                         });

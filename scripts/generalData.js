@@ -324,7 +324,10 @@
                                     }
                                     Log.print(Log.l.info, "timeZoneRemoteAdjustment=" + AppData.appSettings.odata.timeZoneRemoteAdjustment +
                                         " timeZoneRemoteDiffMs=" + AppData.appSettings.odata.timeZoneRemoteDiffMs);
-                                    if (AppBar.scope && typeof AppBar.scope.updateActions === "function" &&
+                                    if (AppBar.scope && AppData._userRemoteData.Message) {
+                                        Log.print(Log.l.error, "Message=" + AppData._userRemoteData.Message);
+                                        AppData.setErrorMsg(AppBar.scope.binding, AppData._userRemoteData.Message);
+                                    } else if (AppBar.scope && typeof AppBar.scope.updateActions === "function" &&
                                         (!prevUserRemoteData ||
                                          prevUserRemoteData.AnzVersendeteKontakte !== AppData._userRemoteData.AnzVersendeteKontakte)) {
                                         doUpdate = true;
