@@ -44,15 +44,40 @@
             var prevOnlinePort = AppData._persistentStates.odata.onlinePort;
             var prevOnlinePath = AppData._persistentStates.odata.onlinePath;
             var prevUseOffline = AppData._persistentStates.odata.useOffline;
+
+            var checkIPhoneBug = function () {
+                if (navigator.appVersion) {
+                    var testDevice = ["iPhone OS", "iPod OS"];
+                    for (var i = 0; i < testDevice.length; i++) {
+                        var iPhonePod = navigator.appVersion.indexOf(testDevice[i]);
+                        if (iPhonePod >= 0) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            };
+            var isAppleDevice = checkIPhoneBug();
+
             if (!prevLogin || !prevPassword || !prevHostName || !prevUseOffline) {
                 // enable edit per default on empty settings
                 this.binding.doEdit = true;
             }
             var portalLink = pageElement.querySelector("#portalLink");
+
             if (portalLink) {
-                var portalLinkUrl = (AppData._persistentStates.odata.https ? "https://" : "http://") +
+                var portalLinkUrl;
+                if (isAppleDevice) {
+                    portalLinkUrl = (AppData._persistentStates.odata.https ? "https://" : "http://") +
+                        AppData._persistentStates.odata.hostName +
+                        getResourceText("account.portalPath");
+                    portalLink.innerHTML = "<a style=\"pointer-events: none; cursor: default;\" href=\"" + portalLinkUrl + "\">" + portalLinkUrl + "</a>";
+                } else {
+                    portalLinkUrl = (AppData._persistentStates.odata.https ? "https://" : "http://") +
                     AppData._persistentStates.odata.hostName + getResourceText("account.portalPath");
                 portalLink.innerHTML = "<a href=\"" + portalLinkUrl + "\">" + portalLinkUrl + "</a>";
+            }
+
             }
             var contentarea = pageElement.querySelector(".contentarea");
 
@@ -69,7 +94,19 @@
 
             var privacyPolicyLink = pageElement.querySelector("#privacyPolicyLink");
             if (privacyPolicyLink) {
-                privacyPolicyLink.innerHTML = "<a href=\"https://" + getResourceText("login.privacyPolicyLink") + "\">" + getResourceText("login.privacyPolicyLink") + "</a>";
+                if (isAppleDevice) {
+                    privacyPolicyLink.innerHTML = "<a style=\"pointer-events: none; cursor: default;\" href=\"https://" +
+                        getResourceText("login.privacyPolicyLink") +
+                        "\">" +
+                        getResourceText("login.privacyPolicyLink") +
+                        "</a>";
+                } else {
+                    privacyPolicyLink.innerHTML = "<a href=\"https://" +
+                        getResourceText("login.privacyPolicyLink") +
+                        "\">" +
+                        getResourceText("login.privacyPolicyLink") +
+                        "</a>";
+                }
             }
 
             // define handlers
