@@ -382,8 +382,10 @@
                 restriction = {};
             }
             // predefined restriction
-            restriction.MitarbeiterID = AppData.generalData.getRecordId("Mitarbeiter");
-
+            //restriction.MitarbeiterID = AppData.generalData.getRecordId("Mitarbeiter");
+            if (restriction.MitarbeiterID) {
+                delete restriction.MitarbeiterID;
+            }
             var loadData = function () {
                 Log.call(Log.l.trace, "ListRemote.Controller.");
                 that.loading = true;
