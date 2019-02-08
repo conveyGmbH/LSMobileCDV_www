@@ -30,6 +30,7 @@
         picturesDirectorySubFolder: "",
         cameraFeatureSupported: true,
         logEnabled: false,
+        fullScreen: false,
         logLevel: 3,
         logGroup: false,
         logNoStack: true,
