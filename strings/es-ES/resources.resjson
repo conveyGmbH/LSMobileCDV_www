@@ -250,6 +250,8 @@
     "settings.on"           : "An",
     "settings.off"          : "Aus",
     "settings.individual"   : "Eigene Farben",
+    "settings.screenLayout" : "Screen layout",
+    "settings.fullScreen"   : "Full screen",
 
     "dbinit.title"          : "Datenbank öffnen",
     "dbinit.progress"       : "Fortschritt",

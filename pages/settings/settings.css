@@ -14,6 +14,7 @@
 /*.toggle-switch-parent {
     height: 40px;
 }*/
+#fullScreen .win-toggleswitch-header,
 #isDarkTheme .win-toggleswitch-header,
 #individualColors .win-toggleswitch-header,
 #shopAppBkg .win-toggleswitch-header {

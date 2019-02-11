@@ -67,6 +67,20 @@
 
             var that = this;
 
+            var checkIPhoneBug = function () {
+                if (navigator.appVersion) {
+                    var testDevice = ["iPhone OS", "iPod OS"];
+                    for (var i = 0; i < testDevice.length; i++) {
+                        var iPhonePod = navigator.appVersion.indexOf(testDevice[i]);
+                        if (iPhonePod >= 0) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            };
+            var isAppleDevice = checkIPhoneBug();
+
             this.dispose = function () {
                 if (picturesFolderSelect && picturesFolderSelect.winControl) {
                     picturesFolderSelect.winControl.data = null;
@@ -84,7 +98,11 @@
 
             var homepageLink = pageElement.querySelector("#homepageLink");
             if (homepageLink) {
+                if (isAppleDevice) {
+                    homepageLink.innerHTML = "<a style=\"pointer-events: none; cursor: default;\" href=\"https://" + getResourceText("info.homepage") + "\">" + getResourceText("info.homepage") + "</a>";
+                } else {
                 homepageLink.innerHTML = "<a href=\"https://" + getResourceText("info.homepage") + "\">" + getResourceText("info.homepage") + "</a>";
+            }
             }
 
             var setupLog = function () {

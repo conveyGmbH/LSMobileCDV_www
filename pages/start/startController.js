@@ -73,7 +73,6 @@
             };
             this.getRecordId = getRecordId;
 
-
             var showButtonElement = function (buttonElement) {
                 Log.call(Log.l.trace, "Start.Controller.");
                 var ret = null;

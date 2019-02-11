@@ -10,13 +10,23 @@
 /// <reference path="~/www/lib/convey/scripts/pageController.js" />
 /// <reference path="~/www/scripts/generalData.js" />
 /// <reference path="~/www/pages/settings/settingsService.js" />
+/// <reference path="~/plugins/cordova-plugin-device/www/device.js" />
+/// <reference path="~/plugins/cordova-plugin-fullscreen/www/AndroidFullScreen.js" />
 
 (function () {
     "use strict";
     WinJS.Namespace.define("Settings", {
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Settings.Controller.");
+
+            var isAndroid = false;
+            if (typeof device === "object" && typeof device.platform === "string") {
+                if (device.platform === "Android") {
+                    isAndroid = true;
+                }
+            }
             Application.Controller.apply(this, [pageElement, {
+                isAndroid: isAndroid,
                 showSettingsFlag: null
             }, commandList]);
 
@@ -111,6 +121,17 @@
                 clickChangeUserState: function (event) {
                     Log.call(Log.l.trace, "Settings.Controller.");
                     Application.navigateById("userinfo", event);
+                    Log.ret(Log.l.trace);
+                },
+                clickFullScreen: function (event) {
+                    Log.call(Log.l.trace, "Settings.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var toggle = event.currentTarget.winControl;
+                        if (toggle) {
+                            that.binding.generalData.fullScreen = toggle.checked;
+                            Application.ensureScreenLayout();
+                        }
+                    }
                     Log.ret(Log.l.trace);
                 },
                 clickIsDarkTheme: function (event) {

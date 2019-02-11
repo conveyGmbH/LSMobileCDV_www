@@ -250,6 +250,8 @@
     "settings.on"           : "Acceso",
     "settings.off"          : "Spento",
     "settings.individual"   : "Colori personali",
+    "settings.screenLayout" : "Disposizione dello schermo",
+    "settings.fullScreen"   : "Schermo intero",
 
     "dbinit.title"          : "Apri database",
     "dbinit.progress"       : "Progresso",
