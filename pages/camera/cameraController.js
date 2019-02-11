@@ -298,7 +298,7 @@
                     navigator.clippingCamera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                         quality: AppData.generalData.cameraQuality,
                         convertToGrayscale: AppData.generalData.cameraUseGrayscale,
-                        maxResolution: 3000000,
+                        maxResolution: 1000000,
                         autoShutter: autoShutterTime
                     });
                 } else {
@@ -316,7 +316,7 @@
                         navigator.clippingCamera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                             quality: AppData.generalData.cameraQuality,
                             convertToGrayscale: AppData.generalData.cameraUseGrayscale,
-                            maxResolution: 2500000,
+                            maxResolution: 1000000,
                             autoShutter: 0,
                             dontClip: true
                         });
