@@ -20,6 +20,7 @@
         },
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Account.Controller.");
+            var bIgnoreDuplicate = false;
             Application.Controller.apply(this, [pageElement, {
                 dataLogin: {
                     Login: AppData._persistentStates.odata.login,
@@ -121,8 +122,8 @@
                     //that.binding.doEdit -> hat sich was geändert?
                     var confirmTitle = getResourceText("account.confirmLogOff");
                     confirm(confirmTitle, function (result) {
-                        Log.print(Log.l.trace, "clickLogoff: user choice OK");
                         if (result) {
+                            Log.print(Log.l.trace, "clickLogoff: user choice OK");
                             that.binding.doEdit = false;
                             Application.navigateById("login", event);
                         } else {
@@ -309,7 +310,7 @@
                     }).then(function () {
                         var deviceID = "";
                         if (window.device && window.device.uuid) {
-                            deviceID = "DeviceID=" + window.device.uuid;
+                            deviceID = bIgnoreDuplicate ? "DeviceID=" : "TestID=" + window.device.uuid;
                         }
                         if (!err) {
                             var dataLogin = {
@@ -376,11 +377,31 @@
                                         }
                                     } else {
                                         AppBar.busy = false;
-                                        that.binding.messageText = dataLogin.MessageText;
-                                        err = { status: 401, statusText: dataLogin.MessageText };
-                                        AppData.setErrorMsg(that.binding, err);
-                                        error(err);
-                                        return WinJS.Promise.as();
+                                        var duplicate = false;
+                                        if (dataLogin.Aktion &&
+                                            dataLogin.Aktion.substr(0, 9).toUpperCase() === "DUPLICATE") {
+                                            var confirmTitle = dataLogin.MessageText;
+                                            return confirm(confirmTitle, function (result) {
+                                                if (result) {
+                                                    Log.print(Log.l.trace, "clickLogoff: user choice OK");
+                                                    bIgnoreDuplicate = true;
+                                                    return that.saveData(complete, error);
+                                                } else {
+                                                    Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");
+                                                    that.binding.messageText = dataLogin.MessageText;
+                                                    err = { status: 401, statusText: dataLogin.MessageText, duplicate: duplicate };
+                                                    AppData.setErrorMsg(that.binding, err);
+                                                    error(err);
+                                                    return WinJS.Promise.as();
+                                                }
+                                            });
+                                        } else {
+                                            that.binding.messageText = dataLogin.MessageText;
+                                            err = { status: 401, statusText: dataLogin.MessageText, duplicate: duplicate };
+                                            AppData.setErrorMsg(that.binding, err);
+                                            error(err);
+                                            return WinJS.Promise.as();
+                                        }
                                     }
                                 } else {
                                     AppBar.busy = false;

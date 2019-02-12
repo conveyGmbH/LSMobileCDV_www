@@ -24,7 +24,7 @@
         cameraMaxSize: 2560,
         useClippingCamera: false,
         autoShutterTime: 0,
-        useBarcodeActivity: false,
+        useBarcodeActivity: true,
         barcodeDevice: "",
         useExternalCamera: false,
         picturesDirectorySubFolder: "",
@@ -146,6 +146,16 @@
                 cordova.file.picturesDirectory &&
                 CameraGlobals && !CameraGlobals.listening) {
                 CameraGlobals.startListenDelayed(1000);
+            }
+        } else if (id === "login") {
+            if (device &&
+                (device.platform === "Android") &&
+                AppData._persistentStates.useBarcodeActivity &&
+                navigator &&
+                navigator.broadcast_intent_plugin &&
+                typeof navigator.broadcast_intent_plugin.listen === "function" &&
+                Barcode && !Barcode.listening) {
+                Barcode.startListenDelayed(250);
             }
         }
         Log.ret(Log.l.trace);

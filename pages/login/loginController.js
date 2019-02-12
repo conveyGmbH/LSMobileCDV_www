@@ -17,6 +17,7 @@
     WinJS.Namespace.define("Login", {
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Login.Controller.");
+            var bIgnoreDuplicate = false;
             // delete login data first
             AppData._persistentStates.odata.login = null;
             AppData._persistentStates.odata.password = null;
@@ -207,7 +208,7 @@
                     if (!err) {
                         var deviceID = "";
                         if (window.device && window.device.uuid) {
-                            deviceID = "DeviceID=" + window.device.uuid;
+                            deviceID = bIgnoreDuplicate ? "DeviceID=" : "TestID=" + window.device.uuid;
                         }
                         var dataLogin = {
                             Login: that.binding.dataLogin.Login,
@@ -269,11 +270,31 @@
                                     }
                                 } else {
                                     AppBar.busy = false;
-                                    that.binding.messageText = dataLogin.MessageText;
-                                    err = { status: 401, statusText: dataLogin.MessageText };
-                                    AppData.setErrorMsg(that.binding, err);
-                                    error(err);
-                                    return WinJS.Promise.as();
+                                    var duplicate = false;
+                                    if (dataLogin.Aktion &&
+                                        dataLogin.Aktion.substr(0, 9).toUpperCase() === "DUPLICATE") {
+                                        var confirmTitle = dataLogin.MessageText;
+                                        return confirm(confirmTitle, function (result) {
+                                            if (result) {
+                                                Log.print(Log.l.trace, "clickLogoff: user choice OK");
+                                                bIgnoreDuplicate = true;
+                                                return that.saveData(complete, error);
+                                            } else {
+                                                Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");
+                                                that.binding.messageText = dataLogin.MessageText;
+                                                err = { status: 401, statusText: dataLogin.MessageText, duplicate: duplicate };
+                                                AppData.setErrorMsg(that.binding, err);
+                                                error(err);
+                                                return WinJS.Promise.as();
+                                            }
+                                        });
+                                    } else {
+                                        that.binding.messageText = dataLogin.MessageText;
+                                        err = { status: 401, statusText: dataLogin.MessageText, duplicate: duplicate };
+                                        AppData.setErrorMsg(that.binding, err);
+                                        error(err);
+                                        return WinJS.Promise.as();
+                                    }
                                 }
                             } else {
                                 AppBar.busy = false;
@@ -326,6 +347,25 @@
             };
             this.saveData = saveData;
 
+            var autoLogin = function() {
+                Log.call(Log.l.trace, "Login.Controller.");
+                that.binding.dataLogin.Login = Login.nextLogin;
+                that.binding.dataLogin.Password = Login.nextPassword;
+                Login.nextLogin = null;
+                Login.nextPassword = null;
+                if (that.binding.dataLogin.Login &&
+                    that.binding.dataLogin.Password) {
+                    that.binding.dataLogin.privacyPolicyFlag = true;
+                    that.binding.dataLogin.privacyPolicydisabled = true;
+                    AppBar.triggerDisableHandlers();
+                    WinJS.Promise.timeout(100).then(function () {
+                        Application.navigateById("start", null, true);
+                    });
+                }
+                Log.ret(Log.l.trace);
+            }
+            that.autoLogin = autoLogin;
+
             that.processAll().then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Binding wireup page complete");
@@ -337,6 +377,9 @@
             }).then(function () {
                 Log.print(Log.l.trace, "Appheader refresh complete");
                 Application.pageframe.hideSplashScreen();
+                if (Login.nextLogin || Login.nextPassword) {
+                    that.autoLogin();
+                }
             });
             Log.ret(Log.l.trace);
         })
