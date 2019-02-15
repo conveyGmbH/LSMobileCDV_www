@@ -210,6 +210,7 @@
                     return;
                 }
                 WinJS.Promise.timeout(0).then(function () {
+                    var tagLogin = "#LI:";
                     var tagVcard = "BEGIN:VCARD";
                     var tagLsad = "#LSAD";
                     var tagLs64 = "#LS64";
@@ -229,6 +230,14 @@
                         Log.print(Log.l.trace, "endcoded VCARD with #LS64 prefix, save already encoded base 64 string with #LSAD prefix");
                         isVcard = true;
                         finalBarcode = tagLsad + result.text.substr(tagLs64.length);
+                    } else if (result.text.substr(0, tagLogin.length) === tagLogin) {
+                        Log.print(Log.l.trace, "Login with #LI: prefix");
+                        var pos = result.text.indexOf("/");
+                        Login.nextLogin = result.text.substr(tagLogin.length, pos - tagLogin.length);
+                        Login.nextPassword = result.text.substr(pos + 1);
+                        Application.navigateById("login");
+                        Log.ret(Log.l.trace, "navigated to login page!");
+                        return;
                     } else if (result.text.indexOf("\n") >= 0) {
                         Log.print(Log.l.trace, "save string data as plain text address");
                         isVcard = true;

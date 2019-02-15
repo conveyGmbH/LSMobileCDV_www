@@ -858,6 +858,10 @@
     });
 
     // forward declarations used in binding converters
+    WinJS.Namespace.define("Login", {
+        nextLogin: null,
+        nextPassword: null
+    });
     WinJS.Namespace.define("Settings", {
         getInputBorderName: null
     });
@@ -871,25 +875,49 @@
         onBarcodeSuccess: function (result, repeatCount) {
             repeatCount = repeatCount || 0;
             Log.call(Log.l.trace, "Barcode.", "repeatCount=" + repeatCount + " result=" + result);
-            if (Application.getPageId(nav.location) === "barcode") {
-                if (Barcode.dontScan &&
-                    AppBar.scope &&
-                    typeof AppBar.scope.onBarcodeSuccess === "function") {
-                    Barcode.dontScan = false;
-                    AppBar.scope.onBarcodeSuccess(result);
+            var tagLogin = "#LI:";
+            if (result && result.text && result.text.substr(0, tagLogin.length) === tagLogin) {
+                Log.print(Log.l.trace, "Login with #LI: prefix");
+                var pos = result.text.indexOf("/");
+                Login.nextLogin = result.text.substr(tagLogin.length, pos - tagLogin.length);
+                Login.nextPassword = result.text.substr(pos + 1);
+                if (Application.getPageId(nav.location) === "login") {
+                    if (AppBar.scope &&
+                        typeof AppBar.scope.autoLogin === "function") {
+                        WinJS.Promise.timeout(0).then(function() {
+                            AppBar.scope.autoLogin();
+                        });
+                    } else {
+                        Barcode.waitingScans++;
+                        WinJS.Promise.timeout(250).then(function () {
+                            Barcode.waitingScans--;
+                            Barcode.onBarcodeSuccess(result, repeatCount + 1);
+                        });
+                    }
                 } else {
-                    Barcode.waitingScans++;
+                    Application.navigateById("login");
+                }
+            } else {
+                if (Application.getPageId(nav.location) === "barcode") {
+                    if (Barcode.dontScan &&
+                        AppBar.scope &&
+                        typeof AppBar.scope.onBarcodeSuccess === "function") {
+                        Barcode.dontScan = false;
+                        AppBar.scope.onBarcodeSuccess(result);
+                    } else {
+                        Barcode.waitingScans++;
+                        WinJS.Promise.timeout(250).then(function () {
+                            Barcode.waitingScans--;
+                            Barcode.onBarcodeSuccess(result, repeatCount + 1);
+                        });
+                    }
+                } else {
+                    Barcode.dontScan = true;
+                    Application.navigateById("barcode");
                     WinJS.Promise.timeout(250).then(function () {
-                        Barcode.waitingScans--;
                         Barcode.onBarcodeSuccess(result, repeatCount + 1);
                     });
                 }
-            } else {
-                Barcode.dontScan = true;
-                Application.navigateById("barcode");
-                WinJS.Promise.timeout(250).then(function () {
-                    Barcode.onBarcodeSuccess(result, repeatCount + 1);
-                });
             }
             if (!repeatCount) {
                 Barcode.startListenDelayed(0);
