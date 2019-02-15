@@ -199,7 +199,7 @@
                 }, function (errorResponse) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
-                    Log.print(Log.l.error, "loginRequest error: " + AppData.getErrorMsgFromResponse(errorResponse));
+                    Log.print(Log.l.info, "loginRequest error: " + AppData.getErrorMsgFromResponse(errorResponse) + " ignored for compatibility!");
                     // ignore this error here for compatibility!
                     return WinJS.Promise.as();
                 }, {
@@ -305,6 +305,7 @@
                             }
                         }, function (errorResponse) {
                             AppBar.busy = false;
+                            err = errorResponse;
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
                             AppData.setErrorMsg(that.binding, errorResponse);

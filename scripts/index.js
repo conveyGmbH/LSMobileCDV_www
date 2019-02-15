@@ -24,7 +24,7 @@
         cameraMaxSize: 2560,
         useClippingCamera: false,
         autoShutterTime: 0,
-        useBarcodeActivity: true,
+        useBarcodeActivity: false,
         barcodeDevice: "",
         useExternalCamera: false,
         picturesDirectorySubFolder: "",
