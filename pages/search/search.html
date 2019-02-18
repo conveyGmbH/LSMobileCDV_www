@@ -147,6 +147,21 @@
                                 </label>
                             </div>
                         </div>
+                        <div class="field_line field_line_even">
+                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'search.importfilter'}"></span>
+                            <div class="input_group">
+                                <label class="radio">
+                                    <input type="radio" name="ImportFilter" value="1" class="win-checkbox"
+                                           data-win-bind="checked: ImportFilter1">
+                                    <span data-win-res="{textContent: 'search.importFilterOwnContact'}"></span>
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="ImportFilter" value="0" class="win-checkbox"
+                                           data-win-bind="checked: ImportFilter0">
+                                    <span data-win-res="{textContent: 'search.importFilterAllContact'}"></span>
+                                </label>
+                            </div>
+                        </div>
                         <div class="line-separator"></div>
                         <div class="error-message"
                                 data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>

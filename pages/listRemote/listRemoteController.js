@@ -381,9 +381,10 @@
             if (!restriction) {
                 restriction = {};
             }
-            // predefined restriction
-            //restriction.MitarbeiterID = AppData.generalData.getRecordId("Mitarbeiter");
-            if (restriction.MitarbeiterID) {
+            // predefined restriction that.binding.restriction.importFilter
+            if (!restriction.importFilter) {
+                restriction.MitarbeiterID = AppData.generalData.getRecordId("Mitarbeiter");
+            } else {
                 delete restriction.MitarbeiterID;
             }
             var loadData = function () {

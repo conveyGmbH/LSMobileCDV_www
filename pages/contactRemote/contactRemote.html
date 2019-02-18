@@ -19,7 +19,7 @@
                             <span class="id-field"
                                   data-win-bind="style.display: dataContact.CreatorRecID  Binding.Converter.toDisplay">
                                 <span data-win-bind="textContent: dataContact.CreatorSiteID"></span>/<span data-win-bind="textContent: dataContact.CreatorRecID"></span>
-                                <!--<span data-win-bind="textContent: dataContact.Mitarbeiter_Vorname"></span> <span data-win-bind="textContent: dataContact.Mitarbeiter_Nachname"></span>-->
+                                <!--<span data-win-bind="style.display: importUser Binding.Converter.toDisplay textContent: dataContact.Mitarbeiter_Vorname"></span> <span data-win-bind="style.display: importUser Binding.Converter.toDisplay textContent: dataContact.Mitarbeiter_Nachname"></span>-->
                             </span>
                             <span class="id-field"
                                   data-win-bind="style.display: dataContact.CreatorRecID  Binding.Converter.toDisplayNone">
@@ -33,11 +33,17 @@
                          data-win-bind="style.display: dataContact.KontaktVIEWID Binding.Converter.toDisplay">
                         <div class="line-separator"
                                 data-win-bind="style.display: showModified Binding.Converter.toDisplay"></div>
-                        <div class="field_line field_line_even"
+                        <div class="field_line field_line_odd"
                                 data-win-bind="style.display: showModified Binding.Converter.toDisplay">
                             <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.modifiedOn'}"></span>
                             <span class="label landscape_only" data-win-res="{textContent: 'contact.modifiedOn'}"></span>
                             <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.ModifiedTS Binding.Converter.toDateString"></span>
+                        </div>
+                        <div class="field_line field_line_even"
+                             data-win-bind="style.display: importUser Binding.Converter.toDisplay">
+                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.editer'}"></span>
+                            <span class="label landscape_only" data-win-res="{textContent: 'contact.editer'}"></span>
+                            <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.Mitarbeiter_Fullname Binding.Converter.toDisplay textContent: dataContact.Mitarbeiter_Fullname"></span>
                         </div>
                         <div class="line-separator"></div>
                         <div class="field_line field_line_odd">

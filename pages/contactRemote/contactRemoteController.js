@@ -22,7 +22,8 @@
                 InitAnredeItem: { InitAnredeID: 0, TITLE: "" },
                 InitLandItem: { InitLandID: 0, TITLE: "" },
                 showPhoto: false,
-                showModified: false
+                showModified: false,
+                importUser: false
             }, commandList]);
             this.img = null;
 
@@ -100,6 +101,10 @@
                 } else {
                     that.binding.showModified = true;
                 }
+                if (AppData.getRecordId("Mitarbeiter") !== newDataContact.MitarbeiterID) {
+                    that.binding.importUser = true;
+                }
+                that.binding.dataContact.Mitarbeiter_Fullname = (that.binding.dataContact.Mitarbeiter_Vorname ? (that.binding.dataContact.Mitarbeiter_Vorname + " ") : "") + (that.binding.dataContact.Mitarbeiter_Nachname ? that.binding.dataContact.Mitarbeiter_Nachname : "");
                 AppBar.modified = false;
                 AppBar.notifyModified = prevNotifyModified;
             }

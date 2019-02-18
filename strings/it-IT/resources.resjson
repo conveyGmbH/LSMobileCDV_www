@@ -40,6 +40,7 @@
     "command.share"			: "Condividere",
     "command.qrcode"		: "QR-Code",
     "command.barcodeEdit"	: "Inserisci barcode",
+    "command.resetRestriction" : "Elimina",
 
     "tooltip.backward"      : "Pagina precedente",
     "tooltip.edit"          : "Modifica Record attuale",
@@ -80,6 +81,7 @@
     "tooltip.save"			: "Salvare",
     "tooltip.share"			: "Condividere",
     "tooltip.qrcode"		: "Condividi come QR-Code o VCard",
+	"tooltip.resetRestriction" : "Elimina filtro",
     "tooltip.barcodeEdit"	: "Inserimento manuale del codice a barre",
 
     "start.title"           : "Pagina iniziale",
@@ -191,6 +193,9 @@
     "search.default"        : "Default",
     "search.edited"         : "Bearbeitet",
     "search.notEdited"      : "Unbearbeitet",
+	"search.importFilterOwnContact" : "Default",
+    "search.importFilterAllContact" : "Tutti i contatti",
+	"search.importfilter"   : "Filtro contatti",
 
     "listLocal.title"       : "Lista dei contatti locali",
     "listLocal.comment"     : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",

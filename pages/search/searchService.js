@@ -23,7 +23,8 @@
             useErfassungsdatum: false,
             usemodifiedTS: false,
             Erfassungsart: 0,
-            Bearbeitet: 0
+            Bearbeitet: 0,
+            ImportFilter: 0
         },
         _Erfassungsart: 0,
         Erfassungsart: {
@@ -61,6 +62,35 @@
             set: function (checked) {
                 if (checked) {
                     this.Erfassungsart = 2;
+                }
+            }
+        },
+        _ImportFilter: 0,
+        ImportFilter: {
+            get: function () {
+                return Search._ImportFilte;
+            },
+            set: function (value) {
+                Search._ImportFilte = value;
+            }
+        },
+        ImportFilter0: {
+            get: function () {
+                return this.Erfassungsart === 0;
+            },
+            set: function (checked) {
+                if (checked) {
+                    this.Erfassungsart = 0;
+                }
+            }
+        },
+        ImportFilter1: {
+            get: function () {
+                return this.Erfassungsart === 1;
+            },
+            set: function (checked) {
+                if (checked) {
+                    this.Erfassungsart = 1;
                 }
             }
         }

@@ -20,7 +20,9 @@
                 Erfassungsart2: Search.Erfassungsart2,
                 Bearbeitet0: Search.Bearbeitet0,
                 Bearbeitet1: Search.Bearbeitet1,
-                Bearbeitet2: Search.Bearbeitet2
+                Bearbeitet2: Search.Bearbeitet2,
+                ImportFilter0: Search.ImportFilter0,
+                ImportFilter1: Search.ImportFilter1
             }, commandList]);
             this.employees = null;
 
@@ -125,6 +127,19 @@
                     if (event.currentTarget) {
                         that.binding.restriction.ModifiedTS = event.currentTarget.current;
                     }
+                },
+                clickResetRestriction: function () {
+                    Log.call(Log.l.trace, "InfodeskEmpList.Controller.");
+                    that.binding.restriction = getEmptyDefaultValue(Search.defaultValue);
+                    if (Erfassungsdatum && Erfassungsdatum.winControl) {
+                        Erfassungsdatum.winControl.disabled = true;
+                    }
+                    if (modifiedTS && modifiedTS.winControl) {
+                        modifiedTS.winControl.disabled = true;
+                    }
+                    AppData.setRestriction("Kontakt", that.binding.restriction);
+                    that.loadData();
+                    Log.ret(Log.l.trace);
                 }
             };
 
@@ -162,6 +177,18 @@
                             Search.Bearbeitet = radios[j].value;
                             break;
                         }
+                    }
+
+                    for (var k = 0; k < radios.length; k++) {
+                        if (radios[k].name === "ImportFilter") {
+                            Search.ImportFilter = radios[k].checked;
+                            //break;
+                        }
+                    }
+                    if (Search.ImportFilter === true) {
+                        that.binding.restriction.importFilter = 1;
+                    } else {
+                        that.binding.restriction.importFilter = false;
                     }
                     if (Search.Bearbeitet === "1") {
                         that.binding.restriction.Nachbearbeitet = "NULL";
@@ -246,6 +273,12 @@
                             radios[1].checked = true;
                         } else {
                             radios[2].checked = true;
+                        }
+
+                        if (!savedRestriction.MitarbeiterID) {
+                            radios[3].checked = true;
+                        } else {
+                            radios[4].checked = true;
                         }
                         /*if (savedRestriction.Nachbearbeitet === "NULL") {
                             radios[3].checked = true;

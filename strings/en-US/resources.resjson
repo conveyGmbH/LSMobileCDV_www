@@ -40,6 +40,7 @@
     "command.share"			: "Share",
     "command.qrcode"		: "QR-Code",
     "command.barcodeEdit"	: "Enter barcode",
+	"command.resetRestriction" : "Delete Filters",
 
     "tooltip.backward"      : "Browse back",
     "tooltip.edit"          : "Edit current record",
@@ -81,6 +82,7 @@
     "tooltip.share"			: "Share",
     "tooltip.qrcode"		: "Share as QR-Code or VCard",
     "tooltip.barcodeEdit"	: "Enter barcode manually",
+    "tooltip.resetRestriction" : "Delete Filters",
 
     "start.title"           : "Start Page",
     "start.comment"         : "On this page, use the buttons to go to additional pages!",
@@ -191,6 +193,9 @@
     "search.default"        : "Default",
     "search.edited"         : "Edited",
     "search.notEdited"      : "Not Edited",
+	"search.importFilterOwnContact" : "Default",
+    "search.importFilterAllContact" : "All contacts",
+	"search.importfilter"   : "Contact filter",
 
     "listLocal.title"       : "List of local contacts",
     "listLocal.comment"     : "On this page, use the Back button to go back!",
