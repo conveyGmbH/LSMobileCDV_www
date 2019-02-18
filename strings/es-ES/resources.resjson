@@ -337,6 +337,7 @@
     "info.log6"             : "Details",
     "info.loggroup"         : "Gruppierung",
     "info.lognostack"       : "Funktionen wegoptimiert",
+    "info.logWinJS"         : "Framework protocol",
     "info.cameraOptions"    : "Kameraoptionen",
     "info.cameraQuality"    : "Qualität",
     "info.cameraUseGrayscale" : "Graustufen",

@@ -50,7 +50,9 @@
                         <input id="cameraQuality" class="input_field win-range"
                                type="range" min="0" max="100" step="1"
                                data-win-bind="value: generalData.cameraQuality"
-                               onchange="AppBar.handleEvent('change', 'changedCameraQuality', event)" />
+                               onchange="AppBar.handleEvent('change', 'changedCameraQuality', event)"
+                               onmouseup="AppBar.handleEvent('change', 'changedCameraQuality', event)"
+                               />
                     </div>
                     <div class="field_line field_line_odd">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.cameraUseGrayscale'}"></span>
@@ -82,7 +84,9 @@
                         <input id="autoShutterTime" class="input_field win-range"
                                type="range" min="0" max="10000" step="100"
                                data-win-bind="value: generalData.autoShutterTime"
-                               onchange="AppBar.handleEvent('change', 'changedAutoShutterTime', event)" />
+                               onchange="AppBar.handleEvent('change', 'changedAutoShutterTime', event)"
+                               onmouseup="AppBar.handleEvent('change', 'changedAutoShutterTime', event)"
+                               />
                     </div>
                     <div class="header-separator float-left"></div>
                     <div class="content-header float-left">
@@ -194,7 +198,9 @@
                         <input id="replInterval" class="input_field win-range"
                                type="range" min="5" max="120" step="1"
                                data-win-bind="value: appSettings.odata.replInterval"
-                               onchange="AppBar.handleEvent('change', 'changedReplInterval', event)" />
+                               onchange="AppBar.handleEvent('change', 'changedReplInterval', event)"
+                               onmouseup="AppBar.handleEvent('change', 'changedReplInterval', event)"
+                               />
                     </div>
                     <div class="field_line field_line_full">
                         <span class="large_field"
@@ -255,7 +261,9 @@
                         <input id="logLevel" class="input_field win-range"
                                type="range" min="1" max="6" step="1"
                                data-win-bind="value: generalData.logLevel"
-                               onchange="AppBar.handleEvent('change', 'changedLogLevel', event)" />
+                               onchange="AppBar.handleEvent('change', 'changedLogLevel', event)"
+                               onmouseup="AppBar.handleEvent('change', 'changedLogLevel', event)"
+                               />
                     </div>
                     <div class="line-separator"></div>
                     <div class="field_line field_line_odd" data-win-bind="style.display: generalData.logEnabled Binding.Converter.toDisplay">
@@ -277,6 +285,18 @@
                                  data-win-control="WinJS.UI.ToggleSwitch"
                                  data-win-bind="winControl.checked: generalData.logNoStack; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
                                  onchange="AppBar.handleEvent('change', 'clickLogNoStack', event)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="field_line field_line_odd" data-win-bind="style.display: generalData.logEnabled Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.logWinJS'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.logWinJS'}"></span>
+                        <div class="input_field toggle-switch-parent">
+                            <div id="logGroup" class="input_field"
+                                 data-win-control="WinJS.UI.ToggleSwitch"
+                                 data-win-bind="winControl.checked: generalData.logWinJS; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
+                                 onchange="AppBar.handleEvent('change', 'clickLogWinJS', event)">
                             </div>
                         </div>
                     </div>

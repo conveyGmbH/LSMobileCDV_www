@@ -344,6 +344,7 @@
     "info.log6"             : "Dettagli",
     "info.loggroup"         : "Raggruppamento",
     "info.lognostack"       : "Ottimizzazione call stack",
+    "info.logWinJS"         : "Protocollo di Framework",
     "info.cameraOptions"    : "Opzioni fotocamera",
     "info.cameraQuality"    : "Qualità",
     "info.cameraUseGrayscale" : "Scala di grigi",

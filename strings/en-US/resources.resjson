@@ -342,6 +342,7 @@
     "info.log4"             : "User trace",
     "info.log5"             : "Drawing functions",
     "info.log6"             : "Details",
+    "info.logWinJS"         : "Framework protocol",
     "info.loggroup"         : "Group",
     "info.lognostack"       : "Optimized call stack",
     "info.cameraOptions"    : "Camera options",

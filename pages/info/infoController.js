@@ -113,7 +113,8 @@
                         target: that.binding.generalData.logTarget,
                         level: that.binding.generalData.logLevel,
                         group: that.binding.generalData.logGroup,
-                        noStack: that.binding.generalData.logNoStack
+                        noStack: that.binding.generalData.logNoStack,
+                        logWinJS: that.binding.generalData.logWinJS
                     };
                 }
                 Log.ret(Log.l.trace);
@@ -314,6 +315,16 @@
                         var toggle = event.currentTarget.winControl;
                         if (toggle) {
                             that.binding.generalData.logNoStack = toggle.checked;
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                clickLogWinJS: function (event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var toggle = event.currentTarget.winControl;
+                        if (toggle) {
+                            that.binding.generalData.logWinJS = toggle.checked;
                         }
                     }
                     Log.ret(Log.l.trace);
