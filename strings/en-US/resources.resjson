@@ -270,7 +270,7 @@
     "login.comment"         : "Please enter your username and password. If you don't have account informations yet, you need to register for a new account!",
     "login.login"           : "User",
     "login.password"        : "Password",
-	  "login.privacyPolicy"   : "I have read the privacy statement and consent to my data being electronically processed and saved. ",
+	"login.privacyPolicy"   : "I have read the privacy statement and consent to my data being electronically processed and saved. ",
     "login.privacyPolicyLink": "www.convey.de/privacy-policy/",
     "login.progress"        : "Progress",
     "login.unknown"         : "Specified user not found!",

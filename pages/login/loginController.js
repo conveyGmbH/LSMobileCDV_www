@@ -64,11 +64,7 @@
 
             var privacyPolicyLink = pageElement.querySelector("#privacyPolicyLink");
             if (privacyPolicyLink) {
-                if (isAppleDevice) {
-                    privacyPolicyLink.innerHTML = "<a style=\"pointer-events: none; cursor: default;\" href=\"https://" + getResourceText("login.privacyPolicyLink") + "\">" + getResourceText("login.privacyPolicyLink") + "</a>";
-                } else {
                 privacyPolicyLink.innerHTML = "<a href=\"https://" + getResourceText("login.privacyPolicyLink") + "\">" + getResourceText("login.privacyPolicyLink") + "</a>";
-            }
             }
 
             var resultConverter = function (item, index) {
