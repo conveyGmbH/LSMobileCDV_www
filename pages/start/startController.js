@@ -77,18 +77,21 @@
                 Log.call(Log.l.trace, "Start.Controller.");
                 var ret = null;
                 if (buttonElement) {
-                    var headerElements = listView.querySelectorAll(".tile-header");
-                    for (var i = 0; i < headerElements.length; i++) {
-                        var headerElement = headerElements[i];
-                        if (headerElement.style &&
-                            headerElement.style.visibility !== "visible") {
-                            headerElement.style.visibility = "visible";
-                        }
-                    }
                     if (buttonElement.parentElement && buttonElement.parentElement.style &&
                         buttonElement.parentElement.style.visibility !== "visible") {
                         ret = WinJS.Promise.timeout(Math.floor(Math.random() * 150)).then(function() {
                             buttonElement.parentElement.style.visibility = "visible";
+                            var tile = buttonElement.parentElement;
+                            while (tile && !WinJS.Utilities.hasClass(tile, "tile")) {
+                                tile = tile.parentElement;
+                            }
+                            if (tile) {
+                                var headerElement = tile.querySelector(".tile-content-inner");
+                                if (headerElement && headerElement.style &&
+                                    headerElement.style.visibility !== "visible") {
+                                    headerElement.style.visibility = "visible";
+                                }
+                            }
                             return WinJS.UI.Animation.enterPage(buttonElement);
                         });
                     }
