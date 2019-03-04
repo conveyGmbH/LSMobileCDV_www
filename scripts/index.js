@@ -177,10 +177,12 @@
             AppData._curGetUserRemoteDataId = 0;
             AppData.getUserRemoteData();
         });
+        WinJS.Promise.timeout(50).then(function() {
         if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
             var numFastReqs = 1;
             AppRepl.replicator.run(numFastReqs);
         }
+        });
         Log.ret(Log.l.trace);
     };
     pageframe.onOfflineHandler = function (eventInfo) {
