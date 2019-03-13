@@ -566,8 +566,8 @@
     "mandatory.doContactMandatory"  : "afficher message",
     "mandatory.count"  : "Nombre",
 
-	  "barcodeAdministration.title" : "Barcode",
-	  "barcodeAdministration.count" : "Nombre",
+	"barcodeAdministration.title" : "Barcode",
+	"barcodeAdministration.count" : "Nombre",
 
     "eventcreation.title" : "Créer un événement",
 
@@ -582,9 +582,9 @@
 
     "localevents.title" : "Événements",
   
-  "employeegenpwlist.title" : "Mots de passe employés pré-générés",
-      "employeegenpwlist.login" : "nom de connexion",
-      "employeegenpwlist.password" : "mot de passe",
+    "employeegenpwlist.title" : "Mots de passe employés pré-générés",
+    "employeegenpwlist.login" : "nom de connexion",
+    "employeegenpwlist.password" : "mot de passe",
     "employeegenpwlist.passwordchanged" : "Le mot de passe a été changé",
     
 	"pdfExport.title" : "Export PDF",

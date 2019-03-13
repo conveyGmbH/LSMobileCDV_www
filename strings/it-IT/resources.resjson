@@ -457,9 +457,9 @@
     "event.showHideSketch"  :  "Attacchi",
     "event.showHideNavigationPages" : "pagina di navigazione",
     "event.showHideBarcodeScan" : "Barcode",
-	  "event.showHideCamera"  : "Camera",
+	"event.showHideCamera"  : "Camera",
     "event.productMail"     : "Posta elettronica del prodotto: \n Solo una spedizione e-mail",
-	  "event.thankYouMail"    : "Grazie posta elettronica: \n Solo una spedizione e-mail",
+	"event.thankYouMail"    : "Grazie posta elettronica: \n Solo una spedizione e-mail",
     "event.note"            : "suggerimento",
     "event.appInfo"         : "Affinché le modifiche abbiano effetto, si prega di riavviare l´APP",
 
@@ -531,7 +531,7 @@
 
     "mailing.title"         : "Standard Mail",
     "mailing.contactinfo"   : "If you would like a mailing, please call +49 (0)89 95 45 867 - 55 or write us an ",
-	  "mailing.info"          : "Descrizione",
+	"mailing.info"          : "Descrizione",
     "mailing.event"         : "Evento",
     "mailing.language"      : "Lingua",
     "mailing.sender"        : "Mittente",
@@ -542,7 +542,7 @@
     "mailing.mailtext"      : "Testo della mail",
     "mailing.standard"      : "standard",
 
-	  "mailingProduct.title"         : "Mailing Prodotto",
+	"mailingProduct.title"         : "Mailing Prodotto",
     "mailingProduct.event"         : "Evento",
     "mailingProduct.language"      : "Lingua",
     "mailingProduct.sender"        : "Mittente",
@@ -583,8 +583,8 @@
     "localevents.title" : "Eventi",
 
     "employeegenpwlist.title" : "Password dei dipendenti pre-generate",
-        "employeegenpwlist.login" : "nome di accesso",
-        "employeegenpwlist.password" : "password",
+    "employeegenpwlist.login" : "nome di accesso",
+    "employeegenpwlist.password" : "password",
     "employeegenpwlist.passwordchanged" : "La password è stata cambiata",
 
 	"pdfExport.title" : "Esportazione PDF",
