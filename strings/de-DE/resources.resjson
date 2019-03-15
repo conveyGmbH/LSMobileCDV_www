@@ -386,8 +386,8 @@
 
     "infodeskEmpList.title" : "Benutzerkonten",
     "infodeskEmpList.count" : "Anzahl",
-	  "infodeskEmpList.name"  : "Name",
-	  "infodeskEmpList.firstName" : "Vorname",
+	"infodeskEmpList.name"  : "Name",
+	"infodeskEmpList.firstName" : "Vorname",
     "infodeskEmpList.login" : "Benutzer",
 	"infodeskEmpList.firstNameDesc"  : "Vorname ↓",
 	"infodeskEmpList.firstNameAsc"  : "Vorname ↑",
@@ -434,7 +434,7 @@
     "label.mailingProduct"  : "Produkt E-Mail",
     "label.infodesk"        : "Infodesk",
     "label.mandatory"       : "Pflichtfelder",
-	  "label.barcodeAdministration" : "Barcode",
+	"label.barcodeAdministration" : "Barcode",
     "label.eventcreation"   : "Veranstaltung erstellen",
     "label.products"        : "Produkte",
     "label.localevents"     : "Veranstaltung erstellen",
@@ -583,8 +583,8 @@
     "localevents.title" : "Veranstaltungen", 
 
 	"employeegenpwlist.title" : "Mitarbeiter generierte Passwörter",
-		"employeegenpwlist.login" : "Loginname",
-		"employeegenpwlist.password" : "Passwort",
+	"employeegenpwlist.login" : "Loginname",
+	"employeegenpwlist.password" : "Passwort",
     "employeegenpwlist.passwordchanged" : "Passwort wurde geändert",
 
 	"pdfExport.title" : "PDF Export",

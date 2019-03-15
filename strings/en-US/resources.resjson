@@ -389,10 +389,10 @@
     "infodeskEmpList.name"  : "Name",
     "infodeskEmpList.firstName" : "First name",
     "infodeskEmpList.login" : "User",
-	  "infodeskEmpList.firstNameDesc"  : "First name ↓",
-	  "infodeskEmpList.firstNameAsc"  : "First name ↑",
-	  "infodeskEmpList.nameDesc"  : "Name ↓",
-	  "infodeskEmpList.nameAsc"  : "Name ↑",
+	"infodeskEmpList.firstNameDesc"  : "First name ↓",
+	"infodeskEmpList.firstNameAsc"  : "First name ↑",
+	"infodeskEmpList.nameDesc"  : "Name ↓",
+	"infodeskEmpList.nameAsc"  : "Name ↑",
 
     "userinfo.title"        : "User Info",
     "userinfo.present"      : "I'm on site now!",
@@ -434,7 +434,7 @@
     "label.mailingProduct"  : "Product Mail",
     "label.infodesk"        : "Infodesk",
     "label.mandatory"       : "Mandatory Fields",
-	  "label.barcodeAdministration" : "Barcode",
+	"label.barcodeAdministration" : "Barcode",
     "label.eventcreation"   : "Create an event",
     "label.products"        : "Products",
     "label.localevents"     : "Create event",
@@ -559,7 +559,7 @@
     "productlist.comment"   : "On this page, use the buttons to go to additional pages!",
     "productlist.count"     : "Count",
 
-	  "mandatory.title"       : "Mandatory fields",
+	"mandatory.title"       : "Mandatory fields",
     "mandatory.contact"     : "Mandatory fields in Contact",
     "mandatory.questionnaire" : "Mandatory fields in Questionnaire",
     "mandatory.doQuestionnaireMandatory"  : "Show message",
@@ -583,8 +583,8 @@
     "localevents.title" : "Events",
 
     "employeegenpwlist.title" : "Pre-generated employee passwords",
-        "employeegenpwlist.login" : "Loginname",
-        "employeegenpwlist.password" : "Password",
+    "employeegenpwlist.login" : "Loginname",
+    "employeegenpwlist.password" : "Password",
     "employeegenpwlist.passwordchanged" : "Password was changed",
 
 	"pdfExport.title" : "PDF Export",
