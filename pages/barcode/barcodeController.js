@@ -295,7 +295,7 @@
                     typeof navigator.broadcast_intent_plugin.scan === "function") {
                     Barcode.dontScan = true;
                     Log.print(Log.l.trace, "Android: calling  navigator.broadcast_intent_plugin.start...");
-                    navigator.broadcast_intent_plugin.scan(that.onBarcodeSuccess, that.onBarcodeError);
+                    navigator.broadcast_intent_plugin.scan(Barcode.onBarcodeSuccess, Barcode.onBarcodeError);
                 } else if (cordova && cordova.plugins && cordova.plugins.barcodeScanner &&
                     typeof cordova.plugins.barcodeScanner.scan === "function") {
 
