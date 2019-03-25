@@ -227,10 +227,10 @@
                                 });
                             }
                             if (device &&
-                                (device.platform === "Android" || device.platform === "windows") &&
-                                AppData.generalData.useBarcodeActivity &&
-                                AppData.generalData.barcodeDevice &&
-                                !Barcode.listening) {
+                                (device.platform === "Android" ||
+                                 device.platform === "windows" &&
+                                 AppData.generalData.barcodeDevice) &&
+                                AppData.generalData.useBarcodeActivity) {
                                 Barcode.startListenDelayed(250);
                             }
                         } else if (Barcode.listening) {
