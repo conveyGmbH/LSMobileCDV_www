@@ -192,6 +192,7 @@
 
             var onBarcodeSuccess = function (result) {
                 Log.call(Log.l.trace, "Barcode.Controller.");
+                Barcode.dontScan = false;
                 if (result.cancelled) {
                     // go back to start
                     WinJS.Promise.timeout(0).then(function () {
@@ -271,6 +272,7 @@
 
             var onBarcodeError = function (error) {
                 Log.call(Log.l.error, "Barcode.Controller.");
+                Barcode.dontScan = false;
                 that.updateStates({ errorMessage: JSON.stringify(error) });
 
                 WinJS.Promise.timeout(2000).then(function () {
@@ -291,8 +293,9 @@
                     navigator &&
                     navigator.broadcast_intent_plugin &&
                     typeof navigator.broadcast_intent_plugin.scan === "function") {
+                    Barcode.dontScan = true;
                     Log.print(Log.l.trace, "Android: calling  navigator.broadcast_intent_plugin.start...");
-                    navigator.broadcast_intent_plugin.scan(Barcode.onBarcodeSuccess, Barcode.onBarcodeError);
+                    navigator.broadcast_intent_plugin.scan(that.onBarcodeSuccess, that.onBarcodeError);
                 } else if (cordova && cordova.plugins && cordova.plugins.barcodeScanner &&
                     typeof cordova.plugins.barcodeScanner.scan === "function") {
 

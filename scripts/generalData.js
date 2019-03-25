@@ -902,7 +902,6 @@
                     if (Barcode.dontScan &&
                         AppBar.scope &&
                         typeof AppBar.scope.onBarcodeSuccess === "function") {
-                        Barcode.dontScan = false;
                         AppBar.scope.onBarcodeSuccess(result);
                     } else {
                         Barcode.waitingScans++;
@@ -931,7 +930,6 @@
                 if (Barcode.dontScan &&
                     AppBar.scope &&
                     typeof AppBar.scope.onBarcodeError === "function") {
-                    Barcode.dontScan = false;
                     AppBar.scope.onBarcodeError(error);
                 } else {
                     Barcode.waitingScans++;
