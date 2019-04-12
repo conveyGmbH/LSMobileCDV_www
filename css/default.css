@@ -1239,7 +1239,7 @@ input.win-textbox, input.win-checkbox, input.win-radio, textarea.win-textarea, s
     */
     margin-top: -8px;
     padding-top: 0;
-    height: 40px;
+    height: 45px;
 }
 
 #listQuestionnaire .win-pressed .win-itembox {
@@ -1307,12 +1307,12 @@ input.win-textbox, input.win-checkbox, input.win-radio, textarea.win-textarea, s
 }
 .field_line_left {
     float: left;
-    width: 50%;
+    width: 100%;
     padding: 0;
 }
 .field_line_right {
     float: right;
-    width: 50%;
+    width: 100%;
     padding: 0;
 }
 .field-text-comment {
