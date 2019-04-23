@@ -99,7 +99,11 @@
             var homepageLink = pageElement.querySelector("#homepageLink");
             if (homepageLink) {
                 if (isAppleDevice) {
-                    homepageLink.innerHTML = "<a style=\"pointer-events: none; cursor: default;\" href=\"https://" + getResourceText("info.homepage") + "\">" + getResourceText("info.homepage") + "</a>";
+                    homepageLink
+                        .innerHTML =
+                        "<a href=\"#\" onclick=\"cordova.InAppBrowser.open('https://" + getResourceText("info.homepage") + "'" + ", '_system');\">" +
+                        getResourceText("info.homepage") +
+                        "</a>";
                 } else {
                 homepageLink.innerHTML = "<a href=\"https://" + getResourceText("info.homepage") + "\">" + getResourceText("info.homepage") + "</a>";
             }

@@ -67,15 +67,13 @@
             var portalLink = pageElement.querySelector("#portalLink");
 
             if (portalLink) {
-                var portalLinkUrl;
-                if (isAppleDevice) {
-                    portalLinkUrl = (AppData._persistentStates.odata.https ? "https://" : "http://") +
+                var portalLinkUrl = (AppData._persistentStates.odata.https ? "https://" : "http://") +
                         AppData._persistentStates.odata.hostName +
-                        getResourceText("account.portalPath");
-                    portalLink.innerHTML = "<a style=\"pointer-events: none; cursor: default;\" href=\"" + portalLinkUrl + "\">" + portalLinkUrl + "</a>";
+                        getResourceText("account.portalPath");;
+                if (isAppleDevice) {
+                    portalLink.innerHTML = "<a href=\"#\" onclick=\"cordova.InAppBrowser.open('" + portalLinkUrl + "'" + ", '_system');\">" +
+                        portalLinkUrl + "</a>";
                 } else {
-                    portalLinkUrl = (AppData._persistentStates.odata.https ? "https://" : "http://") +
-                    AppData._persistentStates.odata.hostName + getResourceText("account.portalPath");
                 portalLink.innerHTML = "<a href=\"" + portalLinkUrl + "\">" + portalLinkUrl + "</a>";
             }
 
