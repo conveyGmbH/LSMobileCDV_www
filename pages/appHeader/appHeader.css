@@ -122,8 +122,9 @@
     background-color: gray;
     width: 40px;
     height: 40px;
-    border-radius: 20px;
+    border-radius: 50%;
     padding: 0;
+    overflow: hidden;
 }
 .user-image {
     display: block;
@@ -137,9 +138,8 @@
     position: relative;
     left:0px;
     top: -40px;
-    width: 40px;
+    width: auto;
     height: 40px;
-    border-radius: 20px;
     z-index: 9901;
 }
 
