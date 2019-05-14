@@ -204,7 +204,7 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 }
 
 #alertText {
-    white-space: pre;
+    white-space: pre-wrap;
 }
 
 .win-flyout:not(.win-menu) button,
