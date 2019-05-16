@@ -51,7 +51,7 @@
                                type="range" min="0" max="100" step="1"
                                data-win-bind="value: generalData.cameraQuality"
                                onchange="AppBar.handleEvent('change', 'changedCameraQuality', event)"
-                               onmouseup="AppBar.handleEvent('change', 'changedCameraQuality', event)"
+                               oninput="AppBar.handleEvent('change', 'changedCameraQuality', event)"
                                />
                     </div>
                     <div class="field_line field_line_odd">
@@ -85,7 +85,7 @@
                                type="range" min="0" max="10000" step="100"
                                data-win-bind="value: generalData.autoShutterTime"
                                onchange="AppBar.handleEvent('change', 'changedAutoShutterTime', event)"
-                               onmouseup="AppBar.handleEvent('change', 'changedAutoShutterTime', event)"
+                               oninput="AppBar.handleEvent('change', 'changedAutoShutterTime', event)"
                                />
                     </div>
                     <div class="header-separator float-left"></div>
@@ -199,7 +199,7 @@
                                type="range" min="5" max="120" step="1"
                                data-win-bind="value: appSettings.odata.replInterval"
                                onchange="AppBar.handleEvent('change', 'changedReplInterval', event)"
-                               onmouseup="AppBar.handleEvent('change', 'changedReplInterval', event)"
+                               oninput="AppBar.handleEvent('change', 'changedReplInterval', event)"
                                />
                     </div>
                     <div class="field_line field_line_full">
@@ -262,7 +262,7 @@
                                type="range" min="1" max="6" step="1"
                                data-win-bind="value: generalData.logLevel"
                                onchange="AppBar.handleEvent('change', 'changedLogLevel', event)"
-                               onmouseup="AppBar.handleEvent('change', 'changedLogLevel', event)"
+                               oninput="AppBar.handleEvent('change', 'changedLogLevel', event)"
                                />
                     </div>
                     <div class="line-separator"></div>
