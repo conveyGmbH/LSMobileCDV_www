@@ -232,6 +232,14 @@
                             return "user";
                         }
                     };
+                    var updateAction = function(i, actionLine) {
+                        WinJS.Promise.timeout(20).then(function() {
+                            if (Start.actions && typeof Start.actions.setAt === "function") {
+                                Start.actions.setAt(i, actionLine);
+                                that.checkListButtonStates();
+                            }
+                        });
+                    }
                     for (var i = 0; i < Start.actions.length; i++) {
                         var changed = false;
                         var actionLine = Start.actions.getAt(i);
@@ -298,13 +306,10 @@
                                         actionLine.button0.INITAnredeID = dataContact.INITAnredeID;
                                         actionLine.button0.svg = svgFromContact(dataContact.INITAnredeID);
                                         changed = true;
-                                        WinJS.Promise.timeout(0).then(function() {
-                                            listView.winControl.forceLayout();
-                                        });
                                     }
                                 }
                                 if (changed) {
-                                    Start.actions.setAt(i, actionLine);
+                                    updateAction(i, actionLine);
                                 }
                             } else if (actionLine.button0.KontaktVIEWID !== null ||
                                 actionLine.button0.Name !== "" ||
@@ -326,7 +331,7 @@
                                 actionLine.button0.showErfassungsdatum = false;
                                 actionLine.button0.modifiedOn = "";
                                 actionLine.button0.editedOn = "";
-                                Start.actions.setAt(i, actionLine);
+                                updateAction(i, actionLine);
                             }
                         } else if (actionLine.button0.id === "listLocal") {
                             var newButton0Content = getResourceText("start.buttonListLocal") + ": " + AppData.generalData.contactCountLocal;
@@ -340,11 +345,11 @@
                                 changed = true;
                             }
                             if (changed) {
-                                Start.actions.setAt(i, actionLine);
+                                updateAction(i, actionLine);
                             }
                         }
                     }
-                    checkListButtonStates();
+                    that.checkListButtonStates();
                 }
                 Log.ret(Log.l.trace);
             };
@@ -657,7 +662,7 @@
             that.processAll().then(function() {
                 Log.print(Log.l.trace, "Binding wireup page complete, now load data");
                 return that.loadData();
-            }).then(function () {
+            }).then(function() {
                 Log.print(Log.l.trace, "Data loaded");
                 if (listView && listView.winControl) {
                     inReload = true;
