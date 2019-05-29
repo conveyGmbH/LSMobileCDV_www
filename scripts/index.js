@@ -36,6 +36,7 @@
         logNoStack: true,
         prevNavigateNewId: "newContact",
         inputBorder: 1,
+        inputBorderRadius: 0,
         odata: {
             https: true,
             hostName: "leadsuccess.convey.de",

@@ -149,6 +149,17 @@
                                    oninput="AppBar.handleEvent('change', 'changedInputBorder', event)"
                                    />
                         </div>
+                        <div class="field_line field_line_even">
+                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'settings.inputBorderRadius'}"></span>
+                            <span class="label landscape_only" data-win-res="{textContent: 'settings.inputBorderRadius'}"></span>
+                            <span class="input_field win-type-subtitle" data-win-bind="textContent: generalData.inputBorderRadius"></span>
+                            <input id="inputBorderRadius" class="input_field win-range"
+                                   type="range" min="0" max="12" step="1"
+                                   data-win-bind="value: generalData.inputBorderRadius"
+                                   onchange="AppBar.handleEvent('change', 'changedInputBorderRadius', event)"
+                                   oninput="AppBar.handleEvent('change', 'changedInputBorderRadius', event)"
+                            />
+                        </div>
                     </div>
                 </div>
             </section>
