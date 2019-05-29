@@ -249,6 +249,7 @@
     "settings.light"        : "Hell",
     "settings.dark"         : "Dunkel",
     "settings.inputBorder"  : "Eingabefelder Rand",
+    "settings.inputBorderRadius"  : "Eingabefelder Ecken",
     "settings.border0"      : "kein",
     "settings.border1"      : "dünn",
     "settings.border2"      : "dick",

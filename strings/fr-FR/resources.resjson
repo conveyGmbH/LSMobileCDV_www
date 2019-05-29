@@ -249,6 +249,7 @@
     "settings.light"        : "Clair",
     "settings.dark"         : "Foncé",
     "settings.inputBorder"  : "Input bordure",
+    "settings.inputBorderRadius"  : "Input coincer",
     "settings.border0"      : "aucun",
     "settings.border1"      : "Fin",
     "settings.border2"      : "gros",

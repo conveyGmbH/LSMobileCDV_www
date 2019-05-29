@@ -249,6 +249,7 @@
     "settings.light"        : "Chiaro",
     "settings.dark"         : "Scuro",
     "settings.inputBorder"  : "Bordo campi immissione",
+    "settings.inputBorderRadius"  : "Angolo campi immissione",
     "settings.border0"      : "Nessuno",
     "settings.border1"      : "Sottile",
     "settings.border2"      : "Grosso",

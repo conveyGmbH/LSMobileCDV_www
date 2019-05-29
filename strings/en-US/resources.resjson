@@ -249,6 +249,7 @@
     "settings.light"        : "Light",
     "settings.dark"         : "Dark",
     "settings.inputBorder"  : "Input field border",
+    "settings.inputBorderRadius"  : "Input field corners",
     "settings.border0"      : "none",
     "settings.border1"      : "thin",
     "settings.border2"      : "thick",
