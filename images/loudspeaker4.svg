@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="1024px" height="1024px" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="nonzero" clip-rule="evenodd" viewBox="0 0 10240 10240" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="580px" height="580px" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="nonzero" clip-rule="nonzero" viewBox="0 0 5800 5800" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<title>loudspeaker4 icon</title>
-	<desc>loudspeaker4 icon from the IconExperience.com O-Collection. Copyright by INCORS GmbH (www.incors.com).</desc>
-	<path id="curve4" fill="#252525" d="M6080 8947c1971,-163 3520,-1814 3520,-3827 0,-2013 -1549,-3664 -3520,-3827l0 643c1617,160 2880,1525 2880,3184 0,1659 -1263,3024 -2880,3184l0 643z"/>
-	<path id="curve3" fill="#252525" d="M6080 7660c1263,-157 2240,-1235 2240,-2540 0,-1305 -977,-2383 -2240,-2540l0 647c908,152 1600,942 1600,1893 0,951 -692,1741 -1600,1893l0 647z"/>
-	<path id="curve2" fill="#252525" d="M6080 6360c552,-142 960,-644 960,-1240 0,-596 -408,-1098 -960,-1240l0 686c191,110 320,317 320,554 0,237 -129,444 -320,554l0 686z"/>
-	<path id="curve1" fill="#252525" d="M960 3520l320 0 0 -320 1280 0 0 3840 -1280 0 0 -320 -320 0c-220,0 -320,-144 -320,-320l0 -2560c0,-176 100,-320 320,-320z"/>
-	<path id="curve0" fill="#252525" d="M5440 640l0 0c176,0 320,144 320,320l0 8320c0,176 -144,320 -320,320l0 0c-176,0 -320,-144 -320,-320l-2240 -2240 0 -3840 2240 -2240c0,-176 144,-320 320,-320z"/>
+	<desc>loudspeaker4 icon from the IconExperience.com I-Collection. Copyright by INCORS GmbH (www.incors.com).</desc>
+		<path id="curve28" fill="#000000" d="M900 1900l0 -200 861 0 1318 -1236c37,-35 81,-56 128,-65 97,-16 198,28 252,110 26,40 41,87 41,137l0 4508c0,101 -58,189 -151,229 -46,20 -95,26 -142,18 -47,-9 -91,-30 -128,-65l-1318 -1236 -861 0 0 -200 -100 0c-165,0 -300,-135 -300,-300l0 -1400c0,-165 135,-300 300,-300l100 0zm2900 258c301,122 500,415 500,742 0,327 -199,620 -500,742l0 -222c185,-108 300,-305 300,-520 0,-215 -115,-413 -300,-520l0 -222zm0 -1236c976,147 1700,989 1700,1978 0,989 -724,1831 -1700,1978l0 -203c865,-145 1500,-896 1500,-1775 0,-879 -636,-1630 -1500,-1775l0 -203zm0 610c641,140 1100,710 1100,1368 0,658 -459,1228 -1100,1368l0 -206c529,-136 900,-614 900,-1162 0,-548 -371,-1026 -900,-1162l0 -206zm-1900 311l0 2114 1316 1234c15,14 35,17 54,9 20,-8 30,-25 30,-46l0 -4508c0,-21 -10,-37 -30,-46 -19,-8 -39,-5 -54,9l-1316 1234zm-200 2057l0 -2000 -600 0 0 200 -300 0c-55,0 -100,45 -100,100l0 1400c0,55 45,100 100,100l300 0 0 200 600 0z"/>
 </svg>

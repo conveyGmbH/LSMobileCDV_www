@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="1024px" height="1024px" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="nonzero" clip-rule="evenodd" viewBox="0 0 10240 10240" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="580px" height="580px" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="nonzero" clip-rule="nonzero" viewBox="0 0 5800 5800" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<title>barcode icon</title>
-	<desc>barcode icon from the IconExperience.com O-Collection. Copyright by INCORS GmbH (www.incors.com).</desc>
-	<path id="curve1" fill="#252525" d="M7040 2880l320 0 0 4480 -320 0 0 -4480zm-5120 0l320 0 0 4480 -320 0 0 -4480zm640 0l640 0 0 4480 -640 0 0 -4480zm960 0l320 0 0 4480 -320 0 0 -4480zm2240 0l-320 0 0 4480 320 0 0 -4480zm-1280 0l640 0 0 4480 -640 0 0 -4480zm3200 0l640 0 0 4462 -640 0 0 -4462zm-1600 0l320 0 0 4480 -320 0 0 -4480z"/>
-	<path id="curve0" fill="#252525" d="M1280 1920l7680 0c353,0 640,288 640,640l0 5120c0,352 -288,640 -640,640l-7680 0c-352,0 -640,-287 -640,-640l0 -5120c0,-353 287,-640 640,-640zm0 640l0 5120 7680 0 0 -5120 -7680 0z"/>
+	<desc>barcode icon from the IconExperience.com I-Collection. Copyright by INCORS GmbH (www.incors.com).</desc>
+		<path id="curve28" fill="#000000" d="M4500 4500l0 -3200c133,0 267,0 400,0l0 3200c-133,0 -267,0 -400,0zm-3900 -3600l4600 0c165,0 300,135 300,300l0 3400c0,165 -135,300 -300,300l-4600 0c-165,0 -300,-135 -300,-300l0 -3400c0,-165 135,-300 300,-300zm4600 200l-4600 0c-55,0 -100,45 -100,100l0 3400c0,55 45,100 100,100l4600 0c55,0 100,-45 100,-100l0 -3400c0,-55 -45,-100 -100,-100zm-4100 200l0 3200 -200 0 0 -3200 200 0zm200 3200l0 -3200 400 0 0 3200 -400 0zm1000 -3200l0 3200 -200 0 0 -3200 200 0zm200 3200l0 -3200 400 0 0 3200 -400 0zm800 -3200l0 3200 -200 0 0 -3200 200 0zm400 0l0 3200 -200 0 0 -3200 200 0zm600 0l0 3200 -200 0 0 -3200 200 0z"/>
 </svg>

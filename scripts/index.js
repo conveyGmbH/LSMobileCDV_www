@@ -16,7 +16,7 @@
     AppData.persistentStatesDefaults = {
         colorSettings: {
             // navigation-color with 100% saturation and brightness
-            accentColor: "#ff3c00"
+            accentColor: "#fe3600"
         },
         showAppBkg: false,
         cameraQuality: 50,
@@ -34,9 +34,12 @@
         logLevel: 3,
         logGroup: false,
         logNoStack: true,
-        prevNavigateNewId: "newContact",
+        logWinJS: false,
         inputBorder: 1,
-        inputBorderRadius: 0,
+        inputBorderRadius: 2,
+        inputBorderBottom: true,
+        iconStrokeWidth: 150,
+        prevNavigateNewId: "newContact",
         odata: {
             https: true,
             hostName: "leadsuccess.convey.de",
