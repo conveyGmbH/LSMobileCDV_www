@@ -26,7 +26,7 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Start.Controller.");
             Application.Controller.apply(this, [pageElement, {
-                InitLandItem: {},
+                //InitLandItem: {},
                 dataContact: {}
             }, commandList]);
 
@@ -156,9 +156,22 @@
                     button.disabled = bDisabled;
                     var elements = button.querySelectorAll("span");
                     for (var l = 0; l < elements.length; l++) {
-                        elements[l].style.color = bDisabled ? "#808080" : "#f0f0f0";
+                        if (bDisabled) {
+                            elements[l].style.color = "#808080";
+                        } else if (WinJS.Utilities.hasClass("text-lightcolor")) {
+                            elements[l].style.color = "#f0f0f0";
+                        } else {
+                            elements[l].style.color = Colors.tileTextColor;
+                        }
+                        
                     }
-                    var svgObject = button.querySelector(".action-image-list, .action-image-new");
+                    var svgObject = button.querySelector(".action-image-list");
+                    if (svgObject) {
+                        var svgRoot = svgObject.firstChild;
+                        Colors.changeSVGColor(svgRoot, bDisabled ? "#808080" : Colors.tileTextColor, true, false);
+                        button.svgLoaded = true;
+                    }
+                    svgObject = button.querySelector(".action-image-new");
                     if (svgObject) {
                         var svgRoot = svgObject.firstChild;
                         Colors.changeSVGColor(svgRoot, bDisabled ? "#808080" : "#f0f0f0", true, false);
@@ -246,7 +259,7 @@
                         if (actionLine.button0.id === "contact") {
                             Log.print(Log.l.trace, "found showContact in row=" + i.toString());
                             var dataContact = that.binding.dataContact;
-                            var initLandItem = that.binding.InitLandItem;
+                            //var initLandItem = that.binding.InitLandItem;
                             if (typeof dataContact.KontaktVIEWID !== "undefined") {
                                 if (actionLine.button0.Name !== dataContact.Name ||
                                     actionLine.button0.Firmenname !== dataContact.Firmenname ||
@@ -258,7 +271,7 @@
                                     actionLine.button0.Firmenname = dataContact.Firmenname;
                                     actionLine.button0.PostAdresse = dataContact.PostAdresse;
                                     actionLine.button0.Freitext1 = dataContact.Freitext1;
-                                    actionLine.button0.LandTITLE = "";
+                                    //actionLine.button0.LandTITLE = "";
                                     actionLine.button0.ModifiedTS = dataContact.ModifiedTS;
                                     actionLine.button0.content = dataContact.CreatorSiteID + "/" + dataContact.CreatorRecID;
                                     if (!dataContact.Erfassungsdatum) {
@@ -279,11 +292,11 @@
                                     }
                                     changed = true;
                                 }
-                                if (typeof initLandItem.TITLE !== "undefined" &&
+                                /*if (typeof initLandItem.TITLE !== "undefined" &&
                                     actionLine.button0.LandTITLE !== initLandItem.TITLE) {
                                     actionLine.button0.LandTITLE = initLandItem.TITLE;
                                     changed = true;
-                                }
+                                }*/
                                 if ((AppData._photoData || AppData._barcodeRequest) &&
                                     !actionLine.button0.Name &&
                                     !actionLine.button0.Firmenname &&
@@ -293,24 +306,24 @@
                                         actionLine.button0.showBusinessCard = true;
                                         changed = true;
                                     }
-                                    WinJS.Promise.timeout(50).then(function() {
-                                        showPhoto();
-                                    });
                                 } else {
                                     if (actionLine.button0.showBusinessCard || !actionLine.button0.showContact) {
                                         actionLine.button0.showBusinessCard = false;
                                         actionLine.button0.showContact = true;
                                         changed = true;
                                     }
-                                    if (actionLine.button0.INITAnredeID !== dataContact.INITAnredeID) {
+                                    /*if (actionLine.button0.INITAnredeID !== dataContact.INITAnredeID) {
                                         actionLine.button0.INITAnredeID = dataContact.INITAnredeID;
                                         actionLine.button0.svg = svgFromContact(dataContact.INITAnredeID);
                                         changed = true;
-                                    }
+                                    }*/
                                 }
                                 if (changed) {
                                     updateAction(i, actionLine);
                                 }
+                                WinJS.Promise.timeout(50).then(function () {
+                                    showPhoto();
+                                });
                             } else if (actionLine.button0.KontaktVIEWID !== null ||
                                 actionLine.button0.Name !== "" ||
                                 actionLine.button0.Firmenname !== "" ||
@@ -371,7 +384,7 @@
                     var recordId = getRecordId();
                     if (!recordId) {
                         that.binding.dataContact = {};
-                        that.binding.InitLandItem = {};
+                        //that.binding.InitLandItem = {};
                         return WinJS.Promise.as();
                     } else {
                         Log.print(Log.l.trace, "calling select startContact...");
@@ -392,7 +405,7 @@
                             return WinJS.Promise.as();
                         }, recordId).then();
                     }
-                }).then(function() {
+                /*}).then(function() {
                     if (typeof that.binding.dataContact.INITLandID !== "undefined" &&
                         !AppData.initLandView.getResults().length) {
                         Log.print(Log.l.trace, "calling select initLandData...");
@@ -420,7 +433,7 @@
                             }
                         }
                     }
-                    return WinJS.Promise.as();
+                    return WinJS.Promise.as();*/
                 }).then(function() {
                     if (!AppData._photoData) {
                         var importCardscanId = AppData.getRecordId("DOC1IMPORT_CARDSCAN");
@@ -499,12 +512,10 @@
                     var numTiles = Start.actions.length;
                     var recentTile = listView.querySelector(".tile-recent");
                     if (numTiles > 1 && recentTile && recentTile.style) {
-                        var fullTileHeight = Start.prevTileHeight + 46;
-                        var recentTileHight;
-                        if (Start.prevHeight > numTiles * 140) {
-                            recentTileHight = Start.prevHeight - ((numTiles - 1) * fullTileHeight);
-                        } else {
-                            recentTileHight = fullTileHeight;
+                        var fullTileHeight = Start.prevTileHeight + 62;//46;
+                        var recentTileHight = Start.prevHeight - ((numTiles - 1) * fullTileHeight);
+                        if (recentTileHight < 200) {//* 140) {
+                            recentTileHight = 200;
                         }
                         recentTile.style.height = recentTileHight + "px";
                     }
@@ -581,9 +592,9 @@
                                 listView.winControl.layout = { type: layout };
                             }
                         } else if (listView.winControl.loadingState === "itemsLoaded") {
-                            that.resizeTiles();
+                            //that.resizeTiles();
                         } else if (listView.winControl.loadingState === "viewportLoaded") {
-                            that.resizeTiles();
+                            //that.resizeTiles();
                         } else if (listView.winControl.loadingState === "complete") {
                             that.resizeTiles();
                             var recentTile = listView.querySelector(".tile-recent");
@@ -591,6 +602,22 @@
                                 var elements = recentTile.querySelectorAll("span");
                                 for (i = 0; i < elements.length; i++) {
                                     elements[i].style.color = Colors.textColor;
+                                }
+                            }
+                            var separatorTiles = listView.querySelectorAll(".tile-separator-left, .tile-separator-right");
+                            if (separatorTiles) for (i = 0; i < separatorTiles.length; i++) {
+                                var separatorTile = separatorTiles[i];
+                                var borderColor;
+                                if (WinJS.Utilities.hasClass(separatorTile, "text-lightcolor")) {
+                                    borderColor = "#f0f0f0";
+                                } else {
+                                    borderColor = Colors.tileTextColor;
+                                }
+                                if (WinJS.Utilities.hasClass(separatorTile, "tile-separator-left")) {
+                                    separatorTile.borderLeftColor = borderColor;
+                                } 
+                                if (WinJS.Utilities.hasClass(separatorTile, "tile-separator-right")) {
+                                    separatorTile.borderRightColor = borderColor;
                                 }
                             }
                             var showTileButton = function (svgInfo) {
@@ -613,8 +640,8 @@
 
                             resetSvgLoaded();
                             var js = {};
-                            js.recent = Colors.loadSVGImageElements(listView, "action-image-recent", 40, Colors.textColor, "name", showTileButton);
-                            js.list = Colors.loadSVGImageElements(listView, "action-image-list", 40, "#f0f0f0", "name", showTileButton);
+                            //js.recent = Colors.loadSVGImageElements(listView, "action-image-recent", 40, Colors.textColor, "name", showTileButton);
+                            js.list = Colors.loadSVGImageElements(listView, "action-image-list", 40, Colors.tileTextColor, "name", showTileButton);
                             js.new = Colors.loadSVGImageElements(listView, "action-image-new", 40, "#f0f0f0", "name", showTileButton);
 
                             WinJS.Promise.join(js).then(function() {

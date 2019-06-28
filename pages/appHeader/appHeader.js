@@ -25,7 +25,9 @@
             var appLogoContainer = document.querySelector(".app-logo-container");
             if (appLogoContainer) {
                 NavigationBar._logoLoaded = true;
-                Colors.loadSVGImageElements(appLogoContainer, "app-logo", { width: 175, height: 40 });
+                var rgb = Colors.hex2rgb(Colors.navigationColor);
+                Colors.loadSVGImageElements(appLogoContainer, "app-logo", { width: 175, height: 40 },
+                     (rgb.r+rgb.g+rgb.b)/3 >= 128 ? "#000000" : "#ffffff");
             }
 
             var userImageContainer = element.querySelector(".user-image-container");
@@ -58,11 +60,16 @@
                     } else {
                         var widthLogo = 280;
                         var widthMaster = 0;
+                        var widthAdd = 12;
                         if (Application.navigator.masterElement && Application.navigator._nextMaster) {
                             widthMaster = Application.navigator.masterElement.clientWidth;
                         }
-                        if (widthMaster > widthLogo) {
-                            widthLogo = widthMaster;
+                        if (widthMaster + widthAdd> widthLogo) {
+                            widthLogo = widthMaster + widthAdd;
+                        }
+                        if (NavigationBar.orientation === "vertical" &&
+                            AppData.persistentStatesDefaults.navVertWidth + widthAdd > widthLogo) {
+                            widthLogo = AppData.persistentStatesDefaults.navVertWidth + widthAdd;
                         }
                         strStyleWidth = "calc(100% - " + widthLogo.toString() + "px)";
                         strStyleFloat = "right";

@@ -29,34 +29,42 @@
                                         <button data-win-bind="name: button0.id"
                                                 class="win-button tile-button-wide tile-button-color"
                                                 onclick="AppBar.handleEvent('click', 'clickButton', event)">
-                                            <div class="action-image-container-flat"
-                                                 data-win-bind="style.display: button0.showBusinessCard Binding.Converter.toDisplayNone">
-                                                <div class="action-image-recent"
-                                                     data-win-bind="name: button0.svg"></div>
-                                                <span class="list-id-field win-type-caption">
+                                            <div class="list-item-header-full">
+                                                <div class="list-item-label-left win-type-caption">
                                                     <span data-win-bind="textContent: button0.content"></span>
-                                                </span>
-                                            </div>
-                                            <div class="start-contact-fields"
-                                                 data-win-bind="style.display: button0.showBusinessCard Binding.Converter.toDisplayNone">
-                                                <span class="start-company-field" data-win-bind="textContent: button0.Firmenname"></span>
-                                                <div class="start-div-right win-type-caption"
-                                                     data-win-bind="display: button0.showErfassungsdatum Binding.Converter.toDisplay">
-                                                    <span class="list-date-label" data-win-bind="textContent: button0.editedOn"></span>
+                                                </div>
+                                                <div class="list-item-label-right win-type-caption"
+                                                     data-win-bind="style.display: button0.showErfassungsdatum Binding.Converter.toDisplay">
+                                                    <span class="list-date-label" data-win-bind="textContent: button0.editedOn"></span><br/>
                                                     <span class="list-date-value" data-win-bind="textContent: button0.Erfassungsdatum Binding.Converter.toDateString"></span>
                                                 </div>
-                                                <div class="start-div-right win-type-caption">
-                                                    <span class="list-date-label" data-win-bind="textContent: button0.modifiedOn; display: button0.showErfassungsdatum Binding.Converter.toDisplay"></span>
+                                                <div class="list-item-label-right win-type-caption">
+                                                    <span class="list-date-label" data-win-bind="textContent: button0.modifiedOn; style.display: button0.showErfassungsdatum Binding.Converter.toDisplay"></span><br/>
                                                     <span class="list-date-value" data-win-bind="textContent: button0.ModifiedTS Binding.Converter.toDateString"></span>
                                                 </div>
-                                                <span class="start-name-field win-type-subtitle" data-win-bind="textContent: button0.Name"></span>
-                                                <span class="start-address-field" data-win-bind="textContent: button0.PostAdresse"></span>
-                                                <span class="start-address-field" data-win-bind="textContent: button0.LandTITLE"></span>
-                                                <span class="start-address-field" data-win-bind="textContent: button0.Freitext1"></span>
+                                            </div>
+                                            <div class="list-compressed-content-container"
+                                                 data-win-bind="style.display: button0.showBusinessCard Binding.Converter.toDisplayNone">
+                                                <span class="list-compressed-title"
+                                                      data-win-bind="textContent: button0.Firmenname"></span>
+                                                <span class="list-compressed-title win-type-subtitle"
+                                                      data-win-bind="textContent: button0.Name">
+                                                </span>
+                                                <span class="list-compressed-content"
+                                                      data-win-bind="textContent: button0.PostAdresse"></span>
+                                            </div>
+                                            <div class="list-compressed-content-doc-container"
+                                                 data-win-bind="style.display: button0.showBusinessCard Binding.Converter.toDisplay">
+                                                <span class="list-compressed-title"
+                                                      data-win-bind="textContent: button0.Firmenname"></span>
+                                                <span class="list-compressed-title win-type-subtitle"
+                                                      data-win-bind="textContent: button0.Name"></span>
+                                                <span class="list-compressed-content"
+                                                      data-win-bind="textContent: button0.PostAdresse"></span>
                                             </div>
                                             <div id="businessCardContact"
-                                                 data-win-bind="style.display: button0.showBusinessCard Binding.Converter.toDisplay"
-                                                 class="start-photo-container"></div>
+                                                 class="start-photo-container list-compressed-doc-container" 
+                                                 data-win-bind="style.display: button0.showBusinessCard Binding.Converter.toDisplay"></div>
                                         </button>
                                     </div>
                                 </div>
@@ -69,7 +77,7 @@
                             <div class="tile-header tile-button-color">
                                 <div class="tile-content-inner">
                                     <div class="half-circle half-circle-navigationcolor">&nbsp;</div>
-                                    <span class="win-type-caption win-type-ellipsis start-header-field"
+                                    <span class="win-type-caption win-type-ellipsis start-header-field text-tile-textcolor"
                                           data-win-bind="textContent: title"></span>
                                 </div>
                             </div>
@@ -84,7 +92,7 @@
                                                      data-win-bind="name: button0.svg"></div>
                                             </div>
                                             <div class="action-label-container">
-                                                <span class="action-label text-lightcolor"
+                                                <span class="action-label text-tile-textcolor"
                                                       data-win-bind="textContent: button0.content"></span>
                                             </div>
                                         </button>
@@ -100,7 +108,7 @@
                                                      data-win-bind="name: button1.svg"></div>
                                             </div>
                                             <div class="action-label-container">
-                                                <span class="action-label text-lightcolor"
+                                                <span class="action-label text-tile-textcolor"
                                                       data-win-bind="textContent: button1.content"></span>
                                             </div>
                                         </button>
@@ -116,7 +124,7 @@
                                                      data-win-bind="name: button2.svg"></div>
                                             </div>
                                             <div class="action-label-container">
-                                                <span class="action-label text-lightcolor"
+                                                <span class="action-label text-tile-textcolor"
                                                       data-win-bind="textContent: button2.content"></span>
                                             </div>
                                         </button>
@@ -153,7 +161,7 @@
                                     </div>
                                 </div>
                                 <div class="tile-content">
-                                    <div class="tile-content-inner tile-separator-left tile-separator-right">
+                                    <div class="tile-content-inner tile-separator-left tile-separator-right text-lightcolor">
                                         <button data-win-bind="name: button1.id"
                                                 class="win-button tile-button tile-button-color"
                                                 onclick="AppBar.handleEvent('click', 'clickButton', event)">

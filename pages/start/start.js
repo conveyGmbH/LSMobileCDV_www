@@ -84,14 +84,11 @@
                             var height = contentarea.clientHeight;
                             var numTiles = Start.actions.length;
                             if (width > 0 && height > 0 && numTiles > 0) {
-                                var tileWidth = Math.floor(width / numTiles * 100) / 100;
-                                var tileHeight;
-                                if (height > numTiles * 140) {
-                                    tileHeight = Math.floor(height / numTiles * 100) / 100 - 46;
-                                    if (tileHeight > 154) {
-                                        tileHeight = 154;
-                                    }
-                                } else {
+                                var tileWidth = Math.floor(width / 3 * 100) / 100;
+                                var tileHeight = Math.floor(height / numTiles * 100) / 100 - 62;//46;;
+                                if (tileHeight > 160) {
+                                    tileHeight = 160;
+                                } else if (tileHeight < 96) {
                                     tileHeight = 96;
                                 }
                                 if (listSurface) {

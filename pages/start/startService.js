@@ -66,12 +66,12 @@
                             button0: {
                                 id: "listLocal",
                                 content: getResourceText("start.buttonListLocal") + ": " + AppData.generalData.contactCountLocal,
-                                svg: "user_smartphone"
+                                svg: "mobilephone3"
                             },
                             button1: {
                                 id: "listRemote",
                                 content: getResourceText("start.buttonListRemote") + ": " + AppData.generalData.contactCountRemote,
-                                svg: "user_monitor"
+                                svg: "cloud_upload"
                             },
                             button2: {
                                 id: "search",
@@ -84,12 +84,12 @@
                             button0: {
                                 id: "camera",
                                 content: getResourceText("start.buttonCamera"),
-                                svg: "hand_card"
+                                svg: "id_card"
                             },
                             button1: {
                                 id: "barcode",
                                 content: getResourceText("start.buttonBarcode"),
-                                svg: "portable_barcode_scanner"
+                                svg: "barcode"
                             },
                             button2: {
                                 id: "newContact",

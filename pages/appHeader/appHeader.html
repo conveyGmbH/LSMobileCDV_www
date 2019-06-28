@@ -11,14 +11,13 @@
     <div class="appHeader fragment">
         <div id="appHeaderController" class="data-container">
             <header aria-label="Header content" role="banner">
-                <!--<div class="bkg-splitviewpanetoggle tile-navigationcolor"></div>-->
                 <div class="titlearea titlearea-bkg">
                     <div class="event-line">
                         <div class="app-logo-container">
                             <div class="app-logo" id="leadsuccess"></div>
                         </div>
-                        <div class="event-field win-type-ellipsis">
-                            <span class="win-type-subtitle event-name event-name-static"
+                        <div class="event-field">
+                            <span class="win-type-subtitle event-name win-type-ellipsis"
                                   data-win-bind="textContent: userData.VeranstaltungName"></span>
                         </div>
                     </div>
@@ -26,7 +25,7 @@
                             data-win-bind="style.visibility: userData.Login Binding.Converter.emptyToHidden"
                             onclick="AppBar.handleEvent('click', 'clickChangeUserState', event)">
                         <div id="username" class="user-name-container">
-                            <span class="win-type-subtitle user-name-field win-type-ellipsis"
+                            <span class="win-h6 user-name-field win-type-ellipsis"
                                   data-win-bind="textContent: userData.Login"></span>
                         </div>
                         <div class="user-image-container">
