@@ -92,18 +92,30 @@
          data-win-control="WinJS.Binding.Template" style="display: none">
         <div class="navigationbar-item navigationbar-horizontal-item win-type-subtitle">
             <div class="navigationbar-text navigationbar-horizontal-text"
-                 data-win-bind="textContent: text; style.display: disabled Binding.Converter.toDisplayNone"></div>
+                 data-win-bind="style.display: disabled Binding.Converter.toDisplayNone">
+                <span class="navigationbar-inner-text" 
+                      data-win-bind="textContent: text"></span>
+            </div>
             <div class="navigationbar-text navigationbar-horizontal-text navigationbar-text-gray"
-                 data-win-bind="textContent: text; style.display: disabled Binding.Converter.toDisplay"></div>
+                 data-win-bind="style.display: disabled Binding.Converter.toDisplay">
+                <span class="navigationbar-inner-text"
+                      data-win-bind="textContent: text"></span>
+            </div>
         </div>
     </div>
     <div class="navigationbar-vertical-template"
          data-win-control="WinJS.Binding.Template" style="display: none">
         <div class="navigationbar-item navigationbar-vertical-item win-type-subtitle">
             <div class="navigationbar-text navigationbar-vertical-text"
-                 data-win-bind="textContent: text; style.display: disabled Binding.Converter.toDisplayNone"></div>
+                 data-win-bind="style.display: disabled Binding.Converter.toDisplayNone">
+                <span class="navigationbar-inner-text"
+                      data-win-bind="textContent: text"></span>
+            </div>
             <div class="navigationbar-text navigationbar-vertical-text navigationbar-text-gray"
-                 data-win-bind="textContent: text; style.display: disabled Binding.Converter.toDisplay"></div>
+                 data-win-bind="style.display: disabled Binding.Converter.toDisplay">
+                <span class="navigationbar-inner-text"
+                      data-win-bind="textContent: text"></span>
+            </div>
         </div>
     </div>
     <!-- App Header -->
