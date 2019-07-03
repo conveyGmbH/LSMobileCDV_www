@@ -25,7 +25,8 @@
                             </div>
                             <div class="tile-row">
                                 <div class="tile-content-wide">
-                                    <div class="tile-content-inner">
+                                    <div class="tile-content-inner"
+                                         data-win-bind="style.display: button0.showContact Binding.Converter.toDisplay">
                                         <button data-win-bind="name: button0.id"
                                                 class="win-button tile-button-wide tile-button-color"
                                                 onclick="AppBar.handleEvent('click', 'clickButton', event)">
@@ -63,7 +64,7 @@
                                                       data-win-bind="textContent: button0.PostAdresse"></span>
                                             </div>
                                             <div id="businessCardContact"
-                                                 class="start-photo-container list-compressed-doc-container" 
+                                                 class="list-compressed-doc-container" 
                                                  data-win-bind="style.display: button0.showBusinessCard Binding.Converter.toDisplay"></div>
                                         </button>
                                     </div>

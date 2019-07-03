@@ -102,6 +102,35 @@
                 Log.ret(Log.l.trace);
                 return ret;
             }
+
+            var imageRotate = function (element) {
+                WinJS.Promise.timeout(0).then(function () {
+                    Log.call(Log.l.trace, "ContactList.Controller.");
+                    if (element && typeof element.querySelector === "function") {
+                        var img = element.querySelector(".list-compressed-doc");
+                        if (img) {
+                            var imgWidth = img.naturalWidth;
+                            var imgHeight = img.naturalHeight;
+                            Log.print(Log.l.trace, "img width=" + imgWidth + " height=" + imgHeight);
+                            if (imgWidth < imgHeight && img.style) {
+                                var containerElement = img.parentNode;
+                                if (containerElement) {
+                                    var marginLeft = (imgWidth - imgHeight) * containerElement.clientWidth / imgHeight / 2;
+                                    var marginTop = (imgHeight - imgWidth) * containerElement.clientWidth / imgHeight / 2;
+                                    img.style.marginLeft = -marginLeft + "px";
+                                    img.style.marginTop = -marginTop + "px";
+                                    img.style.height = containerElement.clientWidth + "px";
+                                }
+                                img.style.transform = "rotate(90deg)";
+                                img.style.width = "auto";
+                            }
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                });
+            }
+            this.imageRotate = imageRotate;
+
             // show business card photo
             var showPhoto = function() {
                 Log.call(Log.l.trace, "Start.Controller.");
@@ -115,15 +144,22 @@
                         that.img = new Image();
                         that.img.id = "startImage";
                         businessCardContainer.appendChild(that.img);
-                        WinJS.Utilities.addClass(that.img, "start-business-card");
+                        WinJS.Utilities.addClass(that.img, "list-compressed-doc");
                         that.img.src = "data:image/jpeg;base64," + AppData._photoData;
+                        if (that.img) {
+                            var imgWidth = that.img.naturalWidth;
+                            var imgHeight =  that.img.naturalHeight;
+                            Log.print(Log.l.trace, "img width=" + imgWidth + " height=" + imgHeight);
+                            if (imgWidth < imgHeight && that.img.style) {
+                                that.imageRotate(businessCardContainer);
+                            }
+                        }
                     } else if (AppData._barcodeRequest) {
                         that.img = new Image();
                         that.img.id = "startImage";
                         businessCardContainer.appendChild(that.img);
                         switch (AppData._barcodeType) {
-                            case "barcode":
-                                {
+                            case "barcode": {
                                     WinJS.Utilities.addClass(that.img, "start-barcode");
                                     that.img.src = "images/barcode.jpg";
                                     var text = document.createElement("span");
@@ -136,8 +172,7 @@
                                     businessCardContainer.appendChild(text);
                                 }
                                 break;
-                            case "vcard":
-                                {
+                            case "vcard": {
                                     WinJS.Utilities.addClass(that.img, "start-vcard");
                                     that.img.src = "images/qrcode.jpg";
                                 }
@@ -297,12 +332,9 @@
                                     actionLine.button0.LandTITLE = initLandItem.TITLE;
                                     changed = true;
                                 }*/
-                                if ((AppData._photoData || AppData._barcodeRequest) &&
-                                    !actionLine.button0.Name &&
-                                    !actionLine.button0.Firmenname &&
-                                    !actionLine.button0.PostAdresse) {
-                                    if (!actionLine.button0.showBusinessCard || actionLine.button0.showContact) {
-                                        actionLine.button0.showContact = false;
+                                if (AppData._photoData || AppData._barcodeRequest) {
+                                    if (!actionLine.button0.showBusinessCard || !actionLine.button0.showContact) {
+                                        actionLine.button0.showContact = true;
                                         actionLine.button0.showBusinessCard = true;
                                         changed = true;
                                     }
@@ -321,7 +353,7 @@
                                 if (changed) {
                                     updateAction(i, actionLine);
                                 }
-                                WinJS.Promise.timeout(50).then(function () {
+                                WinJS.Promise.timeout(0).then(function () {
                                     showPhoto();
                                 });
                             } else if (actionLine.button0.KontaktVIEWID !== null ||

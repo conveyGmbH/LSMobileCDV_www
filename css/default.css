@@ -875,13 +875,13 @@ button.win-button {
 }
 .list-item-label-left {
     float: left;
-    width: 90px;
+    width: 120px;
     opacity: 0.6;
 }
 .list-item-label-right {
     float: right;
     text-align: right;
-    width: 90px;
+    width: 120px;
     opacity: 0.6;
 }
 
@@ -951,7 +951,7 @@ button.win-button {
 
 .list-compressed-content-doc-container {
     float: left;
-    width: calc(100% - 210px);
+    width: calc(100% - 244px);
     margin-bottom: 16px;
 }
 
@@ -965,9 +965,9 @@ button.win-button {
 
 .list-compressed-doc-container {
     float: right;
-    width: 200px;
+    width: 240px;
     margin-bottom: 16px;
-    max-height: 120px;
+    max-height: 160px;
 }
 
 .list-compressed-doc {
@@ -1417,10 +1417,10 @@ button.win-button {
     height: 26px;
 }
 .view-size-small .list-compressed-content-doc-container {
-    width: calc(100% - 160px);
+    width: calc(100% - 184px);
 }
 .view-size-small .list-compressed-doc-container {
-    width: 150px;
+    width: 180px;
     max-height: 100px;
 }
 
@@ -1437,6 +1437,13 @@ button.win-button {
     font-size: 16px;
     letter-spacing: 0.1px;
 }
+.view-size-small .list-item-label-left {
+    width: 90px;
+}
+.view-size-small .list-item-label-right {
+    width: 90px;
+}
+
 
 .view-size-small span.checkbox,
 .view-size-small span.radio {

@@ -96,20 +96,6 @@
      top: 8px;
  }
 
-.start-photo-container {
-    /*
-    display: inline-block;
-    position: relative;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    width: 40%;
-    left: 30%;
-    */
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    height: 96px;
-}
 .start-barcode {
     width: 256px !important;
     height: 40px !important;
@@ -120,10 +106,7 @@
     width: 96px !important;
     margin-left: calc(50% - 48px) !important;
 }
-.start-business-card {
-    height: 100% !important;
-    width: auto !important;
-}
+
 .tile-row {
     display: table-row;
     height: 96px;
@@ -188,10 +171,6 @@
     visibility: hidden;
 }
 
-.action-image-recent {
-    padding-left: 6px;
-}
-
 .tile-button {
     width: 100%;
     /*
@@ -226,9 +205,12 @@
     width: 100%;
     text-align: center;
 }
-.action-label {
- }
- .action-image-container {
+
+.start .list-item-header-full {
+    margin-top: 0;
+}
+
+.action-image-container {
      display: inline-block;
      width: calc(100% - 24px);
      padding: 0 0 0 calc(50% - 20px);
@@ -292,32 +274,12 @@
     @media (max-width:699px), (max-width:839px) and (orientation: landscape) {
 */
 @media (max-width:899px) {
-    /*
-    .pagetitle {
-        display: inline-block;
-    }
-    .start-photo-container {
-        width: 60%;
-        left: 20%;
-    }
-
-    */
 }
 
 /*
     margins/paddings for small screens and orientation vertical
 */
 @media (max-width:499px) {
-    /*
-    .pagetitle {
-         display: none;
-    }
-    .start-photo-container {
-        width: 80%;
-        left: 10%;
-    }
-
-    */
 }
 
 
