@@ -31,8 +31,6 @@
             // First, we call WinJS.Binding.as to get the bindable proxy object
             this.binding = WinJS.Binding.as(this.pageData);
 
-            // Then, do anything special on this page
-
             // show business card photo
             var userPhotoContainer = pageElement.querySelector("#user");
             var showPhoto = function () {
@@ -59,11 +57,10 @@
             }
 
             var loadData = function () {
-                var employeeId = null;
                 Log.call(Log.l.trace, "AppHeader.Controller.");
                 var usernamefield = pageElement.querySelector(".user-name-field");
                 var ret = new WinJS.Promise.as().then(function() {
-                    employeeId = AppData.getRecordId("Mitarbeiter");
+                    var employeeId = AppData.getRecordId("Mitarbeiter");
                     if (employeeId) {
                         // todo: load image data and set src of img-element
                         Log.print(Log.l.trace, "calling select contactView...");
@@ -91,12 +88,12 @@
                                 that.binding.photoData = "";
                                 showPhoto();
                             }
+
                         }, function(errorResponse) {
                             that.binding.photoData = "";
                             showPhoto();
                             // ignore that
-                        },
-                        employeeId);
+                        }, employeeId);
                     } else {
                         return WinJS.Promise.as();
                     }

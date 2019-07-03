@@ -49,26 +49,27 @@
 .tile-separator-left {
     border-left-style: solid !important;
     border-left-width: 2px !important;
-    border-left-color: #f0f0f0 !important;
+    /*border-left-color: #f0f0f0;*/
 }
 .tile-separator-right {
     border-right-style: solid !important;
     border-right-width: 2px !important;
-    border-right-color: #f0f0f0 !important;
+    /*border-left-color: #f0f0f0;*/
 }
 
 .tile {
     width: 100%;
-    height: 198px;
     overflow-x: hidden;
     /*
+    height: 198px;
     display: table;
     */
 }
 .tile-header {
     text-align: center;
-    height: 42px;
+    height: 60px;
     /*
+    height: 42px;
     width: calc(100% - 4px);
     */
     width: 100%;
@@ -85,12 +86,14 @@
 }
 
  .start-header-field {
-    height: 20px;
-    padding-top: 10px;
-    width: 100%;
-    height: 100%;
-    text-transform: uppercase;
-    font-weight: 600 !important;
+     width: 100%;
+     margin: 0;
+     padding: 0;
+     text-transform: uppercase;
+     font-weight: 600 !important;
+     display: inline-block;
+     position: relative;
+     top: 8px;
  }
 
 .start-photo-container {
@@ -210,6 +213,7 @@
     min-height: 94px;
     margin: 0;
     text-align: left;
+    padding-left: 18px; 
 }
 .tile-button-wide-flat {
     width: 100%;
@@ -316,18 +320,6 @@
     */
 }
 
-
-@media (max-height:639px) {
-    .tile {
-        height: 33.33%;
-    }    
-}
-
-@media (max-height:479px) {
-    .tile {
-        height: 140px;
-    }    
-}
 
 .view-size-small .start-company-field,
 .view-size-small .start-address-field {

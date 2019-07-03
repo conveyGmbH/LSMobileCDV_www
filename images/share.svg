@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="1024px" height="1024px" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="nonzero" clip-rule="evenodd" viewBox="0 0 10240 10240" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="580px" height="580px" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="nonzero" clip-rule="nonzero" viewBox="0 0 5800 5800" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<title>share icon</title>
-	<desc>share icon from the IconExperience.com O-Collection. Copyright by INCORS GmbH (www.incors.com).</desc>
-	<path id="curve3" fill="#252525" d="M6118 7334l-2894 -1286c122,-172 211,-369 258,-582l2894 1286c-122,172 -211,369 -258,582zm-2894 -3142l2894 -1286c47,213 136,410 258,582l-2894 1286c-47,-213 -136,-410 -258,-582z"/>
-	<path id="curve2" fill="#252525" d="M7680 6400c707,0 1280,573 1280,1280 0,707 -573,1280 -1280,1280 -707,0 -1280,-573 -1280,-1280 0,-707 573,-1280 1280,-1280z"/>
-	<path id="curve1" fill="#252525" d="M7680 1280c707,0 1280,573 1280,1280 0,707 -573,1280 -1280,1280 -707,0 -1280,-573 -1280,-1280 0,-707 573,-1280 1280,-1280z"/>
-	<path id="curve0" fill="#252525" d="M1920 3840c707,0 1280,573 1280,1280 0,707 -573,1280 -1280,1280 -707,0 -1280,-573 -1280,-1280 0,-707 573,-1280 1280,-1280z"/>
+	<desc>share icon from the IconExperience.com I-Collection. Copyright by INCORS GmbH (www.incors.com).</desc>
+	<path id="curve0" fill="#333333" d="M4497 3900c442,0 800,358 800,800 0,442 -358,800 -800,800 -441,0 -800,-358 -800,-800 0,-100 19,-196 52,-284l-1994 -1056c-150,213 -393,340 -655,340 -442,0 -800,-358 -800,-800 0,-442 358,-800 800,-800 262,0 505,127 655,340l2000 -1058c-33,-87 -51,-182 -51,-280 0,-441 358,-799 799,-799 440,0 798,358 798,799 0,441 -358,798 -798,798 -263,0 -506,-128 -655,-342l-2000 1059c34,88 52,183 52,283 0,100 -18,195 -52,283l1995 1056c150,-212 393,-339 654,-339zm-3397 -1600c-331,0 -600,269 -600,600 0,331 269,600 600,600 331,0 600,-269 600,-600 0,-331 -269,-600 -600,-600zm3403 -1797c-331,0 -599,268 -599,599 0,330 268,598 599,598 330,0 598,-268 598,-598 0,-331 -268,-599 -598,-599zm-6 3597c-331,0 -600,269 -600,600 0,331 269,600 600,600 332,0 600,-269 600,-600 0,-331 -268,-600 -600,-600z"/>
 </svg>
