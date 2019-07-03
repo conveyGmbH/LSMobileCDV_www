@@ -104,14 +104,15 @@
             }
 
             var imageRotate = function (element) {
-                WinJS.Promise.timeout(0).then(function () {
-                    Log.call(Log.l.trace, "ContactList.Controller.");
-                    if (element && typeof element.querySelector === "function") {
-                        var img = element.querySelector(".list-compressed-doc");
-                        if (img) {
-                            var imgWidth = img.naturalWidth;
-                            var imgHeight = img.naturalHeight;
-                            Log.print(Log.l.trace, "img width=" + imgWidth + " height=" + imgHeight);
+                Log.call(Log.l.trace, "ContactList.Controller.");
+                var foundImg = false;
+                if (element && typeof element.querySelector === "function") {
+                    var img = element.querySelector(".list-compressed-doc");
+                    if (img) {
+                        var imgWidth = img.naturalWidth;
+                        var imgHeight = img.naturalHeight;
+                        Log.print(Log.l.trace, "img width=" + imgWidth + " height=" + imgHeight);
+                        if (imgWidth && imgHeight) {
                             if (imgWidth < imgHeight && img.style) {
                                 var containerElement = img.parentNode;
                                 if (containerElement) {
@@ -121,17 +122,23 @@
                                     img.style.marginTop = -marginTop + "px";
                                     img.style.height = containerElement.clientWidth + "px";
                                 }
-								if (AppData._persistentStates.turnThumbsLeft) {
-									img.style.transform = "rotate(270deg)";
-								} else {
-									img.style.transform = "rotate(90deg)";
-								}
+                                if (AppData._persistentStates.turnThumbsLeft) {
+                                    img.style.transform = "rotate(270deg)";
+                                } else {
+                                    img.style.transform = "rotate(90deg)";
+                                }
                                 img.style.width = "auto";
                             }
+                            foundImg = true;
                         }
                     }
-                    Log.ret(Log.l.trace);
-                });
+                }
+                if (!foundImg) {
+                    WinJS.Promise.timeout(50).then(function () {
+                        that.imageRotate(element);
+                    });
+                }
+                Log.ret(Log.l.trace);
             }
             this.imageRotate = imageRotate;
 
@@ -150,14 +157,7 @@
                         businessCardContainer.appendChild(that.img);
                         WinJS.Utilities.addClass(that.img, "list-compressed-doc");
                         that.img.src = "data:image/jpeg;base64," + AppData._photoData;
-                        if (that.img) {
-                            var imgWidth = that.img.naturalWidth;
-                            var imgHeight =  that.img.naturalHeight;
-                            Log.print(Log.l.trace, "img width=" + imgWidth + " height=" + imgHeight);
-                            if (imgWidth < imgHeight && that.img.style) {
-                                that.imageRotate(businessCardContainer);
-                            }
-                        }
+                        that.imageRotate(businessCardContainer);
                     } else if (AppData._barcodeRequest) {
                         that.img = new Image();
                         that.img.id = "startImage";
