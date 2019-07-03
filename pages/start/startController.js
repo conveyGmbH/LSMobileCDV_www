@@ -34,6 +34,8 @@
 
             var that = this;
 
+            var imgSrcDataType = "data:image/jpeg;base64,";
+
             var listView = pageElement.querySelector("#startActions.listview");
             if (listView && listView.winControl) {
                 listView.winControl.itemDataSource = null;
@@ -107,7 +109,7 @@
                 Log.call(Log.l.trace, "ContactList.Controller.");
                 if (element && typeof element.querySelector === "function") {
                     var img = element.querySelector(".list-compressed-doc");
-                    if (img && img.src) {
+                    if (img && img.src && img.src.substr(0, imgSrcDataType.length) === imgSrcDataType) {
                         var imgWidth = img.naturalWidth;
                         var imgHeight = img.naturalHeight;
                         Log.print(Log.l.trace, "img width=" + imgWidth + " height=" + imgHeight);
@@ -129,7 +131,7 @@
                                 img.style.width = "auto";
                             }
                         } else {
-                            WinJS.Promise.timeout(50).then(function () {
+                            WinJS.Promise.timeout(0).then(function () {
                                 that.imageRotate(element);
                             });
                         }
@@ -153,7 +155,7 @@
                         that.img.id = "startImage";
                         businessCardContainer.appendChild(that.img);
                         WinJS.Utilities.addClass(that.img, "list-compressed-doc");
-                        that.img.src = "data:image/jpeg;base64," + AppData._photoData;
+                        that.img.src = imgSrcDataType + AppData._photoData;
                         that.imageRotate(businessCardContainer);
                     } else if (AppData._barcodeRequest) {
                         that.img = new Image();
@@ -299,13 +301,13 @@
                             if (typeof dataContact.KontaktVIEWID !== "undefined") {
                                 if (actionLine.button0.Name !== dataContact.Name ||
                                     actionLine.button0.Firmenname !== dataContact.Firmenname ||
-                                    actionLine.button0.PostAdresse !== dataContact.PostAdresse ||
+                                    actionLine.button0.EMail !== dataContact.EMail ||
                                     actionLine.button0.KontaktVIEWID !== dataContact.KontaktVIEWID ||
                                     actionLine.button0.ModifiedTS !== dataContact.ModifiedTS) {
                                     actionLine.button0.KontaktVIEWID = dataContact.KontaktVIEWID;
                                     actionLine.button0.Name = dataContact.Name;
                                     actionLine.button0.Firmenname = dataContact.Firmenname;
-                                    actionLine.button0.PostAdresse = dataContact.PostAdresse;
+                                    actionLine.button0.EMail = dataContact.EMail;
                                     actionLine.button0.Freitext1 = dataContact.Freitext1;
                                     //actionLine.button0.LandTITLE = "";
                                     actionLine.button0.ModifiedTS = dataContact.ModifiedTS;
@@ -360,14 +362,14 @@
                             } else if (actionLine.button0.KontaktVIEWID !== null ||
                                 actionLine.button0.Name !== "" ||
                                 actionLine.button0.Firmenname !== "" ||
-                                actionLine.button0.PostAdresse !== "" ||
+                                actionLine.button0.EMail !== "" ||
                                 actionLine.button0.LandTITLE !== "" ||
                                 actionLine.button0.INITAnredeID !== null) {
                                 actionLine.button0.KontaktVIEWID = null;
                                 actionLine.button0.content = "";
                                 actionLine.button0.Name = "";
                                 actionLine.button0.Firmenname = "";
-                                actionLine.button0.PostAdresse = "";
+                                actionLine.button0.EMail = "";
                                 actionLine.button0.LandTITLE = "";
                                 actionLine.button0.ModifiedTS = "";
                                 actionLine.button0.INITAnredeID = null;

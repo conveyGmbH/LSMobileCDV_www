@@ -51,23 +51,7 @@
             var maxLeadingPages = 0;
             var maxTrailingPages = 0;
 
-
-            var svgFromContact = function (id, visitenkarte, barcode) {
-                if (visitenkarte) {
-                    return "id_card";
-                } else if (barcode) {
-                    return "barcode";
-                } else if (id === 3) {
-                    return "office_building";
-                } else if (id === 2) {
-                    return "businesswoman";
-                } else if (id === 1) {
-                    return "businessperson";
-                } else {
-                    return "user";
-                }
-            }
-            this.svgFromContact = svgFromContact;
+            var imgSrcDataType = "data:image/jpeg;base64,";
 
             var background = function (index) {
                 if (index % 2 === 0) {
@@ -91,21 +75,20 @@
                     }
                 }
                 item.index = index;
-                item.svg = svgFromContact(item.INITAnredeID, item.SHOW_Visitenkarte, item.SHOW_Barcode);
                 item.company = ((item.Firmenname ? (item.Firmenname + " ") : ""));
                 item.fullName =
                     ((item.Title ? (item.Title + " ") : "") +
                     (item.Vorname ? (item.Vorname + " ") : "") +
                     (item.Name ? item.Name : ""));
-                item.address =
-                    ((item.Strasse ? (item.Strasse + "\r\n") : "") +
-                    ((item.PLZ || item.Stadt) ? ((item.PLZ ? (item.PLZ + " ") : "") + (item.Stadt ? item.Stadt : "") + "\r\n") : "") +
-                    (item.Land ? (item.Land + "\r\n") : "") +
-                    ((item.TelefonMobil) ?
-                    (item.TelefonMobil + "\r\n") :
-                    (item.TelefonFestnetz ? (item.TelefonFestnetz + "\r\n") : "") +
-                    (item.EMail ? item.EMail : ""))) +
-                    (item.Freitext1 ? "\r\n" + item.Freitext1 : "");
+                item.address = item.EMail ? item.EMail : "";
+                    //((item.Strasse ? (item.Strasse + "\r\n") : "") +
+                    //((item.PLZ || item.Stadt) ? ((item.PLZ ? (item.PLZ + " ") : "") + (item.Stadt ? item.Stadt : "") + "\r\n") : "") +
+                    //(item.Land ? (item.Land + "\r\n") : "") +
+                    //((item.TelefonMobil) ?
+                    //(item.TelefonMobil + "\r\n") :
+                    //(item.TelefonFestnetz ? (item.TelefonFestnetz + "\r\n") : "") +
+                    //(item.EMail ? item.EMail : ""))) +
+                    //(item.Freitext1 ? "\r\n" + item.Freitext1 : "");
                 item.globalContactId = item.CreatorSiteID + "/" + item.CreatorRecID;
 
                 if (typeof item.InTransmission === "undefined") {
@@ -134,7 +117,13 @@
                             var docContent = doc.OvwContentDOCCNT3;
                             if (docContent) {
                                 var sub = docContent.search("\r\n\r\n");
-                                item.OvwContentDOCCNT3 = "data:image/jpeg;base64," + docContent.substr(sub + 4);
+                                if (sub) {
+                                    item.OvwContentDOCCNT3 = imgSrcDataType + docContent.substr(sub + 4);
+                                } else {
+                                    item.OvwContentDOCCNT3 = "";
+                                }
+                            } else {
+                                item.OvwContentDOCCNT3 = "";
                             }
                             that.firstDocsIndex = i + 1;
                             that.firstContactsIndex = index + 1;
@@ -153,7 +142,11 @@
                             var docContent = item.OvwContentDOCCNT3;
                             if (docContent) {
                                 var sub = docContent.search("\r\n\r\n");
-                                contact.OvwContentDOCCNT3 = "data:image/jpeg;base64," + docContent.substr(sub + 4);
+                                if (sub) {
+                                    contact.OvwContentDOCCNT3 = imgSrcDataType + docContent.substr(sub + 4);
+                                } else {
+                                    contact.OvwContentDOCCNT3 = "";
+                                }
                             } else {
                                 contact.OvwContentDOCCNT3 = "";
                             }
@@ -179,7 +172,7 @@
                 Log.call(Log.l.trace, "ContactList.Controller.");
                 if (element && typeof element.querySelector === "function") {
                     var img = element.querySelector(".list-compressed-doc");
-                    if (img && img.src) {
+                    if (img && img.src && img.src.substr(0, imgSrcDataType.length) === imgSrcDataType) {
                         var imgWidth = img.naturalWidth;
                         var imgHeight = img.naturalHeight;
                         Log.print(Log.l.trace, "img width=" + imgWidth + " height=" + imgHeight);
@@ -201,7 +194,7 @@
                                 img.style.width = "auto";
                             }
                         } else {
-                            WinJS.Promise.timeout(50).then(function() {
+                            WinJS.Promise.timeout(0).then(function() {
                                 that.imageRotate(element);
                             });
                         }
