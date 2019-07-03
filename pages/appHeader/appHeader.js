@@ -26,8 +26,18 @@
             if (appLogoContainer) {
                 NavigationBar._logoLoaded = true;
                 var rgb = Colors.hex2rgb(Colors.navigationColor);
-                Colors.loadSVGImageElements(appLogoContainer, "app-logo", { width: 175, height: 40 },
-                     (rgb.r+rgb.g+rgb.b)/3 >= 128 ? "#000000" : "#ffffff");
+                var rgbStr = (rgb.r + rgb.g + rgb.b) / 3 >= 128 ? "#000000" : "#ffffff";
+                // load the image file
+                var svgObject = appLogoContainer.querySelector(".app-logo");
+                if (svgObject && !(svgObject.firstElementChild || svgObject.firstChild)) {
+                    Colors.loadSVGImage({
+                        fileName: svgObject.id,
+                        element: svgObject,
+                        size: { width: 182, height: 44 },
+                        useStrokeColor: false,
+                        strokeWidth: 100
+                    });
+                }
             }
 
             var userImageContainer = element.querySelector(".user-image-container");

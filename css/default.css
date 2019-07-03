@@ -25,16 +25,13 @@ img .field_line {
     height: auto !important;
 }
 .logo-title {
-    color: Highlight;
+    color: #ffffff;
     width: calc(100% - 240px);
     position: relative;
     left: -2px;
-    top: -17px;
+    top: -16px;
 }
-.logo-title-small {
-    left: -4px;
-    top: -12px;
-}
+
 .splash-screen-container {
     display: block;
     position: fixed;
@@ -76,7 +73,7 @@ img .field_line {
     visibility: hidden;
 }
 .titlearea-bkg {
-    color: gray;
+    color: #ffffff;
     background-color: Window;
 }
 
