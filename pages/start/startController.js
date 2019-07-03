@@ -105,10 +105,9 @@
 
             var imageRotate = function (element) {
                 Log.call(Log.l.trace, "ContactList.Controller.");
-                var foundImg = false;
                 if (element && typeof element.querySelector === "function") {
                     var img = element.querySelector(".list-compressed-doc");
-                    if (img) {
+                    if (img && img.src) {
                         var imgWidth = img.naturalWidth;
                         var imgHeight = img.naturalHeight;
                         Log.print(Log.l.trace, "img width=" + imgWidth + " height=" + imgHeight);
@@ -129,14 +128,12 @@
                                 }
                                 img.style.width = "auto";
                             }
-                            foundImg = true;
+                        } else {
+                            WinJS.Promise.timeout(50).then(function () {
+                                that.imageRotate(element);
+                            });
                         }
                     }
-                }
-                if (!foundImg) {
-                    WinJS.Promise.timeout(50).then(function () {
-                        that.imageRotate(element);
-                    });
                 }
                 Log.ret(Log.l.trace);
             }

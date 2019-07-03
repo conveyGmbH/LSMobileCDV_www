@@ -159,6 +159,42 @@
             }
             this.resultDocConverter = resultDocConverter;
 
+            var imageRotate = function(element) {
+                Log.call(Log.l.trace, "ContactList.Controller.");
+                if (element && typeof element.querySelector === "function") {
+                    var img = element.querySelector(".list-compressed-doc");
+                    if (img && img.src) {
+                        var imgWidth = img.naturalWidth;
+                        var imgHeight = img.naturalHeight;
+                        Log.print(Log.l.trace, "img width=" + imgWidth + " height=" + imgHeight);
+                        if (imgWidth && imgHeight) {
+                            if (imgWidth < imgHeight && img.style) {
+                                var containerElement = img.parentNode;
+                                if (containerElement) {
+                                    var marginLeft = (imgWidth - imgHeight) * containerElement.clientWidth / imgHeight / 2;
+                                    var marginTop = (imgHeight - imgWidth) * containerElement.clientWidth / imgHeight / 2;
+                                    img.style.marginLeft = -marginLeft + "px";
+                                    img.style.marginTop = -marginTop + "px";
+                                    img.style.height = containerElement.clientWidth + "px";
+                                }
+                                if (AppData._persistentStates.turnThumbsLeft) {
+                                    img.style.transform = "rotate(270deg)";
+                                } else {
+                                    img.style.transform = "rotate(90deg)";
+                                }
+                                img.style.width = "auto";
+                            }
+                        } else {
+                            WinJS.Promise.timeout(50).then(function() {
+                                that.imageRotate(element);
+                            });
+                        }
+                    }
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.imageRotate = imageRotate;
+
             // define handlers
             this.eventHandlers = {
                 clickBack: function (event) {
@@ -237,6 +273,18 @@
                             if (!layout) {
                                 layout = Application.ListRemoteLayout.ContactsLayout;
                                 listView.winControl.layout = { type: layout };
+                            }
+                        } else if (listView.winControl.loadingState === "itemsLoaded") {
+                            var indexOfFirstVisible = listView.winControl.indexOfFirstVisible;
+                            var indexOfLastVisible = listView.winControl.indexOfLastVisible;
+                            for (var i = indexOfFirstVisible; i <= indexOfLastVisible; i++) {
+                                var element = listView.winControl.elementFromIndex(i);
+                                if (element) {
+                                    var img = element.querySelector(".list-compressed-doc");
+                                    if (img && img.src) {
+                                        that.imageRotate(element);
+                                    }
+                                }
                             }
                         } else if (listView.winControl.loadingState === "complete") {
                             // load SVG images

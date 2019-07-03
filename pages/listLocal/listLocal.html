@@ -85,42 +85,48 @@
                         <div class="list-portrait-only">
                             <div class="row-bkg"></div>
                             <div class="row-separator"></div>
-                            <div class="list-div-left">
-                                <div class="list-symbol-ID">
-                                    <div data-win-bind="name: svg" class="action-image"></div>
-                                    <span class="list-id-field win-type-caption">
-                                        <span data-win-bind="textContent: globalContactId"></span>
-                                    </span>
+                            <div class="list-item-header-full">
+                                <!--<div data-win-bind="name: svgFormOf" class="action-image"></div>-->
+                                <div class="list-item-label-left win-type-caption">
+                                    <span data-win-bind="textContent: globalContactId"></span>
                                 </div>
-                                <div class="list-compressed">
-                                    <span class="list-compressed-title win-type-ellipsis"
-                                          data-win-bind="textContent: company"></span>
-                                    <span class="list-compressed-title win-type-subtitle win-type-ellipsis"
-                                          data-win-bind="textContent: fullName">
-                                    </span>
-                                    <div class="list-compressed-content-container">
-                                        <span class="list-compressed-content"
-                                              data-win-bind="textContent: address"></span>
-                                        <div class="list-compressed-doc-container" data-win-bind="style.display: OvwContentDOCCNT3 Binding.Converter.toDisplay">
-                                            <img class="list-compressed-doc" data-win-bind="src: OvwContentDOCCNT3">
-                                        </div>
-                                    </div>
+                                <div class="list-item-label-right win-type-caption">
+                                    <span data-win-bind="textContent: Erfassungsdatum Binding.Converter.toDateString"></span>
+                                </div>
+                                <div class="list-div-right"
+                                     data-win-bind="style.display: InTransmission Binding.Converter.toDisplay">
+                                    <div id="clock" class="status-image"></div>
+                                </div>
+                                <div class="list-div-right"
+                                     data-win-bind="style.display: Sent Binding.Converter.toDisplay">
+                                    <div id="check" class="status-image"></div>
+                                </div>
+                                <div class="list-div-right"
+                                     data-win-bind="style.display: ReturnedModified Binding.Converter.toDisplay">
+                                    <div id="checks" class="status-image"></div>
                                 </div>
                             </div>
-                            <div class="list-div-right win-type-caption">
-                                <span data-win-bind="textContent: Erfassungsdatum Binding.Converter.toDateString"></span>
+                            <div class="list-compressed-content-container"
+                                 data-win-bind="style.display: OvwContentDOCCNT3 Binding.Converter.toDisplayNone">
+                                <span class="list-compressed-title"
+                                      data-win-bind="textContent: company"></span>
+                                <span class="list-compressed-title win-type-subtitle"
+                                      data-win-bind="textContent: fullName">
+                                </span>
+                                <span class="list-compressed-content"
+                                      data-win-bind="textContent: address"></span>
                             </div>
-                            <div class="list-div-right"
-                                 data-win-bind="style.display: InTransmission Binding.Converter.toDisplay">
-                                <div id="clock" class="status-image"></div>
+                            <div class="list-compressed-content-doc-container"
+                                 data-win-bind="style.display: OvwContentDOCCNT3 Binding.Converter.toDisplay">
+                                <span class="list-compressed-title"
+                                      data-win-bind="textContent: company"></span>
+                                <span class="list-compressed-title win-type-subtitle"
+                                      data-win-bind="textContent: fullName"></span>
+                                <span class="list-compressed-content"
+                                      data-win-bind="textContent: address"></span>
                             </div>
-                            <div class="list-div-right"
-                                 data-win-bind="style.display: Sent Binding.Converter.toDisplay">
-                                <div id="check" class="status-image"></div>
-                            </div>
-                            <div class="list-div-right"
-                                 data-win-bind="style.display: ReturnedModified Binding.Converter.toDisplay">
-                                <div id="checks" class="status-image"></div>
+                            <div class="list-compressed-doc-container" data-win-bind="style.display: OvwContentDOCCNT3 Binding.Converter.toDisplay">
+                                <img class="list-compressed-doc" data-win-bind="src: OvwContentDOCCNT3">
                             </div>
                         </div>
                     </div>

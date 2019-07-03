@@ -17,7 +17,7 @@
     left: 0;
     top: 0;
     width: 200px;
-    height: 200px;
+    height: calc(100% - 56px);
 }
 
 /* Styles used for the custom layout */
@@ -52,54 +52,72 @@
 
 
 /*
-    margins/paddings for medium size screens or orientation landscape
-    contentarea is less than 699px (in landscape add 140px for navigation bar)
-    @media (max-width:699px), (max-width:839px) and (orientation: landscape) {
+    margins/paddings for bigger size screens 
+
+    @media (max-width:1099px) {
+    }
+
+    is now signalled by additional class: view-size-bigger
 */
-@media (max-width:1099px) {
-     #listLocalContacts .row-bkg {
-         /*
-        display: none;
-         */
+
+/*
+.view-size-bigger #listLocalContacts .row-bkg {
+    display: none;
+}
+.view-size-bigger #listLocalContacts .win-container {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+*/
+.view-size-bigger #listLocalContacts .win-item {
+    width: calc(100% - 52px);
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.view-size-bigger .action-image {
+    width: 100%;
+    float: left;
+}
+
+/*
+    margins/paddings for middle sized screens 
+
+
+    is now signalled by additional class: view-size-medium
+
+    @media (max-width:899px) {
     }
-    /*
-    #listLocalContacts .win-container {
-        margin-left: 0;
-        margin-right: 0;
-        margin-top: 0;
-        margin-bottom: 16px;
-    }
-    */
-    #listLocalContacts .win-item {
-        padding-top: 8px;
-        padding-bottom: 8px;
-    }
-    .action-image{
-         width: 100%;
-         float: left;
-         padding-left: 6px;
-     }
+*/
+
+
+.view-size-medium #listLocalContacts .win-item {
+    width: calc(100% - 36px);
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 
-@media (max-width:899px) {
-    #listLocalContacts .win-item {
-        width: calc(100% - 36px);
-        padding-left: 18px;
-        padding-right: 18px;
-        padding-top: 8px;
-        padding-bottom: 8px;
-    }
-}
+/*
+    margins/paddings for small sized screens 
 
-@media (max-width:499px) {
-    #listLocalContacts .win-item {
-        width: calc(100% - 20px);
-        padding-left: 10px;
-        padding-right: 10px;
-        padding-top: 4px;
-        padding-bottom: 4px;
+
+    is now signalled by additional class: view-size-small
+
+    @media (max-width:499px) {
     }
+*/
+
+.view-size-small #listLocalContacts .win-item {
+    width: calc(100% - 20px);
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 
