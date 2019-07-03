@@ -368,6 +368,7 @@
     "info.notesOptions"     : "Paramètres d'enregistrement",
     "info.barcodeDeviceId"  : "Périphérique",
     "info.barcodeDeviceStatus" : "État",
+    "info.turnThumbsLeft"   : "Tourner l'aperçu à gauche",
 
     "infodesk.actualEmployee"     : "Personnel actuel",
     "infodesk.employee"     : "Personnel",

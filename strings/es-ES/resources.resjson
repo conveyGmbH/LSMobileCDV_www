@@ -361,6 +361,7 @@
     "info.notesOptions"     : "Aufnahmeoptionen",
     "info.barcodeDeviceId"  : "Gerät",
     "info.barcodeDeviceStatus" : "Status",
+    "info.turnThumbsLeft"   : "Turn thumbs left",
 
     "infodesk.actualEmployee"     : "Aktueller Mitarbeiter",
     "infodesk.employee"     : "Mitarbeiter",

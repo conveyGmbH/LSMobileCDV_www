@@ -19,6 +19,7 @@
             accentColor: "#fe3600"
         },
         showAppBkg: false,
+        turnThumbsLeft: false,
         cameraQuality: 50,
         cameraUseGrayscale: true,
         cameraMaxSize: 2560,

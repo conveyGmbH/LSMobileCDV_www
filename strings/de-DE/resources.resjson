@@ -368,6 +368,7 @@
     "info.notesOptions"     : "Aufnahmeoptionen",
     "info.barcodeDeviceId"  : "Gerät",
     "info.barcodeDeviceStatus" : "Status",
+    "info.turnThumbsLeft"   : "Vorschaubilder nach links drehen",
 
     "infodesk.actualEmployee"     : "Aktueller Mitarbeiter",
     "infodesk.employee"     : "Mitarbeiter",

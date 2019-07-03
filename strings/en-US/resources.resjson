@@ -368,6 +368,7 @@
     "info.notesOptions"     : "Recording options",
     "info.barcodeDeviceId"  : "Device",
     "info.barcodeDeviceStatus" : "Status",
+    "info.turnThumbsLeft"   : "Turn thumbs left",
 
     "infodesk.actualEmployee"     : "Current employee",
     "infodesk.employee"     : "Employee",

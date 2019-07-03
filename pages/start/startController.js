@@ -121,7 +121,11 @@
                                     img.style.marginTop = -marginTop + "px";
                                     img.style.height = containerElement.clientWidth + "px";
                                 }
-                                img.style.transform = "rotate(90deg)";
+								if (AppData._persistentStates.turnThumbsLeft) {
+									img.style.transform = "rotate(270deg)";
+								} else {
+									img.style.transform = "rotate(90deg)";
+								}
                                 img.style.width = "auto";
                             }
                         }
@@ -198,7 +202,7 @@
                         } else {
                             elements[l].style.color = Colors.tileTextColor;
                         }
-                        
+
                     }
                     var svgObject = button.querySelector(".action-image-list");
                     if (svgObject) {
@@ -647,7 +651,7 @@
                                 }
                                 if (WinJS.Utilities.hasClass(separatorTile, "tile-separator-left")) {
                                     separatorTile.borderLeftColor = borderColor;
-                                } 
+                                }
                                 if (WinJS.Utilities.hasClass(separatorTile, "tile-separator-right")) {
                                     separatorTile.borderRightColor = borderColor;
                                 }

@@ -368,6 +368,7 @@
     "info.notesOptions"     : "Opzioni registrazione",
     "info.barcodeDeviceId"  : "Periferico",
     "info.barcodeDeviceStatus" : "Condizione",
+    "info.turnThumbsLeft"   : "Girare l'anteprima a sinistra",
 
     "infodesk.actualEmployee"     : "Employee attuale",
     "infodesk.employee"     : "Employee",
