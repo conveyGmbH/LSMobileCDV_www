@@ -21,56 +21,74 @@
                             <span class="date-field"></span>
                         </div>
                     </div>
-                    <div class="line-separator"></div>
-                    <div class="field_line">
-                        <span class="large_field"
-                              data-win-res="{textContent: 'login.comment'}"></span>
+                    <div class="centerarea">
+                        <div class="line-separator"></div>
+                        <div class="field_line">
+                            <span class="large_field"
+                                  data-win-res="{textContent: 'login.comment'}"></span>
+                        </div>
+                        <div class="line-separator"></div>
+                        <div class="field_line field_line_odd">
+                            <span class="label win-type-caption portrait_only"
+                                  data-win-res="{textContent: 'login.login'}"></span>
+                            <span class="label landscape_only"
+                                  data-win-res="{textContent: 'login.login'}"></span>
+                            <input class="input_field win-textbox" type="text"
+                                   data-win-bind="value: dataLogin.Login Binding.Mode.twoway" />
+                        </div>
+                        <div class="field_line field_line_even">
+                            <span class="label win-type-caption portrait_only"
+                                  data-win-res="{textContent: 'login.password'}"></span>
+                            <span class="label landscape_only"
+                                  data-win-res="{textContent: 'login.password'}"></span>
+                            <input class="input_field win-textbox" type="password"
+                                   data-win-bind="value: dataLogin.Password Binding.Mode.twoway" />
+                        </div>
+                        <div class="line-separator"></div>
+                        <div class="field_line"
+                             data-win-bind="style.display: messageText Binding.Converter.toDisplay">
+                            <span class="input_field win-type-subtitle"
+                                  data-win-bind="textContent: messageText"></span>
+                        </div>
+                        <div class="field_line"
+                             data-win-bind="style.display: progress.show Binding.Converter.toDisplay">
+                            <span class="label win-type-caption portrait_only"
+                                  data-win-res="{textContent: 'login.progress'}"></span>
+                            <span class="label landscape_only"
+                                  data-win-res="{textContent: 'login.progress'}"></span>
+                            <progress class="progress_field win-progress-bar"
+                                      data-win-bind="value: progress.percent"
+                                      min="0" max="100"></progress>
+                            <span class="large_field"
+                                  data-win-bind="textContent: progress.text"></span>
+                        </div>
+                        <div class="field_line">
+                            <label class="checkbox large_field">
+                                <input type="checkbox" class="win-checkbox checkbox"
+                                       data-win-bind="checked: dataLogin.privacyPolicyFlag"
+                                       onclick="AppBar.handleEvent('click', 'clickPrivacyPolicy', event)" />
+                                <span class="checkbox"
+                                      data-win-res="{textContent: 'login.privacyPolicy'}"></span>
+                            </label>
+                            <span class="large_field"
+                                  id="privacyPolicyLink"></span>
+                        </div>
+                        <div class="field_line field_line_full">
+                            <div class="button_line">
+                                <div class="button-element">
+                                    <button id="loginButton"
+                                            class="text-lightcolor titlearea-bkg win-button"
+                                            onclick="AppBar.handleEvent('click', 'clickOk', event)">
+                                        <span class="win-type-title"
+                                              data-win-res="{textContent: 'label.login'}"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="line-separator"></div>
-                    <div class="field_line field_line_odd">
-                        <span class="label win-type-caption portrait_only"
-                              data-win-res="{textContent: 'login.login'}"></span>
-                        <span class="label landscape_only"
-                              data-win-res="{textContent: 'login.login'}"></span>
-                        <input class="input_field win-textbox" type="text"
-                               data-win-bind="value: dataLogin.Login Binding.Mode.twoway" />
-                    </div>
-                    <div class="field_line field_line_even">
-                        <span class="label win-type-caption portrait_only"
-                              data-win-res="{textContent: 'login.password'}"></span>
-                        <span class="label landscape_only"
-                              data-win-res="{textContent: 'login.password'}"></span>
-                        <input class="input_field win-textbox" type="password"
-                               data-win-bind="value: dataLogin.Password Binding.Mode.twoway" />
-                    </div>
-                    <div class="line-separator"></div>
-                    <div class="field_line"
-                         data-win-bind="style.display: messageText Binding.Converter.toDisplay">
-                        <span class="input_field win-type-subtitle"
-                              data-win-bind="textContent: messageText"></span>
-                    </div>
-                    <div class="field_line"
-                         data-win-bind="style.display: progress.show Binding.Converter.toDisplay">
-                        <span class="label win-type-caption portrait_only"
-                              data-win-res="{textContent: 'login.progress'}"></span>
-                        <span class="label landscape_only"
-                              data-win-res="{textContent: 'login.progress'}"></span>
-                        <progress class="progress_field win-progress-bar"
-                                  data-win-bind="value: progress.percent"
-                                  min="0" max="100"></progress>
-                        <span class="large_field"
-                              data-win-bind="textContent: progress.text"></span>
-                    </div>
-                    <div class="field_line">
-                        <input type="checkbox" class="win-checkbox checkbox" data-win-bind="checked: dataLogin.privacyPolicyFlag Binding.Mode.twoway" onclick="AppBar.handleEvent('click', 'clickPrivacyPolicy', event)" /> <!--data-win-bind="checked: SSANTWORT19"-->
-                        <span data-win-res="{textContent: 'login.privacyPolicy'}"></span>
-                        <span class="large_field"
-                              id="privacyPolicyLink"></span>
-                    </div>
-                    <div class="line-separator"></div>
                 </div>
-                    <div class="error-message"
-                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+                <div class="error-message"
+                     data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
             </section>
         </div>
     </div>

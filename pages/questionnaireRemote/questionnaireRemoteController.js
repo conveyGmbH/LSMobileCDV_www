@@ -54,8 +54,8 @@
             var that = this;
 
             // ListView control
-            var listView = pageElement.querySelector("#listQuestionnaire.listview");
-            var flipView = pageElement.querySelector("#imgListQuestionnaire.flipview");
+            var listView = pageElement.querySelector("#listQuestionnaireRemote.listview");
+            var flipView = pageElement.querySelector("#imgListQuestionnaireRemote.flipview");
 
             if (hasIPhoneBug && listView) {
                 WinJS.Utilities.addClass(listView, "no-transform");
@@ -88,6 +88,37 @@
             }
             this.hasDoc = hasDoc;
 
+            var forceFlipViewLayout = function() {
+                Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
+                if (that.images && listView && listView.winControl) {
+                    var pageControl = pageElement.winControl;
+                    if (pageControl && !pageControl.inResize) {
+                        WinJS.Promise.timeout(50).then(function() {
+                            if (pageControl && pageControl.updateLayout) {
+                                pageControl.prevWidth = 0;
+                                pageControl.prevHeight = 0;
+                                return pageControl.updateLayout.call(pageControl, pageElement);
+                            } else {
+                                return WinJS.Promise.as();
+                            }
+                        }).then(function() {
+                            if (flipView && flipView.parentElement && flipView.winControl) {
+                                flipView.winControl.currentPage = 0;
+                                flipView.winControl.forceLayout();
+                            }
+                        });
+                    } else {
+                        WinJS.Promise.timeout(50).then(function() {
+                            if (typeof that.forceFlipViewLayout === "function") {
+                                that.forceFlipViewLayout();
+                            }
+                        });
+                    }
+                }
+                Log.ret(Log.l.trace);
+            }
+            that.forceFlipViewLayout = forceFlipViewLayout;
+
             var addImage = function (json) {
                 Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                 if (json && json.d) {
@@ -106,32 +137,23 @@
                     }
                     if (docContent) {
                         var sub = docContent.search("\r\n\r\n");
-                        var title = (that.images.length + 1).toString() + " / " + that.docCount;
-                        var picture = "data:image/jpeg;base64," + docContent.substr(sub + 4);
-                        that.images.push({
-                            type: "item",
-                            DOC1ZeilenantwortID: json.d.DOC1ZeilenantwortVIEWID,
-                            title: title,
-                            picture: picture
-                        });
-                        if (that.images.length === 1) {
-                            WinJS.Promise.timeout(50).then(function () {
-                                var pageControl = pageElement.winControl;
-                                if (pageControl && pageControl.updateLayout) {
-                                    pageControl.prevWidth = 0;
-                                    pageControl.prevHeight = 0;
-                                    return pageControl.updateLayout.call(pageControl, pageElement);
-                                } else {
-                                    return WinJS.Promise.as();
+                        if (sub >= 0) {
+                            var data = docContent.substr(sub + 4);
+                            if (data && data !== "null") {
+                                var title = (that.images.length + 1).toString() + " / " + that.docCount;
+                                var picture = "data:image/jpeg;base64," + data;
+                                that.images.push({
+                                    type: "item",
+                                    DOC1ZeilenantwortID: json.d.DOC1ZeilenantwortVIEWID,
+                                    title: title,
+                                    picture: picture
+                                });
+                                if (that.images.length === 1) {
+                                    that.forceFlipViewLayout();
+                                } else if (flipView && flipView.winControl) {
+                                    flipView.winControl.currentPage = that.images.length - 1;
                                 }
-                            }).then(function () {
-                                if (flipView && flipView.parentElement && flipView.winControl) {
-                                    flipView.winControl.currentPage = 0;
-                                    flipView.winControl.forceLayout();
-                                }
-                            });
-                        } else if (flipView && flipView.winControl) {
-                            flipView.winControl.currentPage = that.images.length - 1;
+                            }
                         }
                     }
                 }

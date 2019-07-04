@@ -477,16 +477,31 @@
                                     }
                                     if (docContent) {
                                         var sub = docContent.search("\r\n\r\n");
-                                        AppData._photoData = docContent.substr(sub + 4);
-                                        showPhoto();
+                                        if (sub >= 0) {
+                                            var data = docContent.substr(sub + 4);
+                                            if (data && data !== "null") {
+                                                AppData._photoData = data;
+                                            } else {
+                                                AppData._photoData = null;
+                                            }
+                                        } else {
+                                            AppData._photoData = null;
+                                        }
+                                    } else {
+                                        AppData._photoData = null;
                                     }
+                                } else {
+                                    AppData._photoData = null;
                                 }
+                                showPhoto();
                             }, function (errorResponse) {
                                 that.removeDisposablePromise(cardscanSelectPromise);
+                                showPhoto();
                                 AppData.setErrorMsg(that.binding, errorResponse);
                             }, importCardscanId);
                             return that.addDisposablePromise(cardscanSelectPromise);
                         } else {
+                            showPhoto();
                             return WinJS.Promise.as();
                         }
                     } else {

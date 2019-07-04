@@ -146,7 +146,16 @@
                                     }
                                     if (docContent) {
                                         var sub = docContent.search("\r\n\r\n");
-                                        AppData._remotePhotoData = docContent.substr(sub + 4);
+                                        if (sub >= 0) {
+                                            var data = docContent.substr(sub + 4);
+                                            if (data && data !== "null") {
+                                                AppData._remotePhotoData = data;
+                                            } else {
+                                                AppData._remotePhotoData = null;
+                                            }
+                                        } else {
+                                            AppData._remotePhotoData = null;
+                                        }
                                         showPhoto();
                                     }
                                 }

@@ -146,7 +146,16 @@
                                     }
                                     if (docContent) {
                                         var sub = docContent.search("\r\n\r\n");
-                                        AppData._photoData = docContent.substr(sub + 4);
+                                        if (sub >= 0) {
+                                            var data = docContent.substr(sub + 4);
+                                            if (data && data !== "null") {
+                                                AppData._photoData = data;
+                                            } else {
+                                                AppData._photoData = null;
+                                            }
+                                        } else {
+                                            AppData._photoData = null;
+                                        }
                                         showPhoto();
                                     }
                                 }

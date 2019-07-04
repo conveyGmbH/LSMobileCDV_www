@@ -36,8 +36,7 @@
                 dataLogin: {
                     Login: "",
                     Password: "",
-                    privacyPolicyFlag: false,
-                    privacyPolicydisabled: false
+                    privacyPolicyFlag: false
                 },
                 progress: {
                     percent: 0,
@@ -104,9 +103,10 @@
                 },
                 clickPrivacyPolicy: function (event) {
                     Log.call(Log.l.trace, "Login.Controller.");
-                    that.binding.dataLogin.privacyPolicyFlag = event.currentTarget.checked;
-                    that.binding.dataLogin.privacyPolicydisabled = event.currentTarget.checked;
-                    AppBar.triggerDisableHandlers();
+                    if (event && event.currentTarget) {
+                        that.binding.dataLogin.privacyPolicyFlag = event.currentTarget.checked;
+                        AppBar.triggerDisableHandlers();
+                    }
                     Log.ret(Log.l.trace);
                 }
             };
@@ -120,7 +120,6 @@
                     }
                     if (!that.binding.dataLogin.Login || !that.binding.dataLogin.Password) {
                         that.binding.dataLogin.privacyPolicyFlag = false;
-                        that.binding.dataLogin.privacyPolicydisabled = false;
                     }
                     return AppBar.busy || (that.binding.dataLogin.Login.length === 0 || that.binding.dataLogin.Password.length === 0 || !that.binding.dataLogin.privacyPolicyFlag);
                 }
@@ -361,7 +360,6 @@
                 if (that.binding.dataLogin.Login &&
                     that.binding.dataLogin.Password) {
                     that.binding.dataLogin.privacyPolicyFlag = true;
-                    that.binding.dataLogin.privacyPolicydisabled = true;
                     AppBar.triggerDisableHandlers();
                     WinJS.Promise.timeout(100).then(function () {
                         Application.navigateById("start", null, true);

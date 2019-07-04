@@ -109,7 +109,16 @@
                         var docContent = doc.OvwContentDOCCNT3;
                         if (docContent) {
                             var sub = docContent.search("\r\n\r\n");
-                            item.srcImg = "data:image/jpeg;base64," + docContent.substr(sub + 4);
+                            if (sub >= 0) {
+                                var data = docContent.substr(sub + 4);
+                                if (data && data !== "null") {
+                                    item.srcImg = "data:image/jpeg;base64," + data;
+                                } else {
+                                    item.srcImg = "";
+                                }
+                            } else {
+                                item.srcImg = "";
+                            }
                         } else {
                             item.srcImg = "";
                         }

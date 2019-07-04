@@ -21,14 +21,14 @@
                 this._surface = this._site.surface;
 
                 // Add a CSS class to control the surface level layout
-                WinJS.Utilities.addClass(this._surface, "questionnaireLayout");
+                WinJS.Utilities.addClass(this._surface, "questionnaireRemoteLayout");
 
                 return WinJS.UI.Orientation.vertical;
             },
 
             // Reset the layout to its initial state
             uninitialize: function () {
-                WinJS.Utilities.removeClass(this._surface, "questionnaireLayout");
+                WinJS.Utilities.removeClass(this._surface, "questionnaireRemoteLayout");
                 this._site = null;
                 this._surface = null;
             }
@@ -97,7 +97,7 @@
                 that.inResize = 1;
                 ret = WinJS.Promise.timeout(0).then(function () {
                     var headerInner = element.querySelector(".header-inner");
-                    var flipView = element.querySelector("#imgListQuestionnaire.flipview");
+                    var flipView = element.querySelector("#imgListQuestionnaireRemote.flipview");
                     var docContainer = element.querySelector(".doc-container");
                     var fieldsContainer = element.querySelector(".fields-container");
                     if (that.controller &&
@@ -165,7 +165,7 @@
                                 }
                             } else {
                                 docContainer.style.display = "none";
-                                var listHeader = element.querySelector("#listQuestionnaire .list-header");
+                                var listHeader = element.querySelector("#listQuestionnaireRemote .list-header");
                                 if (listHeader && headerInner && (!headerInner.parentElement || !WinJS.Utilities.hasClass(headerInner.parentElement, "list-header"))) {
                                     if (headerInner.parentElement) {
                                         headerInner.parentElement.removeChild(headerInner);
@@ -173,7 +173,7 @@
                                     listHeader.appendChild(headerInner);
                                 }
                             }
-                            var imgFooterContainer = element.querySelector("#listQuestionnaire .img-footer-container");
+                            var imgFooterContainer = element.querySelector("#listQuestionnaireRemote .img-footer-container");
                             if (docWidth > 0 || !imgFooterContainer) {
                                 WinJS.Utilities.addClass(element, "view-size-split");
                                 if (flipView &&
@@ -182,9 +182,12 @@
                                         flipView.parentElement.removeChild(flipView);
                                     }
                                     docContainer.appendChild(flipView);
-                                    if (flipView.winControl) {
-                                        flipView.winControl.forceLayout();
-                                    }
+                                    WinJS.Promise.timeout(50).then(function() {
+                                        if (flipView.winControl) {
+                                            flipView.winControl.forceLayout();
+                                        }
+                                        that.updateLayout(element, viewState, lastViewState);
+                                    });
                                 }
                             } else {
                                 WinJS.Utilities.removeClass(element, "view-size-split");
@@ -194,9 +197,12 @@
                                         flipView.parentElement.removeChild(flipView);
                                     }
                                     imgFooterContainer.appendChild(flipView);
-                                    if (flipView.winControl) {
-                                        flipView.winControl.forceLayout();
-                                    }
+                                    WinJS.Promise.timeout(50).then(function() {
+                                        if (flipView.winControl) {
+                                            flipView.winControl.forceLayout();
+                                        }
+                                        that.updateLayout(element, viewState, lastViewState);
+                                    });
                                 }
                             }
                             WinJS.Utilities.removeClass(element, "view-size-small");

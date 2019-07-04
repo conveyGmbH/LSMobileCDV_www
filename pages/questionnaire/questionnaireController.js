@@ -90,6 +90,37 @@
             }
             this.hasDoc = hasDoc;
 
+            var forceFlipViewLayout = function() {
+                Log.call(Log.l.trace, "Questionnaire.Controller.");
+                if (that.images && listView && listView.winControl) {
+                    var pageControl = pageElement.winControl;
+                    if (pageControl && !pageControl.inResize) {
+                        WinJS.Promise.timeout(50).then(function() {
+                            if (pageControl && pageControl.updateLayout) {
+                                pageControl.prevWidth = 0;
+                                pageControl.prevHeight = 0;
+                                return pageControl.updateLayout.call(pageControl, pageElement);
+                            } else {
+                                return WinJS.Promise.as();
+                            }
+                        }).then(function() {
+                            if (flipView && flipView.parentElement && flipView.winControl) {
+                                flipView.winControl.currentPage = 0;
+                                flipView.winControl.forceLayout();
+                            }
+                        });
+                    } else {
+                        WinJS.Promise.timeout(50).then(function() {
+                            if (typeof that.forceFlipViewLayout === "function") {
+                                that.forceFlipViewLayout();
+                            }
+                        });
+                    }
+                }
+                Log.ret(Log.l.trace);
+            }
+            that.forceFlipViewLayout = forceFlipViewLayout;
+            
             var addImage = function(json) {
                 Log.call(Log.l.trace, "Questionnaire.Controller.");
                 if (json && json.d) {
@@ -108,32 +139,23 @@
                     }
                     if (docContent) {
                         var sub = docContent.search("\r\n\r\n");
-                        var title = (that.images.length + 1).toString() + " / " + that.docCount;
-                        var picture = "data:image/jpeg;base64," + docContent.substr(sub + 4);
-                        that.images.push({
-                            type: "item",
-                            DOC1ZeilenantwortID: json.d.DOC1ZeilenantwortVIEWID,
-                            title: title,
-                            picture: picture
-                        });
-                        if (that.images.length === 1) {
-                            WinJS.Promise.timeout(50).then(function() {
-                                var pageControl = pageElement.winControl;
-                                if (pageControl && pageControl.updateLayout) {
-                                    pageControl.prevWidth = 0;
-                                    pageControl.prevHeight = 0;
-                                    return pageControl.updateLayout.call(pageControl, pageElement);
-                                } else {
-                                    return WinJS.Promise.as();
+                        if (sub >= 0) {
+                            var data = docContent.substr(sub + 4);
+                            if (data && data !== "null") {
+                                var title = (that.images.length + 1).toString() + " / " + that.docCount;
+                                var picture = "data:image/jpeg;base64," + data;
+                                that.images.push({
+                                    type: "item",
+                                    DOC1ZeilenantwortID: json.d.DOC1ZeilenantwortVIEWID,
+                                    title: title,
+                                    picture: picture
+                                });
+                                if (that.images.length === 1) {
+                                    that.forceFlipViewLayout();
+                                } else if (flipView && flipView.winControl) {
+                                    flipView.winControl.currentPage = that.images.length - 1;
                                 }
-                            }).then(function() {
-                                if (flipView && flipView.parentElement && flipView.winControl) {
-                                    flipView.winControl.currentPage = 0;
-                                    flipView.winControl.forceLayout();
-                                }
-                            });
-                        } else if (flipView && flipView.winControl) {
-                            flipView.winControl.currentPage = that.images.length - 1;
+                            }
                         }
                     }
                 }
@@ -873,20 +895,22 @@
 
             var onPhotoDataSuccess = function (imageData) {
                 Log.call(Log.l.trace, "Questionnaire.Controller.");
-                // Get image handle
-                //
-                var cameraImage = new Image();
-                // Show the captured photo
-                // The inline CSS rules are used to resize the image
-                //
-                cameraImage.src = "data:image/jpeg;base64," + imageData;
+                if (imageData) {
+                    // Get image handle
+                    //
+                    var cameraImage = new Image();
+                    // Show the captured photo
+                    // The inline CSS rules are used to resize the image
+                    //
+                    cameraImage.src = "data:image/jpeg;base64," + imageData;
 
-                var width = cameraImage.width;
-                var height = cameraImage.height;
-                Log.print(Log.l.trace, "width=" + width + " height=" + height);
+                    var width = cameraImage.width;
+                    var height = cameraImage.height;
+                    Log.print(Log.l.trace, "width=" + width + " height=" + height);
 
-                // todo: create preview from imageData
-                that.insertCameradata(imageData, width, height);
+                    // todo: create preview from imageData
+                    that.insertCameradata(imageData, width, height);
+                }
                 Log.ret(Log.l.trace);
             };
 
