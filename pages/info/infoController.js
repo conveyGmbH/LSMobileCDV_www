@@ -36,7 +36,7 @@
             }
             var hasBarcodeScanner = (isAndroid || isWindows10) ? true : false;
             var hasSerialDevice = (isWindows10 && AppData.generalData.useBarcodeActivity) ? true : false;
-            var hasScannerOption = (hasBarcodeScanner || hasBarcodeScanner || hasSerialDevice) ? true : false;
+            var hasScannerOption = (hasPicturesDirectory || hasBarcodeScanner || hasSerialDevice) ? true : false;
 
             Application.Controller.apply(this, [pageElement, {
                 uploadTS: (AppData.appSettings.odata.replPrevPostMs ?
