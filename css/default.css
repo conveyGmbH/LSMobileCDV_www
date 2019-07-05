@@ -458,8 +458,8 @@ section[role=main] {
     opacity: 0.6;
     font-weight: 700;
     bottom: 20px;
-    left: 26px;
-    width: calc(100% - 26px);
+    margin-left: 26px;
+    width: calc(100% - 65px);
     padding: 4px;
 }
 
@@ -1034,8 +1034,9 @@ button.win-button {
     padding-right: 0px;
 }
 .view-size-medium .error-message {
-    left: 18px;
-    width: calc(100% - 18px);
+    /*left: 18px;*/
+    width: calc(96% - 18px);
+    margin-left: 18px;
 }
 .view-size-medium .row-separator {
     margin-top: -8px;
@@ -1287,8 +1288,9 @@ button.win-button {
 
 .view-size-small .error-message {
     bottom: 10px;
-    left: 10px;
-    width: calc(100% - 10px);
+    /*left: 10px;*/
+    width: calc(100% - 30px);
+    margin-left: 10px;
 }
 .contentarea.view-size-small {
     /*
