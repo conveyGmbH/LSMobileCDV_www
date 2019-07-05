@@ -36,6 +36,8 @@
             }
             var hasBarcodeScanner = (isAndroid || isWindows10) ? true : false;
             var hasSerialDevice = (isWindows10 && AppData.generalData.useBarcodeActivity) ? true : false;
+            var hasScannerOption = (hasBarcodeScanner || hasBarcodeScanner || hasSerialDevice) ? true : false;
+
             Application.Controller.apply(this, [pageElement, {
                 uploadTS: (AppData.appSettings.odata.replPrevPostMs ?
                 "\/Date(" + AppData.appSettings.odata.replPrevPostMs + ")\/" : null),
@@ -49,7 +51,9 @@
                 hasPicturesDirectory: hasPicturesDirectory,
                 hasBarcodeScanner: hasBarcodeScanner,
                 hasSerialDevice: hasSerialDevice,
-                barcodeDeviceStatus: Barcode.deviceStatus
+                barcodeDeviceStatus: Barcode.deviceStatus,
+                hasScannerOption: hasScannerOption,
+                lastError: AppBar.scope.binding.error.errorMsg ? AppBar.scope.binding.error.errorMsg : ""
             }, commandList]);
 
             this.picturesDirectorySubFolder = AppData.generalData.picturesDirectorySubFolder;
@@ -66,6 +70,8 @@
             var deviceList = null;
 
             var that = this;
+
+            //var lastError = that.binding.error.errorMsg;
 
             var checkIPhoneBug = function () {
                 if (navigator.appVersion) {
@@ -194,16 +200,6 @@
                         var range = event.currentTarget;
                         if (range) {
                             that.binding.generalData.autoShutterTime = range.value;
-                        }
-                    }
-                    Log.ret(Log.l.trace);
-                },
-                clickUseAudioNote: function (event) {
-                    Log.call(Log.l.trace, "info.Controller.");
-                    if (event.currentTarget && AppBar.notifyModified) {
-                        var toggle = event.currentTarget.winControl;
-                        if (toggle) {
-                            that.binding.generalData.useAudioNote = toggle.checked;
                         }
                     }
                     Log.ret(Log.l.trace);

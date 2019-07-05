@@ -324,7 +324,7 @@
                 } else {
                     item.type = "multi8";
                 }
-                item.textarea = getResourceText("questionnaire.textarea");
+                item.textarea = getResourceText("questionnaireRemote.textarea");
                 if (item.Freitext === null) {
                     item.Freitext = "";
                 }
@@ -876,7 +876,7 @@
                     Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
                     var showconfirmbox = that.showConfirmBoxMandatory();
                     if (showconfirmbox) {
-                        var confirmTitle = getResourceText("questionnaire.labelConfirmMandatoryField") + ":\n" +
+                        var confirmTitle = getResourceText("questionnaireRemote.labelConfirmMandatoryField") + ":\n" +
                             that.actualquestion.FRAGESTELLUNG;
                         confirm(confirmTitle, function (result) {
                            if (result) {

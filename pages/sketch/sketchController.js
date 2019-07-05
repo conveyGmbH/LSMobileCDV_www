@@ -33,7 +33,6 @@
                 moreNotes: false,
                 userHidesList: false,
                 contactId: AppData.getRecordId("Kontakt"),
-                hideAddWav: !AppData.generalData.useAudioNote,
                 hideAddImg: !AppData._persistentStates.cameraFeatureSupported
             };
             // load amr lib....

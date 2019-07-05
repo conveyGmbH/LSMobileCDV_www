@@ -10,6 +10,7 @@
 /// <reference path="~/www/lib/convey/scripts/dbinit.js" />
 /// <reference path="~/plugins/cordova-plugin-device/www/device.js" />
 /// <reference path="~/www/pages/appHeader/appHeaderController.js" />
+/// <reference path="~/www/pages/dbinit/dbinitController.js" />
 /// <reference path="~/plugins/phonegap-datawedge-intent/www/broadcast_intent_plugin.js" />
 /// <reference path="~/plugins/cordova-plugin-x-socialsharing/www/SocialSharing.js" />
 /// <reference path="~/www/lib/vcard/scripts/vcardformatter.js" />
@@ -89,7 +90,8 @@
         _userData: {
             VeranstaltungName: "",
             Login: "",
-            Present: 0
+            Present: 0//,
+            //NotUploaded: 0
         },
         _userRemoteData: {},
         _photoData: null,
@@ -329,7 +331,7 @@
                                         AppData.setErrorMsg(AppBar.scope.binding, AppData._userRemoteData.Message);
                                     } else if (AppBar.scope && typeof AppBar.scope.updateActions === "function" &&
                                         (!prevUserRemoteData ||
-                                         prevUserRemoteData.AnzVersendeteKontakte !== AppData._userRemoteData.AnzVersendeteKontakte)) {
+                                         prevUserRemoteData.AnzVersendeteKontakte !== AppData._userRemoteData.AnzVersendeteKontakte)) { //|| (prevUserRemoteData.NotUploaded !== AppData._userRemoteData.NotUploaded)
                                         doUpdate = true;
                                     }
                                 }
@@ -348,6 +350,7 @@
                                     AppData.getUserRemoteData();
                                 });
                             }, function (errorResponse) {
+                                var err="";
                                 if (!AppData.appSettings.odata.serverFailure) {
                                     AppData.appSettings.odata.serverFailure = true;
                                     NavigationBar.disablePage("listRemote");
@@ -359,7 +362,6 @@
                                         AppRepl.replicator.networkState !== "Offline" &&
                                         AppRepl.replicator.networkState !== "Unknown" &&
                                         DBInit && DBInit.loginRequest) {
-                                        var err;
                                         DBInit.loginRequest.insert(function(json) {
                                             // this callback will be called asynchronously
                                             // when the response is available
@@ -398,6 +400,14 @@
                                 // called asynchronously if an error occurs
                                 // or server returns response with an error status.
                                 Log.print(Log.l.error, "error in select generalUserRemoteView statusText=" + errorResponse.statusText);
+                                if (AppBar.scope && errorResponse.statusText === "") {
+                                    //err = { status: 404, statusText: getResourceText("login.unknown") };
+                                    AppData.setErrorMsg(AppBar.scope.binding,
+                                        { status: 404, statusText: getResourceText("general.internet") });
+                                } else {
+                                    AppData.setErrorMsg(AppBar.scope.binding,
+                                        { status: 404, statusText: errorResponse.statusText });
+                                }
                                 var timeout = AppData._persistentStates.odata.replInterval || 30;
                                 Log.print(Log.l.info, "getUserRemoteData: Now, wait for timeout=" + timeout + "s");
                                 if (AppData._userRemoteDataPromise) {
@@ -546,6 +556,18 @@
             Log.ret(Log.l.u1, ret);
             return ret;
         },
+        /*getNotUploaded: function() {
+            Log.call(Log.l.u1, "AppData.");
+            var ret;
+            if (AppData._userData &&
+                AppData._userData.NotUploaded) {
+                ret = AppData._userData.NotUploaded;
+            } else {
+                ret = 0;
+            }
+            Log.ret(Log.l.u1, ret);
+            return ret;
+        },*/
         getCountRemote: function () {
             Log.call(Log.l.u1, "AppData.");
             var ret;
@@ -740,6 +762,7 @@
                     ? (AppData._contactData.CreatorSiteID + "/" + AppData._contactData.CreatorRecID)
                     : "");
                 data.contactCountLocal = AppData.getCountLocal();
+                //data.contactNotUploaded = AppData.getNotUploaded();
                 data.contactCountRemote = AppData.getCountRemote();
                 data.remoteContactID = ((AppData._remoteContactData && AppData._remoteContactData.CreatorRecID)
                     ? (AppData._remoteContactData.CreatorSiteID + "/" + AppData._remoteContactData.CreatorRecID)

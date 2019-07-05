@@ -222,8 +222,8 @@
                         if (result) {
                             Log.print(Log.l.trace, "clickDelete: user choice OK");
                             deleteData(function (response) {
-                                // delete OK - goto start
-                                Application.navigateById("start", event);
+                                // delete OK - goto listLocal
+                                Application.navigateById("listLocal", event);
                             }, function (errorResponse) {
                                 // delete ERROR
                                 var message = null;

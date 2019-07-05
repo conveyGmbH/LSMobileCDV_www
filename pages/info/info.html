@@ -34,6 +34,10 @@
                         <span class="label large_field win-type-caption"
                               data-win-bind="textContent: environment"></span>
                     </div>
+                    <div class="field_line field_line_full">
+                        <span style="color:rgb(255,64,64)" class="label large_field win-type-caption"
+                              data-win-bind="textContent: lastError"></span>
+                    </div>
                     <div class="header-separator float-left"></div>
                     <div class="content-header float-left">
                         <div class="half-circle half-circle-textcolor">&nbsp;</div>
@@ -88,8 +92,8 @@
                                oninput="AppBar.handleEvent('change', 'changedAutoShutterTime', event)"
                                />
                     </div>
-                    <div class="header-separator float-left"></div>
-                    <div class="content-header float-left">
+                    <div class="header-separator float-left" data-win-bind="style.display: hasScannerOption Binding.Converter.toDisplay"></div>
+                    <div class="content-header float-left"  data-win-bind="style.display: hasScannerOption Binding.Converter.toDisplay">
                         <div class="half-circle half-circle-textcolor">&nbsp;</div>
                         <div class="idAndDate win-type-caption">
                             <span class="id-field"></span>
@@ -150,26 +154,6 @@
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.barcodeDeviceStatus'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.barcodeDeviceStatus'}"></span>
                         <span class="input_field win-type-subtitle" data-win-bind="textContent: barcodeDeviceStatus"></span>
-                    </div>
-                    <div class="header-separator float-left" data-win-bind="style.display: isAndroid Binding.Converter.toDisplay"></div>
-                    <div class="content-header float-left" data-win-bind="style.display: isAndroid Binding.Converter.toDisplay">
-                        <div class="half-circle half-circle-textcolor">&nbsp;</div>
-                        <div class="idAndDate win-type-caption">
-                            <span class="id-field"></span>
-                            <span class="caption-field" data-win-res="{textContent: 'info.notesOptions'}"></span>
-                            <span class="date-field"></span>
-                        </div>
-                    </div>
-                    <div class="field_line field_line_odd" data-win-bind="style.display: isAndroid Binding.Converter.toDisplay">
-                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.useAudioNote'}"></span>
-                        <span class="label landscape_only" data-win-res="{textContent: 'info.useAudioNote'}"></span>
-                        <div class="input_field toggle-switch-parent">
-                            <div id="useAudioNote" class="input_field"
-                                 data-win-control="WinJS.UI.ToggleSwitch"
-                                 data-win-bind="winControl.checked: generalData.useAudioNote; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
-                                 onchange="AppBar.handleEvent('change', 'clickUseAudioNote', event)">
-                            </div>
-                        </div>
                     </div>
                     <div class="header-separator float-left"></div>
                     <div class="content-header float-left">
@@ -321,7 +305,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="line-separator"></div>
+                    <!--<div class="line-separator"></div>-->
                 </div>
                 <div class="error-message"
                      data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>

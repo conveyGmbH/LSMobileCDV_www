@@ -202,8 +202,13 @@
                 }, function (errorResponse) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
-                    Log.print(Log.l.info, "loginRequest error: " + AppData.getErrorMsgFromResponse(errorResponse) + " ignored for compatibility!");
+                    err = AppData.getErrorMsgFromResponse(errorResponse);
+                    //if (err === "") {
+                    //    err = { status: 404, statusText: getResourceText("general.ckeckServer") };
+                    //}
+                    //Log.print(Log.l.info, "loginRequest error: " + err + " ignored for compatibility!");
                     // ignore this error here for compatibility!
+                    //AppData.setErrorMsg(that.binding, err);
                     return WinJS.Promise.as();
                 }, {
                     LoginName: that.binding.dataLogin.Login

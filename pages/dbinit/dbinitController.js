@@ -150,7 +150,7 @@
                     if (json && json.d && json.d.ODataLocation) {
                         if (json.d.InactiveFlag) {
                             AppBar.busy = false;
-                            err = { status: 503, statusText: getResourceText("login.inactive") };
+                            err = { status: 503, statusText: getResourceText("dbinit.inactive") };
                             AppData.setErrorMsg(that.binding, err);
                             error(err);
                         } else {
@@ -163,7 +163,7 @@
                         }
                     } else {
                         AppBar.busy = false;
-                        err = { status: 404, statusText: getResourceText("login.unknown") };
+                        err = { status: 404, statusText: getResourceText("dbinit.unknown") };
                         AppData.setErrorMsg(that.binding, err);
                         error(err);
                     }

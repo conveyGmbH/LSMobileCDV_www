@@ -48,7 +48,7 @@
                     that.binding.showList = that.binding.moreNotes;
                 }
                 AppBar.replaceCommands([
-                    { id: 'clickShowList', label: getResourceText('sketch.showList'), tooltip: getResourceText('sketch.showList'), section: 'primary', svg: that.binding.showList ? 'document_height' : 'elements3' }
+                    { id: 'clickShowList', label: getResourceText('sketchRemote.showList'), tooltip: getResourceText('sketchRemote.showList'), section: 'primary', svg: that.binding.showList ? 'document_height' : 'elements3' }
                 ]);
                 Log.ret(Log.l.trace);
             }
@@ -251,7 +251,7 @@
                             pageControl.prevWidth = 0;
                         }
                         AppBar.replaceCommands([
-                            { id: 'clickShowList', label: getResourceText('sketch.showList'), tooltip: getResourceText('sketch.showList'), section: 'primary', svg: that.binding.showList ? 'document_height' : 'elements3' }
+                            { id: 'clickShowList', label: getResourceText('sketchRemote.showList'), tooltip: getResourceText('sketchRemote.showList'), section: 'primary', svg: that.binding.showList ? 'document_height' : 'elements3' }
                         ]);
                         WinJS.Promise.timeout(50).then(function () {
                             mySketchList = pageElement.querySelector(".listfragmenthost");

@@ -95,15 +95,15 @@
             if (privacyPolicyLink) {
                 if (isAppleDevice) {
                     privacyPolicyLink.innerHTML = "<a style=\"pointer-events: none; cursor: default;\" href=\"https://" +
-                        getResourceText("login.privacyPolicyLink") +
+                        getResourceText("account.privacyPolicyLink") +
                         "\">" +
-                        getResourceText("login.privacyPolicyLink") +
+                        getResourceText("account.privacyPolicyLink") +
                         "</a>";
                 } else {
                     privacyPolicyLink.innerHTML = "<a href=\"https://" +
-                        getResourceText("login.privacyPolicyLink") +
+                        getResourceText("account.privacyPolicyLink") +
                         "\">" +
-                        getResourceText("login.privacyPolicyLink") +
+                        getResourceText("account.privacyPolicyLink") +
                         "</a>";
                 }
             }
