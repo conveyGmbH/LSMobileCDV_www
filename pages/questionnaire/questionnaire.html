@@ -1092,8 +1092,9 @@
                                  class="listview"
                                  data-win-control="WinJS.UI.ListView"
                                  data-win-options="{
-                                    header: select('.list-header'),
-                                    footer: select('.list-footer')
+                                     layout : { type: WinJS.UI.ListLayout },
+                                     header: select('.list-header'),
+                                     footer: select('.list-footer')
                                  }">
                             </div>
                         </div>
@@ -1102,9 +1103,9 @@
                                  class="flipview"
                                  data-win-control="WinJS.UI.FlipView"
                                  data-win-options="{
-                                    itemTemplate: select('.img-list-item'),
-                                    itemSpacing : 16
-                                 }">
+                                     itemTemplate: select('.img-list-item'),
+                                     itemSpacing : 16
+                                }">
                             </div>
                         </div>
                     </div>

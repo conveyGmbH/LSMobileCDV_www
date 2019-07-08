@@ -143,9 +143,10 @@
                          class="listview"
                          data-win-control="WinJS.UI.ListView"
                          data-win-options="{
-                                itemTemplate: select('.listLocalContacts-template'),
-                                header: select('.list-header'),
-                                footer: select('.list-footer')
+                             layout : { type: WinJS.UI.ListLayout },
+                             itemTemplate: select('.listLocalContacts-template'),
+                             header: select('.list-header'),
+                             footer: select('.list-footer')
                          }">
                     </div>
                 </div>

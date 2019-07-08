@@ -58,7 +58,7 @@
                                 Erfassungsdatum: "",
                                 modifiedOn: "",
                                 editedOn: "",
-                                showErfassungsdatum: false
+                                showModified: false
                             }
                         }, {
                             id: "list",

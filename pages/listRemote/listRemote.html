@@ -131,9 +131,10 @@
                          class="listview"
                          data-win-control="WinJS.UI.ListView"
                          data-win-options="{
-                                itemTemplate: select('.listRemoteContacts-template'),
-                                header: select('.list-header'),
-                                footer: select('.list-footer')
+                             layout : { type: WinJS.UI.ListLayout },
+                             itemTemplate: select('.listRemoteContacts-template'),
+                             header: select('.list-header'),
+                             footer: select('.list-footer')
                          }">
                     </div>
                 </div>

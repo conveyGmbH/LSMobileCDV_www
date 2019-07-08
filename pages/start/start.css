@@ -42,10 +42,6 @@
     height: 100%;
 }
 
-.tile-template {
-    display: none;
-}
-
 .tile-separator-left {
     border-left-style: solid !important;
     border-left-width: 2px !important;
@@ -82,7 +78,6 @@
     */
     border: none;
     display: table-caption;
-    visibility: hidden;
 }
 
  .start-header-field {

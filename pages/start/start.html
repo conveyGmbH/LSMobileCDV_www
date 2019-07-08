@@ -25,8 +25,7 @@
                             </div>
                             <div class="tile-row">
                                 <div class="tile-content-wide">
-                                    <div class="tile-content-inner"
-                                         data-win-bind="style.display: button0.showContact Binding.Converter.toDisplay">
+                                    <div class="tile-content-inner">
                                         <button data-win-bind="name: button0.id"
                                                 class="win-button tile-button-wide tile-button-color"
                                                 onclick="AppBar.handleEvent('click', 'clickButton', event)">
@@ -34,13 +33,12 @@
                                                 <div class="list-item-label-left win-type-caption">
                                                     <span data-win-bind="textContent: button0.content"></span>
                                                 </div>
-                                                <div class="list-item-label-right win-type-caption"
-                                                     data-win-bind="style.display: button0.showErfassungsdatum Binding.Converter.toDisplay">
+                                                <div class="list-item-label-right win-type-caption">
                                                     <span class="list-date-label" data-win-bind="textContent: button0.editedOn"></span><br/>
                                                     <span class="list-date-value" data-win-bind="textContent: button0.Erfassungsdatum Binding.Converter.toDateString"></span>
                                                 </div>
                                                 <div class="list-item-label-right win-type-caption">
-                                                    <span class="list-date-label" data-win-bind="textContent: button0.modifiedOn; style.display: button0.showErfassungsdatum Binding.Converter.toDisplay"></span><br/>
+                                                    <span class="list-date-label" data-win-bind="textContent: button0.modifiedOn; style.display: button0.showModified Binding.Converter.toDisplay"></span><br/>
                                                     <span class="list-date-value" data-win-bind="textContent: button0.ModifiedTS Binding.Converter.toDateString"></span>
                                                 </div>
                                             </div>
@@ -198,7 +196,10 @@
                     </div>
                     <div id="startActions"
                          class="listview win-selectionstylefilled"
-                         data-win-control="WinJS.UI.ListView">
+                         data-win-control="WinJS.UI.ListView"
+                         data-win-options="{ 
+                             layout : { type: WinJS.UI.ListLayout }
+                         }">
                     </div>
                     <div class="error-message"
                          data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>

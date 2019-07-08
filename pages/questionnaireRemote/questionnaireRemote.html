@@ -1092,9 +1092,10 @@
                                  class="listview"
                                  data-win-control="WinJS.UI.ListView"
                                  data-win-options="{
-                                        header: select('.list-header'),
-                                        footer: select('.list-footer')
-                                     }">
+                                     layout : { type: WinJS.UI.ListLayout },
+                                     header: select('.list-header'),
+                                     footer: select('.list-footer')
+                                 }">
                             </div>
                         </div>
                         <div class="doc-container">

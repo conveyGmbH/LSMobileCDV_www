@@ -79,22 +79,16 @@
                     if (contentarea) {
                         var listView = contentarea.querySelector("#startActions.listview");
                         if (listView && listView.winControl) {
-                            var listSurface = listView.querySelector("#startActions .win-surface");
                             var width = contentarea.clientWidth - 4;
                             var height = contentarea.clientHeight;
                             var numTiles = Start.actions.length;
                             if (width > 0 && height > 0 && numTiles > 0) {
                                 var tileWidth = Math.floor(width / 3 * 100) / 100;
-                                var tileHeight = Math.floor(height / numTiles * 100) / 100 - 62;//46;;
+                                var tileHeight = Math.floor(height / numTiles * 100) / 100 - 62;
                                 if (tileHeight > 160) {
                                     tileHeight = 160;
                                 } else if (tileHeight < 96) {
                                     tileHeight = 96;
-                                }
-                                if (listSurface) {
-                                    // ensure no scrolling except main direction
-                                    listSurface.style.overflowX = "hidden";
-                                    listSurface.style.overflowY = "visible";
                                 }
                                 if (width !== that.prevWidth) {
                                     that.prevWidth = width;
