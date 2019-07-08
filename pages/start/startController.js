@@ -584,62 +584,68 @@
                             //that.resizeTiles();
                         } else if (listView.winControl.loadingState === "complete") {
                             //that.resizeTiles();
-                            var recentTile = listView.querySelector(".tile-recent");
-                            if (recentTile) {
-                                var elements = recentTile.querySelectorAll("span");
-                                for (i = 0; i < elements.length; i++) {
-                                    elements[i].style.color = Colors.textColor;
-                                }
-                            }
-                            var separatorTiles = listView.querySelectorAll(".tile-separator-left, .tile-separator-right");
-                            if (separatorTiles) for (i = 0; i < separatorTiles.length; i++) {
-                                var separatorTile = separatorTiles[i];
-                                var borderColor;
-                                if (WinJS.Utilities.hasClass(separatorTile, "text-lightcolor")) {
-                                    borderColor = "#f0f0f0";
-                                } else {
-                                    borderColor = Colors.tileTextColor;
-                                }
-                                if (WinJS.Utilities.hasClass(separatorTile, "tile-separator-left")) {
-                                    separatorTile.borderLeftColor = borderColor;
-                                }
-                                if (WinJS.Utilities.hasClass(separatorTile, "tile-separator-right")) {
-                                    separatorTile.borderRightColor = borderColor;
-                                }
-                            }
-                            var showTileButton = function (svgInfo) {
-                                var ret = null;
-                                if (svgInfo.element &&
-                                    svgInfo.element.parentNode) {
-                                    var buttonElement = svgInfo.element.parentNode.parentNode;
-                                    if (buttonElement) {
-                                        checkListButtonStates(buttonElement);
-                                        ret = WinJS.Promise.timeout(20).then(function() {
-                                            return showButtonElement(buttonElement);
-                                        });
+                            var itemsContainer = listView.querySelector(".win-itemscontainer");
+                            if (actions && itemsContainer && itemsContainer.clientHeight < listView.clientHeight - actions.length) {
+                                // force layout again if itemsContainer won't fit list height at least...
+                                WinJS.Promise.timeout(20).then(function() {
+                                    listView.winControl.forceLayout();
+                                });
+                            } else {
+                                var recentTile = listView.querySelector(".tile-recent");
+                                if (recentTile) {
+                                    var elements = recentTile.querySelectorAll("span");
+                                    for (i = 0; i < elements.length; i++) {
+                                        elements[i].style.color = Colors.textColor;
                                     }
                                 }
-                                if (!ret) {
-                                    ret = WinJS.Promise.as();
+                                var separatorTiles = listView.querySelectorAll(".tile-separator-left, .tile-separator-right");
+                                if (separatorTiles) for (i = 0; i < separatorTiles.length; i++) {
+                                    var separatorTile = separatorTiles[i];
+                                    var borderColor;
+                                    if (WinJS.Utilities.hasClass(separatorTile, "text-lightcolor")) {
+                                        borderColor = "#f0f0f0";
+                                    } else {
+                                        borderColor = Colors.tileTextColor;
+                                    }
+                                    if (WinJS.Utilities.hasClass(separatorTile, "tile-separator-left")) {
+                                        separatorTile.borderLeftColor = borderColor;
+                                    }
+                                    if (WinJS.Utilities.hasClass(separatorTile, "tile-separator-right")) {
+                                        separatorTile.borderRightColor = borderColor;
+                                    }
                                 }
-                                return ret;
-                            };
-
-                            resetSvgLoaded();
-                            var js = {};
-                            js.list = Colors.loadSVGImageElements(listView, "action-image-list", 40, Colors.tileTextColor, "name", showTileButton);
-                            js.new = Colors.loadSVGImageElements(listView, "action-image-new", 40, "#f0f0f0", "name", showTileButton);
-
-                            WinJS.Promise.join(js).then(function() {
-                                if (listView.style) {
-                                    listView.style.visibility = "visible";
-                                }
-                                if (!Application.pageframe.splashScreenDone) {
-                                    WinJS.Promise.timeout(20).then(function() {
-                                        return Application.pageframe.hideSplashScreen();
-                                    });
-                                }
-                            });
+                                var showTileButton = function (svgInfo) {
+                                    var ret = null;
+                                    if (svgInfo.element &&
+                                        svgInfo.element.parentNode) {
+                                        var buttonElement = svgInfo.element.parentNode.parentNode;
+                                        if (buttonElement) {
+                                            checkListButtonStates(buttonElement);
+                                            ret = WinJS.Promise.timeout(20).then(function() {
+                                                return showButtonElement(buttonElement);
+                                            });
+                                        }
+                                    }
+                                    if (!ret) {
+                                        ret = WinJS.Promise.as();
+                                    }
+                                    return ret;
+                                };
+                                resetSvgLoaded();
+                                var js = {};
+                                js.list = Colors.loadSVGImageElements(listView, "action-image-list", 40, Colors.tileTextColor, "name", showTileButton);
+                                js.new = Colors.loadSVGImageElements(listView, "action-image-new", 40, "#f0f0f0", "name", showTileButton);
+                                WinJS.Promise.join(js).then(function() {
+                                    if (listView.style) {
+                                        listView.style.visibility = "visible";
+                                    }
+                                    if (!Application.pageframe.splashScreenDone) {
+                                        WinJS.Promise.timeout(20).then(function() {
+                                            return Application.pageframe.hideSplashScreen();
+                                        });
+                                    }
+                                });
+                            }
                         }
                     }
                     Log.ret(Log.l.trace);

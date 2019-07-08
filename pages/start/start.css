@@ -32,50 +32,31 @@
     margin-left: 0;
     margin-right: 0;
     margin-top: 0;
-    /*
-    margin-bottom: 16px;
-    */
     margin-bottom: 0;
 }
 .listView .startLayout .win-item {
     width: 100%;
-    height: 100%;
 }
 
 .tile-separator-left {
     border-left-style: solid !important;
     border-left-width: 2px !important;
-    /*border-left-color: #f0f0f0;*/
 }
 .tile-separator-right {
     border-right-style: solid !important;
     border-right-width: 2px !important;
-    /*border-left-color: #f0f0f0;*/
 }
 
 .tile {
     width: 100%;
     overflow-x: hidden;
-    /*
-    height: 198px;
-    display: table;
-    */
 }
 .tile-header {
     text-align: center;
     height: 60px;
-    /*
-    height: 42px;
-    width: calc(100% - 4px);
-    */
     width: 100%;
     margin: 0;
     padding: 0;
-    /*
-    border-style: solid;
-    border-width: 2px;
-    border-color: transparent;
-    */
     border: none;
     display: table-caption;
 }
@@ -113,26 +94,13 @@
     width: 100%;
     padding: 0;
     margin: 0;
-    /*
-    border-style: solid;
-    border-width: 2px;
-    border-color: transparent;
-    */
     border: none;
     display: table-cell;
 }
 .tile-content {
     min-height: 96px;
-    width: 33.333333%;
     padding: 0;
     margin: 0;
-    /*
-    min-width: 33.333333%;
-    max-width: 33.333333%;
-    border-style: solid;
-    border-width: 2px;
-    border-color: transparent;
-    */
     border: none;
     display: table-cell;
 }
@@ -143,36 +111,18 @@
     margin: 0;
     padding: 0;
     vertical-align: bottom;
-    /*
-    border-style: solid;
-    border-width: 2px;
-    border-color: transparent;
-    */
     border: none;
     display: table-cell;
 }
 
 .tile-content-inner {
-    /*
-    width: calc(100% - 2px);
-    height: calc(100% - 2px);
-    border-style: solid;
-    border-width: 1px;
-    border-color: gray;
-    */
     width: 100%;
-    height: 100%;
     border: none;
     visibility: hidden;
 }
 
 .tile-button {
     width: 100%;
-    /*
-    min-width: calc(100% - 4px);
-    max-width: calc(100% - 4px);
-    padding: 0;
-    */
     min-height: 94px;
     margin: 0;
     text-align: left;
@@ -214,7 +164,6 @@
      padding: 0;
      width: 60px;
      float: left;
-     height: 100%;
 }
  .action-image {
      margin-right: 4px;
@@ -227,9 +176,6 @@
      float: left;
  }
 
- /*.pagetitle {
-     display: inline-block;
- }*/
  .start-contact-fields {
      width: calc(100% - 60px);
      float: right;
