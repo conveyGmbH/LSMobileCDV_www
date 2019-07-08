@@ -306,7 +306,6 @@
                                     actionLine.button0.Name = dataContact.Name;
                                     actionLine.button0.Firmenname = dataContact.Firmenname;
                                     actionLine.button0.EMail = dataContact.EMail;
-                                    actionLine.button0.Freitext1 = dataContact.Freitext1;
                                     actionLine.button0.content = dataContact.CreatorSiteID + "/" + dataContact.CreatorRecID;
                                     if (dataContact.Erfassungsdatum && dataContact.ModifiedTS) {
                                         if (dataContact.Erfassungsdatum === actionLine.button0.ModifiedTS) {
