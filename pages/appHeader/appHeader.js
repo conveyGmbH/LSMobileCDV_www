@@ -39,10 +39,15 @@
                     });
                 }
             }
-
-            var userImageContainer = element.querySelector(".user-image-container");
-            if (userImageContainer) {
-                Colors.loadSVGImageElements(userImageContainer, "user-image", 28, "#f0f0f0");
+            var userImage = element.querySelector(".user-image");
+            if (userImage) {
+                Colors.loadSVGImage({
+                    fileName: userImage.id,
+                    element: userImage,
+                    size: 28,
+                    color: "#f0f0f0",
+                    strokeWidth: AppData._persistentStates.iconStrokeWidth
+                });
             }
             Log.ret(Log.l.trace);
         },

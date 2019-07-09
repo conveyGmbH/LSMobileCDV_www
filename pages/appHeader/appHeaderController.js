@@ -32,17 +32,17 @@
             this.binding = WinJS.Binding.as(this.pageData);
 
             // show business card photo
-            var userPhotoContainer = pageElement.querySelector("#user");
+            var userImageElement = pageElement.querySelector(".user-image");
             var showPhoto = function () {
                 if (that.binding.photoData) {
-                    if (userPhotoContainer) {
+                    if (userImageElement) {
                         var userImg = new Image();
                         userImg.id = "userImg";
-                        userPhotoContainer.appendChild(userImg);
                         WinJS.Utilities.addClass(userImg, "user-photo");
                         userImg.src = "data:image/jpeg;base64," + that.binding.photoData;
-                        if (userPhotoContainer.childElementCount > 2) {
-                            var oldElement = userPhotoContainer.firstElementChild.nextElementSibling;
+                        userImageElement.appendChild(userImg);
+                        if (userImageElement.childElementCount > 2) {
+                            var oldElement = userImageElement.firstElementChild.nextElementSibling;
                             oldElement.parentNode.removeChild(oldElement);
                             oldElement.innerHTML = "";
                         }
