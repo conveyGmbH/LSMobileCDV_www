@@ -633,7 +633,9 @@
                                 resetSvgLoaded();
                                 var js = {};
                                 js.list = Colors.loadSVGImageElements(listView, "action-image-list", 40, Colors.tileTextColor, "name", showTileButton);
-                                js.new = Colors.loadSVGImageElements(listView, "action-image-new", 40, "#f0f0f0", "name", showTileButton);
+                                js.new = Colors.loadSVGImageElements(listView, "action-image-new", 40, "#f0f0f0", "name", showTileButton, {
+                                    "barcode-qr": { useStrokeColor: false }
+                                });
                                 WinJS.Promise.join(js).then(function() {
                                     if (listView.style) {
                                         listView.style.visibility = "visible";
