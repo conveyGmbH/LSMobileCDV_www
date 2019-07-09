@@ -709,6 +709,15 @@
                         AppData._persistentStates.hideCameraScan = false;
                     }
                     break;
+                case 38:
+                    if (!AppData._persistentStates.hideBarcodeScan) {
+                        if (item.LocalValue === "1") {
+                            AppData._persistentStates.showQRCode = true;
+                        } else {
+                            AppData._persistentStates.showQRCode = false;
+                        }
+                    }
+                    break;
                 default:
                     // defaultvalues
             }
