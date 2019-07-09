@@ -86,8 +86,8 @@
                             },
                             button1: {
                                 id: "barcode",
-                                content: !AppData._persistentStates.hideBarcodeScan && AppData._persistentStates.showQRCode ? getResourceText("start.buttonQRCode") : getResourceText("start.buttonBarcode"),
-                                svg: !AppData._persistentStates.hideBarcodeScan && AppData._persistentStates.showQRCode ? "barcode-qr" : "barcode" 
+                                content: AppData._persistentStates.showQRCode ? getResourceText("start.buttonQRCode") : getResourceText("start.buttonBarcode"),
+                                svg: AppData._persistentStates.showQRCode ? "barcode-qr" : "barcode" 
                             },
                             button2: {
                                 id: "newContact",
