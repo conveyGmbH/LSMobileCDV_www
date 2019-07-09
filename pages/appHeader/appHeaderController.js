@@ -34,9 +34,11 @@
             // show business card photo
             var userImageElement = pageElement.querySelector(".user-image");
             var showPhoto = function () {
+                Log.call(Log.l.trace, "AppHeader.Controller.");
+                var userImg;
                 if (that.binding.photoData) {
                     if (userImageElement) {
-                        var userImg = new Image();
+                        userImg = new Image();
                         userImg.id = "userImg";
                         WinJS.Utilities.addClass(userImg, "user-photo");
                         userImg.src = "data:image/jpeg;base64," + that.binding.photoData;
@@ -49,16 +51,16 @@
                     }
                     AppBar.triggerDisableHandlers();
                 } else {
-                    var userimg = pageElement.querySelector("#userImg");
-                    if (userimg) {
-                        userimg.parentNode.removeChild(userimg);
+                    userImg = pageElement.querySelector("#userImg");
+                    if (userImg) {
+                        userImg.parentNode.removeChild(userImg);
                     }
                 }
+                Log.ret(Log.l.trace);
             }
 
             var loadData = function () {
                 Log.call(Log.l.trace, "AppHeader.Controller.");
-                var usernamefield = pageElement.querySelector(".user-name-field");
                 var ret = new WinJS.Promise.as().then(function() {
                     var employeeId = AppData.getRecordId("Mitarbeiter");
                     if (employeeId) {
