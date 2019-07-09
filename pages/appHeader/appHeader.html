@@ -25,8 +25,10 @@
                             data-win-bind="style.visibility: userData.Login Binding.Converter.emptyToHidden"
                             onclick="AppBar.handleEvent('click', 'clickChangeUserState', event)">
                         <div id="username" class="user-name-container">
-                            <span class="win-h6 user-name-field win-type-ellipsis"
-                                  data-win-bind="textContent: userData.Login"></span>
+                            <span class="user-name-field win-type-ellipsis"
+                                  data-win-bind="textContent: userData.Login; style.display: showNameInHeader Binding.Converter.toDisplayNone"></span>
+                            <span class="user-name-field win-type-ellipsis"
+                                  data-win-bind="textContent: userData.Name; style.display: showNameInHeader Binding.Converter.toDisplay"></span>
                         </div>
                         <div class="user-image-container">
                             <div class="user-image" id="user"></div>

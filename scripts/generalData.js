@@ -716,6 +716,13 @@
                         AppData._persistentStates.showQRCode = false;
                     }
                     break;
+                case 39:
+                    if (item.LocalValue === "1") {
+                        AppData._persistentStates.showNameInHeader = true;
+                    } else {
+                        AppData._persistentStates.showNameInHeader = false;
+                    }
+                    break;
                 default:
                     // defaultvalues
             }
