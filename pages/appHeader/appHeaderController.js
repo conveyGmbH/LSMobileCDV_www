@@ -33,22 +33,43 @@
             this.binding = WinJS.Binding.as(this.pageData);
 
             // show business card photo
-            var userImageElement = pageElement.querySelector(".user-image");
+            var userImageContainer = pageElement.querySelector(".user-image-container");
             var showPhoto = function () {
                 Log.call(Log.l.trace, "AppHeader.Controller.");
                 var userImg;
                 if (that.binding.photoData) {
-                    if (userImageElement) {
+                    if (userImageContainer) {
                         userImg = new Image();
                         userImg.id = "userImg";
                         WinJS.Utilities.addClass(userImg, "user-photo");
                         userImg.src = "data:image/jpeg;base64," + that.binding.photoData;
-                        userImageElement.appendChild(userImg);
-                        if (userImageElement.childElementCount > 2) {
-                            var oldElement = userImageElement.firstElementChild.nextElementSibling;
-                            oldElement.parentNode.removeChild(oldElement);
-                            oldElement.innerHTML = "";
+                        userImageContainer.appendChild(userImg);
+                        if (userImageContainer.childElementCount > 2) {
+                            var oldElement = userImageContainer.firstElementChild.nextElementSibling;
+                            if (oldElement) {
+                                oldElement.parentNode.removeChild(oldElement);
+                                oldElement.innerHTML = "";
+                            }
                         }
+                        WinJS.Promise.timeout(50).then(function() {
+                            if (userImg && userImg.style && userImg.naturalWidth && userImg.naturalHeight) {
+                                var width = userImg.naturalWidth;
+                                var height = userImg.naturalHeight;
+                                if (width > height) {
+                                    var left = 20 * (1 - (userImg.naturalWidth / userImg.naturalHeight));
+                                    userImg.style.width = "auto";
+                                    userImg.style.height = "40px";
+                                    userImg.style.left = left + "px";
+                                    userImg.style.top = "-32px";
+                                } else {
+                                    var top = -32 + 20 * (1 - (userImg.naturalHeight / userImg.naturalWidth));
+                                    userImg.style.width = "40px";
+                                    userImg.style.height = "auto";
+                                    userImg.style.left = "0";
+                                    userImg.style.top = top + "px";
+                                }
+                            }
+                        });
                     }
                     AppBar.triggerDisableHandlers();
                 } else {

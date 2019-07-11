@@ -431,7 +431,7 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     display: block;
     position: relative;
     left: 0px;
-    top: -40px;
+    top: -32px;
     width: auto;
     height: 40px;
     z-index: 9901;
