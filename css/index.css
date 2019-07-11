@@ -417,6 +417,7 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     border-radius: 50%;
     padding: 0;
     overflow: hidden;
+    z-index: 9900;
 }
 
 .user-image {
@@ -434,7 +435,7 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     top: -32px;
     width: auto;
     height: 40px;
-    z-index: 9901;
+    z-index: 9900;
 }
 
 .onsite-offsite {
