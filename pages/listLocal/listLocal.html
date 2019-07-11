@@ -106,7 +106,7 @@
                                 </div>
                             </div>
                             <div class="list-compressed-content-container"
-                                 data-win-bind="style.display: OvwContentDOCCNT3 Binding.Converter.toDisplayNone">
+                                 data-win-bind="style.display: showDoc Binding.Converter.toDisplayNone">
                                 <span class="list-compressed-title"
                                       data-win-bind="textContent: company"></span>
                                 <span class="list-compressed-title win-type-subtitle"
@@ -116,7 +116,7 @@
                                       data-win-bind="textContent: address"></span>
                             </div>
                             <div class="list-compressed-content-doc-container"
-                                 data-win-bind="style.display: OvwContentDOCCNT3 Binding.Converter.toDisplay">
+                                 data-win-bind="style.display: showDoc Binding.Converter.toDisplay">
                                 <span class="list-compressed-title"
                                       data-win-bind="textContent: company"></span>
                                 <span class="list-compressed-title win-type-subtitle"
@@ -126,6 +126,9 @@
                             </div>
                             <div class="list-compressed-doc-container" data-win-bind="style.display: OvwContentDOCCNT3 Binding.Converter.toDisplay">
                                 <img class="list-compressed-doc" data-win-bind="src: OvwContentDOCCNT3">
+                            </div>
+                            <div class="list-compressed-doc-container" data-win-bind="style.display: svgSource Binding.Converter.toDisplay">
+                                <div data-win-bind="name: svgSource" class="action-image"></div>
                             </div>
                         </div>
                     </div>

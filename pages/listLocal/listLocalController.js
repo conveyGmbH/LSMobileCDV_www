@@ -136,6 +136,12 @@
                         }
                     }
                 }
+                item.showDoc = (item.IMPORT_CARDSCANID || item.SHOW_Barcode) ? true : false;
+                if (item.SHOW_Barcode || item.IMPORT_CARDSCANID && !item.SHOW_Visitenkarte) {
+                    item.svgSource = item.IMPORT_CARDSCANID ? "barcode-qr" : "barcode";
+                } else {
+                    item.svgSource = "";
+                }
             }
             this.resultConverter = resultConverter;
 
@@ -159,6 +165,12 @@
                                 }
                             } else {
                                 contact.OvwContentDOCCNT3 = "";
+                            }
+                            contact.showDoc = (contact.IMPORT_CARDSCANID || contact.SHOW_Barcode) ? true : false;
+                            if (contact.SHOW_Barcode || contact.IMPORT_CARDSCANID && !contact.SHOW_Visitenkarte) {
+                                contact.svgSource = contact.IMPORT_CARDSCANID ? "barcode-qr" : "barcode";
+                            } else {
+                                contact.svgSource = "";
                             }
                             // preserve scroll position on change of row data!
                             var indexOfFirstVisible = -1;
@@ -295,7 +307,9 @@
                             }
                         } else if (listView.winControl.loadingState === "complete") {
                             // load SVG images
-                            Colors.loadSVGImageElements(listView, "action-image", 40, Colors.textColor, "name");
+                            Colors.loadSVGImageElements(listView, "action-image", 40, Colors.textColor, "name", null, {
+                                "barcode-qr": { useStrokeColor: false }
+                            });
                             Colors.loadSVGImageElements(listView, "status-image", 12, Colors.textColor);
                             if (that.loading) {
                                 progress = listView.querySelector(".list-footer .progress");
