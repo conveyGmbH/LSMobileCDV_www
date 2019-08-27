@@ -1070,9 +1070,8 @@
                                 for (var i = 0; i < that.questions.length; i++) {
                                     var item = that.questions.getAt(i);
                                     if (item) {
-                                        var element;
+                                        var element = listView.winControl.elementFromIndex(i);;
                                         if (item.SSITEMS && item.SSITEMS.length > 0) {
-                                            element = listView.winControl.elementFromIndex(i);
                                             if (element) {
                                                 var combo = element.querySelector(".win-dropdown");
                                                 if (combo && combo.winControl) {
@@ -1085,7 +1084,6 @@
                                             }
                                         }
                                         if (item.DateComboboxButtonOk) {
-                                            element = listView.winControl.elementFromIndex(i);
                                             if (element) {
                                                 var dateComboboxElement = element.querySelector(".field-date-combobox");
                                                 if (!dateComboboxElement) {
@@ -1102,13 +1100,15 @@
                                             }
                                         }
                                         if (hasIPhoneBug) {
-                                            element = listView.winControl.elementFromIndex(i);
                                             if (element) {
                                                 var textarea = element.querySelector(".win-textarea.field-text-comment");
                                                 if (item.FreitextAktiv === 3) {
                                                     textarea.readOnly = true;
                                                 }
                                             }
+                                        }
+                                        if (element && element.parentElement && element.parentElement.style) {
+                                            element.parentElement.style.display = item.hideQuestion ? "none" : "";
                                         }
                                     }
                                 }
