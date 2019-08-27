@@ -37,6 +37,7 @@
             var hasBarcodeScanner = (isAndroid || isWindows10) ? true : false;
             var hasSerialDevice = (isWindows10 && AppData.generalData.useBarcodeActivity) ? true : false;
             var hasScannerOption = (hasPicturesDirectory || hasBarcodeScanner || hasSerialDevice) ? true : false;
+            var lastError = AppBar.scope.binding.error.errorMsg ? AppBar.scope.binding.error.errorMsg : "";
 
             Application.Controller.apply(this, [pageElement, {
                 uploadTS: (AppData.appSettings.odata.replPrevPostMs ?
@@ -53,7 +54,7 @@
                 hasSerialDevice: hasSerialDevice,
                 barcodeDeviceStatus: Barcode.deviceStatus,
                 hasScannerOption: hasScannerOption,
-                lastError: AppBar.scope.binding.error.errorMsg ? AppBar.scope.binding.error.errorMsg : ""
+                lastError: lastError
             }, commandList]);
 
             this.picturesDirectorySubFolder = AppData.generalData.picturesDirectorySubFolder;

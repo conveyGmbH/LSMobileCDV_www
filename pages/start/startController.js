@@ -168,7 +168,7 @@
                             case "barcode":
                                 {
                                     WinJS.Utilities.addClass(that.img, "start-barcode");
-                                    that.img.src = "images/barcode.jpg";
+                                        that.img.src = "images/barcode.svg";
                                     var text = document.createElement("span");
                                     WinJS.Utilities.addClass(text, "start-barcode");
                                     var shortText = AppData._barcodeRequest.substr(0, 32);
@@ -182,7 +182,7 @@
                             case "vcard":
                                 {
                                     WinJS.Utilities.addClass(that.img, "start-vcard");
-                                    that.img.src = "images/qrcode.jpg";
+                                        that.img.src = "images/barcode-qr.svg";
                                 }
                                 break;
                             }

@@ -42,8 +42,8 @@
                         <div class="large_field"
                               data-win-res="{textContent: 'register.registerAppHint'}"></div>
                         <div class="large_field">
-                            <a
-                               href="mailto:leadsuccess@convey.de">leadsuccess@convey.de
+                            <a href="mailto:leadsuccess@convey.de">
+                                leadsuccess@convey.de
                             </a>
                         </div>
                         <div class="large_field"
@@ -120,14 +120,14 @@
                         <input class="input_field win-textbox" type="text" data-win-bind="value: dataRegister.Telefon Binding.Mode.twoway" />
                     </div>
                     <div class="line-separator register-address"></div>
-                    <div class="field_line field_line_odd register-address">
-                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'register.agreement'}"></span>
-                        <span class="label landscape_only" data-win-res="{textContent: 'register.agreement'}"></span>
-                        <label class="input_field">
+                    <div class="field_line field_line_odd">
+                        <!--<span class="label win-type-caption portrait_only" data-win-res="{textContent: 'register.agreement'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'register.agreement'}"></span>-->
                             <input type="checkbox" class="win-checkbox checkbox register-checkbox" value="1"
                                    data-win-bind="checked: dataRegister.NewsletterflagChecked Binding.Mode.twoway" />
-                            <span data-win-res="{textContent: 'register.agreementText'}"></span>
-                        </label>
+                        <span class="checkbox"
+                              data-win-res="{textContent: 'register.agreementText'}"></span>
+                        <span id="privacyPolicyLink"></span>
                     </div>
                     <div class="line-separator register-address"></div>
                     <div class="field_line field_line_odd register-address">

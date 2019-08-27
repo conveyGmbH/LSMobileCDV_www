@@ -18,6 +18,9 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "ListLocal.Controller.");
             Application.Controller.apply(this, [pageElement, {
+                showNumberContacts: AppData.generalData.contactCountLocal + " / " + AppData.generalData.contactUploaded + " / " + AppData.generalData.contactNotUploaded,
+                uploaded: AppData.generalData.contactUploaded,
+                notUploaded: AppData.generalData.contactNotUploaded,
                 count: 0
             }, commandList]);
             this.nextUrl = null;
@@ -36,12 +39,12 @@
             var listView = pageElement.querySelector("#listLocalContacts.listview");
 
             this.dispose = function () {
-                if (listView && listView.winControl) {
+                /*if (listView && listView.winControl) {
                     listView.winControl.itemDataSource = null;
                 }
                 if (that.contacts) {
                     that.contacts = null;
-                }
+                }*/
             }
 
             var progress = null;
@@ -136,11 +139,13 @@
                         }
                     }
                 }
-                item.showDoc = (item.IMPORT_CARDSCANID || item.SHOW_Barcode) ? true : false;
+                item.showDoc = true;
                 if (item.SHOW_Barcode || item.IMPORT_CARDSCANID && !item.SHOW_Visitenkarte) {
                     item.svgSource = item.IMPORT_CARDSCANID ? "barcode-qr" : "barcode";
-                } else {
+                } else if (!item.SHOW_Barcode && item.IMPORT_CARDSCANID && item.SHOW_Visitenkarte) {
                     item.svgSource = "";
+                } else {
+                    item.svgSource = "manuel_Portal";
                 }
             }
             this.resultConverter = resultConverter;
@@ -169,8 +174,10 @@
                             contact.showDoc = (contact.IMPORT_CARDSCANID || contact.SHOW_Barcode) ? true : false;
                             if (contact.SHOW_Barcode || contact.IMPORT_CARDSCANID && !contact.SHOW_Visitenkarte) {
                                 contact.svgSource = contact.IMPORT_CARDSCANID ? "barcode-qr" : "barcode";
-                            } else {
+                            } else if (!contact.SHOW_Barcode && contact.IMPORT_CARDSCANID && contact.SHOW_Visitenkarte) {
                                 contact.svgSource = "";
+                            } else {
+                                contact.svgSource = "manuel_Portal";
                             }
                             // preserve scroll position on change of row data!
                             var indexOfFirstVisible = -1;
@@ -307,7 +314,7 @@
                             }
                         } else if (listView.winControl.loadingState === "complete") {
                             // load SVG images
-                            Colors.loadSVGImageElements(listView, "action-image", 40, Colors.textColor, "name", null, {
+                            Colors.loadSVGImageElements(listView, "action-image-right", 40, Colors.textColor, "name", null, {
                                 "barcode-qr": { useStrokeColor: false }
                             });
                             Colors.loadSVGImageElements(listView, "status-image", 12, Colors.textColor);

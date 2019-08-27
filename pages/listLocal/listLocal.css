@@ -77,9 +77,10 @@
     padding-bottom: 8px;
 }
 
-.view-size-bigger .action-image {
-    width: 100%;
-    float: left;
+.view-size-bigger .action-image-right {
+    /*width: 100%;*/
+    margin-right: 4px;
+    float: right;
 }
 
 /*
@@ -123,4 +124,8 @@
 
 .status-image {
     opacity: 0.6;
+}
+
+.size-big{
+    height: 120px;
 }

@@ -91,6 +91,7 @@
     "start.comment"         : "On this page, use the buttons to go to additional pages!",
     "start.buttonContact"   : "recent contact",
     "start.buttonListLocal" : "local",
+	"start.buttonListLocalNotUploadedYet" : "Not yet uploaded",
     "start.buttonListRemote": "uploaded",
     "start.buttonSearch"    : "search",
     "start.buttonCamera"    : "business card",

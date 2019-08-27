@@ -90,8 +90,9 @@
         _userData: {
             VeranstaltungName: "",
             Login: "",
-            Present: 0//,
-            //NotUploaded: 0
+            Present: 0,//,
+            NotUploaded: 0,
+            Uploaded: 0
         },
         _userRemoteData: {},
         _photoData: null,
@@ -215,6 +216,7 @@
                     ret = WinJS.Promise.as();
                 } else {
                     AppData._curGetUserDataId = userId;
+                    var doUpdate = false;
                     ret = new WinJS.Promise.as().then(function () {
                         Log.print(Log.l.trace, "calling select generalUserView...");
                         return AppData.generalUserView.select(function (json) {
@@ -223,10 +225,12 @@
                             Log.print(Log.l.trace, "generalUserView: success!");
                             // startContact returns object already parsed from json file in response
                             if (json && json.d) {
+                                var prevUsereData = AppData._userData;
                                 AppData._userData = json.d;
                                 if (!AppData.generalUserView.isLocal) {
                                     AppData._userRemoteData = json.d;
                                     AppData._userData.AnzLokaleKontakte = AppData._userData.AnzVersendeteKontakte;
+                                    //AppData._userData.NotUploaded = ;
                                 }
                                 if (AppData._userData.Present === null) {
                                     // preset with not-on-site!
@@ -239,6 +243,12 @@
                                 }
                                 AppData.appSettings.odata.timeZoneAdjustment = AppData._userData.TimeZoneAdjustment;
                                 Log.print(Log.l.info, "timeZoneAdjustment=" + AppData.appSettings.odata.timeZoneAdjustment);
+                                if ((prevUsereData && (prevUsereData.NotUploaded !== AppData._userRemoteData.NotUploaded))) { //
+                                    doUpdate = true;
+                                }
+                                if (AppBar.scope && typeof AppBar.scope.updateActions === "function" && doUpdate) {
+                                    AppBar.scope.updateActions();
+                                }
                             }
                             AppData._curGetUserDataId = 0;
                             var timeout = AppData._persistentStates.odata.replInterval || 30;
@@ -329,9 +339,10 @@
                                     if (AppBar.scope && AppData._userRemoteData.Message) {
                                         Log.print(Log.l.error, "Message=" + AppData._userRemoteData.Message);
                                         AppData.setErrorMsg(AppBar.scope.binding, AppData._userRemoteData.Message);
-                                    } else if (AppBar.scope && typeof AppBar.scope.updateActions === "function" &&
+                                    }
+                                    if (AppBar.scope && typeof AppBar.scope.updateActions === "function" &&
                                         (!prevUserRemoteData ||
-                                         prevUserRemoteData.AnzVersendeteKontakte !== AppData._userRemoteData.AnzVersendeteKontakte)) { //|| (prevUserRemoteData.NotUploaded !== AppData._userRemoteData.NotUploaded)
+                                         prevUserRemoteData.AnzVersendeteKontakte !== AppData._userRemoteData.AnzVersendeteKontakte)) { //
                                         doUpdate = true;
                                     }
                                 }
@@ -556,7 +567,7 @@
             Log.ret(Log.l.u1, ret);
             return ret;
         },
-        /*getNotUploaded: function() {
+        getNotUploaded: function () {
             Log.call(Log.l.u1, "AppData.");
             var ret;
             if (AppData._userData &&
@@ -567,7 +578,19 @@
             }
             Log.ret(Log.l.u1, ret);
             return ret;
-        },*/
+        },
+        getUploaded: function () {
+            Log.call(Log.l.u1, "AppData.");
+            var ret;
+            if (AppData._userData &&
+                AppData._userData.Uploaded) {
+                ret = AppData._userData.Uploaded;
+            } else {
+                ret = 0;
+            }
+            Log.ret(Log.l.u1, ret);
+            return ret;
+        },
         getCountRemote: function () {
             Log.call(Log.l.u1, "AppData.");
             var ret;
@@ -776,7 +799,8 @@
                     ? (AppData._contactData.CreatorSiteID + "/" + AppData._contactData.CreatorRecID)
                     : "");
                 data.contactCountLocal = AppData.getCountLocal();
-                //data.contactNotUploaded = AppData.getNotUploaded();
+                data.contactNotUploaded = AppData.getNotUploaded();
+                data.contactUploaded = AppData.getUploaded();
                 data.contactCountRemote = AppData.getCountRemote();
                 data.remoteContactID = ((AppData._remoteContactData && AppData._remoteContactData.CreatorRecID)
                     ? (AppData._remoteContactData.CreatorSiteID + "/" + AppData._remoteContactData.CreatorRecID)

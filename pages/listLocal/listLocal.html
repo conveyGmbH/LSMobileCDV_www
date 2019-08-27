@@ -15,7 +15,7 @@
                     <div class="headerFooterPlaceholder">
                         <div class="list-header">
                             <div class="header-separator"></div>
-                            <div class="content-header">
+                            <div class="content-header size-big">
                                 <div class="half-circle half-circle-textcolor">&nbsp;</div>
                                 <div class="content-header-line win-type-caption">
                                     <div class="idAndDate win-type-caption">
@@ -23,6 +23,9 @@
                                         <span class="caption-field" data-win-res="{textContent: 'listLocal.title'}"></span>
                                         <span class="date-field"></span>
                                     </div>
+                                </div>
+                                <div class="content-header-line win-type-caption">
+                                    <span data-win-bind="textContent: showNumberContacts"></span>
                                 </div>
                             </div>
                             <div class="list-landscape-only list-header-columns">
@@ -128,7 +131,7 @@
                                 <img class="list-compressed-doc" data-win-bind="src: OvwContentDOCCNT3">
                             </div>
                             <div class="list-compressed-doc-container" data-win-bind="style.display: svgSource Binding.Converter.toDisplay">
-                                <div data-win-bind="name: svgSource" class="action-image"></div>
+                                <div data-win-bind="name: svgSource" class="action-image-right"></div>
                             </div>
                         </div>
                     </div>
