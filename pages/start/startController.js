@@ -483,23 +483,33 @@
                         tileRecentHeight = 160;
                     }
                     if (Start.prevHeight > (3 * tileHeaderHeight + tileRecentHeight + 2 * tileRowHeight)) {
-                        var newTileRowHeight = Start.prevHeight / 3 - tileHeaderHeight;
-                        if (newTileRowHeight < tileRecentHeight) {
-                            newTileRowHeight = (Start.prevHeight - tileHeaderHeight - tileRecentHeight) / 2 -
+                        tileRowHeight = Start.prevHeight / 3 - tileHeaderHeight;
+                        if (tileRowHeight < tileRecentHeight) {
+                            tileRowHeight = (Start.prevHeight - tileHeaderHeight - tileRecentHeight) / 2 -
                                 tileHeaderHeight;
                         } else {
-                            newTileRowHeight = tileRecentHeight;
-                            tileRecentHeight = Start.prevHeight - 2 * newTileRowHeight - 3 * tileHeaderHeight;
+                            tileRowHeight = tileRecentHeight;
+                            tileRecentHeight = Start.prevHeight - 2 * tileRowHeight - 3 * tileHeaderHeight;
                         }
-                        var tileRows = listView.querySelectorAll(".tile-row");
-                        if (tileRows) for (var i = 0; i < tileRows.length; i++) {
-                            var tileRow = tileRows[i];
-                            if (tileRow.style) {
-                                if (i === 0) {
-                                    tileRow.style.height = tileRecentHeight.toString() + "px";
-                                } else {
-                                    tileRow.style.height = (newTileRowHeight + 2).toString() + "px";
-                                }
+                        tileRecentHeight += 2;
+                        tileRowHeight += 2;
+                    }
+                    var tileRows = listView.querySelectorAll(".tile-row");
+                    if (tileRows) for (var i = 0; i < tileRows.length; i++) {
+                        var tileRow = tileRows[i];
+                        if (tileRow.style) {
+                            var top;
+                            if (i === 0) {
+                                tileRow.style.height = tileRecentHeight.toString() + "px";
+                                top = ((tileRecentHeight - 220) / 2);
+                            } else {
+                                tileRow.style.height = tileRowHeight.toString() + "px";
+                                top = ((tileRowHeight - 120) / 2);
+                            }
+                            if (top > 50) top = 50;
+                            if (top < 0) top = 0;
+                            if (tileRow.firstElementChild && tileRow.firstElementChild.style) {
+                                tileRow.firstElementChild.style.marginTop = top.toString() + "px";
                             }
                         }
                     }
