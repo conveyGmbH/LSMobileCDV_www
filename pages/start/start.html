@@ -15,11 +15,10 @@
                     <div class="startActions-recent-template"
                          data-win-control="WinJS.Binding.Template" style="display: none">
                         <div name="recent" class="tile tile-recent">
-                            <div class="header-separator"></div>
                             <div class="tile-header tile-button-color">
                                 <div class="tile-content-inner">
                                     <div class="half-circle half-circle-navigationcolor">&nbsp;</div>
-                                    <span class="win-type-caption win-type-ellipsis start-header-field"
+                                    <span class="win-type-caption win-type-ellipsis start-header-field text-textcolor"
                                           data-win-bind="textContent: title"></span>
                                 </div>
                             </div>
@@ -29,7 +28,7 @@
                                         <button data-win-bind="name: button0.id"
                                                 class="win-button tile-button-wide tile-button-color"
                                                 onclick="AppBar.handleEvent('click', 'clickButton', event)">
-                                            <div class="list-item-header-full">
+                                            <div class="list-item-header-full text-textcolor">
                                                 <div class="list-item-label-left win-type-caption">
                                                     <span data-win-bind="textContent: button0.content"></span>
                                                 </div>
@@ -42,23 +41,22 @@
                                                     <span class="list-date-value" data-win-bind="textContent: button0.ModifiedTS Binding.Converter.toDateString"></span>
                                                 </div>
                                             </div>
-                                            <div class="list-compressed-content-container"
+                                            <div class="list-compressed-content-container text-textcolor"
                                                  data-win-bind="style.display: button0.showBusinessCard Binding.Converter.toDisplayNone">
-                                                <span class="list-compressed-title"
+                                                <span class="list-compressed-title win-type-ellipsis"
                                                       data-win-bind="textContent: button0.Firmenname"></span>
-                                                <span class="list-compressed-title win-type-subtitle"
-                                                      data-win-bind="textContent: button0.Name">
-                                                </span>
-                                                <span class="list-compressed-content"
+                                                <span class="list-compressed-title win-type-subtitle win-type-ellipsis"
+                                                      data-win-bind="textContent: button0.Name"></span>
+                                                <span class="list-compressed-content win-type-ellipsis"
                                                       data-win-bind="textContent: button0.EMail"></span>
                                             </div>
-                                            <div class="list-compressed-content-doc-container"
+                                            <div class="list-compressed-content-doc-container text-textcolor"
                                                  data-win-bind="style.display: button0.showBusinessCard Binding.Converter.toDisplay">
-                                                <span class="list-compressed-title"
+                                                <span class="list-compressed-title win-type-ellipsis"
                                                       data-win-bind="textContent: button0.Firmenname"></span>
-                                                <span class="list-compressed-title win-type-subtitle"
+                                                <span class="list-compressed-title win-type-subtitle win-type-ellipsis"
                                                       data-win-bind="textContent: button0.Name"></span>
-                                                <span class="list-compressed-content"
+                                                <span class="list-compressed-content win-type-ellipsis"
                                                       data-win-bind="textContent: button0.EMail"></span>
                                             </div>
                                             <div id="businessCardContact"
@@ -72,15 +70,15 @@
                     </div>
                     <div class="startActions-list-template"
                          data-win-control="WinJS.Binding.Template" style="display: none">
-                        <div name="list" class="tile tile-backgroundcolor">
-                            <div class="tile-header tile-button-color">
-                                <div class="tile-content-inner">
+                        <div name="list" class="tile">
+                            <div class="tile-header tile-backgroundcolor">
+                                <div class="tile-content-inner tile-button-color">
                                     <div class="half-circle half-circle-navigationcolor">&nbsp;</div>
                                     <span class="win-type-caption win-type-ellipsis start-header-field text-tile-textcolor"
                                           data-win-bind="textContent: title"></span>
                                 </div>
                             </div>
-                            <div class="tile-row">
+                            <div class="tile-row tile-backgroundcolor">
                                 <div class="tile-content">
                                     <div class="tile-content-inner">
                                         <button data-win-bind="name: button0.id"
@@ -134,15 +132,15 @@
                     </div>
                     <div class="startActions-new-template"
                          data-win-control="WinJS.Binding.Template" style="display: none">
-                        <div name="new" class="tile tile-navigationcolor">
-                            <div class="tile-header tile-button-color">
-                                <div class="tile-content-inner">
+                        <div name="new" class="tile">
+                            <div class="tile-header tile-navigationcolor">
+                                <div class="tile-content-inner tile-button-color">
                                     <div class="half-circle half-circle-lightcolor">&nbsp;</div>
                                     <span class="win-type-caption win-type-ellipsis start-header-field text-lightcolor"
                                           data-win-bind="textContent: title"></span>
                                 </div>
                             </div>
-                            <div class="tile-row">
+                            <div class="tile-row tile-navigationcolor">
                                 <div class="tile-content">
                                     <div class="tile-content-inner">
                                         <button data-win-bind="name: button0.id"
@@ -160,7 +158,7 @@
                                     </div>
                                 </div>
                                 <div class="tile-content">
-                                    <div class="tile-content-inner tile-separator-left tile-separator-right text-lightcolor">
+                                    <div class="tile-content-inner tile-separator-left tile-separator-right">
                                         <button data-win-bind="name: button1.id"
                                                 class="win-button tile-button tile-button-color"
                                                 onclick="AppBar.handleEvent('click', 'clickButton', event)">

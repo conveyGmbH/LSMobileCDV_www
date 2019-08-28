@@ -21,8 +21,6 @@
     WinJS.Namespace.define("Start", {
         prevWidth: 0,
         prevHeight: 0,
-        prevTileWidth: 0,
-        prevTileHeight: 0,
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Start.Controller.");
 
@@ -476,36 +474,32 @@
             this.loadData = loadData;
 
             var resizeTiles = function() {
-                var i;
-                var numTiles = actions.length;
-                if (Start.prevWidth && Start.prevHeight && Start.prevTileWidth && Start.prevTileHeight && numTiles > 1) {
-                    var fullTileHeight = Start.prevTileHeight + 62;
-                    var recentTileHight = (Start.prevHeight - ((numTiles - 1) * fullTileHeight)) - 62;
-                    if (recentTileHight < Start.prevTileHeight) {
-                        recentTileHight = Start.prevTileHeight;
+                if (Start.prevHeight && Start.prevHeight && actions && actions.length > 0) {
+                    var tileHeaderHeight = 60;
+                    var tileRecentHeight = 200;
+                    var tileRowHeight = 96;
+                    if (Start.prevWidth <= 499) {
+                        tileHeaderHeight = 45;
+                        tileRecentHeight = 160;
                     }
-                    var buttonWideElements = listView.querySelectorAll(".tile-button-wide, .tile-header");
-                    for (i = 0; i < buttonWideElements.length; i++) {
-                        var buttonWideElement = buttonWideElements[i];
-                        if (buttonWideElement.style) {
-                            buttonWideElement.style.width = Start.prevWidth + "px";
+                    if (Start.prevHeight > (3 * tileHeaderHeight + tileRecentHeight + 2 * tileRowHeight)) {
+                        var newTileRowHeight = Start.prevHeight / 3 - tileHeaderHeight;
+                        if (newTileRowHeight < tileRecentHeight) {
+                            newTileRowHeight = (Start.prevHeight - tileHeaderHeight - tileRecentHeight) / 2 -
+                                tileHeaderHeight;
+                        } else {
+                            newTileRowHeight = tileRecentHeight;
+                            tileRecentHeight = Start.prevHeight - 2 * newTileRowHeight - 3 * tileHeaderHeight;
                         }
-                    }
-                    var buttonElements = listView.querySelectorAll(".tile-button");
-                    for (i = 0; i < buttonElements.length; i++) {
-                        var buttonElement = buttonElements[i];
-                        if (buttonElement.style) {
-                            buttonElement.style.width = Start.prevTileWidth + "px";
-                        }
-                    }
-                    var tileRows = listView.querySelectorAll(".tile-row");
-                    for (i = 0; i < tileRows.length; i++) {
-                        var tileRow = tileRows[i];
-                        if (tileRow.style) {
-                            if (i === 0) {
-                                tileRow.style.height = recentTileHight + "px";
-                            } else {
-                                tileRow.style.height = Start.prevTileHeight + "px";
+                        var tileRows = listView.querySelectorAll(".tile-row");
+                        if (tileRows) for (var i = 0; i < tileRows.length; i++) {
+                            var tileRow = tileRows[i];
+                            if (tileRow.style) {
+                                if (i === 0) {
+                                    tileRow.style.height = tileRecentHeight.toString() + "px";
+                                } else {
+                                    tileRow.style.height = (newTileRowHeight + 2).toString() + "px";
+                                }
                             }
                         }
                     }
@@ -579,74 +573,40 @@
                             }
                         } else if (listView.winControl.loadingState === "itemsLoaded") {
                             that.resizeTiles();
-                        //} else if (listView.winControl.loadingState === "viewportLoaded") {
-                            //that.resizeTiles();
                         } else if (listView.winControl.loadingState === "complete") {
-                            //that.resizeTiles();
-                            var itemsContainer = listView.querySelector(".win-itemscontainer");
-                            if (actions && itemsContainer && itemsContainer.clientHeight < listView.clientHeight - actions.length) {
-                                // force layout again if itemsContainer won't fit list height at least...
-                                WinJS.Promise.timeout(20).then(function() {
-                                    listView.winControl.forceLayout();
-                                });
-                            } else {
-                                var recentTile = listView.querySelector(".tile-recent");
-                                if (recentTile) {
-                                    var elements = recentTile.querySelectorAll("span");
-                                    for (i = 0; i < elements.length; i++) {
-                                        elements[i].style.color = Colors.textColor;
-                                    }
-                                }
-                                var separatorTiles = listView.querySelectorAll(".tile-separator-left, .tile-separator-right");
-                                if (separatorTiles) for (i = 0; i < separatorTiles.length; i++) {
-                                    var separatorTile = separatorTiles[i];
-                                    var borderColor;
-                                    if (WinJS.Utilities.hasClass(separatorTile, "text-lightcolor")) {
-                                        borderColor = "#f0f0f0";
-                                    } else {
-                                        borderColor = Colors.tileTextColor;
-                                    }
-                                    if (WinJS.Utilities.hasClass(separatorTile, "tile-separator-left")) {
-                                        separatorTile.borderLeftColor = borderColor;
-                                    }
-                                    if (WinJS.Utilities.hasClass(separatorTile, "tile-separator-right")) {
-                                        separatorTile.borderRightColor = borderColor;
-                                    }
-                                }
-                                var showTileButton = function (svgInfo) {
-                                    var ret = null;
-                                    if (svgInfo.element &&
-                                        svgInfo.element.parentNode) {
-                                        var buttonElement = svgInfo.element.parentNode.parentNode;
-                                        if (buttonElement) {
-                                            checkListButtonStates(buttonElement);
-                                            ret = WinJS.Promise.timeout(20).then(function() {
-                                                return showButtonElement(buttonElement);
-                                            });
-                                        }
-                                    }
-                                    if (!ret) {
-                                        ret = WinJS.Promise.as();
-                                    }
-                                    return ret;
-                                };
-                                resetSvgLoaded();
-                                var js = {};
-                                js.list = Colors.loadSVGImageElements(listView, "action-image-list", 40, Colors.tileTextColor, "name", showTileButton);
-                                js.new = Colors.loadSVGImageElements(listView, "action-image-new", 40, "#f0f0f0", "name", showTileButton, {
-                                    "barcode-qr": { useStrokeColor: false }
-                                });
-                                WinJS.Promise.join(js).then(function() {
-                                    if (listView.style) {
-                                        listView.style.visibility = "visible";
-                                    }
-                                    if (!Application.pageframe.splashScreenDone) {
-                                        WinJS.Promise.timeout(20).then(function() {
-                                            return Application.pageframe.hideSplashScreen();
+                            var showTileButton = function (svgInfo) {
+                                var ret = null;
+                                if (svgInfo.element &&
+                                    svgInfo.element.parentNode) {
+                                    var buttonElement = svgInfo.element.parentNode.parentNode;
+                                    if (buttonElement) {
+                                        checkListButtonStates(buttonElement);
+                                        ret = WinJS.Promise.timeout(20).then(function () {
+                                            return showButtonElement(buttonElement);
                                         });
                                     }
-                                });
-                            }
+                                }
+                                if (!ret) {
+                                    ret = WinJS.Promise.as();
+                                }
+                                return ret;
+                            };
+                            resetSvgLoaded();
+                            var js = {};
+                            js.list = Colors.loadSVGImageElements(listView, "action-image-list", 40, Colors.tileTextColor, "name", showTileButton);
+                            js.new = Colors.loadSVGImageElements(listView, "action-image-new", 40, "#f0f0f0", "name", showTileButton, {
+                                "barcode-qr": { useStrokeColor: false }
+                            });
+                            WinJS.Promise.join(js).then(function () {
+                                if (listView.style) {
+                                    listView.style.visibility = "visible";
+                                }
+                                if (!Application.pageframe.splashScreenDone) {
+                                    WinJS.Promise.timeout(20).then(function () {
+                                        return Application.pageframe.hideSplashScreen();
+                                    });
+                                }
+                            });
                         }
                     }
                     Log.ret(Log.l.trace);

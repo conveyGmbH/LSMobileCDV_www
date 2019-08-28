@@ -92,7 +92,7 @@
     "start.buttonContact"   : "Dernier contacts",
     "start.buttonListLocal" : "Locale",
 	"start.buttonListLocalNotUploadedYet" : "Pas encore téléchargé",
-    "start.buttonListRemote": "Téléchargé",
+    "start.buttonListRemote": "Online",
     "start.buttonSearch"    : "Recherche",
     "start.buttonCamera"    : "Carte de visite",
     "start.buttonBarcode"   : "Code à barres",

@@ -79,32 +79,22 @@
                     if (contentarea) {
                         var listView = contentarea.querySelector("#startActions.listview");
                         if (listView && listView.winControl) {
-                            var width = contentarea.clientWidth - 4;
+                            var width = contentarea.clientWidth;
                             var height = contentarea.clientHeight;
-                            var numTiles = Start.actions.length;
-                            if (width > 0 && height > 0 && numTiles > 0) {
-                                var tileWidth = Math.floor(width / 3 * 100) / 100;
-                                var tileHeight = Math.floor(height / numTiles * 100) / 100 - 62;
-                                if (tileHeight > 160) {
-                                    tileHeight = 160;
-                                } else if (tileHeight < 96) {
-                                    tileHeight = 96;
-                                }
+                            if (width > 0 && height > 0 &&
+                                (width !== that.prevWidth || height !== that.prevHeight)) {
                                 if (width !== that.prevWidth) {
                                     that.prevWidth = width;
                                     Start.prevWidth = width;
                                     listView.style.width = width.toString() + "px";
-                                    if (tileWidth !== Start.prevTileWidth) {
-                                        Start.prevTileWidth = tileWidth;
-                                    }
                                 }
                                 if (height !== that.prevHeight) {
                                     that.prevHeight = height;
                                     Start.prevHeight = height;
                                     listView.style.height = height.toString() + "px";
-                                    if (tileHeight !== Start.prevTileHeight) {
-                                        Start.prevTileHeight = tileHeight;
-                                    }
+                                }
+                                if (that.controller && typeof that.controller.resizeTiles === "function") {
+                                    that.controller.resizeTiles();
                                 }
                             }
                         }

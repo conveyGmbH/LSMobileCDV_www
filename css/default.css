@@ -139,16 +139,38 @@ img .field_line {
 
 .tile-backgroundcolor {
     background-color: gray;
+}
+.tile-header.tile-backgroundcolor {
+    background-color: gray;
     border-top-style: solid;
     border-top-width: 2px;
     border-top-color: #c66145;
 }
 .tile-navigationcolor {
     background-color: #c66145;
+}
+.tile-header.tile-navigationcolor {
+    background-color: #c66145;
     border-top-style: solid;
     border-top-width: 2px;
     border-top-color: #f0f0f0;
 }
+
+.tile-backgroundcolor .tile-separator-left {
+    border-left-color: WindowText;
+}
+.tile-backgroundcolor .tile-separator-right {
+    border-right-color: WindowText;
+}
+
+.tile-navigationcolor .tile-separator-left {
+    border-left-color: #f0f0f0;
+}
+.tile-navigationcolor .tile-separator-right {
+    border-right-color: #f0f0f0;
+}
+
+
 .tile-button-color {
     color: WindowText;
     background-color: transparent;
@@ -967,6 +989,7 @@ button.win-button {
     width: 240px;
     margin-bottom: 16px;
     max-height: 160px;
+    overflow: hidden;
 }
 
 .list-compressed-doc {
@@ -1418,10 +1441,10 @@ button.win-button {
     height: 26px;
 }
 .view-size-small .list-compressed-content-doc-container {
-    width: calc(100% - 154px);
+    width: calc(60% - 4px);
 }
 .view-size-small .list-compressed-doc-container {
-    width: 150px;
+    width: 40%;
     max-height: 100px;
 }
 
@@ -1442,7 +1465,7 @@ button.win-button {
     width: 90px;
 }
 .view-size-small .list-item-label-right {
-    width: 75px;
+    width: 90px;
 }
 
 

@@ -92,7 +92,7 @@
     "start.buttonContact"   : "recent contact",
     "start.buttonListLocal" : "local",
 	"start.buttonListLocalNotUploadedYet" : "Not yet uploaded",
-    "start.buttonListRemote": "uploaded",
+    "start.buttonListRemote": "online",
     "start.buttonSearch"    : "search",
     "start.buttonCamera"    : "business card",
     "start.buttonBarcode"   : "Barcode",

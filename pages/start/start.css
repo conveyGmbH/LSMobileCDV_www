@@ -38,18 +38,8 @@
     width: 100%;
 }
 
-.tile-separator-left {
-    border-left-style: solid !important;
-    border-left-width: 2px !important;
-}
-.tile-separator-right {
-    border-right-style: solid !important;
-    border-right-width: 2px !important;
-}
-
 .tile {
     width: 100%;
-    overflow-x: hidden;
 }
 .tile-header {
     text-align: center;
@@ -58,10 +48,9 @@
     margin: 0;
     padding: 0;
     border: none;
-    display: table-caption;
 }
 
- .start-header-field {
+.start-header-field {
      width: 100%;
      margin: 0;
      padding: 0;
@@ -72,58 +61,45 @@
      top: 8px;
  }
 
-.start-barcode {
-    width: 256px !important;
-    height: 40px !important;
-    margin-left: calc(50% - 128px) !important;
-}
-.start-vcard {
-    height: 96px !important;
-    width: 96px !important;
-    margin-left: calc(50% - 48px) !important;
-}
-
 .tile-row {
-    display: table-row;
     height: 96px;
     width: 100%;
 }
+.tile-recent .tile-row {
+    height: 200px;
+}
 
 .tile-content-wide {
-    min-height: 96px;
+    height: 96px;
     width: 100%;
     padding: 0;
     margin: 0;
     border: none;
-    display: table-cell;
 }
 .tile-content {
-    min-height: 96px;
+    height: 96px;
+    width: calc(33.33% - 4px);
     padding: 0;
     margin: 0;
     border: none;
-    display: table-cell;
-}
-
-.tile-content-flat {
-    min-height: 48px;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    vertical-align: bottom;
-    border: none;
-    display: table-cell;
+    display: inline-block;
 }
 
 .tile-content-inner {
-    width: 100%;
-    border: none;
+    border-left-style: solid;
+    border-left-width: 2px;
+    border-left-color: transparent;
+    border-right-style: solid;
+    border-right-width: 2px;
+    border-right-color: transparent;
+    border-top: none;
+    border-bottom: none;
     visibility: hidden;
 }
 
 .tile-button {
     width: 100%;
-    min-height: 94px;
+    height: 100%;
     margin: 0;
     text-align: left;
 }
@@ -134,14 +110,14 @@
 
 .tile-button-wide {
     width: 100%;
-    min-height: 94px;
+    height: 100%;
     margin: 0;
     text-align: left;
     padding-left: 18px; 
 }
 .tile-button-wide-flat {
     width: 100%;
-    min-height: 46px;
+    height: 100%;
     margin: 0;
     text-align: left;
 }
@@ -157,43 +133,15 @@
 
 .action-image-container {
      display: inline-block;
-     width: calc(100% - 24px);
-     padding: 0 0 0 calc(50% - 20px);
+     width: 100%;
+     padding-left: calc(50% - 20px);
 }
- .action-image-container-flat {
-     padding: 0;
-     width: 60px;
-     float: left;
-}
- .action-image {
+.action-image {
      margin-right: 4px;
      width: 40px;
      display: inline-block;
 }
- .action-sep {
-     width: 100%;
-     height: 0;
-     float: left;
- }
 
- .start-contact-fields {
-     width: calc(100% - 60px);
-     float: right;
- }
- .start-name-field {
-     width: calc(100% - 120px);
-     float: left;
-     font-weight: 500;
- }
- .start-company-field {
-     width: calc(100% - 120px);
-     float: left;
- }
- .start-address-field {
-     width: 100%;
-     float: left;
-     opacity: 0.6;
- }
  .start-div-right{
     float: right;
     width: 60px;
@@ -223,9 +171,16 @@
 @media (max-width:499px) {
 }
 
+.view-size-small .tile-header {
+    height: 45px;
+}
+.view-size-small .tile-recent .tile-row {
+    height: 160px;
+}
 
 .view-size-small .start-company-field,
-.view-size-small .start-address-field {
+.view-size-small .start-address-field,
+.view-size-small .action-label {
     font-size: 12px;
     font-weight: 400;
     line-height: 1.167;
