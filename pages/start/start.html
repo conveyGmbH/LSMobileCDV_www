@@ -18,8 +18,10 @@
                             <div class="tile-header tile-button-color">
                                 <div class="tile-content-inner">
                                     <div class="half-circle half-circle-navigationcolor">&nbsp;</div>
-                                    <span class="win-type-caption win-type-ellipsis start-header-field text-textcolor"
-                                          data-win-bind="textContent: title"></span>
+                                    <div class="start-header-field">
+                                        <span class="win-type-caption win-type-ellipsis text-textcolor"
+                                              data-win-bind="textContent: title"></span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="tile-row">
@@ -33,7 +35,7 @@
                                                     <span data-win-bind="textContent: button0.content"></span>
                                                 </div>
                                                 <div class="list-item-label-right win-type-caption">
-                                                    <span class="list-date-label" data-win-bind="textContent: button0.editedOn"></span><br/>
+                                                    <span class="list-date-label" data-win-bind="textContent: button0.editedOn"></span><br />
                                                     <span class="list-date-value" data-win-bind="textContent: button0.Erfassungsdatum Binding.Converter.toDateString"></span>
                                                 </div>
                                                 <div class="list-item-label-right win-type-caption">
@@ -43,22 +45,28 @@
                                             </div>
                                             <div class="list-compressed-content-container text-textcolor"
                                                  data-win-bind="style.display: button0.showBusinessCard Binding.Converter.toDisplayNone">
-                                                <span class="list-compressed-title"
-                                                      data-win-bind="textContent: button0.Firmenname"></span>
-                                                <span class="list-compressed-title win-type-subtitle"
-                                                      data-win-bind="textContent: button0.Name"></span>
-                                                <span class="list-compressed-content win-type-ellipsis"
-                                                      data-win-bind="textContent: button0.EMail"></span>
+                                                <div class="list-compressed-title">
+                                                    <span data-win-bind="textContent: button0.Firmenname"></span>
+                                                </div>
+                                                <div class="list-compressed-title">
+                                                    <span class="win-type-subtitle" data-win-bind="textContent: button0.Name"></span>
+                                                </div>
+                                                <div class="list-compressed-content">
+                                                    <span class="win-type-ellipsis" data-win-bind="textContent: button0.EMail"></span>
+                                                </div>
                                             </div>
                                             <div class="list-compressed-content-doc-container text-textcolor"
                                                  data-win-bind="style.display: button0.showBusinessCard Binding.Converter.toDisplay">
-                                                <span class="list-compressed-title"
-                                                      data-win-bind="textContent: button0.Firmenname"></span>
-                                                <span class="list-compressed-title win-type-subtitle"
-                                                      data-win-bind="textContent: button0.Name"></span>
-                                                <span class="list-compressed-content win-type-ellipsis"
-                                                      data-win-bind="textContent: button0.EMail"></span>
-                                            </div>
+                                                <div class="list-compressed-title">
+                                                    <span data-win-bind="textContent: button0.Firmenname"></span>
+                                                </div>
+                                                <div class="list-compressed-title">
+                                                    <span class="win-type-subtitle" data-win-bind="textContent: button0.Name"></span>
+                                                </div>
+                                                <div class="list-compressed-content">
+                                                    <span class="win-type-ellipsis" data-win-bind="textContent: button0.EMail"></span>
+                                                </div>
+                                           </div>
                                             <div id="businessCardContact"
                                                  class="list-compressed-doc-container" 
                                                  data-win-bind="style.display: button0.showBusinessCard Binding.Converter.toDisplay"></div>
@@ -74,8 +82,10 @@
                             <div class="tile-header tile-backgroundcolor">
                                 <div class="tile-content-inner tile-button-color">
                                     <div class="half-circle half-circle-navigationcolor">&nbsp;</div>
-                                    <span class="win-type-caption win-type-ellipsis start-header-field text-tile-textcolor"
-                                          data-win-bind="textContent: title"></span>
+                                    <div class="start-header-field">
+                                        <span class="win-type-caption win-type-ellipsis text-tile-textcolor"
+                                              data-win-bind="textContent: title"></span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="tile-row tile-backgroundcolor">
@@ -136,8 +146,10 @@
                             <div class="tile-header tile-navigationcolor">
                                 <div class="tile-content-inner tile-button-color">
                                     <div class="half-circle half-circle-lightcolor">&nbsp;</div>
-                                    <span class="win-type-caption win-type-ellipsis start-header-field text-lightcolor"
-                                          data-win-bind="textContent: title"></span>
+                                    <div class="start-header-field">
+                                        <span class="win-type-caption win-type-ellipsis text-lightcolor"
+                                              data-win-bind="textContent: title"></span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="tile-row tile-navigationcolor">

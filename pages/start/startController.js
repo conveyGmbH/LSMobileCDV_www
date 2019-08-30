@@ -474,12 +474,12 @@
             this.loadData = loadData;
 
             var resizeTiles = function() {
-                if (Start.prevHeight && Start.prevHeight && actions && actions.length > 0) {
+                if (Start.prevHeight > 0 && Start.prevWidth > 0 && actions && actions.length > 0) {
                     var tileHeaderHeight = 60;
                     var tileRecentHeight = 200;
                     var tileRowHeight = 96;
                     if (Start.prevWidth <= 499) {
-                        tileHeaderHeight = 45;
+                        tileHeaderHeight = 40;
                         tileRecentHeight = 160;
                     }
                     if (Start.prevHeight > (3 * tileHeaderHeight + tileRecentHeight + 2 * tileRowHeight)) {
@@ -498,18 +498,16 @@
                     if (tileRows) for (var i = 0; i < tileRows.length; i++) {
                         var tileRow = tileRows[i];
                         if (tileRow.style) {
-                            var top;
                             if (i === 0) {
                                 tileRow.style.height = tileRecentHeight.toString() + "px";
-                                top = ((tileRecentHeight - 220) / 2);
                             } else {
                                 tileRow.style.height = tileRowHeight.toString() + "px";
-                                top = ((tileRowHeight - 120) / 2);
-                            }
-                            if (top > 50) top = 50;
-                            if (top < 0) top = 0;
-                            if (tileRow.firstElementChild && tileRow.firstElementChild.style) {
-                                tileRow.firstElementChild.style.marginTop = top.toString() + "px";
+                                var top = ((tileRowHeight - 120) / 2);
+                                if (top > 50) top = 50;
+                                if (top < 0) top = 0;
+                                if (tileRow.firstElementChild && tileRow.firstElementChild.style) {
+                                    tileRow.firstElementChild.style.marginTop = top.toString() + "px";
+                                }
                             }
                         }
                     }
