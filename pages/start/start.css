@@ -127,10 +127,6 @@
     margin-bottom: 0;
     height: 40px;
 }
-.start .list-compressed-doc-container {
-    top: 100px;
-}
-
 
 .action-image-container {
      display: inline-block;
@@ -179,10 +175,6 @@
 .view-size-small .start .list-item-header-full {
     margin-top: 0;
     height: 32px;
-}
-
-.view-size-small .start .list-compressed-doc-container {
-    top: 72px;
 }
 
 .view-size-small .start-header-field {

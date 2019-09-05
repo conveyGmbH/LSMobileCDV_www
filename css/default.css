@@ -962,7 +962,7 @@ button.win-button {
 
 .list-compressed-content-doc-container {
     width: calc(100% - 244px);
-    min-height: 180px;
+    float: left;
 }
 
 .list-compressed-title {
@@ -984,10 +984,13 @@ button.win-button {
     width: 240px;
     height: 180px;
     overflow: hidden;
-    display: inline-block;
-    position: absolute;
-    right: 8px;
-    top: 56px;
+    float: right;
+}
+.list-compressed-svg-container {
+    width: 48px;
+    height: 48px;
+    overflow: hidden;
+    float: right;
 }
 
 .list-compressed-doc {
@@ -1442,12 +1445,10 @@ button.win-button {
 }
 .view-size-small .list-compressed-content-doc-container {
     width: calc(60% - 4px);
-    min-height: 120px;
 }
 .view-size-small .list-compressed-doc-container {
     width: 40%;
     height: 120px;
-    top: 40px;
 }
 
 .view-size-small .list-compressed-content,
