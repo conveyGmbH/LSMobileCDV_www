@@ -30,6 +30,7 @@
         useExternalCamera: false,
         picturesDirectorySubFolder: "",
         cameraFeatureSupported: true,
+        useBinaryQrCode: false,
         logEnabled: false,
         fullScreen: false,
         logLevel: 3,

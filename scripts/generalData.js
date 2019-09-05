@@ -746,6 +746,13 @@
                         AppData._persistentStates.showNameInHeader = false;
                     }
                     break;
+                case 41:
+                    if (item.LocalValue === "1") {
+                        AppData._persistentStates.useBinaryQrCode = true;
+                    } else {
+                        AppData._persistentStates.useBinaryQrCode = false;
+                    }
+                    break;
                 default:
                     // defaultvalues
             }
