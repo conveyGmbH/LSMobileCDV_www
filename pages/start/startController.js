@@ -158,32 +158,6 @@
                             WinJS.Utilities.addClass(that.img, "list-compressed-doc");
                             that.img.src = imgSrcDataType + AppData._photoData;
                             that.imageRotate(businessCardContainer);
-                        } else if (AppData._barcodeRequest) {
-                            that.img = new Image();
-                            that.img.id = "startImage";
-                            businessCardContainer.appendChild(that.img);
-                            switch (AppData._barcodeType) {
-                            case "barcode":
-                                {
-                                    WinJS.Utilities.addClass(that.img, "start-barcode");
-                                        that.img.src = "images/barcode.svg";
-                                    var text = document.createElement("span");
-                                    WinJS.Utilities.addClass(text, "start-barcode");
-                                    var shortText = AppData._barcodeRequest.substr(0, 32);
-                                    if (shortText.length < AppData._barcodeRequest.length) {
-                                        shortText += "...";
-                                    }
-                                    text.textContent = shortText;
-                                    businessCardContainer.appendChild(text);
-                                }
-                                break;
-                            case "vcard":
-                                {
-                                    WinJS.Utilities.addClass(that.img, "start-vcard");
-                                        that.img.src = "images/barcode-qr.svg";
-                                }
-                                break;
-                            }
                         }
                     }
                     showButtonElement(businessCardContainer.parentElement);
@@ -339,16 +313,31 @@
                                     }
                                     changed = true;
                                 }
-                                if (AppData._photoData || AppData._barcodeRequest) {
-                                    if (!actionLine.button0.showBusinessCard || !actionLine.button0.showContact) {
-                                        actionLine.button0.showContact = true;
+                                if (AppData._photoData) {
+                                    if (!actionLine.button0.showBusinessCard ||
+                                        actionLine.button0.showContact ||
+                                        actionLine.button0.svg) {
+                                        actionLine.button0.showContact = false;
                                         actionLine.button0.showBusinessCard = true;
+                                        actionLine.button0.svg = "";
+                                        changed = true;
+                                    }
+                                } else if (AppData._barcodeRequest) {
+                                    if (actionLine.button0.showBusinessCard ||
+                                        !actionLine.button0.showContact ||
+                                        !actionLine.button0.svg) {
+                                        actionLine.button0.showBusinessCard = false;
+                                        actionLine.button0.showContact = false;
+                                        actionLine.button0.svg = (AppData._barcodeType === "barcode") ? "barcode" : "barcode-qr";
                                         changed = true;
                                     }
                                 } else {
-                                    if (actionLine.button0.showBusinessCard || !actionLine.button0.showContact) {
+                                    if (actionLine.button0.showBusinessCard ||
+                                        !actionLine.button0.showContact ||
+                                        actionLine.button0.svg) {
                                         actionLine.button0.showBusinessCard = false;
                                         actionLine.button0.showContact = true;
+                                        actionLine.button0.svg = "";
                                         changed = true;
                                     }
                                 }
@@ -601,6 +590,7 @@
                             };
                             resetSvgLoaded();
                             var js = {};
+                            js.recent = Colors.loadSVGImageElements(listView, "action-image-right", 40, Colors.textColor, "name", showTileButton);
                             js.list = Colors.loadSVGImageElements(listView, "action-image-list", 40, Colors.tileTextColor, "name", showTileButton);
                             js.new = Colors.loadSVGImageElements(listView, "action-image-new", 40, "#f0f0f0", "name", showTileButton, {
                                 "barcode-qr": { useStrokeColor: false }

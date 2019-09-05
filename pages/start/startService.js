@@ -47,7 +47,7 @@
                                 content: "",
                                 svg: "",
                                 showBusinessCard: false,
-                                showContact: false,
+                                showContact: true,
                                 KontaktVIEWID: null,
                                 Name: "",
                                 Firmenname: "",
