@@ -341,11 +341,10 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 .event-field {
     width: calc(100% - 278px);
     float: right;
+    margin-top: 8px;
 }
 
 .event-name {
-    position: relative;
-    top: 8px;
     width: 100%;
 }
 
