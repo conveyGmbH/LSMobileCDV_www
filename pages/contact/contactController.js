@@ -447,6 +447,11 @@
                                 // now always edit!
                                 json.d.Flag_NoEdit = AppRepl.replicator && AppRepl.replicator.inFastRepl;
                                 that.setDataContact(json.d);
+                                if (that.binding.dataContact.Request_Barcode) {
+                                    AppData._barcodeRequest = that.binding.dataContact.Request_Barcode;
+                                } else {
+                                    AppData._barcodeRequest = null;
+                                }
                                 AppData.generalData.setRecordId("DOC1IMPORT_CARDSCAN", json.d.DOC1Import_CardscanID);
                                 loadInitSelection();
                             }

@@ -315,31 +315,27 @@
                                 }
                                 if (AppData._photoData) {
                                     if (!actionLine.button0.showBusinessCard ||
-                                        actionLine.button0.showContact ||
                                         actionLine.button0.svg) {
-                                        actionLine.button0.showContact = false;
                                         actionLine.button0.showBusinessCard = true;
                                         actionLine.button0.svg = "";
                                         changed = true;
                                     }
                                 } else if (AppData._barcodeRequest) {
+                                    var newSvg = (AppData._barcodeType === "barcode") ? "barcode" : "barcode-qr";
                                     if (actionLine.button0.showBusinessCard ||
-                                        !actionLine.button0.showContact ||
-                                        !actionLine.button0.svg) {
+                                        actionLine.button0.svg !== newSvg) {
                                         actionLine.button0.showBusinessCard = false;
-                                        actionLine.button0.showContact = false;
-                                        actionLine.button0.svg = (AppData._barcodeType === "barcode") ? "barcode" : "barcode-qr";
+                                        actionLine.button0.svg = newSvg;
                                         changed = true;
                                     }
                                 } else {
                                     if (actionLine.button0.showBusinessCard ||
-                                        !actionLine.button0.showContact ||
                                         actionLine.button0.svg) {
                                         actionLine.button0.showBusinessCard = false;
-                                        actionLine.button0.showContact = true;
-                                        actionLine.button0.svg = "";
+                                        actionLine.button0.svg = "manuel_Portal";
                                         changed = true;
                                     }
+
                                 }
                                 if (changed) {
                                     updateAction(i, actionLine);
@@ -590,7 +586,7 @@
                             };
                             resetSvgLoaded();
                             var js = {};
-                            js.recent = Colors.loadSVGImageElements(listView, "action-image-right", 40, Colors.textColor, "name", showTileButton);
+                                js.recent = Colors.loadSVGImageElements(listView, "action-image-right", 80, Colors.textColor, "name", showTileButton);
                             js.list = Colors.loadSVGImageElements(listView, "action-image-list", 40, Colors.tileTextColor, "name", showTileButton);
                             js.new = Colors.loadSVGImageElements(listView, "action-image-new", 40, "#f0f0f0", "name", showTileButton, {
                                 "barcode-qr": { useStrokeColor: false }

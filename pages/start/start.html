@@ -43,8 +43,7 @@
                                                     <span class="list-date-value" data-win-bind="textContent: button0.ModifiedTS Binding.Converter.toDateString"></span>
                                                 </div>
                                             </div>
-                                            <div class="list-compressed-content-container text-textcolor"
-                                                 data-win-bind="style.display: button0.showContact Binding.Converter.toDisplay">
+                                            <div class="list-compressed-content-doc-container text-textcolor">
                                                 <div class="list-compressed-title">
                                                     <span data-win-bind="textContent: button0.Firmenname"></span>
                                                 </div>
@@ -55,24 +54,15 @@
                                                     <span data-win-bind="textContent: button0.EMail"></span>
                                                 </div>
                                             </div>
-                                            <div class="list-compressed-content-doc-container text-textcolor"
-                                                 data-win-bind="style.display: button0.showContact Binding.Converter.toDisplayNone">
-                                                <div class="list-compressed-title">
-                                                    <span data-win-bind="textContent: button0.Firmenname"></span>
+                                            <div class="list-compressed-doc-container"
+                                                 data-win-bind="style.display: button0.showBusinessCard Binding.Converter.toDisplay">
+                                                <div id="businessCardContact"></div>
                                                 </div>
-                                                <div class="list-compressed-title">
-                                                    <span class="win-type-subtitle" data-win-bind="textContent: button0.Name"></span>
-                                                </div>
-                                                <div class="list-compressed-content win-type-ellipsis">
-                                                    <span data-win-bind="textContent: button0.EMail"></span>
-                                                </div>
-                                            </div>
-                                            <div id="businessCardContact"
-                                                 class="list-compressed-doc-container" 
-                                                 data-win-bind="style.display: button0.showBusinessCard Binding.Converter.toDisplay"></div>
                                             <div class="list-compressed-svg-container" 
-                                                 data-win-bind="style.display: button0.svg Binding.Converter.toDisplay">
+                                                 data-win-bind="style.display: button0.showBusinessCard Binding.Converter.toDisplayNone">
+                                                <div id="svgRecentAction">
                                                 <div data-win-bind="name: button0.svg" class="action-image-right"></div>
+                                            </div>
                                             </div>
                                         </button>
                                     </div>
