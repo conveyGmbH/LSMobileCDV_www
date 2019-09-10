@@ -1045,7 +1045,11 @@
                 },
                 clickForward: function(event) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
-                    Application.navigateById('sketch', event);
+                    if (AppData.generalData.privacyText && AppData.generalData.privacyText.length > 0) {
+                        Application.navigateById('privacy', event);
+                    } else {
+                        Application.navigateById('sketch', event);
+                    }
                     Log.ret(Log.l.trace);
                 },
                 clickChangeUserState: function (event) {

@@ -797,6 +797,7 @@
                     return (AppData.getContactDateString() + " " + AppData.getContactTimeString());
                 })();
                 data.eventName = AppData._userData.VeranstaltungName;
+                data.privacyText = AppData._userData.DatenschutzText;
                 data.userName = AppData._userData.Login;
                 data.userPresent = AppData._userData.Present;
                 data.publishFlag = AppData._userData.PublishFlag;
