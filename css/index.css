@@ -515,12 +515,20 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 
     .event-line {
         margin-left: 52px;
-        width: calc(100% - 180px);
+        width: calc(100% - 230px);
     }
 
     .event-field {
         width: 100%;
         float: left;
+    }
+
+    .status-on-off {
+        max-width: 178px;
+    }
+
+    .user-name-field {
+        font-size: 12px;
     }
 }
 
