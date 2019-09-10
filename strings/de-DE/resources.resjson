@@ -235,6 +235,8 @@
   	"sketchRemote.questionDelete"	: "Wollen Sie den aktuellen Anhang löschen?",
     "sketchRemote.noPlayer"       : "Wiedergabe wird auf diesem Browser nicht unterstützt",
 
+	"privacy.title"         : "Datenschutz",
+
     "search.title"          : "Kriterien zur Suche",
     "search.comment"        : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
     "search.ID"             : "ID",

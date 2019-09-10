@@ -17,11 +17,19 @@
                         <div class="half-circle half-circle-textcolor">&nbsp;</div>
                         <div class="content-header-line win-type-caption">
                             <span class="id-field" data-win-bind="textContent: generalData.globalContactID"></span>
-                            <span class="caption-field" data-win-res="{textContent: 'sketch.title'}"></span>
+                            <span class="caption-field" data-win-res="{textContent: 'privacy.title'}"></span>
                             <span class="date-field" data-win-bind="textContent: generalData.contactDate Binding.Converter.toDateString"></span>
                         </div>
                     </div>
-                    <div id="svghost" class="signaturefragmenthost"></div>
+                    <div class="line-separator"></div>
+                    <div class="field_line">
+                        <span class="input_field win-type-subtitle"
+                              data-win-bind="textContent: generalData.privacyText"></span>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="field_line">
+                        <div id="svghost" class="input_field signaturefragmenthost"></div>
+                    </div>
                 </div>
                 <div class="error-message" 
                      data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>

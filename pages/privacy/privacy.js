@@ -6,7 +6,7 @@
 /// <reference path="~/www/lib/convey/scripts/logging.js" />
 /// <reference path="~/www/lib/convey/scripts/navigator.js" />
 /// <reference path="~/www/lib/convey/scripts/appbar.js" />
-/// <reference path="~/www/pages/sketch/privacyController.js" />
+/// <reference path="~/www/pages/privacy/privacyController.js" />
 
 (function () {
     "use strict";
@@ -20,9 +20,6 @@
         ready: function (element, options) {
             Log.call(Log.l.trace, pageName + ".");
             // TODO: Initialize the page here.
-            this.inResize = 0;
-            this.prevWidth = 0;
-            this.prevHeight = 0;
 
             // add page specific commands to AppBar
             var commandList = [
@@ -31,7 +28,7 @@
                 { id: 'clickForward', label: getResourceText('command.ok'), tooltip: getResourceText('tooltip.ok'), section: 'primary', svg: 'navigate_check', key: WinJS.Utilities.Key.enter }
             ];
             
-            this.controller = new Sketch.Controller(element, commandList);
+            this.controller = new Privacy.Controller(element, commandList);
             if (this.controller.eventHandlers) {
                 // general event listener for hardware back button, too!
                 this.controller.addRemovableEventListener(document, "backbutton", this.controller.eventHandlers.clickBack.bind(this.controller));
@@ -70,34 +67,8 @@
         },
     
         updateLayout: function (element, viewState, lastViewState) {
-            var ret = null;
-            var that = this;
-            Log.call(Log.l.trace, pageName + ".");
             /// <param name="element" domElement="true" />
             // TODO: Respond to changes in viewState.
-            if (element && !that.inResize) {
-                that.inResize = 1;
-                ret = WinJS.Promise.timeout(0).then(function () {
-                    var contentarea = element.querySelector(".contentarea");
-                    var mySketch = element.querySelector(".signaturefragmenthost");
-                    if (contentarea && mySketch && mySketch.style) {
-                        var contentHeader = element.querySelector(".content-header");
-                        var width = contentarea.clientWidth;
-                        var height = contentarea.clientHeight - (contentHeader ? contentHeader.clientHeight : 0);
-                        if (width !== that.prevWidth) {
-                            mySketch.style.width = width.toString() + "px";
-                            that.prevWidth = width;
-                        }
-                        if (height !== that.prevHeight) {
-                            mySketch.style.height = height.toString() + "px";
-                            that.prevHeight = height;
-                        }
-                    }
-                    that.inResize = 0;
-                });
-            }
-            Log.ret(Log.l.trace);
-            return ret || WinJS.Promise.as();
         }
     });
 

@@ -235,6 +235,8 @@
     "sketchRemote.questionDelete" : "Do you want to delete the current attachment?",
     "sketchRemote.noPlayer"       : "Playback not supported on this browser",
 
+    "privacy.title"         : "Data protection",
+
     "search.title"          : "Enter search criteria",
     "search.comment"        : "On this page, use the Back button to go back!",
     "search.ID"             : "ID",

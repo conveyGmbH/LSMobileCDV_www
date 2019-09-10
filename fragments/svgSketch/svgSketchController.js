@@ -18,7 +18,7 @@
             Log.call(Log.l.trace, "SvgSketch.Controller.", "noteId=" + (options && options.noteId));
 
             // instanciate SVGEditor class
-            var svgEditor = new SVGEditor.SVGEditorClass();
+            var svgEditor = new SVGEditor.SVGEditorClass(options);
             svgEditor.fnCreateDrawDiv();
             svgEditor.fnStartSketch();
 

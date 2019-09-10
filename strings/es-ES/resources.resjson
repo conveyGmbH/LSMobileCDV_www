@@ -207,6 +207,8 @@
   	"sketch.questionDelete"	: "Wollen Sie den aktuellen Anhang löschen?",
     "sketch.noPlayer"       : "Wiedergabe wird auf diesem Browser nicht unterstützt",
 
+    "privacy.title"         : "Data protection",
+
     "search.title"          : "Kriterien zur Suche",
     "search.comment"        : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
     "search.ID"             : "ID",

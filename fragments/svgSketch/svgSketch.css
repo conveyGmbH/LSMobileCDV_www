@@ -1,5 +1,6 @@
 ﻿#svgSketchController .doc-container {
     float: left;
+    overflow: hidden;
 }
 
 #sketch .feature {
@@ -18,13 +19,14 @@ div#svgsketch {
     -ms-touch-action: none; /* Disable touch behaviors, like pan and zoom */
     /*background-image: url(Hatch16.gif);*/
     background: white;
+    /*
     width: 100%;
     height: calc(100% - 8px);
-    /*
-    height: calc(100% - 90px);
     margin-bottom: 10px;
     margin-top: 10px; 
     */
+    display: inline-block;
+    position: relative;
     overflow: hidden;
     margin-left: 0;
 }

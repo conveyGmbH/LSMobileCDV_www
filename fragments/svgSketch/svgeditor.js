@@ -10,7 +10,7 @@
         iOS: (navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false),
         SVGEditorClass: WinJS.Class.define(
             // Define the constructor function for the SVGEditorClass.
-            function SVGEditorClass() {
+            function SVGEditorClass(options) {
                 this._eventHandlerRemover = [];
 
                 var that = this;
@@ -20,7 +20,7 @@
                         e.removeEventListener(eventName, handler);
                     });
                 };
-                this.svg = new SVG.SVGClass();
+                this.svg = new SVG.SVGClass(options);
             }, {
                 // variables for drawing functions
                 width: 0,

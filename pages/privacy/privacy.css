@@ -1,7 +1,7 @@
 
 .signaturefragmenthost {
-    width: 100%;
-    height: calc(100% - 170px);
+    height: 130px;
+    overflow: hidden;
     z-index: 4;
 }
 

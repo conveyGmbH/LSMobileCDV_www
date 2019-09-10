@@ -7,8 +7,10 @@
 
     WinJS.Namespace.define("SVG", {
         SVGClass: WinJS.Class.define(
-            function SVGClass() {
+            function SVGClass(options) {
                 this.initDefaults();
+                this._alignBottom = options && options.alignBottom;
+                this._origin = { x: 0, y: 0 };
             }, {
                 initDefaults: function() {
                     this.drawNodes = [];
@@ -39,6 +41,14 @@
                 },
                 resetSize: function (svg, width, height) {
                     if (svg) {
+                        var prevWidth = $(svg._container).width() || 0;
+                        var prevHeight = $(svg._container).height() || 0;
+                        if (width < prevWidth) {
+                            width = prevWidth;
+                        }
+                        if (height < prevHeight) {
+                            height = prevHeight;
+                        }
                         svg.configure({
                             width: width || $(svg._container).width(),
                             height: height || $(svg._container).height()
@@ -71,8 +81,8 @@
                         //console.log("startDrag returned: no offset");
                         return true;
                     }
-                    this.offset.left -= document.documentElement.scrollLeft || document.body.scrollLeft;
-                    this.offset.top -= document.documentElement.scrollTop || document.body.scrollTop;
+                    //this.offset.left -= document.documentElement.scrollLeft || document.body.scrollLeft;
+                    //this.offset.top -= document.documentElement.scrollTop || document.body.scrollTop;
                     var width = $('#svgsketch').width();
                     var height = $('#svgsketch').height();
                     //console.log("startDrag left=" + offset.left + " top=" + offset.top + " width=" + width + " height=" + height + " inSel=" + inSel);
@@ -285,12 +295,16 @@
                         onLoad: function (svg) {
                             //console.log("onLoad: called");
                             that.sketchpad = svg;
+                            var width = $('#svgsketch').width();
+                            var height = $('#svgsketch').height();
                             var surface = svg.getElementById('surface');
                             if (!surface) {
                                 //console.log("onLoad: create new surface");
                                 svg.rect(0, 0, '100%', '100%', { id: 'surface', fill: 'none' });
                             }
-                            that.resetSize(svg, '100%', '100%');
+                            if (!that._alignBottom && width && height) {
+                                that.resetSize(that.sketchpad, width, height);
+                            }
                         }
                     });
                     //console.log("startSketch returned");
@@ -387,7 +401,14 @@
                         var width = $('#svgsketch').width();
                         var height = $('#svgsketch').height();
                         this.sketchpad.load(svgText);
-                        if (width && height) {
+                        if (this._alignBottom && $('#svgsketch').parent()) {
+                            width = $('#svgsketch').parent().width();
+                            height = $('#svgsketch').parent().height();
+                            if (this.sketchpad.height() + 25 > height) {
+                                this._origin.y = height - (this.sketchpad.height() + 25);
+                                $('#svgsketch').css("top", this._origin.y + "px");
+                            }
+                        } else if (width && height) {
                             this.resetSize(this.sketchpad, width, height);
                         }
                         var rootNode = this.sketchpad.root();
@@ -409,7 +430,7 @@
                         //console.log("drawShape: returned no sketchpad");
                         return;
                     }
-                    if (width && height) {
+                    if (!this._alignBottom && width && height) {
                         this.resetSize(this.sketchpad, width, height);
                     }
                     //console.log("Load returned");

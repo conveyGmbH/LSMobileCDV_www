@@ -286,17 +286,22 @@
                         if (json && json.d && json.d.results && json.d.results.length > 0) {
                             that.nextUrl = SketchList.sketchlistView.getNextUrl(json, that.binding.isLocal);
                             var results = json.d.results;
+                            if (that.binding.isLocal) for (i = results.length - 1; i >= 0 ; i--) {
+                                if (results[i].Titel === "Datenschutz / Data protection") {
+                                    Log.print(Log.l.trace, "SketchList.sketchlistView: ignore privacy index=" + i);
+                                    results.splice(i, 1);
+                                }
+                            }
                             if (that.sketches) {
                                 // reload the bindable list
-                                results.forEach(function(item, index) {
+                                results.forEach(function (item, index) {
                                     that.resultConverter(item, index);
                                     that.sketches.push(item);
                                 });
                             } else {
-                                results.forEach(function(item, index) {
+                                results.forEach(function (item, index) {
                                     that.resultConverter(item, index);
                                 });
-                                // Now, we call WinJS.Binding.List to get the bindable list
                                 that.sketches = new WinJS.Binding.List(results);
                             }
                             //as default, show first sketchnote in sketch page

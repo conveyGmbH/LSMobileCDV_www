@@ -1451,6 +1451,7 @@ button.win-button {
     height: 120px;
 }
 
+.view-size-small span.input_field,
 .view-size-small .list-compressed-content,
 .view-size-small .list-compressed-title,
 .view-size-small .counter {
@@ -1458,6 +1459,7 @@ button.win-button {
     font-size: 12px;
     line-height: 1.167;
 }
+.view-size-small span.input_field.win-type-subtitle,
 .view-size-small .list-compressed-content.win-type-subtitle,
 .view-size-small .list-compressed-title.win-type-subtitle {
     min-height: 20px;

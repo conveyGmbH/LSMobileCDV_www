@@ -57,16 +57,21 @@
                 }
             }
 
-            var commandList = options && options.isLocal ? [
-                { id: 'clickUndo', label: getResourceText('command.undo'), tooltip: getResourceText('tooltip.undo'), section: 'primary', svg: 'undo' },
-                { id: 'clickRedo', label: getResourceText('command.redo'), tooltip: getResourceText('tooltip.redo'), section: 'primary', svg: 'redo' },
-                { id: "clickShare", label: getResourceText("command.share"), tooltip: getResourceText("tooltip.share"), section: "primary", svg: "share" },
-                { id: 'clickShapes', label: getResourceText('sketch.shape'), tooltip: getResourceText('sketch.shape'), section: 'secondary' },
-                { id: 'clickColors', label: getResourceText('sketch.color'), tooltip: getResourceText('sketch.color'), section: 'secondary' },
-                { id: 'clickWidths', label: getResourceText('sketch.width'), tooltip: getResourceText('sketch.width'), section: 'secondary' }
-            ] : [
-                { id: "clickShare", label: getResourceText("command.share"), tooltip: getResourceText("tooltip.share"), section: "primary", svg: "share" }
-            ];
+            var commandList = [];
+            if (options && options.isLocal && !options.noCommandList) {
+                commandList = [
+                    { id: 'clickUndo', label: getResourceText('command.undo'), tooltip: getResourceText('tooltip.undo'), section: 'primary', svg: 'undo' },
+                    { id: 'clickRedo', label: getResourceText('command.redo'), tooltip: getResourceText('tooltip.redo'), section: 'primary', svg: 'redo' },
+                    { id: "clickShare", label: getResourceText("command.share"), tooltip: getResourceText("tooltip.share"), section: "primary", svg: "share" },
+                    { id: 'clickShapes', label: getResourceText('sketch.shape'), tooltip: getResourceText('sketch.shape'), section: 'secondary' },
+                    { id: 'clickColors', label: getResourceText('sketch.color'), tooltip: getResourceText('sketch.color'), section: 'secondary' },
+                    { id: 'clickWidths', label: getResourceText('sketch.width'), tooltip: getResourceText('sketch.width'), section: 'secondary' }
+                ];
+            } else if (!(options && options.noCommandList)) {
+                commandList = [
+                    { id: "clickShare", label: getResourceText("command.share"), tooltip: getResourceText("tooltip.share"), section: "primary", svg: "share" }
+                ];
+            } 
             this.controller = new SvgSketch.Controller(element, options, commandList);
 
             Log.ret(Log.l.trace);
@@ -125,7 +130,9 @@
                                 doccontainer.style.height = height.toString() + "px";
                                 bDoEditorResize = true;
                             }
-                            if (bDoEditorResize && that.controller && that.controller.svgEditor) {
+                            if (bDoEditorResize && that.controller &&
+                                that.controller.svgEditor &&
+                                that.controller.binding && that.controller.binding.isLocal) {
                                 that.controller.svgEditor.resize(width, height);
                             }
                         }

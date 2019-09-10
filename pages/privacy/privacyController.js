@@ -1,4 +1,4 @@
-﻿// controller for page: sketch
+﻿// controller for page: privacy
 /// <reference path="~/www/lib/WinJS/scripts/base.js" />
 /// <reference path="~/www/lib/WinJS/scripts/ui.js" />
 /// <reference path="~/www/lib/convey/scripts/appSettings.js" />
@@ -6,7 +6,7 @@
 /// <reference path="~/www/lib/convey/scripts/appbar.js" />
 /// <reference path="~/www/lib/convey/scripts/pageController.js" />
 /// <reference path="~/www/scripts/generalData.js" />
-/// <reference path="~/www/pages/sketch/sketchService.js" />
+/// <reference path="~/www/pages/privacy/privacyService.js" />
 
 (function () {
     "use strict";
@@ -38,7 +38,7 @@
             var loadDoc = function () {
                 var ret;
                 var parentElement;
-                Log.call(Log.l.trace, "Privacy.Controller.", "noteId=" + noteId);
+                Log.call(Log.l.trace, "Privacy.Controller.", "noteId=" + that.binding.noteId);
                 // prevent recursive calls here!
                 if (inLoadDoc) {
                     if (that.binding.noteId === prevNoteId) {
@@ -67,7 +67,12 @@
                         Log.print(Log.l.trace, "load new svgSketch!");
                         parentElement = pageElement.querySelector("#svghost");
                         if (parentElement) {
-                            ret = Application.loadFragmentById(parentElement, "svgSketch", { noteId: that.binding.noteId, isLocal: true });
+                            ret = Application.loadFragmentById(parentElement, "svgSketch", {
+                                noteId: that.binding.noteId,
+                                isLocal: true,
+                                noCommandList: true,
+                                alignBottom: true
+                            });
                         } else {
                             ret = WinJS.Promise.as();
                         }
@@ -122,7 +127,7 @@
                             if (json && json.d && json.d.results && json.d.results.length > 0) {
                                 var result = json.d.results = json.d.results[json.d.results.length - 1];
                                 if (result) {
-                                    that.binding.noteId = result.KontaktNotizID;
+                                    that.binding.noteId = result.KontaktNotizVIEWID;
                                     that.binding.noteTitle = result.Titel;
                                 }
                             }
@@ -131,7 +136,8 @@
                             AppData.setErrorMsg(that.binding, errorResponse);
                         }, {
                             KontaktID: that.binding.contactId,
-                            Titel: "Datenschutz / Data protection"
+                            Titel: "Datenschutz / Data protection",
+                            bExact: true
                         });
                         return that.addDisposablePromise(contactNoteSelectPromise);
                     }
@@ -154,24 +160,24 @@
             // define handlers
             this.eventHandlers = {
                 clickBack: function (event) {
-                    Log.call(Log.l.trace, "Sketch.Controller.");
+                    Log.call(Log.l.trace, "Privacy.Controller.");
                     if (WinJS.Navigation.canGoBack === true) {
                         WinJS.Navigation.back(1).done(/* Your success and error handlers */);
                     }
                     Log.ret(Log.l.trace);
                 },
                 clickChangeUserState: function (event) {
-                    Log.call(Log.l.trace, "Sketch.Controller.");
+                    Log.call(Log.l.trace, "Privacy.Controller.");
                     Application.navigateById("userinfo", event);
                     Log.ret(Log.l.trace);
                 },
                 clickNew: function (event) {
-                    Log.call(Log.l.trace, "Sketch.Controller.");
+                    Log.call(Log.l.trace, "Privacy.Controller.");
                     Application.navigateById(Application.navigateNewId, event);
                     Log.ret(Log.l.trace);
                 },
                 clickForward: function (event) {
-                    Log.call(Log.l.trace, "Sketch.Controller.");
+                    Log.call(Log.l.trace, "Privacy.Controller.");
                     Application.navigateById("sketch", event);
                     Log.ret(Log.l.trace);
                 }

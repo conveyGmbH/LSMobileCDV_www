@@ -235,6 +235,8 @@
     "sketchRemote.questionDelete"	: "Vuoi eliminare questo attacco?",
     "sketchRemote.noPlayer"		    : "Riproduzione non supportata in questo browser",
 
+    "privacy.title"         : "Protezione dei dati",
+
     "search.title"          : "Immettere i criteri di ricerca",
     "search.comment"        : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "search.ID"             : "ID",
