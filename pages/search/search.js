@@ -23,7 +23,7 @@
                 { id: 'clickBack', label: getResourceText('command.backward'), tooltip: getResourceText('tooltip.backward'), section: 'primary', svg: 'navigate_left' },
                 { id: "clickNew", label: getResourceText("command.new"), tooltip: getResourceText("tooltip.new"), section: "primary", svg: "user_plus" },
                 { id: 'clickForward', label: getResourceText('command.search'), tooltip: getResourceText('tooltip.search'), section: 'primary', svg: 'magnifying_glass', key: WinJS.Utilities.Key.enter },
-                { id: "clickResetRestriction", label: getResourceText("command.resetRestriction"), tooltip: getResourceText("tooltip.resetRestriction"), section: "primary", svg: "funnel_delete" },
+                { id: "clickResetRestriction", label: getResourceText("command.resetRestriction"), tooltip: getResourceText("tooltip.resetRestriction"), section: "primary", svg: "funnel_delete" }
             ];
 
             this.controller = new Search.Controller(element, commandList);
