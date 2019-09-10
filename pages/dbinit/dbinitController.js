@@ -53,6 +53,18 @@
             }
             this.getStartPage = getStartPage;
 
+            // define handlers
+            this.eventHandlers = {
+                clickLogoff: function (event) {
+                    Log.call(Log.l.trace, "DBInit.Controller.");
+                    Application.navigateById("login", event);
+                    Log.ret(Log.l.trace);
+                }
+            };
+
+            this.disableHandlers = {
+            }
+
             var openDb = function (complete, error, doReloadDb) {
                 AppBar.busy = true;
 
