@@ -236,6 +236,8 @@
     "sketchRemote.noPlayer"       : "Wiedergabe wird auf diesem Browser nicht unterstützt",
 
 	"privacy.title"         : "Datenschutz",
+    "privacy.description"   : "Erklärung",
+    "privacy.signature"     : "Unterschrift",
 
     "search.title"          : "Kriterien zur Suche",
     "search.comment"        : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",

@@ -236,6 +236,8 @@
     "sketchRemote.noPlayer"		    : "Lecture non prise en charge sur ce navigateur",
 
     "privacy.title"         : "Protection des données",
+    "privacy.description"   : "Proclamation",
+    "privacy.signature"     : "Signature",
 
     "search.title"          : "Entrez les critères de recherche",
     "search.comment"        : "Utilisez le bouton Retour sur cette page pour y retourner!",

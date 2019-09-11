@@ -236,6 +236,8 @@
     "sketchRemote.noPlayer"       : "Playback not supported on this browser",
 
     "privacy.title"         : "Data protection",
+    "privacy.description"   : "Declaration",
+    "privacy.signature"     : "Signature",
 
     "search.title"          : "Enter search criteria",
     "search.comment"        : "On this page, use the Back button to go back!",

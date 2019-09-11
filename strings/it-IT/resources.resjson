@@ -236,6 +236,8 @@
     "sketchRemote.noPlayer"		    : "Riproduzione non supportata in questo browser",
 
     "privacy.title"         : "Protezione dei dati",
+    "privacy.description"   : "Denuncia",
+    "privacy.signature"     : "Firma",
 
     "search.title"          : "Immettere i criteri di ricerca",
     "search.comment"        : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
