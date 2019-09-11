@@ -89,6 +89,7 @@
         _remoteContactData: {},
         _userData: {
             VeranstaltungName: "",
+            DatenschutzText: "",
             Login: "",
             Present: 0,//,
             NotUploaded: 0,
