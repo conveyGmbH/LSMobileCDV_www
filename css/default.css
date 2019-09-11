@@ -101,6 +101,9 @@ img .field_line {
     background-color: rgb(128, 128, 128);
 }
 
+.pre-line {
+    white-space: pre-line;
+}
 
 .row-separator {
     display: block;
