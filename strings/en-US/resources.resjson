@@ -460,6 +460,7 @@
     "info.barcodeDeviceId"  : "Device",
     "info.barcodeDeviceStatus" : "Status",
     "info.turnThumbsLeft"   : "Turn thumbs left",
+    "info.cameraMegapixel"  : "Camera megapixels",
 
     "infodesk.actualEmployee"     : "Current employee",
     "infodesk.employee"     : "Employee",

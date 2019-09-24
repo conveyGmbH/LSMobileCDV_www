@@ -460,6 +460,7 @@
     "info.barcodeDeviceId"  : "Périphérique",
     "info.barcodeDeviceStatus" : "État",
     "info.turnThumbsLeft"   : "Tourner l'aperçu à gauche",
+    "info.cameraMegapixel"  : "Camera megapixels",
 
     "infodesk.actualEmployee"     : "Personnel actuel",
     "infodesk.employee"     : "Personnel",

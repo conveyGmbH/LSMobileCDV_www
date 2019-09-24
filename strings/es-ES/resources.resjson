@@ -405,6 +405,7 @@
     "info.barcodeDeviceId"  : "Gerät",
     "info.barcodeDeviceStatus" : "Status",
     "info.turnThumbsLeft"   : "Turn thumbs left",
+    "info.cameraMegapixel"  : "Camera megapixels",
 
     "infodesk.actualEmployee"     : "Aktueller Mitarbeiter",
     "infodesk.employee"     : "Mitarbeiter",

@@ -463,6 +463,7 @@
     "info.barcodeDeviceId"  : "Gerät",
     "info.barcodeDeviceStatus" : "Status",
     "info.turnThumbsLeft"   : "Vorschaubilder nach links drehen",
+	"info.cameraMegapixel"  : "Kamera Megapixel",
 
     "infodesk.actualEmployee"     : "Aktueller Mitarbeiter",
     "infodesk.employee"     : "Mitarbeiter",

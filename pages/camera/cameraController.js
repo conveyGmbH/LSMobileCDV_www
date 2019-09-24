@@ -286,8 +286,8 @@
             var takePhoto = function() {
                 Log.call(Log.l.trace, "Camera.Controller.");
                 if (that.binding.generalData.useClippingCamera &&
-                    navigator.clippingCamera &&
-                    typeof navigator.clippingCamera.getPicture === "function") {
+                    scan &&
+                    typeof scan.scanDoc === "function") {
                     var autoShutterTime = 0;
                     if (typeof that.binding.generalData.autoShutterTime === "string") {
                         autoShutterTime = parseInt(that.binding.generalData.autoShutterTime);
@@ -295,10 +295,13 @@
                         autoShutterTime = that.binding.generalData.autoShutterTime;
                     }
                     AppBar.busy = true;
-                    navigator.clippingCamera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
-                        quality: AppData.generalData.cameraQuality,
+                    scan.scanDoc(onPhotoDataSuccess, onPhotoDataFail, {
+                        sourceType : 1,
+                        returnBase64 : true,
+                        fileName : "photo",
+                        quality: (1.0 - AppData.generalData.cameraQuality / 100.0) * 4.0 + 1.0,
                         convertToGrayscale: AppData.generalData.cameraUseGrayscale,
-                        maxResolution: 1000000,
+                        maxResolution: AppData.generalData.cameraMegapixel * 1000000,
                         autoShutter: autoShutterTime
                     });
                 } else {
@@ -310,13 +313,16 @@
                     }
                     if (isWindows10 &&
                         !WinJS.Utilities.isPhone &&
-                        navigator.clippingCamera &&
-                        typeof navigator.clippingCamera.getPicture === "function") {
+                        scan &&
+                        typeof scan.scanDoc === "function") {
                         AppBar.busy = true;
-                        navigator.clippingCamera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
-                            quality: AppData.generalData.cameraQuality,
+                        scan.scanDoc(onPhotoDataSuccess, onPhotoDataFail, {
+                            sourceType : 1,
+                            returnBase64 : true,
+                            fileName : "photo",
+                            quality: (1.0 - AppData.generalData.cameraQuality / 100.0) * 4.0 + 1.0,
                             convertToGrayscale: AppData.generalData.cameraUseGrayscale,
-                            maxResolution: 1000000,
+                            maxResolution: AppData.generalData.cameraMegapixel * 1000000,
                             autoShutter: 0,
                             dontClip: true
                         });

@@ -566,10 +566,13 @@
                 }
                 if (isWindows10 &&
                     !WinJS.Utilities.isPhone &&
-                    navigator.clippingCamera &&
-                    typeof navigator.clippingCamera.getPicture === "function") {
-                    navigator.clippingCamera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
-                        quality: AppData.generalData.cameraQuality,
+                    scan &&
+                    typeof scan.scanDoc === "function") {
+                    scan.scanDoc(onPhotoDataSuccess, onPhotoDataFail, {
+                        sourceType : 1,
+                        returnBase64 : true,
+                        fileName : "photo",
+                        quality: (1.0 - AppData.generalData.cameraQuality / 100.0) * 4.0 + 1.0,
                         maxResolution: 5000000,
                         autoShutter: 0,
                         dontClip: true

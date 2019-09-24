@@ -20,6 +20,7 @@
         },
         showAppBkg: false,
         turnThumbsLeft: false,
+        cameraMegapixel: 5,
         cameraQuality: 50,
         cameraUseGrayscale: true,
         cameraMaxSize: 2560,
