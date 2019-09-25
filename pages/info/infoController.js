@@ -46,7 +46,6 @@
                 "\/Date(" + AppData.appSettings.odata.replPrevSelectMs + ")\/" : null),
                 version: Application.version,
                 environment: "Platform: " + navigator.appVersion,
-                showClipping: false,
                 isAndroid: isAndroid,
                 isWindows: isWindows,
                 hasPicturesDirectory: hasPicturesDirectory,
@@ -351,11 +350,6 @@
 
             AppData.setErrorMsg(this.binding);
             
-            if (AppData.appSettings.odata.login && AppData.appSettings.odata.login.search("convey.de") > 0 || 
-                isWindows) {
-                that.binding.showClipping = true;
-            }
-
             var setDeviceList = function (newDeviceList) {
                 Log.call(Log.l.trace, "info.Controller.");
                 if (newDeviceList) {
