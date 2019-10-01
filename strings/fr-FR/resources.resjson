@@ -281,6 +281,9 @@
     "listLocal.ID"          : "ID",
     "listLocal.captureType"      : "Saisirmode",
     "listLocal.editer"      : "Auteur",
+	"listLocal.contactTotal" : "Contacts",
+	"listLocal.online" : "Téléchargé",
+	"listLocal.notOnline" : "Pas encore téléchargé",
 
     "listRemote.title"      : "Liste de contacts téléchargés",
     "listRemote.comment"    : "Utilisez le bouton Retour sur cette page pour y retourner!",

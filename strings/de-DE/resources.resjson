@@ -281,9 +281,9 @@
     "listLocal.ID"          : "ID",
     "listLocal.captureType"      : "Erfassungsart",
     "listLocal.editer"      : "Erfasser",
-	"listLocal.numberofcontactstotal" : "Kontakte",
-	"listLocal.uploaded" : "Synchronisiert",
-	"listLocal.notUploaded" : "Noch nicht Synchronisiert",
+	"listLocal.contactTotal" : "Kontakte",
+	"listLocal.online" : "Hochgeladen",
+	"listLocal.notOnline" : "Noch nicht hochgeladen",
 
     "listRemote.title"      : "Bereits hochgeladene Kontakte",
     "listRemote.comment"    : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",

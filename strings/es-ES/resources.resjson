@@ -255,6 +255,9 @@
     "listLocal.ID"        : "ID",
     "listLocal.captureType"      : "Erfassungsart",
     "listLocal.editer"    : "Erfasser",
+	"listLocal.contactTotal" : "Kontakte",
+	"listLocal.online" : "Hochgeladen",
+	"listLocal.notOnline" : "Noch nicht hochgeladen",
 
     "camera.title"          : "Kamera",
     "camera.comment"        : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
