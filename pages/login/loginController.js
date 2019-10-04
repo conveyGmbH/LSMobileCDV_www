@@ -42,7 +42,8 @@
                     percent: 0,
                     text: "",
                     show: null
-                }
+                },
+                loginDisabled: true
             }, commandList]);
 
             var that = this;
@@ -113,7 +114,11 @@
 
             this.disableHandlers = {
                 clickOk: function () {
-                    if (AppBar.busy || (that.binding.dataLogin.Login.length === 0 || that.binding.dataLogin.Password.length === 0 || !that.binding.dataLogin.privacyPolicyFlag)) {
+                    that.binding.loginDisabled = AppBar.busy || 
+                        (that.binding.dataLogin.Login.length === 0 || that.binding.dataLogin.Password.length === 0 || !that.binding.dataLogin.privacyPolicyFlag) ||
+                        that.binding.progress.show;
+                    if (AppBar.busy || 
+                        (that.binding.dataLogin.Login.length === 0 || that.binding.dataLogin.Password.length === 0 || !that.binding.dataLogin.privacyPolicyFlag)) {
                         NavigationBar.disablePage("start");
                     } else {
                         NavigationBar.enablePage("start");
@@ -121,7 +126,7 @@
                     if (!that.binding.dataLogin.Login || !that.binding.dataLogin.Password) {
                         that.binding.dataLogin.privacyPolicyFlag = false;
                     }
-                    return AppBar.busy || (that.binding.dataLogin.Login.length === 0 || that.binding.dataLogin.Password.length === 0 || !that.binding.dataLogin.privacyPolicyFlag);
+                    return that.binding.loginDisabled;
                 }
             };
 

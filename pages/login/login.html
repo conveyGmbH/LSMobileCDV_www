@@ -79,7 +79,8 @@
                                 <div class="button-element">
                                     <button id="loginButton"
                                             class="text-lightcolor titlearea-bkg win-button"
-                                            onclick="AppBar.handleEvent('click', 'clickOk', event)">
+                                            onclick="AppBar.handleEvent('click', 'clickOk', event)"
+                                            data-win-bind="disabled: loginDisabled">
                                         <span class="win-type-title"
                                               data-win-res="{textContent: 'label.login'}"></span>
                                     </button>
