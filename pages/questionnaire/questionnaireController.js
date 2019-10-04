@@ -739,6 +739,12 @@
                                                 break;
                                             }
                                         }
+                                        if (propPrefix === "Freitext") {
+                                            if (newRecord[prop].length > 0) {
+                                                ret = false;
+                                                break;
+                                            }
+                                        }
                                     }
                                 }
                                 if (ret) {
@@ -754,6 +760,10 @@
                                     Log.call(Log.l.u1, "Questionnaire.Controller. Answer not empty" + newRecord.prop);
                                     ret = false;
                                 }
+                                if (newRecord["Freitext"].length > 0) {
+                                    ret = false;
+                                }
+
                                 if (ret) {
                                     break;
                                 }

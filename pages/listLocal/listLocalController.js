@@ -18,7 +18,7 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "ListLocal.Controller.");
             Application.Controller.apply(this, [pageElement, {
-                showNumberContacts: AppData.generalData.contactCountLocal + " / " + AppData.generalData.contactUploaded + " / " + AppData.generalData.contactNotUploaded,
+                showNumberContacts: getResourceText("listLocal.contactTotal") + ": " + AppData.generalData.contactCountLocal + ", " + getResourceText("listLocal.online") + ": " + AppData.generalData.contactUploaded + ", " + getResourceText("listLocal.notOnline") + ": " + AppData.generalData.contactNotUploaded,
                 uploaded: AppData.generalData.contactUploaded,
                 notUploaded: AppData.generalData.contactNotUploaded,
                 count: 0

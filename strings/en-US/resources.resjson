@@ -281,6 +281,9 @@
     "listLocal.ID"          : "ID",
     "listLocal.captureType"      : "Capturetype",
     "listLocal.editer"      : "Author",
+	"listLocal.contactTotal" : "Contacts",
+	"listLocal.online" : "Uploaded",
+	"listLocal.notOnline" : "Not yet uploaded",
 
     "listRemote.title"      : "Already uploaded contacts",
     "listRemote.comment"    : "On this page, use the Back button to go back!",

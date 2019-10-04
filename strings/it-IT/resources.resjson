@@ -281,6 +281,9 @@
     "listLocal.ID"          : "ID",
     "listLocal.captureType"  : "Acquisizione",
     "listLocal.editer"      : "Autore",
+	"listLocal.contactTotal" : "Contatti",
+	"listLocal.online" : "Caricati",
+	"listLocal.notOnline" : "Non ancora caricato",
 
     "listRemote.title"      : "Elenco dei contatti caricati",
     "listRemote.comment"    : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
