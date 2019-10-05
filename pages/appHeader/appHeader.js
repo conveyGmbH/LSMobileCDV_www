@@ -83,8 +83,8 @@
                             widthLogo = widthMaster + widthAdd;
                         }
                         if (NavigationBar.orientation === "vertical" &&
-                            AppData.persistentStatesDefaults.navVertWidth + widthAdd > widthLogo) {
-                            widthLogo = AppData.persistentStatesDefaults.navVertWidth + widthAdd;
+                            NavigationBar.navVertWidth + widthAdd > widthLogo) {
+                            widthLogo = NavigationBar.navVertWidth + widthAdd;
                         }
                         strStyleWidth = "calc(100% - " + widthLogo.toString() + "px)";
                         strStyleFloat = "right";

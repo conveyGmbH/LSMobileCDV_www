@@ -232,8 +232,6 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 */
 .view-size-small .navigationbar-text {
     padding-top: 14px;
-}
-.view-size-small .navigationbar-horizontal-text {
     font-size: 15px;
 }
 .view-size-small .win-splitviewcommand-label {
