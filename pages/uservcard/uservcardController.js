@@ -193,9 +193,9 @@
                     var dataContact = getDataContact();
                     var vCard = AppData.createVCardFromContact(dataContact, that.binding.InitLandItem.Alpha3_ISOCode);
                     if (vCard && qrcodeContainer) {
-                        var width = qrcodeContainer.clientWidth - 36;
-                        if (width > pageElement.clientHeight - 60) {
-                            width = pageElement.clientHeight - 60;
+                        var width = qrcodeContainer.clientWidth - 76;
+                        if (width > pageElement.clientHeight - 100) {
+                            width = pageElement.clientHeight - 100;
                         }
                         var content = vCard.getFormattedString();
                         Log.print(Log.l.trace, "width=" + width + " content=" + content);
