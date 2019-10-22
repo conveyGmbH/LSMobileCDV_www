@@ -403,40 +403,44 @@
                         picturesFolderSelect.winControl &&
                         hasPicturesDirectory &&
                         typeof window.resolveLocalFileSystemURL === "function") {
-                        window.resolveLocalFileSystemURL(cordova.file.picturesDirectory,
-                            function(dirEntry) {
-                                Log.print(Log.l.info,
-                                    "resolveLocalFileSystemURL: file system open name=" + dirEntry.name);
-                                var dirReader = dirEntry.createReader();
-                                dirReader.readEntries(function(entries) {
-                                        var bFound = false;
-                                        for (var i = 0; i < entries.length; i++) {
-                                            if (entries[i].isDirectory) {
-                                                picturesDirectoryFolders.push({
-                                                    name: entries[i].name
-                                                });
-                                                if (entries[i].name === that.picturesDirectorySubFolder) {
-                                                    bFound = true;
+                        try {
+                            window.resolveLocalFileSystemURL(cordova.file.picturesDirectory,
+                                function(dirEntry) {
+                                    Log.print(Log.l.info,
+                                        "resolveLocalFileSystemURL: file system open name=" + dirEntry.name);
+                                    var dirReader = dirEntry.createReader();
+                                    dirReader.readEntries(function(entries) {
+                                            var bFound = false;
+                                            for (var i = 0; i < entries.length; i++) {
+                                                if (entries[i].isDirectory) {
+                                                    picturesDirectoryFolders.push({
+                                                        name: entries[i].name
+                                                    });
+                                                    if (entries[i].name === that.picturesDirectorySubFolder) {
+                                                        bFound = true;
+                                                    }
                                                 }
                                             }
-                                        }
-                                        if (!bFound) {
-                                            that.picturesDirectorySubFolder = "";
-                                        }
-                                        if (picturesDirectoryFolders.length > 1) {
-                                            picturesFolderSelect.winControl.data =
-                                                new WinJS.Binding.List(picturesDirectoryFolders);
-                                        }
-                                        that.binding.generalData.picturesDirectorySubFolder =
-                                            that.picturesDirectorySubFolder;
-                                    },
-                                    function(errorResponse) {
-                                        Log.print(Log.l.error, "readEntries: error " + errorResponse.toString());
-                                    });
-                            },
-                            function(errorResponse) {
-                                Log.print(Log.l.error, "resolveLocalFileSystemURL error " + errorResponse.toString());
-                            });
+                                            if (!bFound) {
+                                                that.picturesDirectorySubFolder = "";
+                                            }
+                                            if (picturesDirectoryFolders.length > 1) {
+                                                picturesFolderSelect.winControl.data =
+                                                    new WinJS.Binding.List(picturesDirectoryFolders);
+                                            }
+                                            that.binding.generalData.picturesDirectorySubFolder =
+                                                that.picturesDirectorySubFolder;
+                                        },
+                                        function(errorResponse) {
+                                            Log.print(Log.l.error, "readEntries: error " + errorResponse.toString());
+                                        });
+                                },
+                                function(errorResponse) {
+                                    Log.print(Log.l.error, "resolveLocalFileSystemURL error " + errorResponse.toString());
+                                });
+                        } catch (e) {
+                            AppData.setErrorMsg(this.binding, e);
+                        }
                     };
                 }).then(function() {
                     if (that.binding.hasSerialDevice &&
