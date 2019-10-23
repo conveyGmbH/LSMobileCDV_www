@@ -263,9 +263,10 @@
                         });
                     }
                     for (var i = 0; i < actions.length; i++) {
+                        var content;
                         var changed = false;
                         var actionLine = actions.getAt(i);
-                        if (actionLine.button0.id === "contact") {
+                        if (actionLine.id === "recent" && actionLine.button0) {
                             Log.print(Log.l.trace, "found showContact in row=" + i.toString());
                             var dataContact = that.binding.dataContact;
                             if (typeof dataContact.KontaktVIEWID !== "undefined") {
@@ -337,9 +338,6 @@
                                     }
 
                                 }
-                                if (changed) {
-                                    updateAction(i, actionLine);
-                                }
                             } else if (actionLine.button0.KontaktVIEWID !== null ||
                                 actionLine.button0.Name !== "" ||
                                 actionLine.button0.Firmenname !== "" ||
@@ -356,22 +354,29 @@
                                 actionLine.button0.showModified = false;
                                 actionLine.button0.modifiedOn = "";
                                 actionLine.button0.editedOn = "";
-                                updateAction(i, actionLine);
-                            }
-                        } else if (actionLine.button0.id === "listLocal") {
-                            var newButton0Content = getResourceText("start.buttonListLocal") + ": " + AppData.generalData.contactCountLocal;
-                            if (newButton0Content !== actionLine.button0.content) {
-                                actionLine.button0.content = newButton0Content;
                                 changed = true;
                             }
-                            var newButton1Content = getResourceText("start.buttonListRemote") + ": " + AppData.generalData.contactCountRemote;
-                            if (newButton1Content !== actionLine.button1.content) {
-                                actionLine.button1.content = newButton1Content;
+                        } else if (actionLine.id === "list") {
+                            content = getResourceText("start.buttonListLocal") + ": " + AppData.generalData.contactCountLocal;
+                            if (actionLine.button0 && content !== actionLine.button0.content) {
+                                actionLine.button0.content = content;
                                 changed = true;
                             }
-                            if (changed) {
-                                updateAction(i, actionLine);
+                            content = getResourceText("start.buttonListRemote") + ": " + AppData.generalData.contactCountRemote;
+                            if (actionLine.button1 && content !== actionLine.button1.content) {
+                                actionLine.button1.content = content;
+                                changed = true;
                             }
+                        } else if (actionLine.id === "new") {
+                            content = AppData._persistentStates.showQRCode ? getResourceText("start.buttonQRCode") : getResourceText("start.buttonBarcode");
+                            if (actionLine.button1 && content !== actionLine.button1.content) {
+                                actionLine.button1.content = content;
+                                actionLine.button1.svg = AppData._persistentStates.showQRCode ? "barcode-qr" : "barcode";
+                                changed = true;
+                            }
+                        }
+                        if (changed) {
+                            updateAction(i, actionLine);
                         }
                     }
                     that.checkListButtonStates();

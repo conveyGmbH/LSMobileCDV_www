@@ -123,7 +123,7 @@
                     AppBar.busy = false;
                     // this callback will be called asynchronously
                     // when the response is available
-                    console.log("recoverData: success!");
+                    Log.print(Log.l.trace, "recoverData: success!");
                     // loginData returns object already parsed from json file in response
                     if (json && json.d) {
                         that.setDataRecover(json.d);

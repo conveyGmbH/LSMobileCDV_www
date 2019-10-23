@@ -230,7 +230,7 @@
                     AppBar.busy = false;
                     // this callback will be called asynchronously
                     // when the response is available
-                    console.log("registerData: success!");
+                    Log.print(Log.l.trace, "registerData: success!");
                     // loginData returns object already parsed from json file in response
                     if (json && json.d) {
                         that.setDataRegister(json.d);

@@ -122,7 +122,7 @@
                     confirm(confirmTitle, function (result) {
                         if (result) {
                             Log.print(Log.l.trace, "clickLogoff: user choice OK");
-                            AppData._persistentStates.odata.veranstoption = {};
+                            AppData._persistentStates.veranstoption = {};
                             Application.pageframe.savePersistentStates();
                             that.binding.doEdit = false;
                             Application.navigateById("login", event);
@@ -345,7 +345,7 @@
                                             AppData._persistentStates.allRestrictions = {};
                                             AppData._persistentStates.allRecIds = {};
                                             AppData._userData = {};
-                                            AppData._persistentStates.odata.veranstoption = {};
+                                            AppData._persistentStates.veranstoption = {};
                                             AppData._userRemoteData = {};
                                             AppData._contactData = {};
                                             AppData._photoData = null;
@@ -423,7 +423,7 @@
                         } else {
                             return WinJS.Promise.as();
                         }
-                    })/*.then(function () {
+                    }).then(function () {
                         if (!err && !AppData.appSettings.odata.serverFailure) {
                             // load color settings
                             return Account.CR_VERANSTOPTION_ODataView.select(function (json) {
@@ -431,12 +431,15 @@
                                 // when the response is available
                                 Log.print(Log.l.trace, "CR_VERANSTOPTION: success!");
                                 // CR_VERANSTOPTION_ODataView returns object already parsed from json file in response
-                                if (json && json.d && json.d.results && json.d.results.length > 0) {
+                                if (json && json.d && json.d.results) {
                                     var results = json.d.results;
+                                    AppData._persistentStates.veranstoption = copyByValue(results);
                                     AppData._persistentStates.serverColors = false;
-                                    results.forEach(function (item, index) {
-                                        that.resultConverter(item, index);
-                                    });
+                                    if (json.d.results.length > 0) {
+                                        results.forEach(function (item, index) {
+                                            that.resultConverter(item, index);
+                                        });
+                                    }
                                     Application.pageframe.savePersistentStates();
                                 }
                             }, function (errorResponse) {
@@ -450,7 +453,7 @@
                         } else {
                             return WinJS.Promise.as();
                         }
-                    })*/;
+                    });
                 }
                 Log.ret(Log.l.trace);
                 return ret;

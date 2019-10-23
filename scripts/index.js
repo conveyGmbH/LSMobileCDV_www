@@ -169,6 +169,14 @@
         return id;
     };
 
+    Application.refreshAfterFetchOverride = function() {
+        Log.call(Log.l.trace, "Application.");
+        AppData.getUserData();
+        AppData.getUserRemoteData();
+        AppData.getContactData();
+        Log.ret(Log.l.trace);
+    };
+
     NavigationBar._vertWidth = 188;
 
     // initiate the page frame class

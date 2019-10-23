@@ -89,18 +89,18 @@
                                         AppData.applyColorSetting(property, item.colorValue);
                                     }
                                 }
-                        var results = AppData._persistentStates.odata.veranstoption;
+                        var results = AppData._persistentStates.veranstoption;
                         if (results && results.length > 0) {
-                                    AppData._persistentStates.serverColors = false;
-                                    results.forEach(function (item, index) {
-                                        resultConverter(item, index);
-                                    });
-                                    Application.pageframe.savePersistentStates();
-                                }
-                                Colors.updateColors();
-                                if (typeof complete === "function") {
-                                    complete({});
-                                }
+                            AppData._persistentStates.serverColors = false;
+                            results.forEach(function (item, index) {
+                                resultConverter(item, index);
+                            });
+                            Application.pageframe.savePersistentStates();
+                        }
+                        Colors.updateColors();
+                        if (typeof complete === "function") {
+                            complete({});
+                        }
                     }, function (err) {
                         AppBar.busy = false;
                         Log.print(Log.l.error, "openDB error!");
@@ -200,7 +200,7 @@
                                         AppData._persistentStates.allRestrictions = {};
                                         AppData._persistentStates.allRecIds = {};
                                         AppData._userData = {};
-                                        AppData._persistentStates.odata.veranstoption = {};
+                                        AppData._persistentStates.veranstoption = {};
                                         AppData._userRemoteData = {};
                                         AppData._contactData = {};
                                         AppData._photoData = null;
