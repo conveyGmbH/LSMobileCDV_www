@@ -22,6 +22,7 @@
             AppData._persistentStates.odata.login = null;
             AppData._persistentStates.odata.password = null;
             AppData._persistentStates.odata.dbSiteId = 0;
+            AppData._persistentStates.odata.veranstoption = {};
             AppData._persistentStates.allRestrictions = {};
             AppData._persistentStates.allRecIds = {};
             AppData._userData = {};
@@ -254,6 +255,7 @@
                                         AppData._persistentStates.allRestrictions = {};
                                         AppData._persistentStates.allRecIds = {};
                                         AppData._userData = {};
+                                        AppData._persistentStates.odata.veranstoption = {};
                                         AppData._userRemoteData = {};
                                         AppData._contactData = {};
                                         AppData._photoData = null;
@@ -329,6 +331,7 @@
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
+                    console.log(AppData._persistentStates.odata.veranstoption);
                     if (!err && !AppData.appSettings.odata.serverFailure) {
                         // load color settings
                         return Login.CR_VERANSTOPTION_ODataView.select(function (json) {

@@ -392,6 +392,8 @@
                         Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + 100 + "s is over!");
                         AppData._curGetUserRemoteDataId = 0;
                         AppData.getUserRemoteData();
+                        Log.print(Log.l.info, "getCRVeranstOption: Now, timeout=" + 100 + "s is over!");
+                        AppData.getCRVeranstOption();
                     });
                     var recordId = getRecordId();
                     if (!recordId) {

@@ -66,6 +66,26 @@
                 }
             }
         },
+        _CR_VERANSTOPTION_View: {
+            get: function () {
+                return AppData.getFormatView("CR_VERANSTOPTION", 0, false);
+            }
+        },
+        CR_VERANSTOPTION_ODataView: {
+            select: function (complete, error, restriction) {
+                Log.call(Log.l.trace, "CR_VERANSTOPTION_ODataView.");
+                var ret = DBInit._CR_VERANSTOPTION_View.select(complete,
+                    error,
+                    restriction,
+                    {
+                        ordered: true,
+                        orderAttribute: "INITOptionTypeID"
+                    });
+                Log.ret(Log.l.trace);
+                return ret;
+
+            }
+        },
         _generalContactView: {
             get: function() {
                 return AppData.getFormatView("Kontakt", 20434);
@@ -81,6 +101,7 @@
             }
         },
         _userDataPromise: null,
+        _veranstOptionPromise: null,
         _userRemoteDataPromise: null,
         _curGetUserDataId: 0,
         _curGetRemoteUserDataId: 0,
@@ -286,6 +307,67 @@
             }
             Log.ret(Log.l.trace);
             return ret;
+        },
+        getCRVeranstOption: function () {
+            var ret;
+            Log.call(Log.l.trace, "AppData.");
+            if (typeof AppData._persistentStates.odata.veranstoption === "undefined") {
+                AppData._persistentStates.odata.veranstoption = {};
+            }
+            ret = new WinJS.Promise.as().then(function () {
+                Log.print(Log.l.trace, "calling select generalContactView...");
+                return AppData.CR_VERANSTOPTION_ODataView.select(function (json) {
+                    function resultConverter(item, index) {
+                        var property = AppData.getPropertyFromInitoptionTypeID(item);
+                        if (property && property !== "individualColors" && (!item.pageProperty) && item.LocalValue) {
+                            item.colorValue = "#" + item.LocalValue;
+                            AppData.applyColorSetting(property, item.colorValue);
+                        }
+                    }
+                    var results = json.d.results;
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    Log.print(Log.l.trace, "CR_VERANSTOPTION: success!");
+                    // CR_VERANSTOPTION_ODataView returns object already parsed from json file in response
+                    if (json && json.d && json.d.results && json.d.results.length > 0) {
+                        AppData._persistentStates.serverColors = false;
+                        results.forEach(function (item, index) {
+                            resultConverter(item, index);
+                        });
+                        AppData._persistentStates.odata.veranstoption = results;
+                        Application.pageframe.savePersistentStates();
+                        Colors.updateColors();
+                    }
+                    var timeout = AppData._persistentStates.odata.replInterval || 30;
+                    Log.print(Log.l.info, "getUserData: Now, wait for timeout=" + timeout + "s");
+                    if (AppData._veranstOptionPromise) {
+                        Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                        AppData._veranstOptionPromise.cancel();
+                    }
+                    AppData._veranstOptionPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
+                        Log.print(Log.l.info, "getUserData: Now, timeout=" + timeout + "s is over!");
+                        AppData.getCRVeranstOption();
+                    });
+                }, function (errorResponse) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    // ignore error in app!
+                    // AppData.setErrorMsg(that.binding, errorResponse);
+                    var timeout = AppData._persistentStates.odata.replInterval || 30;
+                    Log.print(Log.l.info, "getUserData: Now, wait for timeout=" + timeout + "s");
+                    if (AppData._veranstOptionPromise) {
+                        Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                        AppData._veranstOptionPromise.cancel();
+                    }
+                    AppData._veranstOptionPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
+                        Log.print(Log.l.info, "getUserData: Now, timeout=" + timeout + "s is over!");
+                        AppData.getCRVeranstOption();
+                    });
+                    /*if (typeof complete === "function") {
+                        complete({});
+                    }*/
+                });
+            });
         },
         getUserRemoteData: function () {
             var ret;

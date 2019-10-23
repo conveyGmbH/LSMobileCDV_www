@@ -274,7 +274,12 @@
             var loadData = function (complete, error) {
                 AppData._persistentStates.hideQuestionnaire = false;
                 AppData._persistentStates.hideSketch = false;
-                return Settings.CR_VERANSTOPTION_ODataView.select(function (json) {
+                if (that.binding) {
+                    if (that.binding.showSettingsFlag === null) {
+                        that.binding.showSettingsFlag = true;
+                    }
+                }
+              /*  return Settings.CR_VERANSTOPTION_ODataView.select(function (json) {
                     // this callback will be called asynchronously
                     // when the response is available
                     Log.print(Log.l.trace, "CR_VERANSTOPTION: success!");
@@ -297,11 +302,12 @@
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                     AppData.setErrorMsg(that.binding, errorResponse);
-                }).then(function () {
+                //}).then(function () {
                     Colors.updateColors();
                     return WinJS.Promise.as();
-                });
-
+                //});*/
+                    Colors.updateColors();
+                    return WinJS.Promise.as();
             };
             this.loadData = loadData;
             AppData.setErrorMsg(this.binding);

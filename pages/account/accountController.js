@@ -122,6 +122,8 @@
                     confirm(confirmTitle, function (result) {
                         if (result) {
                             Log.print(Log.l.trace, "clickLogoff: user choice OK");
+                            AppData._persistentStates.odata.veranstoption = {};
+                            Application.pageframe.savePersistentStates();
                             that.binding.doEdit = false;
                             Application.navigateById("login", event);
                         } else {
@@ -343,6 +345,7 @@
                                             AppData._persistentStates.allRestrictions = {};
                                             AppData._persistentStates.allRecIds = {};
                                             AppData._userData = {};
+                                            AppData._persistentStates.odata.veranstoption = {};
                                             AppData._userRemoteData = {};
                                             AppData._contactData = {};
                                             AppData._photoData = null;
@@ -420,7 +423,7 @@
                         } else {
                             return WinJS.Promise.as();
                         }
-                    }).then(function () {
+                    })/*.then(function () {
                         if (!err && !AppData.appSettings.odata.serverFailure) {
                             // load color settings
                             return Account.CR_VERANSTOPTION_ODataView.select(function (json) {
@@ -447,7 +450,7 @@
                         } else {
                             return WinJS.Promise.as();
                         }
-                    });
+                    })*/;
                 }
                 Log.ret(Log.l.trace);
                 return ret;
