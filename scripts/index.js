@@ -133,7 +133,11 @@
                 }
             }
         } else if (id === "sketch") {
-            for (var y = 0; y < Application.navigationBarPages.length; y++) {
+            if (AppData.generalData.privacyText && 
+                AppData.generalData.privacyText.length > 0 &&
+                WinJS.Navigation.location !== Application.getPagePath("privacy")) {
+                id = "privacy";
+            } else for (var y = 0; y < Application.navigationBarPages.length; y++) {
                 if (Application.navigationBarPages[y].id === id) {
                     if (Application.navigationBarPages[y].disabled === true) {
                         id = "start";

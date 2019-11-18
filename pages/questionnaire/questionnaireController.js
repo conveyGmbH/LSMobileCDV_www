@@ -1058,11 +1058,7 @@
                 },
                 clickForward: function(event) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
-                    if (AppData.generalData.privacyText && AppData.generalData.privacyText.length > 0) {
-                        Application.navigateById('privacy', event);
-                    } else {
-                        Application.navigateById('sketch', event);
-                    }
+                    Application.navigateById('sketch', event);
                     Log.ret(Log.l.trace);
                 },
                 clickChangeUserState: function (event) {
