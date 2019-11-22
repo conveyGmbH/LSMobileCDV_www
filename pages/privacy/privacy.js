@@ -40,20 +40,45 @@
             Log.call(Log.l.trace, pageName + ".");
             var ret;
             var that = this;
+            function cleanupOldElement(oldElement) {
+                // Cleanup and remove previous element
+                if (oldElement) {
+                    if (oldElement.winControl) {
+                        if (oldElement.winControl.unload) {
+                            oldElement.winControl.unload();
+                        }
+                        if (oldElement.winControl.controller) {
+                            oldElement.winControl.controller = null;
+                        }
+                        oldElement.winControl.dispose();
+                    }
+                    oldElement.parentNode.removeChild(oldElement);
+                    oldElement.innerHTML = "";
+                }
+            }
+            var newComplete = function(result) {
+                if (that.controller && that.controller.pageElement) {
+                    var parentElement = that.controller.pageElement.querySelector("#svghost");
+                    if (parentElement) {
+                        cleanupOldElement(parentElement.firstElementChild);
+                    }
+                }
+                complete(result);
+            }
             if (that.controller) {
                 ret = WinJS.Promise.as().then(function () {
                     // called asynchronously if ok
                     // call fragment canUnload
                     var doc = that.controller.docViewer;
                     if (doc && doc.canUnload) {
-                        doc.canUnload(complete, error);
+                        doc.canUnload(newComplete, error);
                     } else {
-                        complete();
+                        newComplete();
                     }
                 });
             } else {
                 ret = WinJS.Promise.as().then(function () {
-                    complete();
+                    newComplete();
                 });
             }
             Log.ret(Log.l.trace);

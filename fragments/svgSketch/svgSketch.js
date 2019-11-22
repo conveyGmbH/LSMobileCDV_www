@@ -88,12 +88,19 @@
             Log.call(Log.l.trace, fragmentName + ".");
             var ret;
             if (this.controller) {
+                if (this.controller.binding &&
+                    this.controller.binding.isLocal) {
                 ret = this.controller.saveData(function (response) {
                     // called asynchronously if ok
                     complete(response);
                 }, function (errorResponse) {
                     error(errorResponse);
                 });
+            } else {
+                ret = WinJS.Promise.as().then(function () {
+                        complete();
+                    });
+                }
             } else {
                 ret = WinJS.Promise.as().then(function () {
                     var err = { status: 500, statusText: "fatal: fragment already deleted!" };
@@ -131,8 +138,7 @@
                                 bDoEditorResize = true;
                             }
                             if (bDoEditorResize && that.controller &&
-                                that.controller.svgEditor &&
-                                that.controller.binding && that.controller.binding.isLocal) {
+                                that.controller.svgEditor) {
                                 that.controller.svgEditor.resize(width, height);
                             }
                         }
