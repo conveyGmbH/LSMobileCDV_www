@@ -67,7 +67,9 @@
                         cleanupOldElement(parentElement.firstElementChild);
                     }
                 }
+                WinJS.Promise.timeout(50).then(function() {
                 complete(result);
+                });
             }
             if (that.controller) {
                 ret = WinJS.Promise.as().then(function () {
