@@ -61,15 +61,19 @@
                 }
             }
             var newComplete = function(result) {
-                if (that.controller && that.controller.pageElement) {
-                    var parentElement = that.controller.pageElement.querySelector("#svghost");
-                    if (parentElement) {
-                        cleanupOldElement(parentElement.firstElementChild);
+                if (that.controller) {
+                    if (that.controller.docViewer &&
+                        that.controller.docViewer.controller) {
+                        that.controller.docViewer.controller.removeDoc();
+                    }
+                    if (that.controller.pageElement) {
+                        var parentElement = that.controller.pageElement.querySelector("#svghost");
+                        if (parentElement) {
+                            cleanupOldElement(parentElement.firstElementChild);
+                        }
                     }
                 }
-                WinJS.Promise.timeout(50).then(function() {
                 complete(result);
-                });
             }
             if (that.controller) {
                 ret = WinJS.Promise.as().then(function () {

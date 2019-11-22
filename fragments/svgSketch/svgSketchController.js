@@ -16,22 +16,13 @@
     WinJS.Namespace.define("SvgSketch", {
         Controller: WinJS.Class.derive(Fragments.Controller, function Controller(fragmentElement, options, commandList) {
             Log.call(Log.l.trace, "SvgSketch.Controller.", "noteId=" + (options && options.noteId));
-
-            // instanciate SVGEditor class
-            var svgEditor = new SVGEditor.SVGEditorClass(options);
-            svgEditor.fnCreateDrawDiv();
-            svgEditor.fnStartSketch();
-
-            this.svgEditor = svgEditor;
-            if (options && options.isLocal) {
-                this.svgEditor.registerTouchEvents();
-            }
+            this.svgEditor = null;
 
             Fragments.Controller.apply(this, [fragmentElement, {
                 noteId: null,
-                isLocal: options.isLocal,
+                isLocal: options && options.isLocal,
                 dataSketch: {},
-                color: svgEditor.drawcolor && svgEditor.drawcolor[0],
+                color: 0,
                 width: 1,
                 styleWidth: "1px",
                 styleMargin: "9px"
@@ -46,6 +37,21 @@
                 return (getDocData() && typeof getDocData() === "string");
             }
             this.hasDoc = hasDoc;
+            var getSvgEditor = function() {
+                if (!that.svgEditor) {
+                    // instanciate SVGEditor class
+                    var svgEditor = new SVGEditor.SVGEditorClass(options);
+                    that.binding.color = svgEditor.drawcolor && svgEditor.drawcolor[0];
+                    svgEditor.fnCreateDrawDiv();
+                    svgEditor.fnStartSketch();
+                    that.svgEditor = svgEditor;
+                    if (options && options.isLocal) {
+                        that.svgEditor.registerTouchEvents();
+                    }
+                }
+                return that.svgEditor;
+            }
+            this.getSvgEditor = getSvgEditor;
 
             this.dispose = function () {
                 that.removeDoc();
@@ -93,31 +99,34 @@
                         fragmentControl.prevHeight = 0;
                         promise = fragmentControl.updateLayout.call(fragmentControl, fragmentElement) || WinJS.Promise.as();
                         promise.then(function () {
-                            if (that.svgEditor) {
+                            if (getSvgEditor()) {
                                 that.svgEditor.fnLoadSVG(getDocData());
                                 if (options && options.isLocal) {
                                     that.svgEditor.registerTouchEvents();
                                 }
                             }
-                            return WinJS.Promise.timeout(0);
+                            return WinJS.Promise.timeout(50);
                         }).then(function () {
                             var docContainer = fragmentElement.querySelector(".doc-container");
-                            if (docContainer) {
+                            if (docContainer && (docContainer.lastElementChild || docContainer.lastChild)) {
                                 var sketchElement = docContainer.lastElementChild || docContainer.lastChild;
-                                if (sketchElement) {
-                                    //var oldElement;
-                                    var animationDistanceX = fragmentElement.clientWidth / 4;
-                                    var animationOptions = { top: "0px", left: animationDistanceX.toString() + "px" };
-                                    if (sketchElement.style) {
-                                        sketchElement.style.visibility = "";
-                                    }
-                                    WinJS.UI.Animation.enterContent(sketchElement, animationOptions).then(function () {
-                                        if (sketchElement.style) {
-                                            sketchElement.style.display = "";
-                                            sketchElement.style.position = "";
-                                        }
-                                    });
+                                //var oldElement;
+                                var animationDistanceX = fragmentElement.clientWidth / 4;
+                                var animationOptions = { top: "0px", left: animationDistanceX.toString() + "px" };
+                                if (sketchElement.style) {
+                                    sketchElement.style.visibility = "";
                                 }
+                                if (that.svgEditor) {
+                                    that.svgEditor.resize(fragmentElement.clientWidth, fragmentElement.clientHeight);
+                                }
+                                return WinJS.UI.Animation.enterContent(sketchElement, animationOptions).then(function() {
+                                    if (sketchElement.style) {
+                                        sketchElement.style.display = "";
+                                        sketchElement.style.position = "";
+                                    }
+                                });
+                            } else {
+                                return WinJS.Promise.as();
                             }
                         });
                     }
@@ -168,20 +177,26 @@
                     },
                     noteId,
                     that.binding.isLocal);
-                } else if (that.binding.isLocal && that.svgEditor) {
+                } else if (that.binding.isLocal) {
                     AppBar.busy = true;
                     that.binding.noteId = 0;
-                    // insert new SVG note first - but only if isLocal!
-                    that.svgEditor.fnNewSVG();
-                    that.svgEditor.registerTouchEvents();
-                    that.svgEditor.modified = true;
-                    ret = that.saveData(function (response) {
-                        // called asynchronously if ok
-                        AppBar.busy = false;
-                    },
-                    function (errorResponse) {
-                        AppData.setErrorMsg(that.binding, errorResponse);
-                        AppBar.busy = false;
+                    ret = WinJS.Promise.timeout(0).then(function() {
+                        if (getSvgEditor()) {
+                            // insert new SVG note first - but only if isLocal!
+                            that.svgEditor.fnNewSVG();
+                            that.svgEditor.registerTouchEvents();
+                            that.svgEditor.modified = true;
+                            return that.saveData(function (response) {
+                                    // called asynchronously if ok
+                                    AppBar.busy = false;
+                                },
+                                function (errorResponse) {
+                                    AppData.setErrorMsg(that.binding, errorResponse);
+                                    AppBar.busy = false;
+                                });
+                        } else {
+                            return WinJS.Promise.as();
+                        }
                     });
                 } else {
                     ret = WinJS.Promise.as();
