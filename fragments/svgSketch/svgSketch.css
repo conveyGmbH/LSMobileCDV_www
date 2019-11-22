@@ -1,6 +1,7 @@
 ﻿#svgSketchController .doc-container {
     float: left;
     overflow: hidden;
+    width: 100%;
 }
 
 #sketch .feature {

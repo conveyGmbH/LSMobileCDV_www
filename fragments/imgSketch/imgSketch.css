@@ -1,5 +1,6 @@
 ﻿#imgSketchController .doc-container {
     float: left;
+    width: 100%;
 }
 
 #notePhoto.photoview {

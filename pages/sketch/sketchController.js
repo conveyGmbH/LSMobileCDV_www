@@ -25,7 +25,7 @@
                     AppData._persistentStates.useAudioNote = true;
                 }
             }
-            var addPageData = {
+            Application.Controller.apply(this, [pageElement, {
                 showSvg: false,
                 showPhoto: false,
                 showAudio: false,
@@ -34,14 +34,7 @@
                 userHidesList: false,
                 contactId: AppData.getRecordId("Kontakt"),
                 hideAddImg: !AppData._persistentStates.cameraFeatureSupported
-            };
-            // load amr lib....
-            /*if (typeof device === "object" &&
-                device.platform === "Android") {
-                var amrnbjs = "../../lib/amrnb/scripts/amrnb.js";
-                addPageData.scripts = [amrnbjs];
-            }*/
-            Application.Controller.apply(this, [pageElement, addPageData, commandList]);
+            }, commandList]);
 
             this.pageElement = pageElement;
             this.docViewer = null;

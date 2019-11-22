@@ -21,10 +21,18 @@
                             <span class="date-field" data-win-bind="textContent: generalData.contactDate Binding.Converter.toDateString"></span>
                         </div>
                     </div>
-                    <div id="svghost" class="sketchfragmenthost" data-win-bind="style.display: showSvg Binding.Converter.toDisplay"></div>
-                    <div id="imghost" class="sketchfragmenthost" data-win-bind="style.display: showPhoto Binding.Converter.toDisplay"></div>
-                    <div id="wavhost" class="sketchfragmenthost" data-win-bind="style.display: showAudio Binding.Converter.toDisplay"></div>
-                    <div id="listhost" class="row-bkg listfragmenthost" data-win-bind="style.display: showList Binding.Converter.toDisplay"></div>
+                    <div data-win-bind="style.display: showSvg Binding.Converter.toDisplay">
+                        <div id="svghost" class="sketchfragmenthost"></div>
+                    </div>
+                    <div data-win-bind="style.display: showPhoto Binding.Converter.toDisplay">
+                        <div id="imghost" class="sketchfragmenthost"></div>
+                    </div>
+                    <div data-win-bind="style.display: showAudio Binding.Converter.toDisplay">
+                        <div id="wavhost" class="sketchfragmenthost"></div>
+                    </div>
+                    <div data-win-bind="style.display: showList Binding.Converter.toDisplay">
+                        <div id="listhost" class="row-bkg listfragmenthost"></div>
+                    </div>
                     <div id="addNotesToolbar" class="add-box box-bkg">
                         <button id="sketch" class="win-button shape add-button"
                                 onclick="AppBar.handleEvent('click', 'clickAddSvg', event)">
