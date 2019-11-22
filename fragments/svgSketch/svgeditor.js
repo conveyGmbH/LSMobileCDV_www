@@ -413,24 +413,25 @@
                 },
 
                 registerTouchEvents: function() {
-                    // initialize svg graphics editor
-                    if (window.navigator.msPointerEnabled) {
-                        // Fires for touch, pen, and mouse
-                        this.addRemovableEventListener(document, "MSPointerDown", this.doTouchStartMS.bind(this), false);
-                        this.addRemovableEventListener(document, "MSPointerMove", this.doTouchMoveMS.bind(this), false);
-                        this.addRemovableEventListener(document, "MSPointerUp", this.doTouchEnd.bind(this), false);
-                    } else {
-                        this.addRemovableEventListener(document, "touchstart", this.doTouchStart.bind(this), false);
-                        this.addRemovableEventListener(document, "touchmove", this.doTouchMove.bind(this), false);
-                        this.addRemovableEventListener(document, "touchend", this.doTouchEnd.bind(this), false);
-                        this.addRemovableEventListener(document, "touchcancel", this.doTouchEnd.bind(this), false);
-                    }
-                    this.addRemovableEventListener(document, "gesturestart", this.preventDefault.bind(this), false);
-                    this.addRemovableEventListener(document, "gesturechange", this.preventDefault.bind(this), false);
-                    this.addRemovableEventListener(document, "gestureend", this.preventDefault.bind(this), false);
 
                     var mySketch = document.getElementById("svgsketch");
                     if (mySketch) {
+                    // initialize svg graphics editor
+                    if (window.navigator.msPointerEnabled) {
+                        // Fires for touch, pen, and mouse
+                            this.addRemovableEventListener(mySketch, "MSPointerDown", this.doTouchStartMS.bind(this), false);
+                            this.addRemovableEventListener(mySketch, "MSPointerMove", this.doTouchMoveMS.bind(this), false);
+                            this.addRemovableEventListener(mySketch, "MSPointerUp", this.doTouchEnd.bind(this), false);
+                    } else {
+                            this.addRemovableEventListener(mySketch, "touchstart", this.doTouchStart.bind(this), false);
+                            this.addRemovableEventListener(mySketch, "touchmove", this.doTouchMove.bind(this), false);
+                            this.addRemovableEventListener(mySketch, "touchend", this.doTouchEnd.bind(this), false);
+                            this.addRemovableEventListener(mySketch, "touchcancel", this.doTouchEnd.bind(this), false);
+                    }
+                        this.addRemovableEventListener(mySketch, "gesturestart", this.preventDefault.bind(this), false);
+                        this.addRemovableEventListener(mySketch, "gesturechange", this.preventDefault.bind(this), false);
+                        this.addRemovableEventListener(mySketch, "gestureend", this.preventDefault.bind(this), false);
+
                         this.addRemovableEventListener(mySketch, "mousedown", this.mouseDown.bind(this), false);
                         this.addRemovableEventListener(mySketch, "mousemove", this.mouseMove.bind(this), false);
                         this.addRemovableEventListener(mySketch, "mouseup", this.mouseUp.bind(this), false);
