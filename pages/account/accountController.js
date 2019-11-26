@@ -123,6 +123,10 @@
                         if (result) {
                             Log.print(Log.l.trace, "clickLogoff: user choice OK");
                             AppData._persistentStates.veranstoption = {};
+                            AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
+                            var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
+                            AppData._persistentStates.individualColors = false;
+                            AppData._persistentStates.isDarkTheme = false;
                             Application.pageframe.savePersistentStates();
                             that.binding.doEdit = false;
                             Application.navigateById("login", event);
@@ -346,12 +350,18 @@
                                             AppData._persistentStates.allRecIds = {};
                                             AppData._userData = {};
                                             AppData._persistentStates.veranstoption = {};
+                                            AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
+                                            var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
+                                            AppData._persistentStates.individualColors = false;
+                                            AppData._persistentStates.isDarkTheme = false;
+                                            Colors.updateColors();
                                             AppData._userRemoteData = {};
                                             AppData._contactData = {};
                                             AppData._photoData = null;
                                             AppData._barcodeType = null;
                                             AppData._barcodeRequest = null;
                                             AppData.generalData.setRecordId("Mitarbeiter", dataLogin.MitarbeiterID);
+                                            Application.pageframe.savePersistentStates();
                                         }
                                         if (that.binding.appSettings.odata.useOffline) {
                                             if (doReloadDb) {
