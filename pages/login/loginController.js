@@ -187,8 +187,9 @@
                     if (json && json.d && json.d.ODataLocation) {
                         if (json.d.InactiveFlag) {
                             AppBar.busy = false;
-                            err = { status: 503, statusText: getResourceText("login.inactive") };
+                            err = { status: 503, statusText: getResourceText("login.inactive") + "\n\n" + that.binding.appSettings.odata.login };
                             AppData.setErrorMsg(that.binding, err);
+                            alert(err.statusText);
                             error(err);
                         } else {
                             var location = json.d.ODataLocation;
@@ -200,8 +201,9 @@
                         }
                     } else {
                         AppBar.busy = false;
-                        err = { status: 404, statusText: getResourceText("login.unknown") };
+                        err = { status: 404, statusText: getResourceText("login.unknown") + "\n\n" + that.binding.appSettings.odata.login };
                         AppData.setErrorMsg(that.binding, err);
+                        alert(err.statusText);
                         error(err);
                     }
                     return WinJS.Promise.as();
