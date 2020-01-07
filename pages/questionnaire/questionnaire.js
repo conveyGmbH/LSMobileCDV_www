@@ -52,14 +52,14 @@
             if (AppData._persistentStates.cameraFeatureSupported) {
                 commandList = [
                     { id: 'clickBack', label: getResourceText('command.backward'), tooltip: getResourceText('tooltip.backward'), section: 'primary', svg: 'navigate_left' },
-                    { id: "clickNew", label: getResourceText("command.new"), tooltip: getResourceText("tooltip.new"), section: "primary", svg: "user_plus" },
+                    { id: 'clickNew', label: getResourceText('command.new'), tooltip: getResourceText('tooltip.new'), section: 'primary', svg: 'user_plus' },
                     { id: 'clickForward', label: getResourceText('command.ok'), tooltip: getResourceText('tooltip.ok'), section: 'primary', svg: 'navigate_check', key: WinJS.Utilities.Key.enter },
                     { id: 'clickPhoto', label: getResourceText('command.photo'), tooltip: getResourceText('tooltip.photo'), section: 'primary', svg: 'camera' }
                 ];
             } else {
                 commandList = [
                     { id: 'clickBack', label: getResourceText('command.backward'), tooltip: getResourceText('tooltip.backward'), section: 'primary', svg: 'navigate_left' },
-                    { id: "clickNew", label: getResourceText("command.new"), tooltip: getResourceText("tooltip.new"), section: "primary", svg: "user_plus" },
+                    { id: 'clickNew', label: getResourceText('command.new'), tooltip: getResourceText('tooltip.new'), section: 'primary', svg: 'user_plus' },
                     { id: 'clickForward', label: getResourceText('command.ok'), tooltip: getResourceText('tooltip.ok'), section: 'primary', svg: 'navigate_check', key: WinJS.Utilities.Key.enter }
                 ];
             }
