@@ -476,19 +476,22 @@
                                                     if (json && json.d && json.d.ODataLocation) {
                                                         if (json.d.InactiveFlag) {
                                                             if (AppBar.scope) {
-                                                                err = { status: 503, statusText: getResourceText("login.inactive") };
+                                                                err = { status: 503, statusText: getResourceText("login.inactive") + "\n\n" + AppData._persistentStates.odata.login };
                                                                 AppData.setErrorMsg(AppBar.scope.binding, err);
+                                                                alert(err.statusText);
                                                             }
                                                         } else if (json.d.ODataLocation !== AppData._persistentStates.odata.onlinePath) {
                                                             if (AppBar.scope) {
-                                                                err = { status: 404, statusText: getResourceText("login.modified") };
+                                                                err = { status: 404, statusText: getResourceText("login.modified") + "\n\n" + AppData._persistentStates.odata.login };
                                                                 AppData.setErrorMsg(AppBar.scope.binding, err);
+                                                                alert(err.statusText);
                                                             }
                                                         }
                                                     } else {
                                                         if (AppBar.scope) {
-                                                            err = { status: 404, statusText: getResourceText("login.unknown") };
+                                                            err = { status: 404, statusText: getResourceText("login.unknown") + "\n\n" + AppData._persistentStates.odata.login };
                                                             AppData.setErrorMsg(AppBar.scope.binding, err);
+                                                            alert(err.statusText);
                                                         }
                                                     }
                                                 }, function(errorResponse) {
