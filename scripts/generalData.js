@@ -651,14 +651,14 @@
                                     // called asynchronously if an error occurs
                                     // or server returns response with an error status.
                                     Log.print(Log.l.error, "error in select generalUserRemoteView statusText=" + errorResponse.statusText);
-                                    if (AppBar.scope && errorResponse.statusText === "") {
-                                        //err = { status: 404, statusText: getResourceText("login.unknown") };
-                                        AppData.setErrorMsg(AppBar.scope.binding,
-                                            { status: 404, statusText: getResourceText("general.internet") });
-                                    } else {
-                                        AppData.setErrorMsg(AppBar.scope.binding,
-                                            { status: 404, statusText: errorResponse.statusText });
-                                    }
+                                    // ignore this error here!
+                                    //if (AppBar.scope && errorResponse.statusText === "") {
+                                    //    AppData.setErrorMsg(AppBar.scope.binding,
+                                    //        { status: 404, statusText: getResourceText("general.internet") });
+                                    //} else {
+                                    //    AppData.setErrorMsg(AppBar.scope.binding,
+                                    //        { status: 404, statusText: errorResponse.statusText });
+                                    //}
                                     var timeout = AppData._persistentStates.odata.replInterval || 30;
                                     Log.print(Log.l.info, "getUserRemoteData: Now, wait for timeout=" + timeout + "s");
                                     if (AppData._userRemoteDataPromise) {
