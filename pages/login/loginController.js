@@ -66,13 +66,9 @@
             var privacyPolicyLink = pageElement.querySelector("#privacyPolicyLink");
             if (privacyPolicyLink) {
                 if (isAppleDevice) {
-                    privacyPolicyLink
-                        .innerHTML =
-                        "<a onclick=\"cordova.InAppBrowser.open('https://" + getResourceText("login.privacyPolicyLink") + "'" + ", '_system');\">" +
-                        getResourceText("login.privacyPolicy") +
-                        "</a>";
+                    privacyPolicyLink.innerHTML = "<a onclick=\"window.open(\'" + getResourceText("login.privacyPolicyLink") + "\', \'_system\'); return false;\"href=\"#\">" + getResourceText("login.privacyPolicy") + "</a>";
                 } else {
-                    privacyPolicyLink.innerHTML = "<a class=\"checkbox\" href=\"https://" + getResourceText("login.privacyPolicyLink") + "\" target=\"_blank\">" + getResourceText("login.privacyPolicy") + "</a>";
+                    privacyPolicyLink.innerHTML = "<a class=\"checkbox\" href=\"" + getResourceText("login.privacyPolicyLink") + "\" target=\"_blank\">" + getResourceText("login.privacyPolicy") + "</a>";
             }
             }
 

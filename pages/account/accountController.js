@@ -94,17 +94,9 @@
             var privacyPolicyLink = pageElement.querySelector("#privacyPolicyLink");
             if (privacyPolicyLink) {
                 if (isAppleDevice) {
-                    privacyPolicyLink.innerHTML = "<a style=\"pointer-events: none; cursor: default;\" href=\"https://" +
-                        getResourceText("account.privacyPolicyLink") +
-                        "\">" +
-                        getResourceText("account.privacyPolicyLink") +
-                        "</a>";
+                    privacyPolicyLink.innerHTML = "<a onclick=\"window.open(\'" + getResourceText("account.privacyPolicyLink") + "\', \'_system\'); return false;\"href=\"#\">" + getResourceText("login.privacyPolicy") + "</a>";
                 } else {
-                    privacyPolicyLink.innerHTML = "<a href=\"https://" +
-                        getResourceText("account.privacyPolicyLink") +
-                        "\">" +
-                        getResourceText("account.privacyPolicyLink") +
-                        "</a>";
+                    privacyPolicyLink.innerHTML = "<a class=\"checkbox\" href=\"" + getResourceText("account.privacyPolicyLink") + "\" target=\"_blank\">" + getResourceText("login.privacyPolicy") + "</a>";
                 }
             }
 
