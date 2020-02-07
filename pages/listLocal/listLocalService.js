@@ -73,7 +73,35 @@
                 Log.ret(Log.l.trace);
                 return ret;
             }
+        },
+        _contactNumberView: {
+            get: function () {
+                var ret = AppData.getFormatView("Mitarbeiter", 20604);
+                return ret;
+            }
+        },
+        contactNumberView: {
+            select: function (complete, error, restriction) {
+                Log.call(Log.l.trace, "ListLocal.");
+                var ret = ListLocal._contactNumberView.select(complete, error, restriction);
+                // this will return a promise to controller
+                Log.ret(Log.l.trace);
+                return ret;
+            },
+            getNextUrl: function (response) {
+                Log.call(Log.l.trace, "ListLocal.");
+                var ret = ListLocal._contactView.getNextUrl(response);
+                Log.ret(Log.l.trace);
+                return ret;
+            },
+            selectNext: function (complete, error, response, nextUrl) {
+                Log.call(Log.l.trace, "ListLocal.");
+                var ret = ListLocal._contactView.selectNext(complete, error, response, nextUrl);
+                // this will return a promise to controller
+                Log.ret(Log.l.trace);
+                return ret;
         }
+        },
     });
 })();
 

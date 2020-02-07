@@ -24,11 +24,14 @@
 
     WinJS.Namespace.define("AppData", {
         __generalUserRemoteView: null,
+        /**
+         * Mitarbeiterview_20431 old view is deprecated
+         */
         _generalUserRemoteView: {
             get: function() {
                 if (!AppData.__generalUserRemoteView) {
                     // create remote view here always!
-                    AppData.__generalUserRemoteView = new AppData.formatViewData("Mitarbeiter", 20431, false);
+                    AppData.__generalUserRemoteView = new AppData.formatViewData("Mitarbeiter", 20603, false);
                 }
                 return AppData.__generalUserRemoteView;
             }
@@ -47,9 +50,12 @@
                 }
             }
         },
+        /**
+         * Mitarbeiterview_20431 old view is deprecated
+         */
         _generalUserView: {
             get: function() {
-                return AppData.getFormatView("Mitarbeiter", 20431);
+                return AppData.getFormatView("Mitarbeiter", 20603);
             }
         },
         generalUserView: {
@@ -386,7 +392,11 @@
                 !AppData.appSettings.odata.password ||
                 !AppData.appSettings.odata.dbSiteId) {
                 Log.print(Log.l.trace, "getUserRemoteData: no logon information provided!");
-            } else if (AppData.generalUserView.isLocal) {
+            } else if (AppRepl.replicator &&
+                AppRepl.replicator.networkstate !== "Offline" &&
+                AppRepl.replicator.networkstate !== "Unknown" &&
+                DBInit &&
+                DBInit.loginRequest) { 
                 var userId = AppData.getRecordId("Mitarbeiter");
                 if (userId && userId !== AppData._curGetUserRemoteDataId) {
                     if (AppData._persistentStates.odata.useOffline && (!AppData._db || !AppData._dbInit)) {

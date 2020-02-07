@@ -18,7 +18,7 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "ListLocal.Controller.");
             Application.Controller.apply(this, [pageElement, {
-                showNumberContacts: getResourceText("listLocal.contactTotal") + ": " + AppData.generalData.contactCountLocal + ", " + getResourceText("listLocal.online") + ": " + AppData.generalData.contactUploaded + ", " + getResourceText("listLocal.notOnline") + ": " + AppData.generalData.contactNotUploaded,
+                showNumberContacts: "",
                 uploaded: AppData.generalData.contactUploaded,
                 notUploaded: AppData.generalData.contactNotUploaded,
                 count: 0
@@ -582,6 +582,35 @@
                         that.addDisposablePromise(contactDocSelectPromise);
                     });
                     that.addDisposablePromise(contactDocSelectPromise);
+                }).then(function () {
+                    var contactNumberSelectPromise = WinJS.Promise.timeout(250).then(function () {
+                        that.removeDisposablePromise(contactNumberSelectPromise);
+                        contactNumberSelectPromise = ListLocal.contactNumberView.select(function (json) {
+                            Log.print(Log.l.trace, "ListLocal.contactNumberView: success!");
+                            if (json && json.d && json.d.results && json.d.results.length === 1) {
+                                var result = json.d.results[0];
+                                that.binding.showNumberContacts = getResourceText("listLocal.contactTotal") +
+                                    ": " +
+                                    AppData.generalData.contactCountLocal +
+                                    ", " +
+                                    getResourceText("listLocal.online") +
+                                    ": " +
+                                    result.Uploaded +
+                                    ", " +
+                                    getResourceText("listLocal.notOnline") +
+                                    ": " +
+                                    result.NotUploaded;
+                            }
+                        }, function (errorResponse) {
+                            that.removeDisposablePromise(contactNumberSelectPromise);
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            Log.print(Log.l.error, "ContactList.contactDocView: error!");
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        });
+                        that.addDisposablePromise(contactNumberSelectPromise);
+                    });
+                    that.addDisposablePromise(contactNumberSelectPromise);
                 });
                 Log.ret(Log.l.trace);
                 return ret;
