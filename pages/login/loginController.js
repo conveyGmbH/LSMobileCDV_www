@@ -124,6 +124,9 @@
                         that.binding.dataLogin.privacyPolicyFlag = false;
                     }
                     return that.binding.loginDisabled;
+                },
+                clickAccount: function() {
+                    return false;
                 }
             };
 

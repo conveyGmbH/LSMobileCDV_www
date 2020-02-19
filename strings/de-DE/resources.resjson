@@ -383,10 +383,10 @@
 	"register.registerAppDemoHint" : "Bei Registrierung in der App benutzen Sie nur einen zeitlich limitierte Demoversion. Folgende Einschränkungen sind in der Demoversion enthalten:",
 	"register.registerAppHint" : "Wichtig: Bitte registrieren Sie sich nur, wenn Sie keine Bestellung bei uns oder bei der Messe aufgegeben haben. Wenn Sie sich nicht sicher sind, kontaktieren Sie uns bitte: ",
 	"register.comment1"     : " • Sie können nur Visitenkarten scannen.",
-	"register.comment2"     : " • Sie können nur das von uns vorgegebene Fragebogen nutzen.",
+	"register.comment2"     : " • Sie können nur den von uns vorgegebenen Fragebogen nutzen.",
 	"register.comment3"     : " • Kein Badge Scan.",
-	"register.comment4"     : " • Eingeschränkte Benutzung der Online-Zugang.",
-	"register.comment5"     : " • Kein Export von Daten.",
+	"register.comment4"     : " • Eingeschränkte Benutzung des Online-Zugangs.",
+	"register.comment5"     : " • Kein Export der Daten.",
 	"register.registerLeadsuccessEmail" : "leadsuccess@convey.de",
      
     "recover.title"         : "Kennwort vergessen",

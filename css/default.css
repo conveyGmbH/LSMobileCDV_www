@@ -1501,5 +1501,11 @@ button.win-button {
     -webkit-transform: translate3d(0, 0, 0);
 }
 
+.lightthemeMandatory {
+    background-color: lightyellow;
+}
 
+.darkthemeMandatory {
+    background-color: #8b4513;
+}
 
