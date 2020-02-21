@@ -157,6 +157,42 @@
             }
             this.loadData = loadData;
 
+            var clearData = function() {
+                Log.call(Log.l.trace, "Privacy.Controller.");
+                AppData.setErrorMsg(that.binding);
+                var ret = new WinJS.Promise.as().then(function () {
+                    if (!that.binding.noteId) {
+                        return WinJS.Promise.as();
+                    } else {
+                        Log.print(Log.l.trace, "use existing noteID=" + that.binding.noteId);
+                        var contactNoteUpdatePromise =  Privacy.contactNoteView.update(function() {
+                            that.removeDisposablePromise(contactNoteUpdatePromise);
+                            AppData.setErrorMsg(that.binding);
+                            Log.print(Log.l.trace, "contactNoteView: success!");
+                        }, function(errorResponse) {
+                            that.removeDisposablePromise(contactNoteUpdatePromise);
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        }, that.binding.noteId, {
+                            Quelltext: null
+                        });
+                        return that.addDisposablePromise(contactNoteUpdatePromise);
+                    }
+                }).then(function() {
+                    if (!that.binding.noteId) {
+                        Log.print(Log.l.trace, "ignored if no note id");
+                        return WinJS.Promise.timeout(0).then(function() {
+                            Application.navigateById("sketch");
+                        });
+                    } else {
+                        //load doc then if noteId is set
+                        return loadDoc();
+                    }
+                });
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+            that.clearData = clearData;
+
             // define handlers
             this.eventHandlers = {
                 clickBack: function (event) {
@@ -180,6 +216,11 @@
                     Log.call(Log.l.trace, "Privacy.Controller.");
                     Application.navigateById("sketch", event);
                     Log.ret(Log.l.trace);
+                },
+                clickDelete: function(event) {
+                    Log.call(Log.l.trace, "Privacy.Controller.");
+                    that.clearData();
+                    Log.ret(Log.l.trace);
                 }
             };
 
@@ -200,6 +241,9 @@
                 },
                 clickForward: function () {
                     return AppBar.busy;
+                },
+                clickDelete: function () {
+                    return !that.binding.noteId;
                 }
             }
             

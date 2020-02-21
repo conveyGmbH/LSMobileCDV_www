@@ -19,6 +19,12 @@
                 var ret = Privacy._contactNoteView.select(complete, error, restriction);
                 Log.ret(Log.l.trace);
                 return ret;
+            },
+            update: function (complete, error, recordId, viewResponse) {
+                Log.call(Log.l.trace, "contactView.");
+                var ret = Privacy._contactNoteView.update(complete, error, recordId, viewResponse);
+                Log.ret(Log.l.trace);
+                return ret;
             }
         }
     });
