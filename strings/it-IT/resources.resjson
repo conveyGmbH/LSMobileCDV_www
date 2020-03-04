@@ -284,6 +284,7 @@
 	"listLocal.contactTotal" : "Contatti",
 	"listLocal.online" : "Caricati",
 	"listLocal.notOnline" : "Non ancora caricato",
+    "listLocal.inWork"      : "Non ancora elaborato",
 
     "listRemote.title"      : "Elenco dei contatti caricati",
     "listRemote.comment"    : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",

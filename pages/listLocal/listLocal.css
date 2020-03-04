@@ -1,4 +1,10 @@
-﻿/*
+﻿.header-status-image {
+    display: inline-block;
+    position: relative;
+    left: 2px;
+    top: 2px;
+}
+/*
 #listLocalContacts .listview .win-selectionstylefilled {
     position: relative;
     left: 0px;

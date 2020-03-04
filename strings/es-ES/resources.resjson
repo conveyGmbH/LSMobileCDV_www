@@ -258,6 +258,7 @@
 	"listLocal.contactTotal" : "Kontakte",
 	"listLocal.online" : "Hochgeladen",
 	"listLocal.notOnline" : "Noch nicht hochgeladen",
+    "listLocal.inWork"      : "Not yet processed",
 
     "camera.title"          : "Kamera",
     "camera.comment"        : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",

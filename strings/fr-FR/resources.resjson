@@ -284,6 +284,7 @@
 	"listLocal.contactTotal" : "Contacts",
 	"listLocal.online" : "Téléchargé",
 	"listLocal.notOnline" : "Pas encore téléchargé",
+    "listLocal.inWork"      : "Pas encore traité",
 
     "listRemote.title"      : "Liste de contacts téléchargés",
     "listRemote.comment"    : "Utilisez le bouton Retour sur cette page pour y retourner!",

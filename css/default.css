@@ -799,10 +799,15 @@ button.win-button {
     width: 100%;
 }
 
-.list-footer .progress,
-.list-footer .counter {
-    margin-left: 6px;
+.list-footer .progress {
+    /* margin-left: 6px;    */
     width: 100%;
+}
+.list-header .counter,
+.list-footer .counter {
+    /* margin-left: 6px;    */
+    width: 100%;
+    opacity: 0.6;
 }
 .column-header{
     margin-top:40px;
@@ -952,7 +957,7 @@ button.win-button {
     height: 100%;
     color: forestgreen
 }
-
+.list-compressed-title.win-type-subtitle,
 .list-compressed-title.win-type-subtitle {
     font-weight: 500;
     opacity: 1.0;
@@ -1041,6 +1046,9 @@ button.win-button {
     width:100%;
     display:block;
 }
+.view-size-bigger .win-itembox .row-separator {
+    margin-top: -8px;
+}
   
 /*
     margins/paddings for middle sized screens 
@@ -1064,8 +1072,10 @@ button.win-button {
     width: calc(96% - 18px);
     margin-left: 18px;
 }
-.view-size-medium .row-separator {
+.view-size-medium .win-itembox .row-separator {
     margin-top: -8px;
+}
+.view-size-medium .row-separator {
     margin-left: -18px;
     width: calc(100% + 36px);
 }
@@ -1333,8 +1343,10 @@ button.win-button {
     box-shadow: none;
 }
 
-.view-size-small .row-separator {
+.view-size-small .win-itembox .row-separator {
     margin-top: -4px;
+}
+.view-size-small .row-separator {
     margin-left: -10px;
     width: calc(100% + 20px);
 }

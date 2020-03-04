@@ -19,6 +19,9 @@
             Log.call(Log.l.trace, "ListLocal.Controller.");
             Application.Controller.apply(this, [pageElement, {
                 showNumberContacts: "",
+                showNumberUploaded: "",
+                showNumberNotUploaded: "",
+                showNumberInWork: "",
                 uploaded: AppData.generalData.contactUploaded,
                 notUploaded: AppData.generalData.contactNotUploaded,
                 count: 0
@@ -37,6 +40,7 @@
 
             // ListView control
             var listView = pageElement.querySelector("#listLocalContacts.listview");
+            var listHeader = pageElement.querySelector("#listLocalContacts .list-header");
 
             this.dispose = function () {
                 /*if (listView && listView.winControl) {
@@ -318,6 +322,7 @@
                                 "barcode-qr": { useStrokeColor: false }
                             });
                             Colors.loadSVGImageElements(listView, "status-image", 12, Colors.textColor);
+                            Colors.loadSVGImageElements(listHeader, "status-image", 12, Colors.textColor);
                             if (that.loading) {
                                 progress = listView.querySelector(".list-footer .progress");
                                 counter = listView.querySelector(".list-footer .counter");
@@ -468,6 +473,12 @@
                 if (that.contacts) {
                     that.contacts.length = 0;
                 }
+                if (AppData.generalData.contactCountLocal > 0) {
+                    that.binding.showNumberContacts = getResourceText("listLocal.contactTotal") +
+                        ": " + AppData.generalData.contactCountLocal;
+                } else {
+                    that.binding.showNumberContacts = "";
+                }
                 var ret = new WinJS.Promise.as().then(function () {
                     if (!AppData.initLandView.getResults().length) {
                         Log.print(Log.l.trace, "calling select initLandData...");
@@ -589,17 +600,24 @@
                             Log.print(Log.l.trace, "ListLocal.contactNumberView: success!");
                             if (json && json.d && json.d.results && json.d.results.length === 1) {
                                 var result = json.d.results[0];
-                                that.binding.showNumberContacts = getResourceText("listLocal.contactTotal") +
-                                    ": " +
-                                    AppData.generalData.contactCountLocal +
-                                    ", " +
-                                    getResourceText("listLocal.online") +
-                                    ": " +
-                                    result.Uploaded +
-                                    ", " +
-                                    getResourceText("listLocal.notOnline") +
-                                    ": " +
-                                    result.NotUploaded;
+                                if (result.Uploaded > 0) {
+                                    that.binding.showNumberUploaded = ", " + getResourceText("listLocal.online") +
+                                        ": " + result.Uploaded;
+                                } else {
+                                    that.binding.showNumberUploaded = "";
+                                }
+                                if (result.NotUploaded > 0) {
+                                    that.binding.showNumberNotUploaded = getResourceText("listLocal.notOnline") +
+                                        ": " + result.NotUploaded;
+                                } else {
+                                    that.binding.showNumberNotUploaded = "";
+                                }
+                                if (result.InWork > 0) {
+                                    that.binding.showNumberInWork = (result.NotUploaded > 0) ? ", " : "" + 
+                                        getResourceText("listLocal.inWork") + ": " + result.InWork;
+                                } else {
+                                    that.binding.showNumberInWork = "";
+                                }
                             }
                         }, function (errorResponse) {
                             that.removeDisposablePromise(contactNumberSelectPromise);
