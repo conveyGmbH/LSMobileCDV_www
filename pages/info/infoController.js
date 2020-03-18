@@ -180,6 +180,7 @@
                         var toggle = event.currentTarget.winControl;
                         if (toggle) {
                             that.binding.generalData.logOffOptionActive = toggle.checked;
+                            AppData.generalData.logOffOptionActive = toggle.checked;
                         }
                     }
                     Log.ret(Log.l.trace);
