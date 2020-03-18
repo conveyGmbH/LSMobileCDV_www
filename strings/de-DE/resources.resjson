@@ -284,6 +284,7 @@
 	"listLocal.contactTotal" : "Kontakte",
 	"listLocal.online" : "Hochgeladen",
 	"listLocal.notOnline" : "Noch nicht hochgeladen",
+    "listLocal.inWork"      : "Noch nicht verarbeitet",
 
     "listRemote.title"      : "Bereits hochgeladene Kontakte",
     "listRemote.comment"    : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",

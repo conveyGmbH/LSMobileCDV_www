@@ -24,8 +24,13 @@
                                         <span class="date-field"></span>
                                     </div>
                                 </div>
-                                <div class="content-header-line win-type-caption">
+                                <div class="content-header-line text-textcolor">
+                                    <div class="counter win-type-caption">
                                     <span data-win-bind="textContent: showNumberContacts"></span>
+                                        <span data-win-bind="textContent: showNumberUploaded"></span><br />
+                                        <span data-win-bind="textContent: showNumberNotUploaded"></span><div class="header-status-image" data-win-bind="style.display: showNumberNotUploaded Binding.Converter.toDisplay"><div id="clock" class="status-image"></div></div>
+                                        <span data-win-bind="textContent: showNumberInWork"></span><div class="header-status-image" data-win-bind="style.display: showNumberInWork Binding.Converter.toDisplay"><div id="check" class="status-image"></div></div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="list-landscape-only list-header-columns">
@@ -129,9 +134,10 @@
                     </div>
                     <div class="headerFooterPlaceholder">
                         <div class="list-footer">
-                            <div class="status">
+                            <div class="row-separator"></div>
+                            <div class="status text-textcolor">
                                 <progress class="win-progress-bar progress"></progress>
-                                <div class="counter">
+                                <div class="counter content-header-line win-type-caption">
                                     <span data-win-res="{textContent: 'listLocal.count'}"></span><span>: </span><span data-win-bind="textContent: count"></span>
                                 </div>
                             </div>

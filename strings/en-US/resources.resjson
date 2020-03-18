@@ -284,6 +284,7 @@
 	"listLocal.contactTotal" : "Contacts",
 	"listLocal.online" : "Uploaded",
 	"listLocal.notOnline" : "Not yet uploaded",
+    "listLocal.inWork"      : "Not yet processed",
 
     "listRemote.title"      : "Already uploaded contacts",
     "listRemote.comment"    : "On this page, use the Back button to go back!",
