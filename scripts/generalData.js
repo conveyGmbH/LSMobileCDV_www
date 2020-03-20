@@ -614,6 +614,7 @@
                                         AppData.appSettings.odata.serverFailure = true;
                                         NavigationBar.disablePage("listRemote");
                                         NavigationBar.disablePage("search");
+                                    }
                                         if (AppBar.scope && typeof AppBar.scope.checkListButtonStates === "function") {
                                             AppBar.scope.checkListButtonStates();
                                         }
@@ -657,7 +658,7 @@
                                                 LoginName: AppData._persistentStates.odata.login
                                             });
                                         }
-                                    }
+
                                     // called asynchronously if an error occurs
                                     // or server returns response with an error status.
                                     Log.print(Log.l.error, "error in select generalUserRemoteView statusText=" + errorResponse.statusText);
@@ -1229,7 +1230,20 @@
                         });
                     }
                 } else {
+                    var confirmTitle = getResourceText("account.confirmLogOff");
+                    if (AppData.generalData.logOffOptionActive) {
+                        confirm(confirmTitle,
+                            function (result) {
+                                return result;
+                            }).then(function (result) {
+                                Log.print(Log.l.trace, "clickLogoff: user choice OK");
+                                if (result) {
                     Application.navigateById("login");
+                                } else {
+                                    Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");
+                                }
+                            });
+                    }
                 }
             } else {
                 if (Application.getPageId(nav.location) === "barcode") {
