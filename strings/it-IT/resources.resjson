@@ -571,6 +571,7 @@
     "label.sketchRemote"    : "Attacchi",
     "label.pdfExport"       : "Esportazione PDF",
     "label.employeeGenPWList"     : "Pregenerati",
+    "label.support"		    : "Support",
 
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Annulla",

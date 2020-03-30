@@ -501,6 +501,7 @@
     "label.questionnaireRemote" : "Fragebogen",
     "label.sketchRemote"    : "Anhänge",
     "label.pdfExport"     : "PDF Export",
+    "label.support"		    : "Support",
 
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Abbrechen",

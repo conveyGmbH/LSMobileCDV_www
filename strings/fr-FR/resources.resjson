@@ -571,6 +571,7 @@
     "label.sketchRemote"    : "Notes",
     "label.pdfExport"       : "Export PDF",
     "label.employeeGenPWList"     : "Prégénérée",
+    "label.support"		    : "Support",
     
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Annuler",

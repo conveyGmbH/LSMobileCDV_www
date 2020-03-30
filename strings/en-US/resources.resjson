@@ -571,6 +571,7 @@
     "label.sketchRemote"    : "Attachments",
     "label.pdfExport"     : "PDF Export",
     "label.employeeGenPWList"     : "Pre-generated",
+    "label.support"		    : "Support",
 
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Cancel",

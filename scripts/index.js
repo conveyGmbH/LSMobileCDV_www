@@ -75,7 +75,8 @@
     Application.navigationBarGroups = [
         { id: "start", group: 1, svg: "home", disabled: false },
         { id: "search", group: 2, svg: "magnifying_glass", disabled: false },
-        { id: "info", group: 3, svg: "gearwheel", disabled: false }
+        { id: "info", group: 3, svg: "gearwheel", disabled: false },
+        { id: "support", group: 7, svg: "user_headset", disabled: false }
     ];
 
     // static array of pages for the navigation bar
@@ -96,7 +97,8 @@
         { id: "recover", group: 4, disabled: false },
         { id: "contactRemote", group: 5, disabled: false },
         { id: "questionnaireRemote", group: 5, disabled: false },
-        { id: "sketchRemote", group: 5, disabled: false }
+        { id: "sketchRemote", group: 5, disabled: false },
+        { id: "support", group: -7, disabled: false }
     ];
 
     // init page for app startup
