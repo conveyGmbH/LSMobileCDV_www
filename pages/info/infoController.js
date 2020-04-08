@@ -145,8 +145,8 @@
                 },
                 clickLogEnabled: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
-                    if (event.currentTarget && AppBar.notifyModified) {
-                        var toggle = event.currentTarget.winControl;
+                    if (event.target && AppBar.notifyModified) {
+                        var toggle = event.target.winControl;
                         if (toggle) {
                             that.binding.generalData.logEnabled = toggle.checked;
                         }
@@ -155,8 +155,8 @@
                 },
                 clickReplActive: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
-                    if (event.currentTarget && AppBar.notifyModified) {
-                        var toggle = event.currentTarget.winControl;
+                    if (event.target && AppBar.notifyModified) {
+                        var toggle = event.target.winControl;
                         if (toggle) {
                             that.binding.appSettings.odata.replActive = toggle.checked;
                             if (AppRepl.replicator) {
@@ -176,8 +176,8 @@
                 },
                 clicklogOffOptionActive: function(event) {
                     Log.call(Log.l.trace, "info.Controller.");
-                    if (event.currentTarget && AppBar.notifyModified) {
-                        var toggle = event.currentTarget.winControl;
+                    if (event.target && AppBar.notifyModified) {
+                        var toggle = event.target.winControl;
                         if (toggle) {
                             that.binding.generalData.logOffOptionActive = toggle.checked;
                             AppData.generalData.logOffOptionActive = toggle.checked;
@@ -187,8 +187,8 @@
                 },
                 clickUseClippingCamera: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
-                    if (event.currentTarget && AppBar.notifyModified) {
-                        var toggle = event.currentTarget.winControl;
+                    if (event.target && AppBar.notifyModified) {
+                        var toggle = event.target.winControl;
                         if (toggle) {
                             that.binding.generalData.useClippingCamera = toggle.checked;
                         }
@@ -197,8 +197,8 @@
                 },
                 changedCameraMegapixel: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
-                    if (event.currentTarget && AppBar.notifyModified) {
-                        var range = event.currentTarget;
+                    if (event.target && AppBar.notifyModified) {
+                        var range = event.target;
                         if (range) {
                             that.binding.generalData.cameraMegapixel = range.value;
                         }
@@ -207,8 +207,8 @@
                 },
                 changedAutoShutterTime: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
-                    if (event.currentTarget && AppBar.notifyModified) {
-                        var range = event.currentTarget;
+                    if (event.target && AppBar.notifyModified) {
+                        var range = event.target;
                         if (range) {
                             that.binding.generalData.autoShutterTime = range.value;
                         }
@@ -217,8 +217,8 @@
                 },
                 clickUseExternalCamera: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
-                    if (event.currentTarget && AppBar.notifyModified) {
-                        var toggle = event.currentTarget.winControl;
+                    if (event.target && AppBar.notifyModified) {
+                        var toggle = event.target.winControl;
                         if (toggle) {
                             that.binding.generalData.useExternalCamera = toggle.checked;
                         }
@@ -227,8 +227,8 @@
                 },
                 clickUseBarcodeActivity: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
-                    if (event.currentTarget && AppBar.notifyModified) {
-                        var toggle = event.currentTarget.winControl;
+                    if (event.target && AppBar.notifyModified) {
+                        var toggle = event.target.winControl;
                         if (toggle) {
                             that.binding.generalData.useBarcodeActivity = toggle.checked;
                             that.binding.hasSerialDevice = (isWindows10 && AppData.generalData.useBarcodeActivity) ? true : false;
@@ -252,9 +252,9 @@
                 },
                 changeBarcodeDeviceSelect: function(event) {
                     Log.call(Log.l.trace, "info.Controller.");
-                    if (event.currentTarget && AppBar.notifyModified) {
+                    if (event.target && AppBar.notifyModified) {
                         var prevValue = that.binding.generalData.barcodeDevice;
-                        var value = event.currentTarget.value;
+                        var value = event.target.value;
                         if (prevValue !== value) {
                             WinJS.Promise.timeout(0).then(function() {
                                 Barcode.stopListen(prevValue);
@@ -272,8 +272,8 @@
                 },
                 clickCameraUseGrayscale: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
-                    if (event.currentTarget && AppBar.notifyModified) {
-                        var toggle = event.currentTarget.winControl;
+                    if (event.target && AppBar.notifyModified) {
+                        var toggle = event.target.winControl;
                         if (toggle) {
                             that.binding.generalData.cameraUseGrayscale = toggle.checked;
                         }
@@ -282,8 +282,8 @@
                 },
                 changedCameraQuality: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
-                    if (event.currentTarget && AppBar.notifyModified) {
-                        var range = event.currentTarget;
+                    if (event.target && AppBar.notifyModified) {
+                        var range = event.target;
                         if (range) {
                             that.binding.generalData.cameraQuality = range.value;
                         }
@@ -292,8 +292,8 @@
                 },
                 changedReplInterval: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
-                    if (event.currentTarget && AppBar.notifyModified) {
-                        var range = event.currentTarget;
+                    if (event.target && AppBar.notifyModified) {
+                        var range = event.target;
                         if (range) {
                             that.binding.appSettings.odata.replInterval = range.value;
                         }
@@ -302,8 +302,8 @@
                 },
                 changedLogLevel: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
-                    if (event.currentTarget && AppBar.notifyModified) {
-                        var range = event.currentTarget;
+                    if (event.target && AppBar.notifyModified) {
+                        var range = event.target;
                         if (range) {
                             that.binding.generalData.logLevel = range.value;
                         }
@@ -312,8 +312,8 @@
                 },
                 clickLogGroup: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
-                    if (event.currentTarget && AppBar.notifyModified) {
-                        var toggle = event.currentTarget.winControl;
+                    if (event.target && AppBar.notifyModified) {
+                        var toggle = event.target.winControl;
                         if (toggle) {
                             that.binding.generalData.logGroup = toggle.checked;
                         }
@@ -322,8 +322,8 @@
                 },
                 clickLogNoStack: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
-                    if (event.currentTarget && AppBar.notifyModified) {
-                        var toggle = event.currentTarget.winControl;
+                    if (event.target && AppBar.notifyModified) {
+                        var toggle = event.target.winControl;
                         if (toggle) {
                             that.binding.generalData.logNoStack = toggle.checked;
                         }
@@ -332,8 +332,8 @@
                 },
                 clickLogWinJS: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
-                    if (event.currentTarget && AppBar.notifyModified) {
-                        var toggle = event.currentTarget.winControl;
+                    if (event.target && AppBar.notifyModified) {
+                        var toggle = event.target.winControl;
                         if (toggle) {
                             that.binding.generalData.logWinJS = toggle.checked;
                         }
