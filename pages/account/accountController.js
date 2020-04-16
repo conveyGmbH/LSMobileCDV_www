@@ -138,8 +138,8 @@
                 },
                 clickDoEdit: function (event) {
                     Log.call(Log.l.trace, "Account.Controller.");
-                    if (event.target && AppBar.notifyModified) {
-                        var toggle = event.target.winControl;
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var toggle = event.currentTarget.winControl;
                         if (toggle) {
                             that.binding.doEdit = toggle.checked;
                         }
@@ -148,8 +148,8 @@
                 },
                 clickDoReloadDb: function (event) {
                     Log.call(Log.l.trace, "Account.Controller.");
-                    if (event.target && AppBar.notifyModified && that.binding.doEdit) {
-                        var toggle = event.target.winControl;
+                    if (event.currentTarget && AppBar.notifyModified && that.binding.doEdit) {
+                        var toggle = event.currentTarget.winControl;
                         if (toggle) {
                             that.binding.doReloadDb = toggle.checked;
                         }
@@ -158,8 +158,8 @@
                 },
                 clickHttps: function (event) {
                     Log.call(Log.l.trace, "Account.Controller.");
-                    if (event.target && AppBar.notifyModified && that.binding.doEdit) {
-                        var toggle = event.target.winControl;
+                    if (event.currentTarget && AppBar.notifyModified && that.binding.doEdit) {
+                        var toggle = event.currentTarget.winControl;
                         if (toggle) {
                             that.binding.appSettings.odata.https = toggle.checked;
                         }
@@ -168,8 +168,8 @@
                 },
                 clickUseOffline: function (event) {
                     Log.call(Log.l.trace, "Account.Controller.");
-                    if (event.target && AppBar.notifyModified && that.binding.doEdit) {
-                        var toggle = event.target.winControl;
+                    if (event.currentTarget && AppBar.notifyModified && that.binding.doEdit) {
+                        var toggle = event.currentTarget.winControl;
                         if (toggle) {
                             that.binding.appSettings.odata.useOffline = toggle.checked;
                             AppBar.triggerDisableHandlers();
@@ -179,7 +179,7 @@
                 },
                 clickPrivacyPolicy: function (event) {
                     Log.call(Log.l.trace, "Login.Controller.");
-                    that.binding.dataLogin.privacyPolicyFlag = event.target.checked;
+                    that.binding.dataLogin.privacyPolicyFlag = event.currentTarget.checked;
                     AppBar.triggerDisableHandlers();
                     Log.ret(Log.l.trace);
                 }
