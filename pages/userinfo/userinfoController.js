@@ -442,8 +442,8 @@
                 pressEnterKey: function (event) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
                     if (event && event.keyCode === WinJS.Utilities.Key.enter &&
-                        event.target && event.target.tagName &&
-                        event.target.tagName.toLowerCase() === "textarea") {
+                        event.currentTarget && event.currentTarget.tagName &&
+                        event.currentTarget.tagName.toLowerCase() === "textarea") {
                         if (event.stopPropagation) {
                             event.stopPropagation();
                         } else {
@@ -460,8 +460,8 @@
                             break;
                         }
                     }
-                    if (event && event.target && !event.target.value) {
-                        WinJS.Utilities.removeClass(event.target, "field-text-comment-big");
+                    if (event && event.currentTarget && !event.currentTarget.value) {
+                        WinJS.Utilities.removeClass(event.currentTarget, "field-text-comment-big");
                     }
                     Log.ret(Log.l.trace);
                 },
@@ -473,8 +473,8 @@
                             break;
                         }
                     }
-                    if (event && event.target) {
-                        WinJS.Utilities.addClass(event.target, "field-text-comment-big");
+                    if (event && event.currentTarget) {
+                        WinJS.Utilities.addClass(event.currentTarget, "field-text-comment-big");
                     }
                     Log.ret(Log.l.trace);
                 },

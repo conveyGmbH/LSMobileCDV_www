@@ -1080,8 +1080,8 @@
                 pressEnterKey: function (event) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
                     if (event && event.keyCode === WinJS.Utilities.Key.enter &&
-                        event.target && event.target.tagName &&
-                        event.target.tagName.toLowerCase() === "textarea") {
+                        event.currentTarget && event.currentTarget.tagName &&
+                        event.currentTarget.tagName.toLowerCase() === "textarea") {
                         if (event.stopPropagation) {
                             event.stopPropagation();
                         } else {
@@ -1098,8 +1098,8 @@
                             break;
                         }
                     }
-                    if (event && event.target && !event.target.value && !hasIPhoneBug) {
-                        WinJS.Utilities.removeClass(event.target, "field-text-comment-big");
+                    if (event && event.currentTarget && !event.currentTarget.value && !hasIPhoneBug) {
+                        WinJS.Utilities.removeClass(event.currentTarget, "field-text-comment-big");
                     }
                     Log.ret(Log.l.trace);
                 },
@@ -1111,8 +1111,8 @@
                             break;
                         }
                     }
-                    if (event && event.target && !hasIPhoneBug) {
-                        WinJS.Utilities.addClass(event.target, "field-text-comment-big");
+                    if (event && event.currentTarget && !hasIPhoneBug) {
+                        WinJS.Utilities.addClass(event.currentTarget, "field-text-comment-big");
                     }
                     Log.ret(Log.l.trace);
                 },
@@ -1362,13 +1362,13 @@
                 },
                 onItemInvoked: function (eventInfo) {
                     Log.call(Log.l.trace, "Questionnaire.Controller.");
-                    if (eventInfo && eventInfo.target) {
-                        var comboInputFocus = eventInfo.target.querySelector(".win-dropdown:focus");
+                    if (eventInfo && eventInfo.currentTarget) {
+                        var comboInputFocus = eventInfo.currentTarget.querySelector(".win-dropdown:focus");
                         if (comboInputFocus) {
                             eventInfo.preventDefault();
                         } else {
                             // set focus into textarea if current mouse cursor is inside of element position
-                            var freitextInput = eventInfo.target.querySelector(".field-text-comment");
+                            var freitextInput = eventInfo.currentTarget.querySelector(".field-text-comment");
                             if (freitextInput) {
                                 var position = WinJS.Utilities.getPosition(freitextInput);
                                 if (position) {
