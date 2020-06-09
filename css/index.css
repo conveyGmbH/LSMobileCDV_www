@@ -205,6 +205,11 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     width: 100%;
 }
 
+.win-appbar-top.win-appbar {
+    margin-top: 48px;
+    margin-left: 48px;
+    width: calc(100% - 48px);
+}
 
 /* Flyout buttons */
 #alertFlyout {
