@@ -568,9 +568,21 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 }
 
 .win-commandingsurface .win-commandingsurface-actionarea {
+    border-top-color: gray;
+    border-bottom-color: gray;
+    background-color: Window;
+}
+
+.win-appbar-bottom.win-appbar .win-commandingsurface .win-commandingsurface-actionarea {
     border-top-style: solid;
     border-top-width: 1px;
-    border-top-color: gray;
+    border-bottom-style: none;
+}
+
+.win-appbar-top.win-appbar .win-commandingsurface .win-commandingsurface-actionarea {
+    border-top-style: none;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
 }
 
 .win-commandingsurface .win-commandingsurface-actionarea .leftmost {
