@@ -78,7 +78,9 @@
                         HostName: (window.device && window.device.uuid),
                         MitarbeiterID: AppData.generalData.getRecordId("Mitarbeiter"),
                         VeranstaltungID: AppData.generalData.getRecordId("Veranstaltung"),
-                        Nachbearbeitet: 1
+                        Nachbearbeitet: 1,
+                        Freitext4: AppData._userRemoteData.Bereich,
+                        Freitext5: AppData._userRemoteData.EinAusgang
                     };
                     Log.print(Log.l.trace, "insert new contactView for MitarbeiterID=" + newContact.MitarbeiterID);
                     AppData.setErrorMsg(that.binding);

@@ -515,6 +515,8 @@
     "userinfo.fax"          : "Fax",
     "userinfo.phone"        : "Téléphone",
     "userinfo.mobile"       : "Mobile",
+    "userinfo.entry"        : "Entrée",
+    "userinfo.exit"         : "Quitter",
 
     "uservcard.title"       : "Mes coordonnées en tant que QR-Code",
 	"uservcard.firstName"    : "Prénom",

@@ -855,6 +855,30 @@
             Log.ret(Log.l.u1, ret);
             return ret;
         },
+        getVisitorFlowAreaRemote: function () {
+            Log.call(Log.l.u1, "AppData.");
+            var ret;
+            if (AppData._userRemoteData &&
+                AppData._userRemoteData.Bereich) {
+                ret = AppData._userRemoteData.Bereich;
+            } else {
+                ret = null;
+            }
+            Log.ret(Log.l.u1, ret);
+            return ret;
+        },
+        getVisitorFlowInOutRemote: function () {
+            Log.call(Log.l.u1, "AppData.");
+            var ret;
+            if (AppData._userRemoteData &&
+                AppData._userRemoteData.EinAusgang) {
+                ret = AppData._userRemoteData.EinAusgang;
+            } else {
+                ret = null;
+            }
+            Log.ret(Log.l.u1, ret);
+            return ret;
+        },
         getPropertyFromInitoptionTypeID: function (item) {
             Log.call(Log.l.u1, "AppData.");
             var plusRemote = false;
@@ -1019,6 +1043,14 @@
                         AppData._persistentStates.useBinaryQrCode = false;
                     }
                     break;
+                case 44:
+                    /*if (item.LocalValue) {
+                        AppData._persistentStates.showvisitorFlow = true;
+                    } else {
+                        AppData._persistentStates.showvisitorFlow = false;
+                    }*/
+                    AppData._persistentStates.showvisitorFlow = item.LocalValue;
+                    break;
                 default:
                     // defaultvalues
             }
@@ -1086,6 +1118,8 @@
                 data.light = getResourceText("settings.light");
                 data.present = getResourceText("userinfo.present");
                 data.absend = getResourceText("userinfo.absend");
+                data.area = AppData._userData.Bereich;
+                data.inOut = AppData._userData.EinAusgang;
                 return data;
             }
         },

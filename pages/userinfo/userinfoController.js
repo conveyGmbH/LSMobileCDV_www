@@ -75,6 +75,8 @@
             // select element
             var initBenAnw = pageElement.querySelector("#InitBenAnw");
 
+            var cr_V_bereich = pageElement.querySelector("#cr_V_bereich");
+
             var setDataBenutzer = function(newDataBenutzer) {
                 var prevNotifyModified = AppBar.notifyModified;
                 AppBar.notifyModified = false;
@@ -108,6 +110,11 @@
             };
             this.setRecordId = setRecordId;
 
+            var resultCrVBereichConverter = function (item, index) {
+                item.TITLE = item.TITLE + (!!item.Eingang ? " " + getResourceText("userinfo.entry") : "") + (!!item.Ausgang ? " " + getResourceText("userinfo.exit") : "");
+            };
+            this.resultCrVBereichConverter = resultCrVBereichConverter;
+
             var loadData = function() {
                 var recordId = AppData.getRecordId("Mitarbeiter");
                 Log.call(Log.l.trace, "UserInfo.Controller.", "recordId=" + recordId);
@@ -136,6 +143,22 @@
                         return WinJS.Promise.as();
                     }
                 }).then(function() {
+                    Log.print(Log.l.trace, "calling select CR_V_Bereich_ODataVIEW...");
+                    return UserInfo.CR_V_Bereich_ODataVIEW.select(function (json) {
+                        Log.print(Log.l.trace, "CR_V_Bereich_ODataVIEW: success!");
+                        if (json && json.d && json.d.results) {
+                            var results = json.d.results;
+                            results.forEach(function(item, index) {
+                                that.resultCrVBereichConverter(item, index);
+                            });
+                            if (cr_V_bereich && cr_V_bereich.winControl) {
+                                cr_V_bereich.winControl.data = new WinJS.Binding.List(results);
+                            }
+                        }
+                    }, function (errorResponse) {
+                        // ignore that
+                    });
+                }).then(function () {
                     if (recordId) {
                         //load of format relation record data
                         Log.print(Log.l.trace, "calling select benutzerView...");
@@ -196,6 +219,12 @@
                 Log.call(Log.l.trace, "UserInfo.Controller.");
                 AppData.setErrorMsg(that.binding);
                 var ret;
+                if (typeof that.binding.dataBenutzer.CR_V_BereichID === "string") {
+                    that.binding.dataBenutzer.CR_V_BereichID = parseInt(that.binding.dataBenutzer.CR_V_BereichID);
+                    if (that.binding.dataBenutzer.CR_V_BereichID === 0) {
+                        that.binding.dataBenutzer.CR_V_BereichID = null;
+                    }
+                }
                 var dataBenutzer = that.binding.dataBenutzer;
                 if (dataBenutzer && AppBar.modified) {
                     var recordId = getRecordId();

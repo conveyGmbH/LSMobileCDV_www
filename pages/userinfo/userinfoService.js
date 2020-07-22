@@ -94,6 +94,19 @@
                 Log.ret(Log.l.trace);
                 return ret;
             }
+        },
+        _CR_V_Bereich_ODataVIEW: {
+            get: function () {
+                return AppData.getFormatView("CR_V_Bereich", 0);
+            }
+        },
+        CR_V_Bereich_ODataVIEW: {
+            select: function (complete, error, restriction) {
+                Log.call(Log.l.trace, "userPhotoView.");
+                var ret = UserInfo._CR_V_Bereich_ODataVIEW.select(complete, error, restriction);
+                Log.ret(Log.l.trace);
+                return ret;
+            }
         }
     });
 })();
