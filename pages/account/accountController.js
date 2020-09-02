@@ -76,8 +76,8 @@
                 } else {
                 portalLink.innerHTML = "<a href=\"" + portalLinkUrl + "\">" + portalLinkUrl + "</a>";
             }
-
             }
+
             var contentarea = pageElement.querySelector(".contentarea");
 
             var that = this;
@@ -281,6 +281,7 @@
                                 AppBar.busy = false;
                                 err = { status: 503, statusText: getResourceText("account.inactive") };
                                 AppData.setErrorMsg(that.binding, err);
+                                alert(err.statusText);
                                 error(err);
                             } else {
                                 var location = json.d.ODataLocation;
@@ -292,8 +293,9 @@
                             }
                         } else {
                             AppBar.busy = false;
-                            err = { status: 404, statusText: getResourceText("account.unknown") };
+                            err = { status: 404, statusText: getResourceText("account.unknown") + "\n\n" + that.binding.dataLogin.Login };
                             AppData.setErrorMsg(that.binding, err);
+                            alert(err.statusText);
                             error(err);
                         }
                         return WinJS.Promise.as();

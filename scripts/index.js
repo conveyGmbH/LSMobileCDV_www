@@ -111,6 +111,7 @@
     // some more default page navigation handling
     Application.navigateByIdOverride = function (id, event) {
         Log.call(Log.l.trace, "Application.", "id=" + id);
+        //if (!AppData._persistentStates.showvisitorFlow) {
         if (id === "newContact") {
             Application.prevNavigateNewId = id;
             Log.print(Log.l.trace, "reset contact Id");
@@ -139,7 +140,8 @@
                 AppData.generalData.privacyText.length > 0 &&
                 Application.navigator._lastPage !== Application.getPagePath("privacy")) {
                 id = "privacy";
-            } else for (var y = 0; y < Application.navigationBarPages.length; y++) {
+            } else
+                for (var y = 0; y < Application.navigationBarPages.length; y++) {
                 if (Application.navigationBarPages[y].id === id) {
                     if (Application.navigationBarPages[y].disabled === true) {
                         id = "start";
@@ -152,25 +154,73 @@
             if (device &&
                 (device.platform === "Android" || device.platform === "windows") &&
                 AppData.generalData.useBarcodeActivity &&
-                Barcode && !Barcode.listening) {
+                Barcode &&
+                !Barcode.listening) {
                 Barcode.startListenDelayed(250);
             }
             if (AppData.generalData.useExternalCamera &&
                 cordova.file.picturesDirectory &&
-                CameraGlobals && !CameraGlobals.listening) {
+                CameraGlobals &&
+                !CameraGlobals.listening) {
                 CameraGlobals.startListenDelayed(1000);
             }
         } else if (id === "login") {
+            if (device &&
+                (device.model === "TC20")) {
+                AppData._persistentStates.useBarcodeActivity = true;
+            }
             if (device &&
                 (device.platform === "Android") &&
                 AppData._persistentStates.useBarcodeActivity &&
                 navigator &&
                 navigator.broadcast_intent_plugin &&
                 typeof navigator.broadcast_intent_plugin.listen === "function" &&
-                Barcode && !Barcode.listening) {
+                Barcode &&
+                !Barcode.listening) {
                 Barcode.startListenDelayed(250);
             }
         }
+        /*} else {
+            if (id === "newContact") {
+                Application.prevNavigateNewId = id;
+                Log.print(Log.l.trace, "reset contact Id");
+                AppData.setRecordId("Kontakt", 0);
+                id = "contact";
+                Log.print(Log.l.trace, "new page id=" + id);
+                if (Application.navigator._lastPage === Application.getPagePath(id)) {
+                    Log.print(Log.l.trace, "force navigation to " + id + " page!");
+                    Application.navigator._lastPage = "";
+                }
+            } else if (id === "camera" || id === "barcode") {
+                Application.prevNavigateNewId = id;
+            } else if (id === "newAccount") {
+                id = "account";
+            }
+    
+            if (id === "start") {
+                id = "barcode";
+                return Application.navigateByIdOverride(id);
+            } else if (id === "login") {
+                if (device &&
+                    (device.model === "TC20")) {
+                    AppData._persistentStates.useBarcodeActivity = true;
+                }
+                if (device &&
+                    (device.platform === "Android") &&
+                    AppData._persistentStates.useBarcodeActivity &&
+                    navigator &&
+                    navigator.broadcast_intent_plugin &&
+                    typeof navigator.broadcast_intent_plugin.listen === "function" &&
+                    Barcode &&
+                    !Barcode.listening) {
+                    Barcode.startListenDelayed(250);
+                }
+            }
+            if (id === "questionnaire") {
+                id = "start";
+                return Application.navigateByIdOverride(id);
+            }
+        }*/
         Log.ret(Log.l.trace);
         return id;
     };

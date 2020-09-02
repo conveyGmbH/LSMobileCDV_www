@@ -312,9 +312,12 @@
     "barcodeEdit.barcode"   : "Barcode",
 
     "barcode.title"         : "Barcode",
+    "barcode.subtitle"      : "Verfügbare Plätze / Available Slots",
     "barcode.comment"       : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "barcode.barcode"       : "Barcode",
     "barcode.placement"     : "Posiziona un barcode all'interno dell'area di scansione",
+    "barcode.entrance"      : "Ingresso",
+    "barcode.exit"          : "Esci",
 
     "settings.title"        : "Impostazioni di progettazione",
     "settings.comment"      : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",

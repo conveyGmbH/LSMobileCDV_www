@@ -47,6 +47,40 @@
                 Log.ret(Log.l.trace);
                 return ret;
             }
+        },
+        _cr_V_BereichView: {
+            get: function () {
+                return AppData.getFormatView("CR_V_Bereich", 20613, false);
+            }
+        },
+        cr_V_BereichView: {
+            select: function (complete, error, restriction, recordID) {
+                Log.call(Log.l.trace, "cr_V_BereichView.");
+                var ret;
+                if (recordID) {
+                    ret = Barcode.cr_V_BereichView.selectById(complete, error, recordID);
+                } else {
+                    ret = Barcode._cr_V_BereichView.select(complete, error, restriction, {
+                        ordered: true,
+                        orderAttribute: "TITLE"
+                    });
+                }
+                Log.ret(Log.l.trace);
+                return ret;
+            },
+            getNextUrl: function (response) {
+                Log.call(Log.l.trace, "ListRemote.");
+                var ret = Barcode._cr_V_BereichView.getNextUrl(response);
+                Log.ret(Log.l.trace);
+                return ret;
+            },
+            selectNext: function (complete, error, response, nextUrl) {
+                Log.call(Log.l.trace, "ListRemote.");
+                var ret = Barcode._cr_V_BereichView.selectNext(complete, error, response, nextUrl);
+                // this will return a promise to controller
+                Log.ret(Log.l.trace);
+                return ret;
+            }
         }
     });
 })();

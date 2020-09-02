@@ -19,6 +19,7 @@
             Log.call(Log.l.trace, "Login.Controller.");
             var bIgnoreDuplicate = false;
             // delete login data first
+            AppData.generalData.logOffOptionActive = true;
             AppData._persistentStates.odata.login = null;
             AppData._persistentStates.odata.password = null;
             AppData._persistentStates.odata.dbSiteId = 0;
@@ -106,6 +107,11 @@
                         AppBar.triggerDisableHandlers();
                     }
                     Log.ret(Log.l.trace);
+                },
+                clickQRCodeLogin: function (event) {
+                    Log.call(Log.l.trace, "Login.Controller.");
+                    Application.navigateById("barcode", event, true);
+                    Log.ret(Log.l.trace);
                 }
             };
 
@@ -127,6 +133,10 @@
                 },
                 clickAccount: function() {
                     return false;
+                },
+                //AppData._persistentStates.cameraFeatureSupported
+                clickQRCodeLogin: function () {
+                    return (!AppData._persistentStates.cameraFeatureSupported);
                 }
             };
 
@@ -186,7 +196,7 @@
                     if (json && json.d && json.d.ODataLocation) {
                         if (json.d.InactiveFlag) {
                             AppBar.busy = false;
-                            err = { status: 503, statusText: getResourceText("login.inactive") + "\n\n" + that.binding.appSettings.odata.login };
+                            err = { status: 503, statusText: getResourceText("login.inactive") + "\n\n" + that.binding.dataLogin.Login };
                             AppData.setErrorMsg(that.binding, err);
                             alert(err.statusText);
                             error(err);
@@ -200,7 +210,7 @@
                         }
                     } else {
                         AppBar.busy = false;
-                        err = { status: 404, statusText: getResourceText("login.unknown") + "\n\n" + that.binding.appSettings.odata.login };
+                        err = { status: 404, statusText: getResourceText("login.unknown") + "\n\n" + that.binding.dataLogin.Login };
                         AppData.setErrorMsg(that.binding, err);
                         alert(err.statusText);
                         error(err);
@@ -245,6 +255,7 @@
                                     NavigationBar.enablePage("settings");
                                     NavigationBar.enablePage("info");
                                     NavigationBar.enablePage("search");
+                                    AppData.generalData.logOffOptionActive = false;
                                     var doReloadDb = false;
                                     if (!AppData._persistentStates.odata.dbSiteId ||
                                         prevMitarbeiterId !== dataLogin.MitarbeiterID ||

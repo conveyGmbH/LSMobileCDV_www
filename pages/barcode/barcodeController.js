@@ -20,14 +20,43 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Barcode.Controller.");
             Application.Controller.apply(this, [pageElement, {
+                slotFree: true, /*AppData._userData.Limit -> AppData.generalData.limit*/
                 states: {
                     errorMessage: "",
                     barcode: null
                 },
+                visitorFlow: {
+                    bereich: AppData.generalData.area,
+                    inOut: AppData.generalData.inOut
+                },
+                showVisitorIn: false,
+                showVisitorOut: false,
+                showWelcomeByeBye: false,
+                visitoFlowCountArea: 0,
+                visitorFlowCountTotal: 0,
+                visitorFlowLimit: AppData.generalData.limit,
+                visitorFlowCountRest: 0,
                 contact: { KontaktVIEWID: 0 }
             }, commandList]);
 
+
+            this.refreshWaitTimeMs = 2000;
+
             var that = this;
+
+            var checkVisitorinOut = function () {
+                if (that.binding.visitorFlow.inOut === "IN") {
+                    that.binding.showVisitorIn = true;
+                    that.binding.showVisitorOut = false;
+                } else if (this.binding.visitorFlow.inOut === "OUT") {
+                    that.binding.showVisitorIn = false;
+                    that.binding.showVisitorOut = true;
+                } else {
+                    that.binding.showVisitorIn = false;
+                    that.binding.showVisitorOut = false;
+                }
+            };
+            this.checkVisitorinOut = checkVisitorinOut;
 
             var updateStates = function (states) {
                 Log.call(Log.l.trace, "Barcode.Controller.", "errorMessage=" + states.errorMessage + "");
@@ -57,6 +86,11 @@
                     Log.call(Log.l.trace, "Account.Controller.");
                     Application.navigateById("userinfo", event);
                     Log.ret(Log.l.trace);
+                },
+                clickScanNewBarcode: function (event) {
+                    Log.call(Log.l.trace, "Account.Controller.");
+                    that.scanBarcode();
+                    Log.ret(Log.l.trace);
                 }
             };
 
@@ -73,14 +107,15 @@
             var insertBarcodedata = function (barcode, isVcard) {
                 Log.call(Log.l.trace, "Barcode.Controller.");
                 that.updateStates({ errorMessage: "Request", barcode: barcode });
+                //that.showExit();
                 var ret = new WinJS.Promise.as().then(function() {
                     var newContact = {
                         HostName: (window.device && window.device.uuid),
                         MitarbeiterID: AppData.generalData.getRecordId("Mitarbeiter"),
                         VeranstaltungID: AppData.generalData.getRecordId("Veranstaltung"),
                         Nachbearbeitet: 1,
-                        Freitext4: AppData._userRemoteData.Bereich,
-                        Freitext5: AppData._userRemoteData.EinAusgang
+                        Freitext4: AppData.generalData.area,
+                        Freitext5: AppData.generalData.inOut
                     };
                     Log.print(Log.l.trace, "insert new contactView for MitarbeiterID=" + newContact.MitarbeiterID);
                     AppData.setErrorMsg(that.binding);
@@ -120,6 +155,7 @@
                             // contactData returns object already parsed from json file in response
                             if (json && json.d) {
                                 that.updateStates({ errorMessage: "OK" });
+                                //that.showExit();
                                 AppData.generalData.setRecordId("IMPORT_CARDSCAN", json.d.IMPORT_CARDSCANVIEWID);
                                 AppData._barcodeType = "vcard";
                                 AppData._barcodeRequest = barcode;
@@ -160,6 +196,7 @@
                             // contactData returns object already parsed from json file in response
                             if (json && json.d) {
                                 that.updateStates({ errorMessage: "OK" });
+                                //that.showExit();
                                 AppData.generalData.setRecordId("ImportBarcodeScan", json.d.ImportBarcodeScanVIEWID);
                                 AppData._barcodeType = "barcode";
                                 AppData._barcodeRequest = barcode;
@@ -202,6 +239,8 @@
                         if (WinJS.Navigation.location === Application.getPagePath("barcode") &&
                             WinJS.Navigation.canGoBack === true) {
                             WinJS.Navigation.back(1).done( /* Your success and error handlers */);
+                        } else {
+                            Application.navigateById("Account", null, null);
                         }
                     });
                     Log.ret(Log.l.trace, "User cancelled");
@@ -238,8 +277,24 @@
                         var pos = result.text.indexOf("/");
                         Login.nextLogin = result.text.substr(tagLogin.length, pos - tagLogin.length);
                         Login.nextPassword = result.text.substr(pos + 1);
+                        //Application.navigateById("login");
+                        //Log.ret(Log.l.trace, "navigated to login page!");
+                        var confirmTitle = getResourceText("account.confirmLogOff");
+                        confirm(confirmTitle,
+                                function (result) {
+                                    return result;
+                                }).then(function (result) {
+                                    Log.print(Log.l.trace, "clickLogoff: user choice OK");
+                                    if (result && AppData.generalData.logOffOptionActive) {
                         Application.navigateById("login");
-                        Log.ret(Log.l.trace, "navigated to login page!");
+                                    } else {
+                                        Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");
+                                        if (WinJS.Navigation.location === Application.getPagePath("barcode") &&
+                                            WinJS.Navigation.canGoBack === true) {
+                                            WinJS.Navigation.back(1).done(/* Your success and error handlers */);
+                                        }
+                                    }
+                                });
                         return;
                     } else if (result.text.indexOf("\n") >= 0) {
                         Log.print(Log.l.trace, "save string data as plain text address");
@@ -343,11 +398,113 @@
 
             AppData.setErrorMsg(that.binding);
 
+            var translateAnimantion = function (element, bIn) {
+                Log.call(Log.l.trace, "Contact.Controller.");
+                if (element && that.binding) {
+                    var fnAnimation = bIn ? WinJS.UI.Animation.enterContent : WinJS.UI.Animation.exitContent;
+                    var animationOptions = { top: bIn ? "-50px" : "50px", left: "0px" };
+                    fnAnimation(element, animationOptions, {
+                        mechanism: "transition"
+                    }).done(function () {
+                        if (!that.binding || that.binding.showProgress) {
+                            Log.print(Log.l.trace, "finished");
+                        } else {
+                            Log.print(Log.l.trace, "go on with animation");
+                            that.animationPromise = WinJS.Promise.timeout(1000).then(function () {
+                                that.translateAnimantion(element, !bIn);
+                            });
+                        }
+                    });
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.translateAnimantion = translateAnimantion;
+
+            var resultConverterCounter = function (item, index) {
+                that.binding.visitorFlowCountTotal = that.binding.visitorFlowCountTotal +
+                    (item.ZutritteAlleHeute - item.AustritteAlleHeute);
+            }
+            this.resultConverterCounter = resultConverterCounter;
+
+            var loadData = function () {
+                Log.call(Log.l.trace, "ListRemote.Controller.");
+                that.loading = true;
+                var ret = new WinJS.Promise.as().then(function () {
+                    var cr_V_BereichSelectPromise = Barcode.cr_V_BereichView.select(function (json) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                        Log.print(Log.l.trace, "cr_V_BereichView: success!");
+                        // startContact returns object already parsed from json file in response
+                        if (json && json.d && json.d.results.length > 0) {
+                            var result = json.d.results[0];
+                            that.binding.visitorFlowCountTotal =
+                                (result.ZutritteAlleHeute - result.AustritteAlleHeute);
+                            that.binding.visitorFlowCountRest =
+                                that.binding.visitorFlowLimit - that.binding.visitorFlowCountTotal;
+                        }
+                        that.refreshPromise = WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
+                            that.loadData();
+                        });
+                        if (that.binding.visitorFlowCountTotal >= AppData.generalData.limit)
+                            that.binding.slotFree = false;
+                        else {
+                            that.binding.slotFree = true;
+                        }
+                    }, function (errorResponse) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        AppData.setErrorMsg(that.binding, errorResponse);
+                        that.loading = false;
+                    }, null);
+                    return that.addDisposablePromise(cr_V_BereichSelectPromise);
+                })/*.then(function() {
+                    var cr_V_BereichSelectPromise = Barcode.cr_V_BereichView.select(function (json) {
+                            if (json && json.d) {
+                                var result = json.d.results[0];
+                                that.binding.visitorFlowCountArea =
+                                    result.ZutritteBereichHeute - result.AustritteBereichHeute;
+                            }
+                        },
+                        function (errorResponse) {
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                            that.loading = false;
+                        },
+                        null, 0);
+                    return that.addDisposablePromise(cr_V_BereichSelectPromise);
+                })*/;
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+            this.loadData = loadData;
+
             that.processAll().then(function () {
+                that.checkVisitorinOut();
+                Colors.loadSVGImageElements(pageElement, "navigate-image", 65, Colors.textColor);
+                Colors.loadSVGImageElements(pageElement, "barcode-image");
+                Colors.loadSVGImageElements(pageElement, "scanning-image", 65, Colors.textColor, "id", function (svgInfo) {
+                    if (svgInfo && svgInfo.element) {
+                        that.translateAnimantion(svgInfo.element.firstElementChild ||
+                            svgInfo.element.firstChild, true);
+                    }
+                });
+                return Colors.loadSVGImageElements(pageElement, "hover-command-icon", 72, Colors.navigationColor);
+            }).then(function () {
+                Log.print(Log.l.trace, "Binding wireup page complete");
+                if (!parseInt(AppData._persistentStates.showvisitorFlow)) {
+                    return that.loadData();
+                } else {
+                    return WinJS.Promise.as();
+                }
+            }).then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Binding wireup page complete");
-                if (!Barcode.dontScan) {
+                console.log(AppData._persistentStates.showvisitorFlow);
+                if (!Barcode.dontScan && !parseInt(AppData._persistentStates.showvisitorFlow)) {
                     that.scanBarcode();
+                } else {
+                    Barcode.dontScan = true;
                 }
             });
             Log.ret(Log.l.trace);

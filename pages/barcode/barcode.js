@@ -41,6 +41,31 @@
         updateLayout: function (element, viewState, lastViewState) {
             /// <param name="element" domElement="true" />
             // TODO: Respond to changes in viewState.
+            var ret = null;
+            var that = this;
+            Log.call(Log.l.u1, pageName + ".");
+            // TODO: Respond to changes in viewState.
+            if (element && !that.inResize) {
+                that.inResize = 1;
+                ret = WinJS.Promise.timeout(0).then(function () {
+                    var hovercommandcontainer = element.querySelector(".hover-command-container");
+                    if (hovercommandcontainer && hovercommandcontainer.style) {
+                        var splitViewPane = Application.navigator.splitViewPane;
+                        if (splitViewPane) {
+                            var width = splitViewPane.clientWidth;
+                            if (width > 0 && width !== that.prevWidth) {
+                                that.prevWidth = width;
+                                hovercommandcontainer.style.left = "calc(50% - 15px)";
+                            }
+                        } else {
+                            hovercommandcontainer.style.left = "calc(50% - 30px)";
+                        }
+                    }
+                    that.inResize = 0;
+                });
+            }
+            Log.ret(Log.l.u1);
+            return ret;
         }
     });
 })();

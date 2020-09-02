@@ -44,6 +44,7 @@
     "command.qrcode"		: "QR-Code",
     "command.barcodeEdit"	: "Barcode eingeben",
 	"command.resetRestriction" : "Zurücksetzen",
+    "command.buttonQRCodeLogin" : "QR-Code Login",
 
     "tooltip.backward"      : "Zurück blättern",
     "tooltip.edit"          : "Aktuellen Datensatz bearbeiten",
@@ -86,6 +87,7 @@
     "tooltip.qrcode"		: "Als QR-Code oder VCard teilen",
     "tooltip.barcodeEdit"	: "Barcode von Hand eingeben",
 	"tooltip.resetRestriction" : "Filter löschen",
+	"tooltip.buttonQRCodeLogin" : "Kamera",
 
     "start.title"           : "Startseite",
     "start.comment"         : "Verwende die Schaltflächen auf dieser Seite um auf weitere Seiten zu gehen!",
@@ -312,9 +314,16 @@
     "barcodeEdit.barcode"   : "Barcode",
 
     "barcode.title"         : "Barcode",
+    "barcode.subtitle"      : "Verfügbare Plätze / Available Slots",
     "barcode.comment"       : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
+	"barcode.descriptionDE" : "Ticket Qr-Code scannen",
+	"barcode.descriptionEN" : "Scan Ticket Qr-Code",
     "barcode.barcode"       : "Barcode",
     "barcode.placement"     : "Plazieren Sie den Barcode innerhalb des Scan-Feldes",
+	"barcode.entrance"      : "Eingang",
+	"barcode.exit"          : "Ausgang",
+	"barcode.welcome"       : "Willkommen",
+	"barcode.byebye"        : "Auf Wiedersehen",
 
     "settings.title"        : "Einstellungen zur Gestaltung",
     "settings.comment"      : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",

@@ -31,6 +31,71 @@
                             <span class="input_field" data-win-bind="textContent: states.barcode"></span>
                         </div>
                     </div>
+                    <!--data-win-bind="style.display: showVisitorIn Binding.Converter.toDisplayNone-->
+                    <div data-win-bind="style.display: showVisitorIn Binding.Converter.toDisplay">
+                        <div class="visitorflow-title">
+                            <span data-win-res="{textContent: 'barcode.entrance'}"></span>
+                        </div>
+                        <div class="nx-title_black" data-win-bind="style.display: states.barcode Binding.Converter.toDisplayNone">
+                            <span data-win-res="{textContent: 'barcode.subtitle'}"></span>
+                            <span data-win-bind="textContent: visitorFlowCountRest"></span>/<span data-win-bind="textContent: visitorFlowLimit"></span>
+                        </div>
+                        <div class="isFree-noFree" data-win-bind="style.display: states.barcode Binding.Converter.toDisplayNone">
+                            <span class="isFree-noFree-symbol statusOn"
+                                  data-win-bind="style.display: slotFree Binding.Converter.toDisplay"></span>
+                            <span class="isFree-noFree-symbol statusOff"
+                                  data-win-bind="style.display: slotFree Binding.Converter.toDisplayNone"></span>
+                        </div>
+                        <div class="nx-title animationElement" data-win-bind="style.display: states.barcode Binding.Converter.toDisplayNone">
+                            <div id="guest-with-qr" class="barcode-image"></div>
+                            <div class="nx-subtitle barcode-text">
+                                <span class="nx-title_black" data-win-res="{innerHTML: 'barcode.descriptionDE'}"></span>
+                            </div>
+                            <div> <!-- class="nx-subtitle barcode-text"-->
+                                <span class="nx-title_black" data-win-res="{innerHTML: 'barcode.descriptionEN'}"></span>
+                            </div>
+                            <div class="nx-title_black" data-win-bind="style.display: showProgress Binding.Converter.toDisplayNone">
+                                <div id="big_navigate_down" class="scanning-image barcode-arrow-image"></div>
+                            </div>
+                        </div>
+                        <!--zeige willkommen nach erfolgreichem Scan-->
+                        <div data-win-bind="style.display: states.barcode Binding.Converter.toDisplay">
+                            <div class="visitorflow-title">
+                                <span data-win-res="{textContent: 'barcode.welcome'}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-win-bind="style.display: showVisitorOut Binding.Converter.toDisplay">
+                        <!-- Seite die geezeigt wird nach dem Scan-->
+                        <!-- Zeige seite für start-->
+                        <div>
+                            <span class="visitorflow-title" data-win-res="{textContent: 'barcode.exit'}"></span>
+                        </div>
+                        <div class="nx-title animationElement">
+                            <div id="guest-with-qr" class="barcode-image"></div>
+                            <div class="nx-subtitle barcode-text">
+                                <span class="nx-title_black" data-win-res="{innerHTML: 'barcode.descriptionDE'}"></span>
+                            </div>
+                            <div> <!-- class="nx-subtitle barcode-text"-->
+                                <span class="nx-title_black"data-win-res="{innerHTML: 'barcode.descriptionEN'}"></span>
+                            </div>
+                            <div class="nx-title_black" data-win-bind="style.display: showProgress Binding.Converter.toDisplayNone">
+                                <div id="big_navigate_down" class="scanning-image barcode-arrow-image"></div>
+                            </div>
+                        </div>
+                        <!-- Zeige seite bei Erfolgreich scan-->
+                        <div data-win-bind="style.display: states.barcode Binding.Converter.toDisplay">
+                            <div class="visitorflow-title">
+                                <span data-win-res="{textContent: 'barcode.byebye'}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hover-command-container">
+                        <button class="win-command hover-command-button"
+                                onclick="AppBar.handleEvent('click', 'clickScanNewBarcode', event)">
+                            <div id="add" class="hover-command-icon"></div>
+                        </button>
+                    </div>
                 </div>
                 <div class="error-message"
                      data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>

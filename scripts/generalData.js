@@ -855,6 +855,18 @@
             Log.ret(Log.l.u1, ret);
             return ret;
         },
+        getVisitorFlowLimit: function() {
+            Log.call(Log.l.u1, "AppData.");
+            var ret;
+            if (AppData._userRemoteData &&
+                AppData._userRemoteData.Limit) {
+                ret = AppData._userRemoteData.Limit;
+            } else {
+                ret = null;
+            }
+            Log.ret(Log.l.u1, ret);
+            return ret;
+        },
         getVisitorFlowAreaRemote: function () {
             Log.call(Log.l.u1, "AppData.");
             var ret;
@@ -1118,8 +1130,9 @@
                 data.light = getResourceText("settings.light");
                 data.present = getResourceText("userinfo.present");
                 data.absend = getResourceText("userinfo.absend");
-                data.area = AppData._userData.Bereich;
-                data.inOut = AppData._userData.EinAusgang;
+                data.limit = AppData._userData.Limit || AppData.getVisitorFlowLimit();
+                data.area = AppData._userData.Bereich || AppData.getVisitorFlowAreaRemote();
+                data.inOut = AppData._userData.EinAusgang || AppData.getVisitorFlowInOutRemote();
                 return data;
             }
         },

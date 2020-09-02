@@ -312,9 +312,12 @@
     "barcodeEdit.barcode"   : "Barcode",
 
     "barcode.title"         : "Code barre",
+    "barcode.subtitle"      : "Verfügbare Plätze / Available Slots",
     "barcode.comment"       : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "barcode.barcode"       : "Code barre",
     "barcode.placement"     : "Placer svp le code barre dans la case de scan",
+    "barcode.entrance"      : "Entrée",
+    "barcode.exit"          : "Quitter",
 
     "settings.title"        : "Paramètres de conception",
     "settings.comment"      : "Utilisez le bouton Retour sur cette page pour y retourner!",
