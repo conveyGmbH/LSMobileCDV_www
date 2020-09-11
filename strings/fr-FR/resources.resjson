@@ -729,5 +729,8 @@
 	"pdfExport.seperator" : "seperator",
 	"pdfExport.samplename" : "Nom de l'exemple",
 	"pdfExport.exportPdfMsg" : "Création de votre PDF",
-	"pdfExport.msg" : "Modifier/lier"
+	"pdfExport.msg" : "Modifier/lier",
+
+    "support.title" : "Support",
+    "support.url" : "https://www.convey.de/contact-2/"
 }

@@ -87,22 +87,13 @@
             };
 
             var conveyUrl = function () {
-                if (isAppleDevice) {
-                    if (AppData.getLanguageId() === 1031) {
-                        cordova.InAppBrowser.open('https://www.convey.de/kontakt/', '_system');
-                        WinJS.Navigation.back(1).done();
-                    } else {
-                        window.open('https://www.convey.de/contact-2/', '_system');
-                        WinJS.Navigation.back(1).done();
-                    }
+                var url = getResourceText("support.url");
+                if (isAppleDevice && cordova.InAppBrowser) {
+                    cordova.InAppBrowser.open(url, '_system');
+                    WinJS.Navigation.back(1).done();
                 } else {
-                    if (AppData.getLanguageId() === 1031) {
-                        cordova.InAppBrowser.open('https://www.convey.de/kontakt/', '_system');
-                        WinJS.Navigation.back(1).done();
-                    } else {
-                        window.open('https://www.convey.de/contact-2/', '_system');
-                        WinJS.Navigation.back(1).done();
-                    }
+                    window.open(url, '_system');
+                    WinJS.Navigation.back(1).done();
                 }
             }
             this.conveyUrl = conveyUrl;
