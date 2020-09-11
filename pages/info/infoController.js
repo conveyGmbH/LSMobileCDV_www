@@ -102,19 +102,6 @@
                 }
             }
 
-            var homepageLink = pageElement.querySelector("#homepageLink");
-            if (homepageLink) {
-                if (isAppleDevice) {
-                    homepageLink
-                        .innerHTML =
-                        "<a href=\"#\" onclick=\"cordova.InAppBrowser.open('https://" + getResourceText("info.homepage") + "'" + ", '_system');\">" +
-                        getResourceText("info.homepage") +
-                        "</a>";
-                } else {
-                homepageLink.innerHTML = "<a href=\"https://" + getResourceText("info.homepage") + "\">" + getResourceText("info.homepage") + "</a>";
-            }
-            }
-
             var setupLog = function () {
                 var settings = null;
                 Log.call(Log.l.trace, "Info.Controller.");
@@ -133,6 +120,18 @@
             this.setupLog = setupLog;
 
             this.eventHandlers = {
+                clickHomepageLink: function(event) {
+                    Log.call(Log.l.trace, "Info.Controller.");
+                    var url = "https://" + getResourceText("info.homepage");
+                    if (isAppleDevice && cordova.InAppBrowser) {
+                        cordova.InAppBrowser.open(url, '_system');
+                        WinJS.Navigation.back(1).done();
+                    } else {
+                        window.open(url, '_system');
+                        WinJS.Navigation.back(1).done();
+                    }
+                    Log.ret(Log.l.trace);
+                },
                 clickOk: function (event) {
                     Log.call(Log.l.trace, "Info.Controller.");
                     Application.navigateById("start", event);

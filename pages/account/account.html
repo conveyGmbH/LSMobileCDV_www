@@ -104,8 +104,11 @@
                             <span class="checkbox" 
                                   data-win-res="{textContent: 'account.privacyPolicy'}"></span>
                         </label>
-                        <span class="large_field"
-                              id="privacyPolicyLink"></span>
+                        <div class="large_field">
+                            <a class="win-link checkbox"
+                               href="#" data-win-res="{textContent: 'login.privacyPolicy'}"
+                               onclick="AppBar.handleEvent('click', 'clickPrivacyLink', event)"></a>
+                        </div>
                     </div>
                     <div class="field_line field_line_odd"
                          data-win-bind="style.display: doEdit Binding.Converter.toDisplay">
@@ -180,8 +183,11 @@
                     <div class="field_line field_line_full">
                         <span class="large_field"
                               data-win-res="{textContent: 'account.portalInfo'}"></span>
-                        <span class="large_field"
-                              id="portalLink"></span>
+                        <div class="large_field">
+                            <a class="win-link"
+                               href="#" data-win-bind="textContent: portalLinkUrl"
+                               onclick="AppBar.handleEvent('click', 'clickPortalLink', event)"></a>
+                        </div>
                     </div>
                     <div class="line-separator"></div>
                 </div>

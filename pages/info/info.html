@@ -23,12 +23,15 @@
                     </div>
                     <div class="field_line field_line_full">
                         <img src="../../images/leadsuccess.svg" width="240" />
-                        <div class="large_field"
-                              data-win-bind="textContent: version"></div>
-                        <div class="large_field"
-                              data-win-res="{innerHTML: 'info.comment'}"></div>
-                        <div class="large_field"
-                              id="homepageLink"></div>
+                        <span class="large_field"
+                              data-win-bind="textContent: version"></span>
+                        <span class="large_field"
+                             data-win-res="{innerHTML: 'info.comment'}"></span>
+                        <div class="large_field">
+                            <a class="win-link"
+                               href="#" data-win-res="{textContent: 'info.homepage'}"
+                               onclick="AppBar.handleEvent('click', 'clickHomepageLink', event)"></a>
+                        </div>
                     </div>
                     <div class="field_line field_line_full">
                         <span class="label large_field win-type-caption"

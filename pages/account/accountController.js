@@ -36,7 +36,10 @@
                     percent: 0,
                     text: "",
                     show: null
-                }
+                },
+                portalLinkUrl : (AppData._persistentStates.odata.https ? "https://" : "http://") +
+                    AppData._persistentStates.odata.hostName +
+                    getResourceText("account.portalPath")
             }, commandList]);
 
             var prevLogin = AppData._persistentStates.odata.login;
@@ -64,19 +67,6 @@
                 // enable edit per default on empty settings
                 this.binding.doEdit = true;
             }
-            var portalLink = pageElement.querySelector("#portalLink");
-
-            if (portalLink) {
-                var portalLinkUrl = (AppData._persistentStates.odata.https ? "https://" : "http://") +
-                        AppData._persistentStates.odata.hostName +
-                        getResourceText("account.portalPath");;
-                if (isAppleDevice) {
-                    portalLink.innerHTML = "<a href=\"#\" onclick=\"cordova.InAppBrowser.open('" + portalLinkUrl + "'" + ", '_system');\">" +
-                        portalLinkUrl + "</a>";
-                } else {
-                portalLink.innerHTML = "<a href=\"" + portalLinkUrl + "\">" + portalLinkUrl + "</a>";
-            }
-            }
 
             var contentarea = pageElement.querySelector(".contentarea");
 
@@ -91,17 +81,32 @@
             }
             this.resultConverter = resultConverter;
 
-            var privacyPolicyLink = pageElement.querySelector("#privacyPolicyLink");
-            if (privacyPolicyLink) {
-                if (isAppleDevice) {
-                    privacyPolicyLink.innerHTML = "<a onclick=\"window.open(\'" + getResourceText("account.privacyPolicyLink") + "\', \'_system\'); return false;\"href=\"#\">" + getResourceText("login.privacyPolicy") + "</a>";
-                } else {
-                    privacyPolicyLink.innerHTML = "<a class=\"checkbox\" href=\"" + getResourceText("account.privacyPolicyLink") + "\" target=\"_blank\">" + getResourceText("login.privacyPolicy") + "</a>";
-                }
-            }
-
             // define handlers
             this.eventHandlers = {
+                clickHomepageLink: function(event) {
+                    Log.call(Log.l.trace, "Account.Controller.");
+                    var url = "https://" + getResourceText("account.privacyPolicyLink");
+                    if (isAppleDevice && cordova.InAppBrowser) {
+                        cordova.InAppBrowser.open(url, '_system');
+                        WinJS.Navigation.back(1).done();
+                    } else {
+                        window.open(url, '_system');
+                        WinJS.Navigation.back(1).done();
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                clickPortalLink: function(event) {
+                    Log.call(Log.l.trace, "Account.Controller.");
+                    var url = that.binding.poportalLinkUrl;
+                    if (isAppleDevice && cordova.InAppBrowser) {
+                        cordova.InAppBrowser.open(url, '_system');
+                        WinJS.Navigation.back(1).done();
+                    } else {
+                        window.open(url, '_system');
+                        WinJS.Navigation.back(1).done();
+                    }
+                    Log.ret(Log.l.trace);
+                },
                 clickOk: function (event) {
                     Log.call(Log.l.trace, "Account.Controller.");
                     Application.navigateById("start", event, true);
