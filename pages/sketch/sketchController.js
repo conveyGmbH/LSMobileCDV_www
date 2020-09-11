@@ -174,6 +174,22 @@
                     } else {
                         ret = WinJS.Promise.as();
                     }
+                    if (that.binding.showSvg) {
+                        that._getHammerExcludeRect = function() {
+                            var parentElement = pageElement.querySelector("#svghost");
+                            if (parentElement) {
+                                this._hammerExcludeRect = {
+                                    left: parentElement.offsetLeft,
+                                    top: parentElement.offsetTop,
+                                    right: parentElement.offsetLeft + parentElement.clientWidth,
+                                    bottom: parentElement.offsetTop + parentElement.clientHeight
+                                };
+                            }
+                            return this._hammerExcludeRect;
+                        }
+                    } else {
+                        that._getHammerExcludeRect = null;
+                    }
                     // do command update if needed
                     ret = ret.then(function () {
                         if (bUpdateCommands) {
