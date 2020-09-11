@@ -464,6 +464,7 @@
             }).then(function () {
                 Log.print(Log.l.trace, "Data loadad");
                 AppBar.notifyModified = true;
+                return Colors.loadSVGImageElements(pageElement, "app-logo", 240);
             });
             Log.ret(Log.l.trace);
         }),

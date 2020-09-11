@@ -1,3 +1,10 @@
 ﻿#infoController .win-toggleswitch-header {
     display: none;
 }
+#infoController .app-logo-container {
+    margin: 0;
+    width: 240px;
+    height: auto;
+    float: none;
+    display: inline;
+}
