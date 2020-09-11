@@ -83,27 +83,23 @@
 
             // define handlers
             this.eventHandlers = {
-                clickHomepageLink: function(event) {
+                clickPrivacyLink: function(event) {
                     Log.call(Log.l.trace, "Account.Controller.");
-                    var url = "https://" + getResourceText("account.privacyPolicyLink");
+                    var url = getResourceText("account.privacyPolicyLink");
                     if (isAppleDevice && cordova.InAppBrowser) {
                         cordova.InAppBrowser.open(url, '_system');
-                        WinJS.Navigation.back(1).done();
                     } else {
                         window.open(url, '_system');
-                        WinJS.Navigation.back(1).done();
                     }
                     Log.ret(Log.l.trace);
                 },
                 clickPortalLink: function(event) {
                     Log.call(Log.l.trace, "Account.Controller.");
-                    var url = that.binding.poportalLinkUrl;
+                    var url = that.binding.portalLinkUrl;
                     if (isAppleDevice && cordova.InAppBrowser) {
                         cordova.InAppBrowser.open(url, '_system');
-                        WinJS.Navigation.back(1).done();
                     } else {
                         window.open(url, '_system');
-                        WinJS.Navigation.back(1).done();
                     }
                     Log.ret(Log.l.trace);
                 },

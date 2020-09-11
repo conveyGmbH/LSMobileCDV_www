@@ -125,10 +125,8 @@
                     var url = "https://" + getResourceText("info.homepage");
                     if (isAppleDevice && cordova.InAppBrowser) {
                         cordova.InAppBrowser.open(url, '_system');
-                        WinJS.Navigation.back(1).done();
                     } else {
                         window.open(url, '_system');
-                        WinJS.Navigation.back(1).done();
                     }
                     Log.ret(Log.l.trace);
                 },
