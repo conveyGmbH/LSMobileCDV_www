@@ -98,7 +98,8 @@
         { id: "contactRemote", group: 5, disabled: false },
         { id: "questionnaireRemote", group: 5, disabled: false },
         { id: "sketchRemote", group: 5, disabled: false },
-        { id: "support", group: -7, disabled: false }
+        { id: "support", group: -7, disabled: false },
+        { id: "barcode", group: -8, disabled: false }
     ];
 
     // init page for app startup
@@ -151,6 +152,9 @@
             }
         }
         if (id === "start") {
+            if (AppData._persistentStates.showvisitorFlow) {
+                id = "barcode";
+            }
             if (device &&
                 (device.platform === "Android" || device.platform === "windows") &&
                 AppData.generalData.useBarcodeActivity &&

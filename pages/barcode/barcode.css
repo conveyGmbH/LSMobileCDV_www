@@ -30,7 +30,7 @@
 @media (min-width: 821px) {
     .visitorflow-title {
         display: block;
-        margin-top: -120px;
+        margin-top: -105px;
         text-align: center;
         font-size: 180px;
     }
@@ -152,10 +152,34 @@
     height: 76px !important;
 }
 
+
+/*@media (max-width: 500px) {
+    .barcode-image svg {
+        display: none;
+    }
+    .scanning-image svg {
+        display: none;
+    }
+    .hover-command-container {
+        display: block;
+        position: fixed;
+        bottom: 50px;
+        left: calc(50% - 38px);
+        width: 76px;
+        height: 76px !important;
+        border-radius: 50%;
+        padding: 0;
+        overflow: hidden;
+        z-index: 9900;
+        margin-left: -20px
+    }
+}*/
+
+
 @media (min-width: 1200px) {
     .barcode-image svg {
         width: 326px;
-        height: 350px;
+        height: 310px;
         margin: 25px auto;
         display: block; 
     }
@@ -187,4 +211,19 @@
         overflow: hidden;
         z-index: 9900;
     }
+}
+
+.statusFree {
+    background-color: forestgreen;
+    color: white;
+}
+
+.statusFull {
+    background-color: red;
+    color: white;
+}
+
+.statusWarning {
+    background-color: yellow;
+    color: white;
 }

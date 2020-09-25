@@ -31,6 +31,7 @@
                 },
                 showVisitorIn: false,
                 showVisitorOut: false,
+                hidebarcodeInformation: false,
                 showWelcomeByeBye: false,
                 visitoFlowCountArea: 0,
                 visitorFlowCountTotal: 0,
@@ -54,6 +55,9 @@
                 } else {
                     that.binding.showVisitorIn = false;
                     that.binding.showVisitorOut = false;
+                }
+                if (that.binding.showVisitorIn || that.binding.showVisitorOut) {
+                    that.binding.hidebarcodeInformation = true;
                 }
             };
             this.checkVisitorinOut = checkVisitorinOut;
@@ -492,15 +496,16 @@
                 return Colors.loadSVGImageElements(pageElement, "hover-command-icon", 72, Colors.navigationColor);
             }).then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
-                if (!parseInt(AppData._persistentStates.showvisitorFlow)) {
+                if (parseInt(AppData._persistentStates.showvisitorFlow)) {
                     return that.loadData();
                 } else {
+                    that.scanBarcode();
                     return WinJS.Promise.as();
                 }
             }).then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Binding wireup page complete");
-                console.log(AppData._persistentStates.showvisitorFlow);
+                //console.log(AppData._persistentStates.showvisitorFlow);
                 if (!Barcode.dontScan && !parseInt(AppData._persistentStates.showvisitorFlow)) {
                     that.scanBarcode();
                 } else {

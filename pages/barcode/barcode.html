@@ -13,7 +13,7 @@
             <section aria-label="Main content" role="main" class="animationElement">
                 <div class="contentarea win-type-body">
                     <div class="header-separator"></div>
-                    <div class="content-header">
+                    <div class="content-header" data-win-bind="style.display: hidebarcodeInformation Binding.Converter.toDisplayNone">
                         <div class="half-circle half-circle-textcolor">&nbsp;</div>
                         <div class="content-header-line win-type-caption">
                             <span class="id-field" data-win-bind="textContent: generalData.globalContactID"></span>
@@ -41,9 +41,9 @@
                             <span data-win-bind="textContent: visitorFlowCountRest"></span>/<span data-win-bind="textContent: visitorFlowLimit"></span>
                         </div>
                         <div class="isFree-noFree" data-win-bind="style.display: states.barcode Binding.Converter.toDisplayNone">
-                            <span class="isFree-noFree-symbol statusOn"
+                            <span class="isFree-noFree-symbol statusFree"
                                   data-win-bind="style.display: slotFree Binding.Converter.toDisplay"></span>
-                            <span class="isFree-noFree-symbol statusOff"
+                            <span class="isFree-noFree-symbol statusFull"
                                   data-win-bind="style.display: slotFree Binding.Converter.toDisplayNone"></span>
                         </div>
                         <div class="nx-title animationElement" data-win-bind="style.display: states.barcode Binding.Converter.toDisplayNone">
@@ -51,7 +51,8 @@
                             <div class="nx-subtitle barcode-text">
                                 <span class="nx-title_black" data-win-res="{innerHTML: 'barcode.descriptionDE'}"></span>
                             </div>
-                            <div> <!-- class="nx-subtitle barcode-text"-->
+                            <div>
+                                <!-- class="nx-subtitle barcode-text"-->
                                 <span class="nx-title_black" data-win-res="{innerHTML: 'barcode.descriptionEN'}"></span>
                             </div>
                             <div class="nx-title_black" data-win-bind="style.display: showProgress Binding.Converter.toDisplayNone">
@@ -76,7 +77,8 @@
                             <div class="nx-subtitle barcode-text">
                                 <span class="nx-title_black" data-win-res="{innerHTML: 'barcode.descriptionDE'}"></span>
                             </div>
-                            <div> <!-- class="nx-subtitle barcode-text"-->
+                            <div>
+                                <!-- class="nx-subtitle barcode-text"-->
                                 <span class="nx-title_black"data-win-res="{innerHTML: 'barcode.descriptionEN'}"></span>
                             </div>
                             <div class="nx-title_black" data-win-bind="style.display: showProgress Binding.Converter.toDisplayNone">
@@ -90,7 +92,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="hover-command-container">
+                    <div class="hover-command-container" data-win-bind="style.display: hidebarcodeInformation Binding.Converter.toDisplayNone"> <!--hidebarcodeInformation-->
                         <button class="win-command hover-command-button"
                                 onclick="AppBar.handleEvent('click', 'clickScanNewBarcode', event)">
                             <div id="add" class="hover-command-icon"></div>
