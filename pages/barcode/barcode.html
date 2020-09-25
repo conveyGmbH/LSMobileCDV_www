@@ -24,12 +24,14 @@
                     <div class="content">
                         <div class="win-type-subtitle" data-win-bind="textContent: states.errorMessage"></div>
                         <br />
+                        <div data-win-bind="style.display: hidebarcodeInformation Binding.Converter.toDisplayNone">
                         <div class="header-comment" data-win-res="{textContent: 'barcode.comment'}"></div>
                         <div class="field_line field_line_odd" data-win-bind="style.display: states.barcode Binding.Converter.toDisplay">
                             <span class="label portrait_only" data-win-res="{textContent: 'barcode.barcode'}"></span>
                             <span class="label landscape_only" data-win-res="{textContent: 'barcode.barcode'}"></span>
                             <span class="input_field" data-win-bind="textContent: states.barcode"></span>
                         </div>
+                    </div>
                     </div>
                     <!--data-win-bind="style.display: showVisitorIn Binding.Converter.toDisplayNone-->
                     <div data-win-bind="style.display: showVisitorIn Binding.Converter.toDisplay">
@@ -49,15 +51,21 @@
                         <div class="nx-title animationElement" data-win-bind="style.display: states.barcode Binding.Converter.toDisplayNone">
                             <div id="guest-with-qr" class="barcode-image"></div>
                             <div class="nx-subtitle barcode-text">
-                                <span class="nx-title_black" data-win-res="{innerHTML: 'barcode.descriptionDE'}"></span>
+                                <span class="nx-title_black" data-win-res="{innerHTML: 'barcode.descriptionDE'}" data-win-bind="style.display: states.barcode Binding.Converter.toDisplayNone"></span>
                             </div>
                             <div>
                                 <!-- class="nx-subtitle barcode-text"-->
-                                <span class="nx-title_black" data-win-res="{innerHTML: 'barcode.descriptionEN'}"></span>
+                                <span class="nx-title_black" data-win-res="{innerHTML: 'barcode.descriptionEN'}" data-win-bind="style.display: states.barcode Binding.Converter.toDisplayNone"></span>
                             </div>
                             <div class="nx-title_black" data-win-bind="style.display: showProgress Binding.Converter.toDisplayNone">
                                 <div id="big_navigate_down" class="scanning-image barcode-arrow-image"></div>
                             </div>
+                        </div>
+                        <div class="hover-command-container" data-win-bind="style.display: states.barcode Binding.Converter.toDisplayNone"> <!--hidebarcodeInformation-->
+                            <button class="win-command hover-command-button"
+                                    onclick="AppBar.handleEvent('click', 'clickScanNewBarcode', event)">
+                                <div id="add" class="hover-command-icon"></div>
+                            </button>
                         </div>
                         <!--zeige willkommen nach erfolgreichem Scan-->
                         <div data-win-bind="style.display: states.barcode Binding.Converter.toDisplay">
@@ -75,15 +83,21 @@
                         <div class="nx-title animationElement">
                             <div id="guest-with-qr" class="barcode-image"></div>
                             <div class="nx-subtitle barcode-text">
-                                <span class="nx-title_black" data-win-res="{innerHTML: 'barcode.descriptionDE'}"></span>
+                                <span class="nx-title_black" data-win-res="{innerHTML: 'barcode.descriptionDE'}" data-win-bind="style.display: states.barcode Binding.Converter.toDisplayNone"></span>
                             </div>
                             <div>
                                 <!-- class="nx-subtitle barcode-text"-->
-                                <span class="nx-title_black"data-win-res="{innerHTML: 'barcode.descriptionEN'}"></span>
+                                <span class="nx-title_black" data-win-res="{innerHTML: 'barcode.descriptionEN'}" data-win-bind="style.display: states.barcode Binding.Converter.toDisplayNone"></span>
                             </div>
                             <div class="nx-title_black" data-win-bind="style.display: showProgress Binding.Converter.toDisplayNone">
                                 <div id="big_navigate_down" class="scanning-image barcode-arrow-image"></div>
                             </div>
+                        </div>
+                        <div class="hover-command-container" data-win-bind="style.display: states.barcode Binding.Converter.toDisplayNone"> <!--hidebarcodeInformation-->
+                            <button class="win-command hover-command-button"
+                                    onclick="AppBar.handleEvent('click', 'clickScanNewBarcode', event)">
+                                <div id="add" class="hover-command-icon"></div>
+                            </button>
                         </div>
                         <!-- Zeige seite bei Erfolgreich scan-->
                         <div data-win-bind="style.display: states.barcode Binding.Converter.toDisplay">
@@ -91,12 +105,6 @@
                                 <span data-win-res="{textContent: 'barcode.byebye'}"></span>
                             </div>
                         </div>
-                    </div>
-                    <div class="hover-command-container" data-win-bind="style.display: hidebarcodeInformation Binding.Converter.toDisplayNone"> <!--hidebarcodeInformation-->
-                        <button class="win-command hover-command-button"
-                                onclick="AppBar.handleEvent('click', 'clickScanNewBarcode', event)">
-                            <div id="add" class="hover-command-icon"></div>
-                        </button>
                     </div>
                 </div>
                 <div class="error-message"

@@ -41,11 +41,12 @@
             }, commandList]);
 
 
-            this.refreshWaitTimeMs = 2000;
+            this.refreshWaitTimeMs = 10000;
 
             var that = this;
 
             var checkVisitorinOut = function () {
+                if (parseInt(AppData._persistentStates.showvisitorFlow) > 0) {
                 if (that.binding.visitorFlow.inOut === "IN") {
                     that.binding.showVisitorIn = true;
                     that.binding.showVisitorOut = false;
@@ -59,6 +60,8 @@
                 if (that.binding.showVisitorIn || that.binding.showVisitorOut) {
                     that.binding.hidebarcodeInformation = true;
                 }
+                }
+
             };
             this.checkVisitorinOut = checkVisitorinOut;
 
@@ -499,13 +502,12 @@
                 if (parseInt(AppData._persistentStates.showvisitorFlow)) {
                     return that.loadData();
                 } else {
-                    that.scanBarcode();
+                    //that.scanBarcode();
                     return WinJS.Promise.as();
                 }
             }).then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Binding wireup page complete");
-                //console.log(AppData._persistentStates.showvisitorFlow);
                 if (!Barcode.dontScan && !parseInt(AppData._persistentStates.showvisitorFlow)) {
                     that.scanBarcode();
                 } else {

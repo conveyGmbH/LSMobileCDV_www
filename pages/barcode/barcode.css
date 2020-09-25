@@ -30,7 +30,7 @@
 @media (min-width: 821px) {
     .visitorflow-title {
         display: block;
-        margin-top: -105px;
+        margin-top: -80px;
         text-align: center;
         font-size: 180px;
     }
@@ -67,7 +67,7 @@
 @media (max-width: 820px) {
     .visitorflow-title {
         display: block;
-        margin-top: -40px;
+        /*margin-top: -55px;*/
         text-align: center;
         font-size: 60px;
     }
@@ -118,6 +118,7 @@
     font-weight: 600;
     color: #000000; 
     /*margin-top: 35px;*/
+    font-size: 25px;
     display: block; }
 
 .barcode-text {
@@ -179,7 +180,7 @@
 @media (min-width: 1200px) {
     .barcode-image svg {
         width: 326px;
-        height: 310px;
+        height: 275px;
         margin: 25px auto;
         display: block; 
     }
@@ -214,7 +215,7 @@
 }
 
 .statusFree {
-    background-color: forestgreen;
+    background-color: lawngreen;
     color: white;
 }
 
@@ -224,6 +225,6 @@
 }
 
 .statusWarning {
-    background-color: yellow;
+    background-color: orange;
     color: white;
 }
