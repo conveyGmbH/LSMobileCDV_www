@@ -442,7 +442,9 @@
                                         }
                                         if (AppBar.scope && typeof AppBar.scope.updateActions === "function" &&
                                             (!prevUserRemoteData ||
-                                             prevUserRemoteData.AnzVersendeteKontakte !== AppData._userRemoteData.AnzVersendeteKontakte)) { //
+                                             prevUserRemoteData.AnzVersendeteKontakte !== AppData._userRemoteData.AnzVersendeteKontakte ||
+                                             prevUserRemoteData.Bereich !== AppData._userRemoteData.Bereich ||
+                                             prevUserRemoteData.EinAusgang !== AppData._userRemoteData.EinAusgang)) { //
                                             doUpdate = true;
                                         }
                                     }

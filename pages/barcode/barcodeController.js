@@ -25,10 +25,6 @@
                     errorMessage: "",
                     barcode: null
                 },
-                visitorFlow: {
-                    bereich: AppData.generalData.area,
-                    inOut: AppData.generalData.inOut
-                },
                 showVisitorIn: false,
                 showVisitorOut: false,
                 hidebarcodeInformation: false,
@@ -45,25 +41,25 @@
 
             var that = this;
 
-            var checkVisitorinOut = function () {
+            var updateActions = function () {
                 if (parseInt(AppData._persistentStates.showvisitorFlow) > 0) {
-                if (that.binding.visitorFlow.inOut === "IN") {
-                    that.binding.showVisitorIn = true;
-                    that.binding.showVisitorOut = false;
-                } else if (this.binding.visitorFlow.inOut === "OUT") {
-                    that.binding.showVisitorIn = false;
-                    that.binding.showVisitorOut = true;
-                } else {
-                    that.binding.showVisitorIn = false;
-                    that.binding.showVisitorOut = false;
-                }
-                if (that.binding.showVisitorIn || that.binding.showVisitorOut) {
-                    that.binding.hidebarcodeInformation = true;
-                }
+                    if (AppData.generalData.inOut === "IN") {
+                        that.binding.showVisitorIn = true;
+                        that.binding.showVisitorOut = false;
+                    } else if (AppData.generalData.inOut === "OUT") {
+                        that.binding.showVisitorIn = false;
+                        that.binding.showVisitorOut = true;
+                    } else {
+                        that.binding.showVisitorIn = false;
+                        that.binding.showVisitorOut = false;
+                    }
+                    if (that.binding.showVisitorIn || that.binding.showVisitorOut) {
+                        that.binding.hidebarcodeInformation = true;
+                    }
                 }
 
             };
-            this.checkVisitorinOut = checkVisitorinOut;
+            this.updateActions = updateActions;
 
             var updateStates = function (states) {
                 Log.call(Log.l.trace, "Barcode.Controller.", "errorMessage=" + states.errorMessage + "");
@@ -437,6 +433,17 @@
                 Log.call(Log.l.trace, "ListRemote.Controller.");
                 that.loading = true;
                 var ret = new WinJS.Promise.as().then(function () {
+                    if (AppData._userRemoteDataPromise) {
+                        Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                        AppData._userRemoteDataPromise.cancel();
+                    }
+                    AppData._userRemoteDataPromise = WinJS.Promise.timeout(100).then(function () {
+                        Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + 100 + "s is over!");
+                        AppData._curGetUserRemoteDataId = 0;
+                        AppData.getUserRemoteData();
+                        Log.print(Log.l.info, "getCRVeranstOption: Now, timeout=" + 100 + "s is over!");
+                        AppData.getCRVeranstOption();
+                    });
                     var cr_V_BereichSelectPromise = Barcode.cr_V_BereichView.select(function (json) {
                         // this callback will be called asynchronously
                         // when the response is available
@@ -487,7 +494,6 @@
             this.loadData = loadData;
 
             that.processAll().then(function () {
-                that.checkVisitorinOut();
                 Colors.loadSVGImageElements(pageElement, "navigate-image", 65, Colors.textColor);
                 Colors.loadSVGImageElements(pageElement, "barcode-image");
                 Colors.loadSVGImageElements(pageElement, "scanning-image", 65, Colors.textColor, "id", function (svgInfo) {
@@ -499,6 +505,7 @@
                 return Colors.loadSVGImageElements(pageElement, "hover-command-icon", 72, Colors.navigationColor);
             }).then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
+                that.updateActions();
                 if (parseInt(AppData._persistentStates.showvisitorFlow)) {
                     return that.loadData();
                 } else {
