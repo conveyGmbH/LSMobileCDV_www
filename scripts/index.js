@@ -152,7 +152,7 @@
             }
         }
         if (id === "start") {
-            if (AppData._persistentStates.showvisitorFlow) {
+            if (AppData._persistentStates.showvisitorFlow === 1) {
                 id = "barcode";
             }
             if (device &&

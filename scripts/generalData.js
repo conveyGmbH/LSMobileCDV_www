@@ -459,6 +459,7 @@
                                         Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");
                                         AppData._curGetUserRemoteDataId = 0;
                                         AppData.getUserRemoteData();
+                                        AppData.getCRVeranstOption();
                                     });
                                 }, function (errorResponse) {
                                     Log.print(Log.l.error, "call error=" + errorResponse + 
@@ -607,6 +608,7 @@
                                         Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");
                                         AppData._curGetUserRemoteDataId = 0;
                                         AppData.getUserRemoteData();
+                                        AppData.getCRVeranstOption();
                                     });
                                 }, function(errorResponse) {
                                     var err = "";
@@ -680,6 +682,7 @@
                                         Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");
                                         AppData._curGetUserRemoteDataId = 0;
                                         AppData.getUserRemoteData();
+                                        AppData.getCRVeranstOption();
                                     });
                                 },
                                 userId);
@@ -1061,7 +1064,7 @@
                     } else {
                         AppData._persistentStates.showvisitorFlow = false;
                     }*/
-                    AppData._persistentStates.showvisitorFlow = item.LocalValue;
+                    AppData._persistentStates.showvisitorFlow = parseInt(item.LocalValue);
                     break;
                 default:
                     // defaultvalues
