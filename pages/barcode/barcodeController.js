@@ -21,6 +21,8 @@
             Log.call(Log.l.trace, "Barcode.Controller.");
             Application.Controller.apply(this, [pageElement, {
                 slotFree: true, /*AppData._userData.Limit -> AppData.generalData.limit*/
+                slotFull: false,
+                slotWarning: false,
                 states: {
                     errorMessage: "",
                     barcode: null
@@ -31,13 +33,13 @@
                 showWelcomeByeBye: false,
                 visitoFlowCountArea: 0,
                 visitorFlowCountTotal: 0,
-                visitorFlowLimit: AppData.generalData.limit,
+                visitorFlowLimit: 0,
                 visitorFlowCountRest: 0,
                 contact: { KontaktVIEWID: 0 }
             }, commandList]);
 
 
-            this.refreshWaitTimeMs = 10000;
+            this.refreshWaitTimeMs = 2500;
 
             var that = this;
 
@@ -52,6 +54,9 @@
                     } else {
                         that.binding.showVisitorIn = false;
                         that.binding.showVisitorOut = false;
+                    }
+                    if (AppData.generalData.limit) {
+                        that.binding.visitorFlowLimit = AppData.generalData.limit;
                     }
                     if (that.binding.showVisitorIn || that.binding.showVisitorOut) {
                         that.binding.hidebarcodeInformation = true;
@@ -109,7 +114,7 @@
 
             var insertBarcodedata = function (barcode, isVcard) {
                 Log.call(Log.l.trace, "Barcode.Controller.");
-                that.updateStates({ errorMessage: "Request", barcode: barcode });
+                //that.updateStates({ errorMessage: "Request", barcode: barcode });
                 //that.showExit();
                 var ret = new WinJS.Promise.as().then(function() {
                     var newContact = {
@@ -157,7 +162,7 @@
                             Log.print(Log.l.trace, "barcodeVCardView: success!");
                             // contactData returns object already parsed from json file in response
                             if (json && json.d) {
-                                that.updateStates({ errorMessage: "OK" });
+                                //that.updateStates({ errorMessage: "" }); //OK
                                 //that.showExit();
                                 AppData.generalData.setRecordId("IMPORT_CARDSCAN", json.d.IMPORT_CARDSCANVIEWID);
                                 AppData._barcodeType = "vcard";
@@ -198,7 +203,7 @@
                             Log.print(Log.l.trace, "barcodeView: success!");
                             // contactData returns object already parsed from json file in response
                             if (json && json.d) {
-                                that.updateStates({ errorMessage: "OK" });
+                                //that.updateStates({ errorMessage: "" }); //OK
                                 //that.showExit();
                                 AppData.generalData.setRecordId("ImportBarcodeScan", json.d.ImportBarcodeScanVIEWID);
                                 AppData._barcodeType = "barcode";
@@ -324,6 +329,10 @@
                         finalBarcode = result.text;
                     }
                     that.insertBarcodedata(finalBarcode, isVcard);
+                    //visitorflow für mehrfach scan
+                    if (parseInt(AppData._persistentStates.showvisitorFlow) > 0) {
+                        Barcode.dontScan = true;
+                    }
                     Log.ret(Log.l.trace);
                 });
                 Log.ret(Log.l.trace);
@@ -455,15 +464,32 @@
                                 (result.ZutritteAlleHeute - result.AustritteAlleHeute);
                             that.binding.visitorFlowCountRest =
                                 that.binding.visitorFlowLimit - that.binding.visitorFlowCountTotal;
+
+                            if (AppData.generalData.limit > that.binding.visitorFlowCountTotal) {
+                                if (result.WarnLimit > 0) {
+                                    if (result.WarnLimit > that.binding.visitorFlowCountTotal) {
+                                    that.binding.slotFree = true;
+                                    that.binding.slotFull = false;
+                                    that.binding.slotWarning = false;
+                                } else {
+                                    that.binding.slotFree = false;
+                                    that.binding.slotFull = false;
+                                    that.binding.slotWarning = true;
+                                }
+                            } else {
+                                    that.binding.slotFree = true;
+                                    that.binding.slotFull = false;
+                                    that.binding.slotWarning = false;
+                                }
+                            } else {
+                                that.binding.slotFree = false;
+                                that.binding.slotFull = true;
+                                that.binding.slotWarning = false;
+                            }
                         }
                         that.refreshPromise = WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
                             that.loadData();
                         });
-                        if (that.binding.visitorFlowCountTotal >= AppData.generalData.limit)
-                            that.binding.slotFree = false;
-                        else {
-                            that.binding.slotFree = true;
-                        }
                     }, function (errorResponse) {
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
@@ -471,23 +497,14 @@
                         that.loading = false;
                     }, null);
                     return that.addDisposablePromise(cr_V_BereichSelectPromise);
-                })/*.then(function() {
-                    var cr_V_BereichSelectPromise = Barcode.cr_V_BereichView.select(function (json) {
-                            if (json && json.d) {
-                                var result = json.d.results[0];
-                                that.binding.visitorFlowCountArea =
-                                    result.ZutritteBereichHeute - result.AustritteBereichHeute;
+                }).then(function () {
+                    if (that.binding.states.barcode) {
+                        that.binding.states.barcode = null;
+                        that.updateActions();
+                        that.updateStates({ errorMessage: " ", barcode: that.binding.states.barcode });
                             }
-                        },
-                        function (errorResponse) {
-                            // called asynchronously if an error occurs
-                            // or server returns response with an error status.
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                            that.loading = false;
-                        },
-                        null, 0);
-                    return that.addDisposablePromise(cr_V_BereichSelectPromise);
-                })*/;
+
+                });
                 Log.ret(Log.l.trace);
                 return ret;
             }
