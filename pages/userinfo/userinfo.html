@@ -53,6 +53,22 @@
                              <option data-win-bind="value: CR_V_BereichVIEWID; textContent: TITLE"></option>
                          </select>
                      </div>
+
+                    <div class="field_line field_line_even">
+                        <div class="input_group">
+                            <div class="checkbox input_half_left">
+                                <input type="checkbox" class="win-checkbox" value="1"
+                                       data-win-bind="checked: dataBenutzer.Eingang Binding.Mode.twoway" />
+                                <span data-win-res="{textContent: 'userinfo.entry'}"></span>
+                            </div>
+                            <div class="checkbox input_half_right">
+                                <input type="checkbox" class="win-checkbox" value="1"
+                                       data-win-bind="checked: dataBenutzer.Ausgang Binding.Mode.twoway" />
+                                <span data-win-res="{textContent: 'userinfo.exit'}"></span>
+                            </div>
+                        </div>
+                    </div>
+
                      <div class="line-separator"></div>
                      <div class="field_line field_line_odd">
                          <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'userinfo.message1'}"></span>

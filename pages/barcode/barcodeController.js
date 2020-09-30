@@ -29,6 +29,7 @@
                 },
                 showVisitorIn: false,
                 showVisitorOut: false,
+                showVisitorInOut: false,
                 hidebarcodeInformation: false,
                 showWelcomeByeBye: false,
                 visitoFlowCountArea: 0,
@@ -48,12 +49,15 @@
                     if (AppData.generalData.inOut === "IN") {
                         that.binding.showVisitorIn = true;
                         that.binding.showVisitorOut = false;
+                        that.binding.showVisitorInOut = false;
                     } else if (AppData.generalData.inOut === "OUT") {
                         that.binding.showVisitorIn = false;
                         that.binding.showVisitorOut = true;
-                    } else {
+                        that.binding.showVisitorInOut = false;
+                    } else if (AppData.generalData.inOut === "INOUT") {
                         that.binding.showVisitorIn = false;
                         that.binding.showVisitorOut = false;
+                        that.binding.showVisitorInOut = true;
                     }
                     if (AppData.generalData.limit) {
                         that.binding.visitorFlowLimit = AppData.generalData.limit;
@@ -461,7 +465,7 @@
                         if (json && json.d && json.d.results.length > 0) {
                             var result = json.d.results[0];
                             that.binding.visitorFlowCountTotal =
-                                (result.ZutritteAlleHeute - result.AustritteAlleHeute);
+                                (result.ZutritteBereichHeute - result.AustritteBereichHeute);
                             that.binding.visitorFlowCountRest =
                                 that.binding.visitorFlowLimit - that.binding.visitorFlowCountTotal;
 
@@ -495,7 +499,8 @@
                         // or server returns response with an error status.
                         AppData.setErrorMsg(that.binding, errorResponse);
                         that.loading = false;
-                    }, null);
+                    },
+                        {TITLE: AppData.generalData.area });
                     return that.addDisposablePromise(cr_V_BereichSelectPromise);
                 }).then(function () {
                     if (that.binding.states.barcode) {

@@ -225,6 +225,12 @@
                         that.binding.dataBenutzer.CR_V_BereichID = null;
                     }
                 }
+                if (typeof that.binding.dataBenutzer.Eingang === "boolean") {
+                    that.binding.dataBenutzer.Eingang = that.binding.dataBenutzer.Eingang ? 1 : null;
+                }
+                if (typeof that.binding.dataBenutzer.Ausgang === "boolean") {
+                    that.binding.dataBenutzer.Ausgang = that.binding.dataBenutzer.Ausgang ? 1 : null;
+                }
                 var dataBenutzer = that.binding.dataBenutzer;
                 if (dataBenutzer && AppBar.modified) {
                     var recordId = getRecordId();
