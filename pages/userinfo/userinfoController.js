@@ -231,6 +231,9 @@
                 if (typeof that.binding.dataBenutzer.Ausgang === "boolean") {
                     that.binding.dataBenutzer.Ausgang = that.binding.dataBenutzer.Ausgang ? 1 : null;
                 }
+                if (!that.binding.dataBenutzer.Eingang && !that.binding.dataBenutzer.Ausgang) {
+                    that.binding.dataBenutzer.Eingang = 1;
+                }
                 var dataBenutzer = that.binding.dataBenutzer;
                 if (dataBenutzer && AppBar.modified) {
                     var recordId = getRecordId();

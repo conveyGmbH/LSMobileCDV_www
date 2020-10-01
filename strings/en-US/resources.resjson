@@ -312,7 +312,7 @@
     "barcodeEdit.barcode"   : "Barcode",
 
     "barcode.title"         : "Barcode",
-    "barcode.subtitle"      : "Verfügbare Plätze / Available Slots",
+    "barcode.subtitle"      : "Available Slots",
     "barcode.comment"       : "On this page, use the Back button to go back!",
     "barcode.descriptionDE" : "Ticket Qr-Code scannen",
     "barcode.descriptionEN" : "Scan Ticket Qr-Code",
@@ -320,6 +320,8 @@
     "barcode.placement"     : "Place a barcode inside the scan area",
     "barcode.entrance"      : "Entrance",
     "barcode.exit"          : "Exit",
+    "barcode.welcome"       : "Welcome",
+    "barcode.byebye"        : "Goodbye",
 
     "settings.title"        : "Design Settings",
     "settings.comment"      : "On this page, use the Back button to go back!",

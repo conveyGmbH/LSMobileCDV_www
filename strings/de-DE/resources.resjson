@@ -314,7 +314,7 @@
     "barcodeEdit.barcode"   : "Barcode",
 
     "barcode.title"         : "Barcode",
-    "barcode.subtitle"      : "Verfügbare Plätze / Available Slots",
+    "barcode.subtitle"      : "Verfügbare Plätze",
     "barcode.comment"       : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
 	"barcode.descriptionDE" : "Ticket Qr-Code scannen",
 	"barcode.descriptionEN" : "Scan Ticket Qr-Code",

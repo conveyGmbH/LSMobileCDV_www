@@ -532,6 +532,7 @@
                     return that.loadData();
                 } else {
                     //that.scanBarcode();
+                    Barcode.dontScan = false;
                     return WinJS.Promise.as();
                 }
             }).then(function () {

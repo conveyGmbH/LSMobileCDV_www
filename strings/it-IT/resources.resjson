@@ -318,6 +318,8 @@
     "barcode.placement"     : "Posiziona un barcode all'interno dell'area di scansione",
     "barcode.entrance"      : "Ingresso",
     "barcode.exit"          : "Esci",
+    "barcode.welcome"       : "Welcome",
+    "barcode.byebye"        : "Goodbye",
 
     "settings.title"        : "Impostazioni di progettazione",
     "settings.comment"      : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
