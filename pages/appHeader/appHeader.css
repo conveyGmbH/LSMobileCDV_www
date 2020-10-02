@@ -1,4 +1,18 @@
-﻿/*
-    appHeader styles now in index.css!
-
-*/
+﻿.appHeader .app-logo-container {
+    height: 44px;
+    margin-left: 20px;
+    margin-top: 0;
+    padding: 0;
+    float: left;
+    display: inline;
+}
+.appHeader .app-logo {
+    display: inline-block;
+    position: relative;
+    top: -2px;
+}
+@media (max-width:899px) {
+    .appHeader .app-logo-container {
+        display: none;
+    }
+}

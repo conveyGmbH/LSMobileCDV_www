@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="about.css" rel="stylesheet" />
+    <script type="text/javascript" src="aboutService.js"></script>
+    <script type="text/javascript" src="aboutController.js"></script>
+    <script type="text/javascript" src="about.js"></script>
+</head>
+<body class="win-type-body">
+    <div class="about fragment">
+        <div id="aboutController" class="data-container">
+            <section aria-label="Main content" role="main" class="animationElement">
+                <div class="contentarea win-type-body">
+                    <div class="header-separator"></div>
+                    <div class="content-header">
+                        <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                        <div class="content-header-line win-type-caption">
+                            <span class="id-field"></span>
+                            <span class="caption-field" data-win-res="{textContent: 'info.title'}"></span>
+                            <span class="date-field"></span>
+                        </div>
+                    </div>
+                    <div class="field_line field_line_full">
+                        <div class="app-logo-container">
+                            <div class="app-logo" id="logo"></div>
+                        </div>
+                        <div class="large_field">
+                            <span data-win-bind="textContent: version"></span>
+                        </div>
+                        <div class="large_field">
+                            <span data-win-res="{innerHTML: 'info.comment'}"></span>
+                        </div>
+                        <div class="large_field">
+                            <a class="win-link"
+                               href="#" data-win-res="{textContent: 'info.homepage'}"
+                               onclick="AppBar.handleEvent('click', 'clickHomepageLink', event)"></a>
+                        </div>
+                    </div>
+                    <div class="field_line field_line_full">
+                        <span class="label large_field win-type-caption"
+                              data-win-bind="textContent: environment"></span>
+                    </div>
+                    <div class="field_line field_line_full">
+                        <span style="color:rgb(255,64,64)" class="label large_field win-type-caption"
+                              data-win-bind="textContent: lastError"></span>
+                    </div>
+                    <div class="line-separator"></div>
+                </div>
+                <div class="error-message"
+                     data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

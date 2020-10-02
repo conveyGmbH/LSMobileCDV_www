@@ -15,39 +15,6 @@
                     <div class="header-separator"></div>
                     <div class="content-header">
                         <div class="half-circle half-circle-textcolor">&nbsp;</div>
-                        <div class="content-header-line win-type-caption">
-                            <span class="id-field"></span>
-                            <span class="caption-field" data-win-res="{textContent: 'info.title'}"></span>
-                            <span class="date-field"></span>
-                        </div>
-                    </div>
-                    <div class="field_line field_line_full">
-                        <div class="app-logo-container">
-                            <div class="app-logo" id="logo"></div>
-                        </div>
-                        <div class="large_field">
-                            <span data-win-bind="textContent: version"></span>
-                        </div>
-                        <div class="large_field">
-                            <span data-win-res="{innerHTML: 'info.comment'}"></span>
-                        </div>
-                        <div class="large_field">
-                            <a class="win-link"
-                               href="#" data-win-res="{textContent: 'info.homepage'}"
-                               onclick="AppBar.handleEvent('click', 'clickHomepageLink', event)"></a>
-                        </div>
-                    </div>
-                    <div class="field_line field_line_full">
-                        <span class="label large_field win-type-caption"
-                              data-win-bind="textContent: environment"></span>
-                    </div>
-                    <div class="field_line field_line_full">
-                        <span style="color:rgb(255,64,64)" class="label large_field win-type-caption"
-                              data-win-bind="textContent: lastError"></span>
-                    </div>
-                    <div class="header-separator float-left"></div>
-                    <div class="content-header float-left">
-                        <div class="half-circle half-circle-textcolor">&nbsp;</div>
                         <div class="idAndDate win-type-caption">
                             <span class="id-field"></span>
                             <span class="caption-field" data-win-res="{textContent: 'info.cameraOptions'}"></span>
@@ -324,7 +291,17 @@
                             </div>
                         </div>
                     </div>
-                    <!--<div class="line-separator"></div>-->
+                    <div class="field_line field_line_even" data-win-bind="style.display: generalData.logEnabled Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.logtarget'}"></span>
+                        <span class="label win-type-caption landscape_only" data-win-res="{textContent: 'info.logtarget'}"></span>
+                        <div class="input_field toggle-switch-parent">
+                            <div id="logTarget"
+                                 data-win-control="WinJS.UI.ToggleSwitch"
+                                 data-win-bind="winControl.checked: logToFile; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
+                                 onchange="AppBar.handleEvent('change', 'clickLogTarget', event)">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="error-message"
                      data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>

@@ -53,7 +53,8 @@
                 hasSerialDevice: hasSerialDevice,
                 barcodeDeviceStatus: Barcode.deviceStatus,
                 hasScannerOption: hasScannerOption,
-                lastError: lastError
+                lastError: lastError,
+                logToFile: AppData.generalData.logTarget === 2 ? true : false
             }, commandList]);
 
             this.picturesDirectorySubFolder = AppData.generalData.picturesDirectorySubFolder;
@@ -323,6 +324,16 @@
                         var toggle = event.currentTarget.winControl;
                         if (toggle) {
                             that.binding.generalData.logNoStack = toggle.checked;
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                clickLogTarget: function (event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var toggle = event.currentTarget.winControl;
+                        if (toggle) {
+                            that.binding.generalData.logTarget = toggle.checked ? 2 : 1;
                         }
                     }
                     Log.ret(Log.l.trace);

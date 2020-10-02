@@ -328,17 +328,15 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 }
 
 .app-logo-container {
-    height: 44px;
-    margin-left: 20px;
-    margin-top: 0;
+    margin-left: 8px;
     padding: 0;
-    float: left;
     display: inline;
 }
+
 .app-logo {
     display: inline-block;
     position: relative;
-    top: -2px;
+    top: 6px;
 }
 
 .event-field {
@@ -512,10 +510,11 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 }
 
 @media (max-width:899px) {
+    /*
     .app-logo-container {
         display: none;
     }
-
+    */
     .event-line {
         margin-left: 52px;
         width: calc(100% - 230px);

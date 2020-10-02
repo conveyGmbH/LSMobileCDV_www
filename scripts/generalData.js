@@ -1,4 +1,5 @@
 ﻿// general data services 
+// general data services 
 /// <reference path="~/www/lib/WinJS/scripts/base.js" />
 /// <reference path="~/www/lib/WinJS/scripts/ui.js" />
 /// <reference path="~/www/lib/convey/scripts/logging.js" />
@@ -1103,7 +1104,6 @@
         generalData: {
             get: function () {
                 var data = AppData._persistentStates;
-                data.logTarget = Log.targets.console;
                 data.setRecordId = AppData.setRecordId;
                 data.getRecordId = AppData.getRecordId;
                 data.setRestriction = AppData.setRestriction;
