@@ -446,6 +446,7 @@
     "info.loggroup"         : "Raggruppamento",
     "info.lognostack"       : "Ottimizzazione call stack",
     "info.logtarget"        : "File",
+    "info.share"            : "Condividere il file di log",
     "info.logWinJS"         : "Protocollo di Framework",
     "info.cameraOptions"    : "Opzioni fotocamera",
     "info.cameraQuality"    : "Qualità",

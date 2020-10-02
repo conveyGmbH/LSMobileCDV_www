@@ -386,6 +386,7 @@
     "info.loggroup"         : "Gruppierung",
     "info.lognostack"       : "Funktionen wegoptimiert",
     "info.logtarget"        : "File",
+    "info.share"            : "Share log file",
     "info.logWinJS"         : "Framework protocol",
     "info.cameraOptions"    : "Kameraoptionen",
     "info.cameraQuality"    : "Qualität",

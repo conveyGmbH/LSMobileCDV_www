@@ -446,6 +446,7 @@
     "info.log5"             : "Drawing functions",
     "info.log6"             : "Details",
     "info.logtarget"        : "File",
+    "info.share"            : "Share log file",
     "info.logWinJS"         : "Framework protocol",
     "info.loggroup"         : "Group",
     "info.lognostack"       : "Optimized call stack",

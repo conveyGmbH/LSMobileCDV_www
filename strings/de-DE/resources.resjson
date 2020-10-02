@@ -450,6 +450,7 @@
     "info.loggroup"         : "Gruppierung",
     "info.lognostack"       : "Funktionen wegoptimiert",
     "info.logtarget"        : "Datei",
+    "info.share"            : "Protokolldatei teilen",
     "info.logWinJS"         : "Framework Protokoll",
     "info.cameraOptions"    : "Kameraoptionen",
     "info.cameraQuality"    : "Qualität",

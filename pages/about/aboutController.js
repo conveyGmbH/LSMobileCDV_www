@@ -69,7 +69,7 @@
                         var dataDirectory = cordova.file.tempDirectory || cordova.file.dataDirectory;
                         var fileName = Application.pageframe.name + ".log"; 
                         var subject = Application.pageframe.name;
-                        var message = getResourceText("tooltip.share");
+                        var message = Application.pageframe.name + " " + getResourceText("info.share");
                         try {
                             window.resolveLocalFileSystemURL(dataDirectory, function(dirEntry) {
                                 if (dirEntry) {
