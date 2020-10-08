@@ -528,7 +528,7 @@
             }).then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 that.updateActions();
-                if (parseInt(AppData._persistentStates.showvisitorFlow)) {
+                if ((parseInt(AppData._persistentStates.showvisitorFlow) === 1 || parseInt(AppData._persistentStates.showvisitorFlow) === 2) && AppData.generalData.area && AppData.generalData.inOut) {
                     return that.loadData();
                 } else {
                     //that.scanBarcode();

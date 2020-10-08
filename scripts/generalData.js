@@ -1,5 +1,4 @@
 ﻿// general data services 
-// general data services 
 /// <reference path="~/www/lib/WinJS/scripts/base.js" />
 /// <reference path="~/www/lib/WinJS/scripts/ui.js" />
 /// <reference path="~/www/lib/convey/scripts/logging.js" />

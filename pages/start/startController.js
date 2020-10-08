@@ -459,6 +459,11 @@
                         updateActions();
                     }
                     return WinJS.Promise.as();
+                }).then(function () {
+                    if ((AppData._persistentStates.showvisitorFlow === 1 || AppData._persistentStates.showvisitorFlow === 2) && AppData.generalData.area && AppData.generalData.inOut) {/* && AppData.generalData.area && AppData.generalData.inOut*/
+                        Application.navigateById("barcode");
+                    }
+                    return WinJS.Promise.as();
                 });
                 Log.ret(Log.l.trace);
                 return ret;
