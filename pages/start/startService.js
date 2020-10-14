@@ -34,6 +34,32 @@
                 return ret;
             }
         },
+        _benutzerView: {
+            get: function () {
+                return AppData.getFormatView("Benutzer", 0);
+            }
+        },
+        benutzerView: {
+            select: function(complete, error, restriction) {
+                Log.call(Log.l.trace, "benutzerView.");
+                var ret = Start._benutzerView.select(complete, error, restriction);
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+        },
+        _cr_v_bereichView: {
+            get: function () {
+                return AppData.getFormatView("CR_V_Bereich", 0);
+            }
+        },
+        cr_v_bereichView: {
+            select: function (complete, error, recordid) {
+                Log.call(Log.l.trace, "benutzerView.");
+                var ret = Start._cr_v_bereichView.selectById(complete, error, recordid);
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+        },
         _actions: null,
         actions: {
             get: function () {

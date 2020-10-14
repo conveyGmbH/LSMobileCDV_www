@@ -111,7 +111,7 @@
             this.setRecordId = setRecordId;
 
             var resultCrVBereichConverter = function (item, index) {
-                item.TITLE = item.TITLE + (!!item.Eingang ? " " + getResourceText("userinfo.entry") : "") + (!!item.Ausgang ? " " + getResourceText("userinfo.exit") : "");
+                //item.TITLE = item.TITLE + (!!item.Eingang ? " " + getResourceText("userinfo.entry") : "") + (!!item.Ausgang ? " " + getResourceText("userinfo.exit") : "");
             };
             this.resultCrVBereichConverter = resultCrVBereichConverter;
 
@@ -147,10 +147,17 @@
                     return UserInfo.CR_V_Bereich_ODataVIEW.select(function (json) {
                         Log.print(Log.l.trace, "CR_V_Bereich_ODataVIEW: success!");
                         if (json && json.d && json.d.results) {
-                            var results = json.d.results;
+                            var results = [
+                                { CR_V_BereichVIEWID: 0, TITLE: "" }
+                            ];
+                            json.d.results.forEach(function (item, index) {
+                                that.resultCrVBereichConverter(item, index);
+                                results.push(item);
+                            });
+                            /*var results = json.d.results;
                             results.forEach(function(item, index) {
                                 that.resultCrVBereichConverter(item, index);
-                            });
+                            });*/
                             if (cr_V_bereich && cr_V_bereich.winControl) {
                                 cr_V_bereich.winControl.data = new WinJS.Binding.List(results);
                             }
@@ -231,7 +238,7 @@
                 if (typeof that.binding.dataBenutzer.Ausgang === "boolean") {
                     that.binding.dataBenutzer.Ausgang = that.binding.dataBenutzer.Ausgang ? 1 : null;
                 }
-                if (!that.binding.dataBenutzer.Eingang && !that.binding.dataBenutzer.Ausgang) {
+                if (that.binding.dataBenutzer.CR_V_BereichID && !that.binding.dataBenutzer.Eingang && !that.binding.dataBenutzer.Ausgang) {
                     that.binding.dataBenutzer.Eingang = 1;
                 }
                 var dataBenutzer = that.binding.dataBenutzer;

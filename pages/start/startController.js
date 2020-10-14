@@ -25,7 +25,8 @@
             Log.call(Log.l.trace, "Start.Controller.");
 
             Application.Controller.apply(this, [pageElement, {
-                dataContact: {}
+                dataContact: {},
+                dataBereich: {}
             }, commandList]);
 
             AppData._curGetUserRemoteDataId = 0;
@@ -385,6 +386,13 @@
             };
             this.updateActions = updateActions;
 
+            var setRecordId = function (recordId) {
+                Log.call(Log.l.trace, "UserInfo.Controller.", recordId);
+                AppData.setRecordId("CR_V_Bereich", recordId);
+                Log.ret(Log.l.trace);
+            };
+            this.setRecordId = setRecordId;
+
             var loadData = function() {
                 Log.call(Log.l.trace, "Start.Controller.");
                 AppData.setErrorMsg(that.binding);
@@ -460,7 +468,76 @@
                     }
                     return WinJS.Promise.as();
                 }).then(function () {
-                    if ((AppData._persistentStates.showvisitorFlow === 1 || AppData._persistentStates.showvisitorFlow === 2) && AppData.generalData.area && AppData.generalData.inOut) {/* && AppData.generalData.area && AppData.generalData.inOut*/
+                    if (AppData._persistentStates.showvisitorFlow === 1 || AppData._persistentStates.showvisitorFlow === 2) {
+                    //load of format relation record data
+                    Log.print(Log.l.trace, "calling select benutzerView...");
+                    return Start.benutzerView.select(function (json) {
+                        AppData.setErrorMsg(that.binding);
+                        Log.print(Log.l.trace, "benutzerView: success!");
+                        if (json && json.d) {
+                            // that.setDataBenutzer(json.d);
+                            var record = json.d.results[0];
+                            setRecordId(record.CR_V_BereichID);
+                        }
+                    }, function (errorResponse) {
+                        if (errorResponse.status === 404) {
+                            // ignore NOT_FOUND error here!
+                            //that.setDataBenutzer(getEmptyDefaultValue(UserInfo.benutzerView.defaultValue));
+                        } else {
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        }
+                    }, null/*recordId*/);
+                    } else {
+                        //that.setDataBenutzer(getEmptyDefaultValue(UserInfo.benutzerView.defaultValue));
+                        return WinJS.Promise.as();
+                    }
+                }).then(function () {
+                    var recordID = AppData.getRecordId("CR_V_Bereich");
+
+                    if (AppData._persistentStates.showvisitorFlow === 1 || AppData._persistentStates.showvisitorFlow === 2 && recordID) {
+                        //load of format relation record data
+                        Log.print(Log.l.trace, "calling select benutzerView...");
+                        return Start.cr_v_bereichView.select(function (json) {
+                            AppData.setErrorMsg(that.binding);
+                            Log.print(Log.l.trace, "benutzerView: success!");
+                            if (json && json.d) {
+                                var record = json.d;
+                                that.binding.dataBereich = json.d;
+                                //AppData.generalData.area && AppData.generalData.inOut
+                                if (record.Eingang && record.Ausgang) {
+                                    AppData.generalData.inOut = "inOut";
+                                    that.binding.dataBereich.inOut = "inOut";
+                                } else if (record.Eingang) {
+                                    AppData.generalData.inOut = "in";
+                                    that.binding.dataBereich.inOut = "in";
+                                } else if (record.Ausgang) {
+                                    AppData.generalData.inOut = "out";
+                                    that.binding.dataBereich.inOut = "out";
+                                }
+                                AppData.generalData.area = record.TITLE;
+                                // that.setDataBenutzer(json.d);
+
+
+                                //setRecordId(record.CR_V_BereichID);
+                            }
+                        }, function (errorResponse) {
+                            if (errorResponse.status === 404) {
+                                // ignore NOT_FOUND error here!
+                                //that.setDataBenutzer(getEmptyDefaultValue(UserInfo.benutzerView.defaultValue));
+                            } else {
+                                AppData.setErrorMsg(that.binding, errorResponse);
+                            }
+                        }, recordID);
+                    } else {
+                        //that.setDataBenutzer(getEmptyDefaultValue(UserInfo.benutzerView.defaultValue));
+                        return WinJS.Promise.as();
+                    }
+                }).then(function () {
+                    if ((AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && that.binding.dataBereich.TITLE && that.binding.dataBereich.inOut))) {/* && AppData.generalData.area && AppData.generalData.inOut*/
+                        NavigationBar.disablePage("questionnaire");
+                        NavigationBar.disablePage("sketch");
+                        NavigationBar.disablePage("privacy");
+                        NavigationBar.disablePage("search");
                         Application.navigateById("barcode");
                     }
                     return WinJS.Promise.as();

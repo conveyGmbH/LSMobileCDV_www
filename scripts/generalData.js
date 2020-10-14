@@ -412,7 +412,7 @@
                                     pCreatorSiteID: AppData._persistentStates.odata.dbSiteId,
                                     pNavigationLocation: 0
                                 }, function (json) {
-                                    Log.print(Log.l.info, "call success! json=" + json);
+                                    Log.print(Log.l.info, "call success! json=" + JSON.stringify(json));
                                     AppData._prcUserRemoteCallSucceeded = true;
                                     var doUpdate = false;
                                     if (AppData.appSettings.odata.serverFailure) {
@@ -566,7 +566,7 @@
                                     }
                                     // this callback will be called asynchronously
                                     // when the response is available
-                                    Log.print(Log.l.trace, "generalUserRemoteView: success!");
+                                    Log.print(Log.l.trace, "generalUserRemoteView: success!" + JSON.stringify(json));
                                     // startContact returns object already parsed from json file in response
                                     if (json && json.d) {
                                         var prevUserRemoteData = AppData._userRemoteData;

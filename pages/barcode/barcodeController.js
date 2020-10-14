@@ -62,7 +62,7 @@
                     if (AppData.generalData.limit) {
                         that.binding.visitorFlowLimit = AppData.generalData.limit;
                     }
-                    if (that.binding.showVisitorIn || that.binding.showVisitorOut) {
+                    if (that.binding.showVisitorIn || that.binding.showVisitorOut || that.binding.showVisitorInOut) {
                         that.binding.hidebarcodeInformation = true;
                     }
                 }
@@ -118,7 +118,10 @@
 
             var insertBarcodedata = function (barcode, isVcard) {
                 Log.call(Log.l.trace, "Barcode.Controller.");
-                //that.updateStates({ errorMessage: "Request", barcode: barcode });
+                //if visitorflow deaktiviert
+                if (parseInt(AppData._persistentStates.showvisitorFlow) === 0) {
+                    that.updateStates({ errorMessage: "Request", barcode: barcode });
+                }
                 //that.showExit();
                 var ret = new WinJS.Promise.as().then(function() {
                     var newContact = {
@@ -166,7 +169,10 @@
                             Log.print(Log.l.trace, "barcodeVCardView: success!");
                             // contactData returns object already parsed from json file in response
                             if (json && json.d) {
-                                //that.updateStates({ errorMessage: "" }); //OK
+                                //if visitorflow deaktiviert
+                                if (parseInt(AppData._persistentStates.showvisitorFlow) === 0) {
+                                    that.updateStates({ errorMessage: "" }); //OK
+                                }
                                 //that.showExit();
                                 AppData.generalData.setRecordId("IMPORT_CARDSCAN", json.d.IMPORT_CARDSCANVIEWID);
                                 AppData._barcodeType = "vcard";
@@ -207,7 +213,10 @@
                             Log.print(Log.l.trace, "barcodeView: success!");
                             // contactData returns object already parsed from json file in response
                             if (json && json.d) {
-                                //that.updateStates({ errorMessage: "" }); //OK
+                                //if visitorflow deaktiviert
+                                if (parseInt(AppData._persistentStates.showvisitorFlow) === 0) {
+                                    that.updateStates({ errorMessage: "" }); //OK
+                                }
                                 //that.showExit();
                                 AppData.generalData.setRecordId("ImportBarcodeScan", json.d.ImportBarcodeScanVIEWID);
                                 AppData._barcodeType = "barcode";
@@ -235,6 +244,15 @@
                             AppData.setErrorMsg(that.binding, errorResponse);
                         }, newBarcode);
                     }
+                }).then(function () {
+                    WinJS.Promise.timeout(10).then(function () {
+                        if ((AppData._persistentStates.showvisitorFlow === 1 ||
+                                AppData._persistentStates.showvisitorFlow === 2) &&
+                            AppData.generalData.area &&
+                            AppData.generalData.inOut) {
+                            that.loadData();
+                        }
+                    });
                 });
                 Log.ret(Log.l.trace);
                 return ret;
@@ -259,7 +277,9 @@
                     return;
                 }
                 if (!result.text) {
+                    if (parseInt(AppData._persistentStates.showvisitorFlow) === 0) {
                     that.updateStates({ errorMessage: "Barcode scanner returned no data!" });
+                    }
                     Log.ret(Log.l.trace, "no data returned");
                     return;
                 }
@@ -346,8 +366,9 @@
             var onBarcodeError = function (error) {
                 Log.call(Log.l.error, "Barcode.Controller.");
                 Barcode.dontScan = false;
+                if (parseInt(AppData._persistentStates.showvisitorFlow) === 0) {
                 that.updateStates({ errorMessage: JSON.stringify(error) });
-
+                }
                 WinJS.Promise.timeout(2000).then(function () {
                     // go back to start
                     if (WinJS.Navigation.location === Application.getPagePath("barcode") &&
@@ -446,7 +467,7 @@
                 Log.call(Log.l.trace, "ListRemote.Controller.");
                 that.loading = true;
                 var ret = new WinJS.Promise.as().then(function () {
-                    if (AppData._userRemoteDataPromise) {
+                    /*if (AppData._userRemoteDataPromise) {
                         Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
                         AppData._userRemoteDataPromise.cancel();
                     }
@@ -456,7 +477,11 @@
                         AppData.getUserRemoteData();
                         Log.print(Log.l.info, "getCRVeranstOption: Now, timeout=" + 100 + "s is over!");
                         AppData.getCRVeranstOption();
-                    });
+                    });*/
+                    if (that.refreshPromise) {
+                        that.refreshPromise.cancel();
+                        that.removeDisposablePromise(that.refreshPromise);
+                    }
                     var cr_V_BereichSelectPromise = Barcode.cr_V_BereichView.select(function (json) {
                         // this callback will be called asynchronously
                         // when the response is available
@@ -506,8 +531,10 @@
                     if (that.binding.states.barcode) {
                         that.binding.states.barcode = null;
                         that.updateActions();
+                        if (parseInt(AppData._persistentStates.showvisitorFlow) === 0) {
                         that.updateStates({ errorMessage: " ", barcode: that.binding.states.barcode });
                             }
+                    }
 
                 });
                 Log.ret(Log.l.trace);
@@ -529,6 +556,7 @@
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 that.updateActions();
                 if ((parseInt(AppData._persistentStates.showvisitorFlow) === 1 || parseInt(AppData._persistentStates.showvisitorFlow) === 2) && AppData.generalData.area && AppData.generalData.inOut) {
+                    //Barcode.dontScan = true;
                     return that.loadData();
                 } else {
                     //that.scanBarcode();
@@ -538,7 +566,7 @@
             }).then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Binding wireup page complete");
-                if (!Barcode.dontScan && !parseInt(AppData._persistentStates.showvisitorFlow)) {
+                if (!Barcode.dontScan && (parseInt(AppData._persistentStates.showvisitorFlow) === 0 || (parseInt(AppData._persistentStates.showvisitorFlow) === 2 && !AppData.generalData.area && !AppData.generalData.inOut))) {
                     that.scanBarcode();
                 } else {
                     Barcode.dontScan = true;
