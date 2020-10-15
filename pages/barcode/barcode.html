@@ -21,7 +21,7 @@
                             <span class="date-field" data-win-bind="textContent: generalData.contactDate Binding.Converter.toDateString"></span>
                         </div>
                     </div>
-                    <div class="content">
+                    <div class="content" data-win-bind="style.display: hidebarcodeInformation Binding.Converter.toDisplayNone">
                         <div class="win-type-subtitle" data-win-bind="textContent: states.errorMessage"></div>
                         <br />
                         <div data-win-bind="style.display: hidebarcodeInformation Binding.Converter.toDisplayNone">
@@ -34,7 +34,7 @@
                     </div>
                     </div>
                     <!--data-win-bind="style.display: showVisitorIn Binding.Converter.toDisplayNone-->
-                    <div data-win-bind="style.display: showVisitorIn Binding.Converter.toDisplay">
+                    <div class="visitorFlow-container" data-win-bind="style.display: showVisitorIn Binding.Converter.toDisplay">
                         <div class="visitorflow-title">
                             <span data-win-res="{textContent: 'barcode.entrance'}"></span>
                         </div>
@@ -76,7 +76,7 @@
                             </div>
                         </div>
                     </div>
-                    <div data-win-bind="style.display: showVisitorOut Binding.Converter.toDisplay">
+                    <div class="visitorFlow-container" data-win-bind="style.display: showVisitorOut Binding.Converter.toDisplay">
                         <!-- Seite die geezeigt wird nach dem Scan-->
                         <!-- Zeige seite für start-->
                         <div>
@@ -109,7 +109,7 @@
                         </div>
                     </div>
                     <!--data-win-bind="style.display: showVisitorIn Binding.Converter.toDisplayNone-->
-                    <div data-win-bind="style.display: showVisitorInOut Binding.Converter.toDisplay">
+                    <div class="visitorFlow-container" data-win-bind="style.display: showVisitorInOut Binding.Converter.toDisplay">
                         <div class="visitorflow-title">
                             <span data-win-res="{textContent: 'barcode.entrance'}"></span>
                             <span data-win-res="{textContent: 'barcode.exit'}"></span>
