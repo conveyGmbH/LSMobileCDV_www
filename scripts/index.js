@@ -76,7 +76,7 @@
     Application.navigationBarGroups = [
         { id: "start", group: 1, svg: "home", disabled: false },
         { id: "search", group: 2, svg: "magnifying_glass", disabled: false },
-        { id: "about", group: 3, svg: "gearwheel", disabled: false },
+        { id: "info", group: 3, svg: "gearwheel", disabled: false },
         { id: "support", group: 7, svg: "user_headset", disabled: false }
     ];
 
@@ -154,7 +154,7 @@
             }
         }
         if (id === "start") {
-            if ((AppData._persistentStates.showvisitorFlow === 1 || AppData._persistentStates.showvisitorFlow === 2) && AppData.generalData.area && AppData.generalData.inOut) {/* && AppData.generalData.area && AppData.generalData.inOut*/
+            if ((AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut))) {/* && AppData.generalData.area && AppData.generalData.inOut*/
                 id = "barcode";
             }
             if (device &&

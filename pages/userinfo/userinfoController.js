@@ -21,7 +21,11 @@
                 dataBenutzer: UserInfo.benutzerView && getEmptyDefaultValue(UserInfo.benutzerView.defaultValue),
                 dataPhoto: {},
                 photoData: null,
-                newInfo2Flag: 0
+                newInfo2Flag: 0,
+                visitorFlowFeature: AppData._persistentStates.showvisitorFlow === 1 ||
+                    AppData._persistentStates.showvisitorFlow === 2
+                    ? true
+                    : false
             }, commandList]);
             this.img = null;
 

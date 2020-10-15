@@ -48,7 +48,7 @@
             if (element && !that.inResize) {
                 that.inResize = 1;
                 ret = WinJS.Promise.timeout(0).then(function () {
-                    var hovercommandcontainer = element.querySelector(".hover-command-container");
+                    /*var hovercommandcontainer = element.querySelector(".hover-command-container");
                     if (hovercommandcontainer && hovercommandcontainer.style) {
                         var splitViewPane = Application.navigator.splitViewPane;
                         if (splitViewPane) {
@@ -58,9 +58,9 @@
                                 hovercommandcontainer.style.left = "calc(50% - 10px)"; //
                             }
                         } else {
-                            hovercommandcontainer.style.left = "calc(50% - 30px)"; //
+                            hovercommandcontainer.style.left = "calc(50% - 58px)";
                         }
-                        }
+                    }*/
                     that.inResize = 0;
                 });
             }
