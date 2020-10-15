@@ -467,7 +467,7 @@
                         updateActions();
                     }
                     return WinJS.Promise.as();
-                }).then(function () {
+                })/*.then(function () {
                     if (AppData._persistentStates.showvisitorFlow === 1 || AppData._persistentStates.showvisitorFlow === 2) {
                     //load of format relation record data
                     Log.print(Log.l.trace, "calling select benutzerView...");
@@ -486,12 +486,12 @@
                         } else {
                             AppData.setErrorMsg(that.binding, errorResponse);
                         }
-                    }, null/*recordId*/);
+                        }, null/*recordId);
                     } else {
                         //that.setDataBenutzer(getEmptyDefaultValue(UserInfo.benutzerView.defaultValue));
                         return WinJS.Promise.as();
                     }
-                }).then(function () {
+                })*//*.then(function () {
                     var recordID = AppData.getRecordId("CR_V_Bereich");
 
                     if (AppData._persistentStates.showvisitorFlow === 1 || AppData._persistentStates.showvisitorFlow === 2 && recordID) {
@@ -532,14 +532,24 @@
                         //that.setDataBenutzer(getEmptyDefaultValue(UserInfo.benutzerView.defaultValue));
                         return WinJS.Promise.as();
                     }
-                }).then(function () {
-                    if ((AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && that.binding.dataBereich.TITLE && that.binding.dataBereich.inOut))) {/* && AppData.generalData.area && AppData.generalData.inOut*/
+                })*/.then(function () {
+                    /* if ((AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && that.binding.dataBereich.TITLE && that.binding.dataBereich.inOut))) {/* && AppData.generalData.area && AppData.generalData.inOut
                         NavigationBar.disablePage("questionnaire");
                         NavigationBar.disablePage("sketch");
+
+                     }*/
+
+                    AppData.getPropertyFromInitoptionTypeID({
+                        INITOptionTypeID: 20,
+                        LocalValue: (AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut))
+                    });
+                    AppData.getPropertyFromInitoptionTypeID({
+                        INITOptionTypeID: 21,
+                        LocalValue: (AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut))
+                    });
                         NavigationBar.disablePage("privacy");
                         NavigationBar.disablePage("search");
                         Application.navigateById("barcode");
-                    }
                     return WinJS.Promise.as();
                 });
                 Log.ret(Log.l.trace);

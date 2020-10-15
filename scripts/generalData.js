@@ -271,6 +271,16 @@
                                     AppHeader.controller.binding.userData = AppData._userData;
                                     AppHeader.controller.loadData();
                                 }
+                                AppData.getPropertyFromInitoptionTypeID({
+                                    INITOptionTypeID: 20,
+                                    LocalValue: (AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut)) ? "1" : "0"
+                                });
+                                AppData.getPropertyFromInitoptionTypeID({
+                                    INITOptionTypeID: 21,
+                                    LocalValue: (AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut)) ? "1":"0"
+                                });
+                                NavigationBar.disablePage("privacy");
+                                NavigationBar.disablePage("search");
                                 AppData.appSettings.odata.timeZoneAdjustment = AppData._userData.TimeZoneAdjustment;
                                 Log.print(Log.l.info, "timeZoneAdjustment=" + AppData.appSettings.odata.timeZoneAdjustment);
                                 if ((prevUsereData && (prevUsereData.NotUploaded !== AppData._userRemoteData.NotUploaded))) { //
@@ -997,7 +1007,15 @@
                         AppData._persistentStates.hideQuestionnaire = true;
                     } else {
                         AppData._persistentStates.hideQuestionnaire = false;
+                        if (AppData.generalData.area && AppData.generalData.inOut) {
+                            AppData.getPropertyFromInitoptionTypeID({
+                                INITOptionTypeID: 20,
+                                LocalValue: "1"
+                            });
+                            //AppData._persistentStates.hideQuestionnaire = true;
                     }
+                    }
+                   
                     plusRemote = true;
                     break;
                 case 21:
@@ -1006,6 +1024,13 @@
                         AppData._persistentStates.hideSketch = true;
                     } else {
                         AppData._persistentStates.hideSketch = false;
+                        if (AppData.generalData.area && AppData.generalData.inOut) {
+                            AppData.getPropertyFromInitoptionTypeID({
+                                INITOptionTypeID: 21,
+                                LocalValue: "1"
+                            });
+                            //AppData._persistentStates.hideQuestionnaire = true;
+                        }
                     }
                     plusRemote = true;
                     break;
