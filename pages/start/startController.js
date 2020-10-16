@@ -533,12 +533,6 @@
                         return WinJS.Promise.as();
                     }
                 })*/.then(function () {
-                    /* if ((AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && that.binding.dataBereich.TITLE && that.binding.dataBereich.inOut))) {/* && AppData.generalData.area && AppData.generalData.inOut
-                        NavigationBar.disablePage("questionnaire");
-                        NavigationBar.disablePage("sketch");
-
-                     }*/
-
                     AppData.getPropertyFromInitoptionTypeID({
                         INITOptionTypeID: 20,
                         LocalValue: (AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut))
@@ -547,9 +541,11 @@
                         INITOptionTypeID: 21,
                         LocalValue: (AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut))
                     });
-                        NavigationBar.disablePage("privacy");
-                        NavigationBar.disablePage("search");
+                    if ((AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut))) {
+                        //NavigationBar.disablePage("privacy");
+                        //NavigationBar.disablePage("search");
                         Application.navigateById("barcode");
+                    }
                     return WinJS.Promise.as();
                 });
                 Log.ret(Log.l.trace);

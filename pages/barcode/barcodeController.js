@@ -556,10 +556,10 @@
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 that.updateActions();
                 if (parseInt(AppData._persistentStates.showvisitorFlow) === 1 || (parseInt(AppData._persistentStates.showvisitorFlow) === 2 && AppData.generalData.area && AppData.generalData.inOut) ) {
-                    NavigationBar.disablePage("questionnaire");
+                    /*NavigationBar.disablePage("questionnaire");
                     NavigationBar.disablePage("sketch");
                     NavigationBar.disablePage("privacy");
-                    NavigationBar.disablePage("search");
+                    NavigationBar.disablePage("search");*/
                     //Barcode.dontScan = true;
                     return that.loadData();
                 } else {

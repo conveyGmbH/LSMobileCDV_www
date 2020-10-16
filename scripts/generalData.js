@@ -279,8 +279,8 @@
                                     INITOptionTypeID: 21,
                                     LocalValue: (AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut)) ? "1":"0"
                                 });
-                                NavigationBar.disablePage("privacy");
-                                NavigationBar.disablePage("search");
+                                //NavigationBar.disablePage("privacy");
+                                //NavigationBar.disablePage("search");
                                 AppData.appSettings.odata.timeZoneAdjustment = AppData._userData.TimeZoneAdjustment;
                                 Log.print(Log.l.info, "timeZoneAdjustment=" + AppData.appSettings.odata.timeZoneAdjustment);
                                 if ((prevUsereData && (prevUsereData.NotUploaded !== AppData._userRemoteData.NotUploaded))) { //
