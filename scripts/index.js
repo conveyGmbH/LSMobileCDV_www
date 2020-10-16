@@ -195,6 +195,7 @@
     Application.refreshAfterFetchOverride = function() {
         Log.call(Log.l.trace, "Application.");
         AppData.getUserData();
+        AppData._curGetUserRemoteDataId = 0;
         AppData.getUserRemoteData();
         AppData.getContactData();
         Log.ret(Log.l.trace);
