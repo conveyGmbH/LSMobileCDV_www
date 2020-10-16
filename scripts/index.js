@@ -154,7 +154,9 @@
             }
         }
         if (id === "start") {
-            if ((AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut))) {/* && AppData.generalData.area && AppData.generalData.inOut*/
+            if (AppData._userRemoteDataPromise &&
+                (AppData._persistentStates.showvisitorFlow === 1 || 
+                (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut))) {
                 id = "barcode";
             }
             if (device &&
