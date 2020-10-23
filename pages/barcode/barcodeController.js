@@ -30,6 +30,7 @@
                 showVisitorIn: false,
                 showVisitorOut: false,
                 showVisitorInOut: false,
+                showVisitorAttention: false,
                 hidebarcodeInformation: false,
                 showWelcomeByeBye: false,
                 visitoFlowCountArea: 0,
@@ -50,19 +51,24 @@
                         that.binding.showVisitorIn = true;
                         that.binding.showVisitorOut = false;
                         that.binding.showVisitorInOut = false;
+                        that.binding.showVisitorAttention = false;
                     } else if (AppData.generalData.inOut === "OUT") {
                         that.binding.showVisitorIn = false;
                         that.binding.showVisitorOut = true;
                         that.binding.showVisitorInOut = false;
+                        that.binding.showVisitorAttention = false;
                     } else if (AppData.generalData.inOut === "INOUT") {
                         that.binding.showVisitorIn = false;
                         that.binding.showVisitorOut = false;
                         that.binding.showVisitorInOut = true;
+                        that.binding.showVisitorAttention = false;
+                    } else {
+                        that.binding.showVisitorAttention = true;
                     }
                     if (AppData.generalData.limit) {
                         that.binding.visitorFlowLimit = AppData.generalData.limit;
                     }
-                    if (that.binding.showVisitorIn || that.binding.showVisitorOut || that.binding.showVisitorInOut) {
+                    if (that.binding.showVisitorIn || that.binding.showVisitorOut || that.binding.showVisitorInOut || that.binding.showVisitorAttention) {
                         that.binding.hidebarcodeInformation = true;
                     }
                 }

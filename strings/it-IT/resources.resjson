@@ -320,6 +320,8 @@
     "barcode.exit"          : "Esci",
     "barcode.welcome"       : "Welcome",
     "barcode.byebye"        : "Goodbye",
+    "barcode.visitorFlowAttention" : "Impostare un'area per questo utente prima di poter utilizzare LeadSuccess VisitorFlow",
+
 
     "settings.title"        : "Impostazioni di progettazione",
     "settings.comment"      : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",

@@ -271,6 +271,8 @@
     "barcode.comment"       : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
     "barcode.barcode"       : "Barcode",
     "barcode.placement"     : "Plazieren Sie den Barcode innerhalb des Scan-Feldes",
+    "barcode.visitorFlowAttention" : "Bitte stellen Sie für diesen User einen Bereich ein, bevor Sie LeadSuccess VisitorFlow nutzen können",
+
 
     "settings.title"        : "Einstellungen zur Gestaltung",
     "settings.comment"      : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",

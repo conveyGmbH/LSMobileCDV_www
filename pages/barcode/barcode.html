@@ -63,7 +63,8 @@
                                 <div id="big_navigate_down" class="scanning-image barcode-arrow-image"></div>
                             </div>
                         </div>
-                        <div class="hover-command-container" data-win-bind="style.display: states.barcode Binding.Converter.toDisplayNone"> <!--hidebarcodeInformation-->
+                        <div class="hover-command-container" data-win-bind="style.display: states.barcode Binding.Converter.toDisplayNone">
+                            <!--hidebarcodeInformation-->
                             <button class="win-command hover-command-button"
                                     onclick="AppBar.handleEvent('click', 'clickScanNewBarcode', event)">
                                 <div id="add" class="hover-command-icon"></div>
@@ -95,7 +96,8 @@
                                 <div id="big_navigate_down" class="scanning-image barcode-arrow-image"></div>
                             </div>
                         </div>
-                        <div class="hover-command-container" data-win-bind="style.display: states.barcode Binding.Converter.toDisplayNone"> <!--hidebarcodeInformation-->
+                        <div class="hover-command-container" data-win-bind="style.display: states.barcode Binding.Converter.toDisplayNone">
+                            <!--hidebarcodeInformation-->
                             <button class="win-command hover-command-button"
                                     onclick="AppBar.handleEvent('click', 'clickScanNewBarcode', event)">
                                 <div id="add" class="hover-command-icon"></div>
@@ -151,6 +153,11 @@
                             <div class="visitorflow-title">
                                 <span data-win-res="{textContent: 'barcode.welcome'}"></span>
                             </div>
+                        </div>
+                    </div>
+                    <div class="visitorFlow-container" data-win-bind="style.display: showVisitorAttention Binding.Converter.toDisplay">
+                        <div class="nx-subtitle vistorFlow-attention-text">
+                            <span class="nx-title_black" data-win-res="{innerHTML: 'barcode.visitorFlowAttention'}" data-win-bind="style.display: states.barcode Binding.Converter.toDisplayNone"></span>
                         </div>
                     </div>
                 </div>

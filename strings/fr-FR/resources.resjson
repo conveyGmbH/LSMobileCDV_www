@@ -320,6 +320,7 @@
     "barcode.exit"          : "Quitter",
     "barcode.welcome"       : "Welcome",
     "barcode.byebye"        : "Goodbye",
+    "barcode.visitorFlowAttention" : "Veuillez définir une zone pour cet utilisateur avant de pouvoir utiliser LeadSuccess VisitorFlow",
 
     "settings.title"        : "Paramètres de conception",
     "settings.comment"      : "Utilisez le bouton Retour sur cette page pour y retourner!",

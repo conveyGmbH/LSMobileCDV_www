@@ -322,6 +322,7 @@
     "barcode.exit"          : "Exit",
     "barcode.welcome"       : "Welcome",
     "barcode.byebye"        : "Goodbye",
+    "barcode.visitorFlowAttention" : "Please set an area for this user before you can use LeadSuccess VisitorFlow",
 
     "settings.title"        : "Design Settings",
     "settings.comment"      : "On this page, use the Back button to go back!",
