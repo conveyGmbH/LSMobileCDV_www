@@ -185,7 +185,7 @@
                                     bottom: parentElement.offsetTop + parentElement.clientHeight
                                 };
                             }
-                            return this._hammerExcludeRect;
+                            return that._hammerExcludeRect;
                         }
                     } else {
                         that._getHammerExcludeRect = null;
