@@ -178,7 +178,7 @@
                         that._getHammerExcludeRect = function() {
                             var parentElement = pageElement.querySelector("#svghost");
                             if (parentElement) {
-                                this._hammerExcludeRect = {
+                                that._hammerExcludeRect = {
                                     left: parentElement.offsetLeft,
                                     top: parentElement.offsetTop,
                                     right: parentElement.offsetLeft + parentElement.clientWidth,
