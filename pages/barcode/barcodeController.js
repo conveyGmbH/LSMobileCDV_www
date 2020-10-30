@@ -47,29 +47,44 @@
 
             var updateActions = function () {
                 if (parseInt(AppData._persistentStates.showvisitorFlow) > 0) {
-                    if (AppData.generalData.inOut === "IN") {
+                    if (AppData.generalData.area && AppData.generalData.inOut === "IN") {
                         that.binding.showVisitorIn = true;
                         that.binding.showVisitorOut = false;
                         that.binding.showVisitorInOut = false;
                         that.binding.showVisitorAttention = false;
-                    } else if (AppData.generalData.inOut === "OUT") {
+                    } else if (AppData.generalData.area && AppData.generalData.inOut === "OUT") {
                         that.binding.showVisitorIn = false;
                         that.binding.showVisitorOut = true;
                         that.binding.showVisitorInOut = false;
                         that.binding.showVisitorAttention = false;
-                    } else if (AppData.generalData.inOut === "INOUT") {
+                    } else if (AppData.generalData.area && AppData.generalData.inOut === "INOUT") {
                         that.binding.showVisitorIn = false;
                         that.binding.showVisitorOut = false;
                         that.binding.showVisitorInOut = true;
                         that.binding.showVisitorAttention = false;
                     } else {
+                        if (parseInt(AppData._persistentStates.showvisitorFlow) === 1) {
+                        that.binding.showVisitorIn = false;
+                        that.binding.showVisitorOut = false;
+                        that.binding.showVisitorInOut = false;
                         that.binding.showVisitorAttention = true;
+                        } else if (parseInt(AppData._persistentStates.showvisitorFlow) === 2) {
+                            that.binding.showVisitorIn = false;
+                            that.binding.showVisitorOut = false;
+                            that.binding.showVisitorInOut = false;
+                            that.binding.showVisitorAttention = false;
+                        }
                     }
                     if (AppData.generalData.limit) {
                         that.binding.visitorFlowLimit = AppData.generalData.limit;
                     }
-                    if (that.binding.showVisitorIn || that.binding.showVisitorOut || that.binding.showVisitorInOut || that.binding.showVisitorAttention) {
+                    if (that.binding.showVisitorIn ||
+                        that.binding.showVisitorOut ||
+                        that.binding.showVisitorInOut ||
+                        that.binding.showVisitorAttention) {
                         that.binding.hidebarcodeInformation = true;
+                    } else {
+                        that.binding.hidebarcodeInformation = false;
                     }
                 }
 

@@ -167,6 +167,15 @@
                 (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut))) {
                 id = "barcode";
             }
+            if (!AppData._userRemoteDataPromise) {
+                AppData._userRemoteDataPromise = WinJS.Promise.timeout(100).then(function () {
+                    Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + 100 + "s is over!");
+                    AppData._curGetUserRemoteDataId = 0;
+                    AppData.getUserRemoteData();
+                    Log.print(Log.l.info, "getCRVeranstOption: Now, timeout=" + 100 + "s is over!");
+                    AppData.getCRVeranstOption();
+                });
+            }
             if (device &&
                 (device.platform === "Android" || device.platform === "windows") &&
                 AppData.generalData.useBarcodeActivity &&
@@ -181,6 +190,9 @@
                 CameraGlobals.startListenDelayed(1000);
             }
         } else if (id === "login") {
+            if (AppData._userRemoteDataPromise) {
+                AppData._userRemoteDataPromise.cancel();
+            }
             if (device &&
                 (device.model === "TC20")) {
                 AppData._persistentStates.useBarcodeActivity = true;
