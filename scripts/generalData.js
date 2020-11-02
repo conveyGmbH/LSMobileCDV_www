@@ -1159,9 +1159,9 @@
                 data.light = getResourceText("settings.light");
                 data.present = getResourceText("userinfo.present");
                 data.absend = getResourceText("userinfo.absend");
-                data.limit = AppData._userData.Limit /*|| AppData.getVisitorFlowLimit()*/;
-                data.area = AppData._userData.Bereich /*|| AppData.getVisitorFlowAreaRemote()*/;
-                data.inOut = AppData._userData.EinAusgang /*|| AppData.getVisitorFlowInOutRemote()*/;
+                data.limit = AppData._userData.Limit || AppData.getVisitorFlowLimit();
+                data.area = AppData._userData.Bereich || AppData.getVisitorFlowAreaRemote();
+                data.inOut = AppData._userData.EinAusgang || AppData.getVisitorFlowInOutRemote();
                 return data;
             }
         },

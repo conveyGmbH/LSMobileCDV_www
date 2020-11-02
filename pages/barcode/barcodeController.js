@@ -510,14 +510,15 @@
                         // startContact returns object already parsed from json file in response
                         if (json && json.d && json.d.results.length > 0) {
                             var result = json.d.results[0];
+                            var inside = result.Inside;
                             that.binding.visitorFlowCountTotal =
                                 (result.ZutritteBereichHeute - result.AustritteBereichHeute);
                             that.binding.visitorFlowCountRest =
-                                that.binding.visitorFlowLimit - that.binding.visitorFlowCountTotal;
+                                that.binding.visitorFlowLimit - inside;
 
-                            if (AppData.generalData.limit > that.binding.visitorFlowCountTotal) {
+                            if (AppData.generalData.limit > inside) {
                                 if (result.WarnLimit > 0) {
-                                    if (result.WarnLimit > that.binding.visitorFlowCountTotal) {
+                                    if (result.WarnLimit > inside) {
                                     that.binding.slotFree = true;
                                     that.binding.slotFull = false;
                                     that.binding.slotWarning = false;
