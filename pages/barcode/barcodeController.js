@@ -47,29 +47,44 @@
 
             var updateActions = function () {
                 if (parseInt(AppData._persistentStates.showvisitorFlow) > 0) {
-                    if (AppData.generalData.inOut === "IN") {
+                    if (AppData.generalData.area && AppData.generalData.inOut === "IN") {
                         that.binding.showVisitorIn = true;
                         that.binding.showVisitorOut = false;
                         that.binding.showVisitorInOut = false;
                         that.binding.showVisitorAttention = false;
-                    } else if (AppData.generalData.inOut === "OUT") {
+                    } else if (AppData.generalData.area && AppData.generalData.inOut === "OUT") {
                         that.binding.showVisitorIn = false;
                         that.binding.showVisitorOut = true;
                         that.binding.showVisitorInOut = false;
                         that.binding.showVisitorAttention = false;
-                    } else if (AppData.generalData.inOut === "INOUT") {
+                    } else if (AppData.generalData.area && AppData.generalData.inOut === "INOUT") {
                         that.binding.showVisitorIn = false;
                         that.binding.showVisitorOut = false;
                         that.binding.showVisitorInOut = true;
                         that.binding.showVisitorAttention = false;
                     } else {
+                        if (parseInt(AppData._persistentStates.showvisitorFlow) === 1) {
+                        that.binding.showVisitorIn = false;
+                        that.binding.showVisitorOut = false;
+                        that.binding.showVisitorInOut = false;
                         that.binding.showVisitorAttention = true;
+                        } else if (parseInt(AppData._persistentStates.showvisitorFlow) === 2) {
+                            that.binding.showVisitorIn = false;
+                            that.binding.showVisitorOut = false;
+                            that.binding.showVisitorInOut = false;
+                            that.binding.showVisitorAttention = false;
+                        }
                     }
                     if (AppData.generalData.limit) {
                         that.binding.visitorFlowLimit = AppData.generalData.limit;
                     }
-                    if (that.binding.showVisitorIn || that.binding.showVisitorOut || that.binding.showVisitorInOut || that.binding.showVisitorAttention) {
+                    if (that.binding.showVisitorIn ||
+                        that.binding.showVisitorOut ||
+                        that.binding.showVisitorInOut ||
+                        that.binding.showVisitorAttention) {
                         that.binding.hidebarcodeInformation = true;
+                    } else {
+                        that.binding.hidebarcodeInformation = false;
                     }
                 }
 
@@ -495,14 +510,15 @@
                         // startContact returns object already parsed from json file in response
                         if (json && json.d && json.d.results.length > 0) {
                             var result = json.d.results[0];
+                            var inside = result.Inside;
                             that.binding.visitorFlowCountTotal =
                                 (result.ZutritteBereichHeute - result.AustritteBereichHeute);
                             that.binding.visitorFlowCountRest =
-                                that.binding.visitorFlowLimit - that.binding.visitorFlowCountTotal;
+                                that.binding.visitorFlowLimit - inside;
 
-                            if (AppData.generalData.limit > that.binding.visitorFlowCountTotal) {
+                            if (AppData.generalData.limit > inside) {
                                 if (result.WarnLimit > 0) {
-                                    if (result.WarnLimit > that.binding.visitorFlowCountTotal) {
+                                    if (result.WarnLimit > inside) {
                                     that.binding.slotFree = true;
                                     that.binding.slotFull = false;
                                     that.binding.slotWarning = false;

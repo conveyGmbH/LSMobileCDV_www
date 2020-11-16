@@ -105,6 +105,14 @@
                 },
                 clickOk: function (event) {
                     Log.call(Log.l.trace, "Account.Controller.");
+                    if (AppData._userRemoteDataPromise) {
+                        AppData._userRemoteDataPromise.cancel();
+                    }
+                    AppData._userData.Bereich = null;
+                    AppData._userData.inOut = null;
+                    AppData._userData = {};
+                    /*AppData.generalData.area = null;
+                    AppData.generalData.inOut = null;*/
                     Application.navigateById("start", event, true);
                     Log.ret(Log.l.trace);
                 },
@@ -260,6 +268,10 @@
             var saveData = function (complete, error) {
                 var err = null, ret;
                 Log.call(Log.l.trace, "Account.Controller.");
+                if (AppData._userRemoteDataPromise) {
+                    AppData._userRemoteDataPromise.cancel();
+                }
+                AppData.userData = { };
                 if (contentarea) {
                     contentarea.scrollTop = 0;
                 }
