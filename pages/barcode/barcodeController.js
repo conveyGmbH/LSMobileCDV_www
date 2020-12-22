@@ -583,13 +583,15 @@
                     NavigationBar.disablePage("privacy");
                     NavigationBar.disablePage("search");*/
                     //Barcode.dontScan = true;
+                    Barcode.dontScan = true;
                     return that.loadData();
                 } else {
-                    //that.scanBarcode();
                     Barcode.dontScan = false;
+                    that.scanBarcode();
+                    
                     return WinJS.Promise.as();
                 }
-            }).then(function () {
+            })/*.then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 if (!Barcode.dontScan && (parseInt(AppData._persistentStates.showvisitorFlow) === 0 || (parseInt(AppData._persistentStates.showvisitorFlow) === 2 && !AppData.generalData.area && !AppData.generalData.inOut))) {
@@ -597,7 +599,7 @@
                 } else {
                     Barcode.dontScan = true;
                 }
-            });
+            })*/;
             Log.ret(Log.l.trace);
         })
     });

@@ -27,7 +27,7 @@
             // add page specific commands to AppBar
             var commandList = [
                 { id: "clickOk", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check", key: WinJS.Utilities.Key.enter },
-                //{ id: 'clickQRCodeLogin', label: getResourceText('command.buttonQRCodeLogin'), tooltip: getResourceText('tooltip.buttonQRCodeLogin'), section: 'secondary' },
+                { id: 'clickQRCodeLogin', label: getResourceText('command.buttonQRCodeLogin'), tooltip: getResourceText('tooltip.buttonQRCodeLogin'), section: 'secondary' },
                 { id: 'clickAccount', label: getResourceText('start.buttonAccount'), tooltip: getResourceText('start.buttonAccount'), section: 'secondary' }
             ];
 
