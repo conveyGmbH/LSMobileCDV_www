@@ -530,7 +530,6 @@
 	"userinfo.entry"        : "Eingang",
 	"userinfo.exit"			: "Ausgang",
 
-
     "uservcard.title"       : "Meine Kontaktinfo als QR-Code",
 	"uservcard.firstName"    : "Vorname",
     "uservcard.name"         : "Name",

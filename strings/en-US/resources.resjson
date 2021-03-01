@@ -44,6 +44,7 @@
     "command.qrcode"		: "QR-Code",
     "command.barcodeEdit"	: "Enter barcode",
 	"command.resetRestriction" : "Delete Filters",
+    "command.buttonQRCodeLogin": "QR-Code login",
 
     "tooltip.backward"      : "Browse back",
     "tooltip.edit"          : "Edit current record",
@@ -86,6 +87,7 @@
     "tooltip.qrcode"		: "Share as QR-Code or VCard",
     "tooltip.barcodeEdit"	: "Enter barcode manually",
     "tooltip.resetRestriction" : "Delete Filters",
+	"tooltip.buttonQRCodeLogin" : "Camera",
 
     "start.title"           : "Start Page",
     "start.comment"         : "On this page, use the buttons to go to additional pages!",

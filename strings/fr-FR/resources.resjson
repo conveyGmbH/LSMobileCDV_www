@@ -44,6 +44,7 @@
     "command.qrcode"		: "QR-Code",
     "command.barcodeEdit"	: "Entrer code-barres",
 	"command.resetRestriction" : "Supprimer",
+    "command.buttonQRCodeLogin": "Connexion par code QR",
 
     "tooltip.backward"      : "Page présédente",
     "tooltip.edit"          : "Modifier le contact en cours",
@@ -84,8 +85,9 @@
     "tooltip.save"			: "Sauver",
     "tooltip.share"			: "Partager",
     "tooltip.qrcode"		: "Partager comme QR-Code ou VCard",
-    "tooltip.resetRestriction" : "Supprimer le filtre",
     "tooltip.barcodeEdit"	: "Saisie manuelle du code-barres",
+    "tooltip.resetRestriction" : "Supprimer le filtre",
+	"tooltip.buttonQRCodeLogin" : "Kamera",
 
     "start.title"           : "Accueil",
     "start.comment"         : "Utilisez les boutons sur cette page pour accéder à d'autres pages!",
@@ -314,6 +316,8 @@
     "barcode.title"         : "Code barre",
     "barcode.subtitle"      : "Verfügbare Plätze / Available Slots",
     "barcode.comment"       : "Utilisez le bouton Retour sur cette page pour y retourner!",
+	"barcode.descriptionDE" : "Ticket Qr-Code scannen",
+	"barcode.descriptionEN" : "Scan Ticket Qr-Code",
     "barcode.barcode"       : "Code barre",
     "barcode.placement"     : "Placer svp le code barre dans la case de scan",
     "barcode.entrance"      : "Entrée",

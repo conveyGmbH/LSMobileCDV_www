@@ -44,6 +44,7 @@
     "command.qrcode"		: "QR-Code",
     "command.barcodeEdit"	: "Inserisci barcode",
     "command.resetRestriction" : "Elimina",
+    "command.buttonQRCodeLogin": "Login codice QR",
 
     "tooltip.backward"      : "Pagina precedente",
     "tooltip.edit"          : "Modifica Record attuale",
@@ -86,6 +87,7 @@
     "tooltip.qrcode"		: "Condividi come QR-Code o VCard",
 	"tooltip.resetRestriction" : "Elimina filtro",
     "tooltip.barcodeEdit"	: "Inserimento manuale del codice a barre",
+	"tooltip.buttonQRCodeLogin" : "Telecamera",
 
     "start.title"           : "Pagina iniziale",
     "start.comment"         : "Utilizzate i pulsanti su questa pagina per muoversi tra le pagine!",
@@ -314,6 +316,8 @@
     "barcode.title"         : "Barcode",
     "barcode.subtitle"      : "Verfügbare Plätze / Available Slots",
     "barcode.comment"       : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
+    "barcode.descriptionDE" : "Ticket Qr-Code scannen",
+	"barcode.descriptionEN" : "Scan Ticket Qr-Code",
     "barcode.barcode"       : "Barcode",
     "barcode.placement"     : "Posiziona un barcode all'interno dell'area di scansione",
     "barcode.entrance"      : "Ingresso",
@@ -321,7 +325,6 @@
     "barcode.welcome"       : "Welcome",
     "barcode.byebye"        : "Goodbye",
     "barcode.visitorFlowAttention" : "Impostare un'area per questo utente prima di poter utilizzare LeadSuccess VisitorFlow",
-
 
     "settings.title"        : "Impostazioni di progettazione",
     "settings.comment"      : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
