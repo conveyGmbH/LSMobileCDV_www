@@ -22,6 +22,13 @@
             if (AppData._persistentStates.odata.dbinitIncomplete) {
                 NavigationBar.disablePage("search");
                 NavigationBar.disablePage("info");
+            } else {
+                if (AppData._persistentStates.showvisitorFlow === 1 &&
+                    AppData._persistentStates.showvisitorFlowContact === 0) {
+                    NavigationBar.disablePage("search");
+                } else {
+                    NavigationBar.enablePage("search");
+                }
             }
             // add page specific commands to AppBar
             var commandList = [
