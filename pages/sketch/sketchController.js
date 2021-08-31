@@ -178,11 +178,15 @@
                         that._getHammerExcludeRect = function() {
                             var parentElement = pageElement.querySelector("#svghost");
                             if (parentElement) {
+                                var extraOffsetTop = 0;
+                                if (NavigationBar.orientation === "horizontal") {
+                                    extraOffsetTop += NavigationBar.navHorzHeight;
+                                }
                                 that._hammerExcludeRect = {
                                     left: parentElement.offsetLeft,
-                                    top: parentElement.offsetTop,
+                                    top: parentElement.offsetTop + extraOffsetTop,
                                     right: parentElement.offsetLeft + parentElement.clientWidth,
-                                    bottom: parentElement.offsetTop + parentElement.clientHeight
+                                    bottom: parentElement.offsetTop + extraOffsetTop + parentElement.clientHeight
                                 };
                             }
                             return that._hammerExcludeRect;
