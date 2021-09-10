@@ -345,6 +345,10 @@
                                         NavigationBar.enablePage("settings");
                                         NavigationBar.enablePage("info");
                                         NavigationBar.enablePage("search");
+                                        if (AppData._persistentStates.showvisitorFlow === 1 &&
+                                            AppData._persistentStates.showvisitorFlowContact === 0) {
+                                            NavigationBar.disablePage("search");
+                                        } 
                                         var prevMitarbeiterId = AppData.generalData.getRecordId("Mitarbeiter");
                                         var doReloadDb = false;
                                         if (!AppData._persistentStates.odata.dbSiteId ||

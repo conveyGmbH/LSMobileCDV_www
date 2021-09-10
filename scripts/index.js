@@ -171,11 +171,11 @@
                     AppData.getCRVeranstOption();
                 });
             }
-            if (AppData._userRemoteDataPromise &&
+            /*if (AppData._userRemoteDataPromise &&
                 (AppData._persistentStates.showvisitorFlow === 1 || 
                 (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut))) {
                 id = "barcode";
-            }
+            }*/
             if (device &&
                 (device.platform === "Android" || device.platform === "windows") &&
                 AppData.generalData.useBarcodeActivity &&

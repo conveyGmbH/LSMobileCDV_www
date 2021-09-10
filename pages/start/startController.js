@@ -533,14 +533,18 @@
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
+                    /*if (!AppData._persistentStates.hideQuestionnaire) {
                     AppData.getPropertyFromInitoptionTypeID({
                         INITOptionTypeID: 20,
-                        LocalValue: (AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut))
+                            LocalValue: (AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut)) ? "1" : (AppData._persistentStates.hideQuestionnaire ? "1" : "0")
                     });
+                    }
+                    if (!AppData._persistentStates.hideSketch) {
                     AppData.getPropertyFromInitoptionTypeID({
                         INITOptionTypeID: 21,
-                        LocalValue: (AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut))
+                            LocalValue: (AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut)) ? "1" : (AppData._persistentStates.hideSketch ? "1" : "0")
                     });
+                    }*/
                     if ((AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut))) {
                         //NavigationBar.disablePage("privacy");
                         //NavigationBar.disablePage("search");
