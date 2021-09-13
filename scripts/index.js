@@ -139,6 +139,11 @@
                 }
             }
         } else if (id === "sketch") {
+            /*if (AppData._userRemoteDataPromise &&
+            (AppData._persistentStates.showvisitorFlow === 1 ||
+                (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut))) {
+                id = "barcode";
+            }*/
             if (AppData.generalData.privacyText && 
                 AppData.generalData.privacyText.length > 0 &&
                 Application.navigator._lastPage !== Application.getPagePath("privacy")) {
@@ -147,11 +152,11 @@
                 (AppData._persistentStates.showvisitorFlow === 2 &&
                     AppData.generalData.area &&
                     AppData.generalData.inOut))) {
-                    id = "start";
+                    id = "barcode";
                 } else {
                 id = "privacy";
                 }
-            } else
+            } else {
                 for (var y = 0; y < Application.navigationBarPages.length; y++) {
                 if (Application.navigationBarPages[y].id === id) {
                     if (Application.navigationBarPages[y].disabled === true) {
@@ -160,6 +165,7 @@
                     }
                 }
             }
+        }
         }
         if (id === "start") {
             if (!AppData._userRemoteDataPromise) {
@@ -171,11 +177,6 @@
                     AppData.getCRVeranstOption();
                 });
             }
-            /*if (AppData._userRemoteDataPromise &&
-                (AppData._persistentStates.showvisitorFlow === 1 || 
-                (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut))) {
-                id = "barcode";
-            }*/
             if (device &&
                 (device.platform === "Android" || device.platform === "windows") &&
                 AppData.generalData.useBarcodeActivity &&

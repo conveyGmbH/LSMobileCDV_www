@@ -47,7 +47,27 @@
                     !that.binding.appSettings.odata.dbSiteId) {
                     startPage = "login";
                 } else {
+                    //AppData._userRemoteDataPromise &&
+                    if ((AppData._persistentStates.showvisitorFlow === 1 ||
+                    (AppData._persistentStates.showvisitorFlow === 2 &&
+                        AppData.generalData.area &&
+                        AppData.generalData.inOut))) {
+                        startPage = "barcode";
+                        Application.navigationBarGroups = [
+                            { id: "barcode", group: 1, svg: "lsvFlow", disabled: false },
+                            //{ id: "search", group: 2, svg: "magnifying_glass", disabled: false },
+                            { id: "info", group: 3, svg: "gearwheel", disabled: false },
+                            { id: "support", group: 7, svg: "user_headset", disabled: false }
+                        ];
+                    } else {
                     startPage = "start";
+                        Application.navigationBarGroups = [
+                            { id: "start", group: 1, svg: "home", disabled: false },
+                            { id: "search", group: 2, svg: "magnifying_glass", disabled: false },
+                            { id: "info", group: 3, svg: "gearwheel", disabled: false },
+                            { id: "support", group: 7, svg: "user_headset", disabled: false }
+                        ];
+                    }
                 }
                 return startPage;
             }

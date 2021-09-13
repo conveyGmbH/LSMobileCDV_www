@@ -41,7 +41,7 @@
             }, commandList]);
 
 
-            this.refreshWaitTimeMs = 2500;
+            this.refreshWaitTimeMs = 5000;
 
             var that = this;
 

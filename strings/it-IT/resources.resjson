@@ -587,6 +587,7 @@
     "label.pdfExport"       : "Esportazione PDF",
     "label.employeeGenPWList"     : "Pregenerati",
     "label.support"		    : "Support",
+    "label.barcode"			: "Visitor Flow",
 
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Annulla",

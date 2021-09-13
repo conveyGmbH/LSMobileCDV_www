@@ -30,6 +30,10 @@
                     NavigationBar.enablePage("search");
                 }
             }
+            if (AppData._persistentStates.showvisitorFlow === 1 || 
+                (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut)) {
+                Application.startPage = Application.getPagePath("barcode");
+            }
             // add page specific commands to AppBar
             var commandList = [
                 { id: 'clickLogoff', label: getResourceText('account.logoff'), tooltip: getResourceText('account.logoff'), section: 'primary', svg: "keys" }
@@ -47,11 +51,15 @@
                     this.controller.getStartPage() === "start") {
                     ret = this.controller.saveData(function(response) {
                             // called asynchronously if ok
+                        if (AppData._persistentStates.showvisitorFlow === 1 &&
+                            AppData._persistentStates.showvisitorFlowContact === 0) {
+                            NavigationBar.disablePage("search");
+                        } else {
                             NavigationBar.enablePage("search");
+                        }
                             NavigationBar.enablePage("info");
                             complete(response);
-                        },
-                        function(errorResponse) {
+                    }, function (errorResponse) {
                             error(errorResponse);
                         });
                 } else {
