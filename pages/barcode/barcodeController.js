@@ -41,10 +41,10 @@
             }, commandList]);
 
 
-            this.refreshWaitTimeMs = 15000;
 
             var that = this;
             var refreshResultsPromise = null;
+            var refreshWaitTimeMs = (AppData._persistentStates.odata.replInterval || 30) * 1000;
 
             var updateActions = function () {
                 if (parseInt(AppData._persistentStates.showvisitorFlow) > 0) {
@@ -340,7 +340,7 @@
                                 }).then(function (result) {
                                     Log.print(Log.l.trace, "clickLogoff: user choice OK");
                                     if (result && AppData.generalData.logOffOptionActive) {
-                        Application.navigateById("login");
+                                        Application.navigateById("login");
                                     } else {
                                         Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");
                                         if (WinJS.Navigation.location === Application.getPagePath("barcode") &&
@@ -378,17 +378,7 @@
                     //visitorflow für mehrfach scan
                     if (parseInt(AppData._persistentStates.showvisitorFlow) === 1 || (parseInt(AppData._persistentStates.showvisitorFlow) === 2 && AppData.generalData.area && AppData.generalData.inOut)) {
                         Barcode.dontScan = true;
-                        if (parseInt(AppData._persistentStates.showvisitorFlow) === 1 ||
-                        (parseInt(AppData._persistentStates.showvisitorFlow) === 2 &&
-                            AppData.generalData.area &&
-                            AppData.generalData.inOut)) {
-                            var refreshResultsPromise = WinJS.Promise.timeout(5000).then(function () {
-                                refreshResultsPromise.cancel();
-                                that.removeDisposablePromise(refreshResultsPromise);
-                                return that.refreshResults();
-                            });
-                            that.addDisposablePromise(refreshResultsPromise);
-                        }
+                        that.refreshResults(Math.min(refreshWaitTimeMs, 5000));
                     }
                     Log.ret(Log.l.trace);
                 });
@@ -550,9 +540,6 @@
                                 that.binding.slotWarning = false;
                             }
                         }
-                        /*that.refreshPromise = WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
-                            that.loadData();
-                        });*/
                     }, function (errorResponse) {
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
@@ -576,26 +563,25 @@
             }
             this.loadData = loadData;
 
-            var refreshResults = function () {
-                Log.call(Log.l.trace, "Time.Controller.");
+            var refreshResults = function (refreshMs) {
+                var ret = null;
+                Log.call(Log.l.trace, "Time.Controller.", "refreshMs=" + (refreshMs || refreshWaitTimeMs));
                 if (refreshResultsPromise) {
                     Log.print(Log.l.info, "Cancelling previous refreshResultsPromise");
                     refreshResultsPromise.cancel();
                 }
-                that.loadData().then(function () {
-                    return WinJS.Promise.as();
-                });
-                //if (AppData._persistentStates.odata.replActive) {
-                var refreshMs = that.refreshWaitTimeMs; //(AppData._persistentStates.odata.replInterval || 30) * 1000
+                if (!refreshMs) {
+                    ret = that.loadData();
+                }
                 if (refreshResultsPromise) {
                     that.removeDisposablePromise(refreshResultsPromise);
                 }
-                refreshResultsPromise = WinJS.Promise.timeout(refreshMs).then(function () {
+                refreshResultsPromise = WinJS.Promise.timeout(refreshMs || refreshWaitTimeMs).then(function () {
                     that.refreshResults();
                 });
                 that.addDisposablePromise(refreshResultsPromise);
-                //}
                 Log.ret(Log.l.trace);
+                return ret || refreshResultsPromise;
             }
             this.refreshResults = refreshResults;
 
@@ -612,37 +598,15 @@
             }).then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 that.updateActions();
+                AppBar.notifyModified = true;
                 if (parseInt(AppData._persistentStates.showvisitorFlow) === 1 || (parseInt(AppData._persistentStates.showvisitorFlow) === 2 && AppData.generalData.area && AppData.generalData.inOut) ) {
-                    /*NavigationBar.disablePage("questionnaire");
-                    NavigationBar.disablePage("sketch");
-                    NavigationBar.disablePage("privacy");
-                    NavigationBar.disablePage("search");*/
-                    //Barcode.dontScan = true;
                     Barcode.dontScan = true;
-                    //return that.loadData();
-                    var refreshMs =
-                        that.refreshWaitTimeMs; //(AppData._persistentStates.odata.replInterval || 30) * 1000
-                    var refreshResultsPromise = WinJS.Promise.timeout(0).then(function () {
-                        refreshResultsPromise.cancel();
-                        that.removeDisposablePromise(refreshResultsPromise);
-                        return that.refreshResults();
-                    });
-                    that.addDisposablePromise(refreshResultsPromise);
-                    return WinJS.Promise.as();
+                    that.refreshResults(refreshWaitTimeMs);
                 } else {
                     Barcode.dontScan = false;
                     that.scanBarcode();
-                    return WinJS.Promise.as();
                 }
-            })/*.then(function () {
-                AppBar.notifyModified = true;
-                Log.print(Log.l.trace, "Binding wireup page complete");
-                if (!Barcode.dontScan && (parseInt(AppData._persistentStates.showvisitorFlow) === 0 || (parseInt(AppData._persistentStates.showvisitorFlow) === 2 && !AppData.generalData.area && !AppData.generalData.inOut))) {
-                    that.scanBarcode();
-                } else {
-                    Barcode.dontScan = true;
-                }
-            })*/;
+            });
             Log.ret(Log.l.trace);
         })
     });
