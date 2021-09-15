@@ -41,9 +41,10 @@
             }, commandList]);
 
 
-            this.refreshWaitTimeMs = 5000;
+            this.refreshWaitTimeMs = 15000;
 
             var that = this;
+            var refreshResultsPromise = null;
 
             var updateActions = function () {
                 if (parseInt(AppData._persistentStates.showvisitorFlow) > 0) {
@@ -375,8 +376,19 @@
                     }
                     that.insertBarcodedata(finalBarcode, isVcard);
                     //visitorflow für mehrfach scan
-                    if (parseInt(AppData._persistentStates.showvisitorFlow) > 0) {
+                    if (parseInt(AppData._persistentStates.showvisitorFlow) === 1 || (parseInt(AppData._persistentStates.showvisitorFlow) === 2 && AppData.generalData.area && AppData.generalData.inOut)) {
                         Barcode.dontScan = true;
+                        if (parseInt(AppData._persistentStates.showvisitorFlow) === 1 ||
+                        (parseInt(AppData._persistentStates.showvisitorFlow) === 2 &&
+                            AppData.generalData.area &&
+                            AppData.generalData.inOut)) {
+                            var refreshResultsPromise = WinJS.Promise.timeout(5000).then(function () {
+                                refreshResultsPromise.cancel();
+                                that.removeDisposablePromise(refreshResultsPromise);
+                                return that.refreshResults();
+                            });
+                            that.addDisposablePromise(refreshResultsPromise);
+                        }
                     }
                     Log.ret(Log.l.trace);
                 });
@@ -498,11 +510,11 @@
                         AppData.getUserRemoteData();
                         Log.print(Log.l.info, "getCRVeranstOption: Now, timeout=" + 100 + "s is over!");
                         AppData.getCRVeranstOption();
-                    });*/
+                    });
                     if (that.refreshPromise) {
                         that.refreshPromise.cancel();
                         that.removeDisposablePromise(that.refreshPromise);
-                    }
+                    }*/
                     var cr_V_BereichSelectPromise = Barcode.cr_V_BereichView.select(function (json) {
                         // this callback will be called asynchronously
                         // when the response is available
@@ -538,9 +550,9 @@
                                 that.binding.slotWarning = false;
                             }
                         }
-                        that.refreshPromise = WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
+                        /*that.refreshPromise = WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
                             that.loadData();
-                        });
+                        });*/
                     }, function (errorResponse) {
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
@@ -564,6 +576,29 @@
             }
             this.loadData = loadData;
 
+            var refreshResults = function () {
+                Log.call(Log.l.trace, "Time.Controller.");
+                if (refreshResultsPromise) {
+                    Log.print(Log.l.info, "Cancelling previous refreshResultsPromise");
+                    refreshResultsPromise.cancel();
+                }
+                that.loadData().then(function () {
+                    return WinJS.Promise.as();
+                });
+                //if (AppData._persistentStates.odata.replActive) {
+                var refreshMs = that.refreshWaitTimeMs; //(AppData._persistentStates.odata.replInterval || 30) * 1000
+                if (refreshResultsPromise) {
+                    that.removeDisposablePromise(refreshResultsPromise);
+                }
+                refreshResultsPromise = WinJS.Promise.timeout(refreshMs).then(function () {
+                    that.refreshResults();
+                });
+                that.addDisposablePromise(refreshResultsPromise);
+                //}
+                Log.ret(Log.l.trace);
+            }
+            this.refreshResults = refreshResults;
+
             that.processAll().then(function () {
                 Colors.loadSVGImageElements(pageElement, "navigate-image", 65, Colors.textColor);
                 Colors.loadSVGImageElements(pageElement, "barcode-image");
@@ -584,11 +619,19 @@
                     NavigationBar.disablePage("search");*/
                     //Barcode.dontScan = true;
                     Barcode.dontScan = true;
-                    return that.loadData();
+                    //return that.loadData();
+                    var refreshMs =
+                        that.refreshWaitTimeMs; //(AppData._persistentStates.odata.replInterval || 30) * 1000
+                    var refreshResultsPromise = WinJS.Promise.timeout(0).then(function () {
+                        refreshResultsPromise.cancel();
+                        that.removeDisposablePromise(refreshResultsPromise);
+                        return that.refreshResults();
+                    });
+                    that.addDisposablePromise(refreshResultsPromise);
+                    return WinJS.Promise.as();
                 } else {
                     Barcode.dontScan = false;
                     that.scanBarcode();
-                    
                     return WinJS.Promise.as();
                 }
             })/*.then(function () {
