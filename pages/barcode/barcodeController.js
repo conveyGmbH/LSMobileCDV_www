@@ -586,22 +586,36 @@
             this.refreshResults = refreshResults;
 
             that.processAll().then(function () {
+                if (parseInt(AppData._persistentStates.showvisitorFlow) === 1 ||
+                (parseInt(AppData._persistentStates.showvisitorFlow) === 2 &&
+                    AppData.generalData.area &&
+                    AppData.generalData.inOut)) {
                 Colors.loadSVGImageElements(pageElement, "navigate-image", 65, Colors.textColor);
                 Colors.loadSVGImageElements(pageElement, "barcode-image");
-                Colors.loadSVGImageElements(pageElement, "scanning-image", 65, Colors.textColor, "id", function (svgInfo) {
+                    Colors.loadSVGImageElements(pageElement,
+                        "scanning-image",
+                        65,
+                        Colors.textColor,
+                        "id",
+                        function(svgInfo) {
                     if (svgInfo && svgInfo.element) {
                         that.translateAnimantion(svgInfo.element.firstElementChild ||
-                            svgInfo.element.firstChild, true);
+                                    svgInfo.element.firstChild,
+                                    true);
                     }
                 });
                 return Colors.loadSVGImageElements(pageElement, "hover-command-icon", 72, Colors.navigationColor);
+                } else {
+                    return WinJS.Promise.as();
+                }
             }).then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 that.updateActions();
                 AppBar.notifyModified = true;
                 if (parseInt(AppData._persistentStates.showvisitorFlow) === 1 || (parseInt(AppData._persistentStates.showvisitorFlow) === 2 && AppData.generalData.area && AppData.generalData.inOut) ) {
                     Barcode.dontScan = true;
-                    that.refreshResults(refreshWaitTimeMs);
+                    //First time always call immediately
+                    that.refreshResults();
                 } else {
                     Barcode.dontScan = false;
                     that.scanBarcode();
