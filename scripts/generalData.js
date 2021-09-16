@@ -381,7 +381,7 @@
                             Colors.updateColors();
                         }
                     }
-                    var timeout = AppData._persistentStates.odata.replInterval || 30;
+                    /*var timeout = AppData._persistentStates.odata.replInterval || 30;
                     Log.print(Log.l.info, "getCRVeranstOption: Now, wait for timeout=" + timeout + "s");
                     if (AppData._veranstOptionPromise) {
                         Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
@@ -390,7 +390,7 @@
                     AppData._veranstOptionPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
                         Log.print(Log.l.info, "getCRVeranstOption: Now, timeout=" + timeout + "s is over!");
                         AppData.getCRVeranstOption();
-                    });
+                    });*/
                 }, function (errorResponse) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
