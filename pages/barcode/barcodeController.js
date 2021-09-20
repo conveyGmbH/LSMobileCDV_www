@@ -613,11 +613,10 @@
                 that.updateActions();
                 AppBar.notifyModified = true;
                 if (parseInt(AppData._persistentStates.showvisitorFlow) === 1 || (parseInt(AppData._persistentStates.showvisitorFlow) === 2 && AppData.generalData.area && AppData.generalData.inOut) ) {
-                    Barcode.dontScan = true;
                     //First time always call immediately
                     that.refreshResults();
-                } else {
-                    Barcode.dontScan = false;
+                } 
+                if (!Barcode.dontScan) {
                     that.scanBarcode();
                 }
             });
