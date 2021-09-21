@@ -282,7 +282,7 @@
             this.insertBarcodedata = insertBarcodedata;
 
             var onBarcodeSuccess = function (result) {
-                Log.call(Log.l.trace, "Barcode.Controller.", "prevDontScan=" + prevDontScan);
+                Log.call(Log.l.trace, "Barcode.Controller.");
                 Barcode.dontScan = false;
                 if (result.cancelled) {
                     // go back to start
