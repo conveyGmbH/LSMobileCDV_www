@@ -65,10 +65,10 @@
                         that.binding.showVisitorAttention = false;
                     } else {
                         if (parseInt(AppData._persistentStates.showvisitorFlow) === 1) {
-                        that.binding.showVisitorIn = false;
-                        that.binding.showVisitorOut = false;
-                        that.binding.showVisitorInOut = false;
-                        that.binding.showVisitorAttention = true;
+                            that.binding.showVisitorIn = false;
+                            that.binding.showVisitorOut = false;
+                            that.binding.showVisitorInOut = false;
+                            that.binding.showVisitorAttention = true;
                         } else if (parseInt(AppData._persistentStates.showvisitorFlow) === 2) {
                             that.binding.showVisitorIn = false;
                             that.binding.showVisitorOut = false;
@@ -145,7 +145,7 @@
                     that.updateStates({ errorMessage: "Request", barcode: barcode });
                 }
                 //that.showExit();
-                var ret = new WinJS.Promise.as().then(function() {
+                var ret = new WinJS.Promise.as().then(function () {
                     var newContact = {
                         HostName: (window.device && window.device.uuid),
                         MitarbeiterID: AppData.generalData.getRecordId("Mitarbeiter"),
@@ -199,7 +199,7 @@
                                 AppData.generalData.setRecordId("IMPORT_CARDSCAN", json.d.IMPORT_CARDSCANVIEWID);
                                 AppData._barcodeType = "vcard";
                                 AppData._barcodeRequest = barcode;
-                                return WinJS.Promise.timeout(0).then(function() {
+                                return WinJS.Promise.timeout(0).then(function () {
                                     // do the following in case of success:
                                     // go on to questionnaire
                                     if (Barcode.waitingScans > 0) {
@@ -290,7 +290,7 @@
                         // go back to start
                         if (WinJS.Navigation.location === Application.getPagePath("barcode") &&
                             WinJS.Navigation.canGoBack === true) {
-                            WinJS.Navigation.back(1).done( /* Your success and error handlers */);
+                            WinJS.Navigation.back(1).done(/* Your success and error handlers */);
                         } else {
                             Application.navigateById("Account", null, null);
                         }
@@ -300,7 +300,7 @@
                 }
                 if (!result.text) {
                     if (parseInt(AppData._persistentStates.showvisitorFlow) === 0) {
-                    that.updateStates({ errorMessage: "Barcode scanner returned no data!" });
+                        that.updateStates({ errorMessage: "Barcode scanner returned no data!" });
                     }
                     Log.ret(Log.l.trace, "no data returned");
                     return;
@@ -390,7 +390,7 @@
                 Log.call(Log.l.error, "Barcode.Controller.");
                 Barcode.dontScan = false;
                 if (parseInt(AppData._persistentStates.showvisitorFlow) === 0) {
-                that.updateStates({ errorMessage: JSON.stringify(error) });
+                    that.updateStates({ errorMessage: JSON.stringify(error) });
                 }
                 WinJS.Promise.timeout(2000).then(function () {
                     // go back to start
@@ -403,7 +403,7 @@
             }
             this.onBarcodeError = onBarcodeError;
 
-            var scanBarcode = function() {
+            var scanBarcode = function () {
                 Log.call(Log.l.trace, "Barcode.Controller.");
                 if (typeof device === "object" && device.platform === "Android" &&
                     AppData.generalData.useBarcodeActivity &&
@@ -521,15 +521,15 @@
                             if (AppData.generalData.limit > inside) {
                                 if (result.WarnLimit > 0) {
                                     if (result.WarnLimit > inside) {
-                                    that.binding.slotFree = true;
-                                    that.binding.slotFull = false;
-                                    that.binding.slotWarning = false;
+                                        that.binding.slotFree = true;
+                                        that.binding.slotFull = false;
+                                        that.binding.slotWarning = false;
+                                    } else {
+                                        that.binding.slotFree = false;
+                                        that.binding.slotFull = false;
+                                        that.binding.slotWarning = true;
+                                    }
                                 } else {
-                                    that.binding.slotFree = false;
-                                    that.binding.slotFull = false;
-                                    that.binding.slotWarning = true;
-                                }
-                            } else {
                                     that.binding.slotFree = true;
                                     that.binding.slotFull = false;
                                     that.binding.slotWarning = false;
@@ -553,8 +553,8 @@
                         that.binding.states.barcode = null;
                         that.updateActions();
                         if (parseInt(AppData._persistentStates.showvisitorFlow) === 0) {
-                        that.updateStates({ errorMessage: " ", barcode: that.binding.states.barcode });
-                            }
+                            that.updateStates({ errorMessage: " ", barcode: that.binding.states.barcode });
+                        }
                     }
 
                 });
@@ -590,21 +590,21 @@
                 (parseInt(AppData._persistentStates.showvisitorFlow) === 2 &&
                     AppData.generalData.area &&
                     AppData.generalData.inOut)) {
-                Colors.loadSVGImageElements(pageElement, "navigate-image", 65, Colors.textColor);
-                Colors.loadSVGImageElements(pageElement, "barcode-image");
+                    Colors.loadSVGImageElements(pageElement, "navigate-image", 65, Colors.textColor);
+                    Colors.loadSVGImageElements(pageElement, "barcode-image");
                     Colors.loadSVGImageElements(pageElement,
                         "scanning-image",
                         65,
                         Colors.textColor,
                         "id",
                         function(svgInfo) {
-                    if (svgInfo && svgInfo.element) {
-                        that.translateAnimantion(svgInfo.element.firstElementChild ||
+                            if (svgInfo && svgInfo.element) {
+                                that.translateAnimantion(svgInfo.element.firstElementChild ||
                                     svgInfo.element.firstChild,
                                     true);
-                    }
-                });
-                return Colors.loadSVGImageElements(pageElement, "hover-command-icon", 72, Colors.navigationColor);
+                            }
+                        });
+                    return Colors.loadSVGImageElements(pageElement, "hover-command-icon", 72, Colors.navigationColor);
                 } else {
                     return WinJS.Promise.as();
                 }
@@ -612,12 +612,13 @@
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 that.updateActions();
                 AppBar.notifyModified = true;
-                if (parseInt(AppData._persistentStates.showvisitorFlow) === 1 || (parseInt(AppData._persistentStates.showvisitorFlow) === 2 && AppData.generalData.area && AppData.generalData.inOut) ) {
+                if (parseInt(AppData._persistentStates.showvisitorFlow) === 1 || (parseInt(AppData._persistentStates.showvisitorFlow) === 2 && AppData.generalData.area && AppData.generalData.inOut)) {
                     //First time always call immediately
                     that.refreshResults();
-                } 
-                if (!Barcode.dontScan) {
-                    that.scanBarcode();
+                } else {
+                    if (!Barcode.dontScan) {
+                        that.scanBarcode();
+                    }
                 }
             });
             Log.ret(Log.l.trace);
