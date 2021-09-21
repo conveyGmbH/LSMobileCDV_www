@@ -282,7 +282,6 @@
             this.insertBarcodedata = insertBarcodedata;
 
             var onBarcodeSuccess = function (result) {
-                var prevDontScan = Barcode.dontScan;
                 Log.call(Log.l.trace, "Barcode.Controller.", "prevDontScan=" + prevDontScan);
                 Barcode.dontScan = false;
                 if (result.cancelled) {
@@ -379,7 +378,7 @@
                         if (parseInt(AppData._persistentStates.showvisitorFlow) === 1 || (parseInt(AppData._persistentStates.showvisitorFlow) === 2 && AppData.generalData.area && AppData.generalData.inOut)) {
                             // nur bei visitorflow für mehrfach scan muss Barcode.dontScan auf den vorigen Wert gesetzt werden, 
                             // nachdem der aktuelle barcode inserted ist, weil die barcode page nicht verlassen wird!
-                            Barcode.dontScan = prevDontScan;
+                            Barcode.dontScan = AppData.generalData.useBarcodeActivity;
                             that.refreshResults();
                         }
                     });
@@ -617,6 +616,7 @@
                 AppBar.notifyModified = true;
                 if (parseInt(AppData._persistentStates.showvisitorFlow) === 1 || (parseInt(AppData._persistentStates.showvisitorFlow) === 2 && AppData.generalData.area && AppData.generalData.inOut)) {
                     //First time always call immediately
+                    Barcode.dontScan = AppData.generalData.useBarcodeActivity;
                     that.refreshResults();
                 } else {
                     if (!Barcode.dontScan) {
