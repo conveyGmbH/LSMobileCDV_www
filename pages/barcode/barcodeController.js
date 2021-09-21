@@ -375,8 +375,10 @@
                         finalBarcode = result.text;
                     }
                     that.insertBarcodedata(finalBarcode, isVcard).then(function() {
-                        //visitorflow für mehrfach scan
                         if (parseInt(AppData._persistentStates.showvisitorFlow) === 1 || (parseInt(AppData._persistentStates.showvisitorFlow) === 2 && AppData.generalData.area && AppData.generalData.inOut)) {
+                            // nur bei visitorflow für mehrfach scan muss Barcode.dontScan = true gesetzt werden, 
+                            // nachdem der aktuelle barcode inserted ist, weil die barcode page nicht verlassen wird!
+                            Barcode.dontScan = true;
                             that.refreshResults();
                         }
                     });
