@@ -44,7 +44,7 @@
 
             var that = this;
             var refreshResultsPromise = null;
-            var refreshWaitTimeMs = (AppData._persistentStates.odata.replInterval || 30) * 1000;
+            var refreshWaitTimeMs = 5000;//(AppData._persistentStates.odata.replInterval || 30) * 1000;
 
             var updateActions = function () {
                 if (parseInt(AppData._persistentStates.showvisitorFlow) > 0) {
@@ -374,12 +374,12 @@
                         }
                         finalBarcode = result.text;
                     }
-                    that.insertBarcodedata(finalBarcode, isVcard);
-                    //visitorflow für mehrfach scan
-                    if (parseInt(AppData._persistentStates.showvisitorFlow) === 1 || (parseInt(AppData._persistentStates.showvisitorFlow) === 2 && AppData.generalData.area && AppData.generalData.inOut)) {
-                        Barcode.dontScan = true;
-                        that.refreshResults(Math.min(refreshWaitTimeMs, 5000));
-                    }
+                    that.insertBarcodedata(finalBarcode, isVcard).then(function() {
+                        //visitorflow für mehrfach scan
+                        if (parseInt(AppData._persistentStates.showvisitorFlow) === 1 || (parseInt(AppData._persistentStates.showvisitorFlow) === 2 && AppData.generalData.area && AppData.generalData.inOut)) {
+                            that.refreshResults();
+                        }
+                    });
                     Log.ret(Log.l.trace);
                 });
                 Log.ret(Log.l.trace);
