@@ -139,23 +139,13 @@
                 }
             }
         } else if (id === "sketch") {
-            /*if (AppData._userRemoteDataPromise &&
-            (AppData._persistentStates.showvisitorFlow === 1 ||
-                (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut))) {
+            if (AppData._userRemoteDataPromise && (AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut))) {
                 id = "barcode";
-            }*/
+            } else {
             if (AppData.generalData.privacyText && 
                 AppData.generalData.privacyText.length > 0 &&
                 Application.navigator._lastPage !== Application.getPagePath("privacy")) {
-                if (AppData._userRemoteDataPromise &&
-                (AppData._persistentStates.showvisitorFlow === 1 ||
-                (AppData._persistentStates.showvisitorFlow === 2 &&
-                    AppData.generalData.area &&
-                    AppData.generalData.inOut))) {
-                    id = "barcode";
-                } else {
                 id = "privacy";
-                }
             } else {
                 for (var y = 0; y < Application.navigationBarPages.length; y++) {
                 if (Application.navigationBarPages[y].id === id) {
@@ -167,7 +157,8 @@
             }
         }
         }
-        if (id === "start") {
+        }
+        if (id === "start" || (id === "barcode" && (AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut)))) {
             if (!AppData._userRemoteDataPromise) {
                 AppData._userRemoteDataPromise = WinJS.Promise.timeout(0).then(function () {
                     Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + 100 + "s is over!");
