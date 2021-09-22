@@ -29,8 +29,6 @@
                 dataBereich: {}
             }, commandList]);
 
-            AppData._curGetUserRemoteDataId = 0;
-
             var that = this;
 
             var imgSrcDataType = "data:image/jpeg;base64,";
@@ -397,17 +395,6 @@
                 Log.call(Log.l.trace, "Start.Controller.");
                 AppData.setErrorMsg(that.binding);
                 var ret = new WinJS.Promise.as().then(function () {
-                    if (AppData._userRemoteDataPromise) {
-                        Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
-                        AppData._userRemoteDataPromise.cancel();
-                    }
-                    AppData._userRemoteDataPromise = WinJS.Promise.timeout(100).then(function () {
-                        Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + 100 + "s is over!");
-                        AppData._curGetUserRemoteDataId = 0;
-                        AppData.getUserRemoteData();
-                        Log.print(Log.l.info, "getCRVeranstOption: Now, timeout=" + 100 + "s is over!");
-                        AppData.getCRVeranstOption();
-                    });
                     var recordId = getRecordId();
                     if (!recordId) {
                         that.binding.dataContact = {};

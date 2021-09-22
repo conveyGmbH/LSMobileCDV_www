@@ -492,21 +492,6 @@
                 Log.call(Log.l.trace, "ListRemote.Controller.");
                 that.loading = true;
                 var ret = new WinJS.Promise.as().then(function () {
-                    /*if (AppData._userRemoteDataPromise) {
-                        Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
-                        AppData._userRemoteDataPromise.cancel();
-                    }
-                    AppData._userRemoteDataPromise = WinJS.Promise.timeout(100).then(function () {
-                        Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + 100 + "s is over!");
-                        AppData._curGetUserRemoteDataId = 0;
-                        AppData.getUserRemoteData();
-                        Log.print(Log.l.info, "getCRVeranstOption: Now, timeout=" + 100 + "s is over!");
-                        AppData.getCRVeranstOption();
-                    });
-                    if (that.refreshPromise) {
-                        that.refreshPromise.cancel();
-                        that.removeDisposablePromise(that.refreshPromise);
-                    }*/
                     var cr_V_BereichSelectPromise = Barcode.cr_V_BereichView.select(function (json) {
                         // this callback will be called asynchronously
                         // when the response is available

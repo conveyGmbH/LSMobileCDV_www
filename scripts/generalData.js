@@ -308,13 +308,13 @@
                                     AppBar.scope.updateActions();
                                 }
                             }
+                            if (AppData._userDataPromise) {
+                                Log.print(Log.l.info, "Cancelling previous userDataPromise");
+                                AppData._userDataPromise.cancel();
+                            }
                             AppData._curGetUserDataId = 0;
                             var timeout = AppData._persistentStates.odata.replInterval || 30;
                             Log.print(Log.l.info, "getUserData: Now, wait for timeout=" + timeout + "s");
-                            if (AppData._userDataPromise) {
-                                Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
-                                AppData._userDataPromise.cancel();
-                            }
                             AppData._userDataPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
                                 Log.print(Log.l.info, "getUserData: Now, timeout=" + timeout + "s is over!");
                                 AppData.getUserData();
@@ -323,13 +323,13 @@
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
                             Log.print(Log.l.error, "error in select generalUserView statusText=" + errorResponse.statusText);
+                            if (AppData._userDataPromise) {
+                                Log.print(Log.l.info, "Cancelling previous userDataPromise");
+                                AppData._userDataPromise.cancel();
+                            }
                             AppData._curGetUserDataId = 0;
                             var timeout = AppData._persistentStates.odata.replInterval || 30;
                             Log.print(Log.l.info, "getUserData: Now, wait for timeout=" + timeout + "s");
-                            if (AppData._userDataPromise) {
-                                Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
-                                AppData._userDataPromise.cancel();
-                            }
                             AppData._userDataPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
                                 Log.print(Log.l.info, "getUserData: Now, timeout=" + timeout + "s is over!");
                                 AppData.getUserData();
@@ -343,12 +343,19 @@
             Log.ret(Log.l.trace);
             return ret;
         },
+        _inGetCRVeranstOption: false,
         getCRVeranstOption: function () {
             Log.call(Log.l.trace, "AppData.");
+            var ret = WinJS.Promise.as();
+            if (AppData._inGetCRVeranstOption) {
+                Log.ret(Log.l.info, "semaphore set: extra ignored");
+                return ret;
+            }
             if (typeof AppData._persistentStates.veranstoption === "undefined") {
                 AppData._persistentStates.veranstoption = {};
             }
-            var ret = new WinJS.Promise.as().then(function () {
+            ret = new WinJS.Promise.as().then(function () {
+                AppData._inGetCRVeranstOption = true;
                 Log.print(Log.l.trace, "calling select generalContactView...");
                 return AppData.CR_VERANSTOPTION_ODataView.select(function (json) {
                     function resultConverter(item, index) {
@@ -379,27 +386,19 @@
                             Colors.updateColors();
                         }
                     }
-                    /*var timeout = AppData._persistentStates.odata.replInterval || 30;
-                    Log.print(Log.l.info, "getCRVeranstOption: Now, wait for timeout=" + timeout + "s");
-                    if (AppData._veranstOptionPromise) {
-                        Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
-                        AppData._veranstOptionPromise.cancel();
-                    }
-                    AppData._veranstOptionPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
-                        Log.print(Log.l.info, "getCRVeranstOption: Now, timeout=" + timeout + "s is over!");
-                        AppData.getCRVeranstOption();
-                    });*/
+                    AppData._inGetCRVeranstOption = false;
                 }, function (errorResponse) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                     // ignore error in app!
                     // AppData.setErrorMsg(that.binding, errorResponse);
-                    var timeout = AppData._persistentStates.odata.replInterval || 30;
-                    Log.print(Log.l.info, "getCRVeranstOption: Now, wait for timeout=" + timeout + "s");
+                    AppData._inGetCRVeranstOption = false;
                     if (AppData._veranstOptionPromise) {
-                        Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                        Log.print(Log.l.info, "Cancelling previous veranstOptionPromise");
                         AppData._veranstOptionPromise.cancel();
                     }
+                    var timeout = AppData._persistentStates.odata.replInterval || 30;
+                    Log.print(Log.l.info, "getCRVeranstOption: Now, wait for timeout=" + timeout + "s");
                     AppData._veranstOptionPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
                         Log.print(Log.l.info, "getCRVeranstOption: Now, timeout=" + timeout + "s is over!");
                         AppData.getCRVeranstOption();
@@ -409,12 +408,13 @@
             Log.ret(Log.l.trace);
             return ret;
         },
+        _inGetUserRemotedata: false,
         getUserRemoteData: function () {
             var ret = WinJS.Promise.as();
             Log.call(Log.l.trace, "AppData.");
-            if (AppData._userRemoteDataPromise) {
-                Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
-                AppData._userRemoteDataPromise.cancel();
+            if (AppData._inGetUserRemotedata) {
+                Log.ret(Log.l.info, "semaphore set: extra ignored");
+                return ret;
             }
             if (!AppData.appSettings.odata.login ||
                 !AppData.appSettings.odata.password ||
@@ -434,6 +434,7 @@
                         var millisecondsLocal = dateLocal.getTime();
                         AppData._curGetUserRemoteDataId = userId;
                         ret = new WinJS.Promise.as().then(function() {
+                            AppData._inGetUserRemotedata = true;
                             Log.print(Log.l.trace, "calling select PRC_MitarbeiterAppDaten...");
                             return AppData.call("PRC_MitarbeiterAppDaten", {
                                 pCreatorSiteID: AppData._persistentStates.odata.dbSiteId,
@@ -477,15 +478,16 @@
                                 if (AppBar.scope && typeof AppBar.scope.updateActions === "function" && doUpdate) {
                                     AppBar.scope.updateActions();
                                 }
-                                var timeout = AppData._persistentStates.odata.replInterval || 30;
-                                Log.print(Log.l.info, "getUserRemoteData: Now, wait for timeout=" + timeout + "s");
+                                AppData._curGetUserRemoteDataId = 0;
+                                AppData._inGetUserRemotedata = false;
                                 if (AppData._userRemoteDataPromise) {
                                     Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
                                     AppData._userRemoteDataPromise.cancel();
                                 }
+                                var timeout = AppData._persistentStates.odata.replInterval || 30;
+                                Log.print(Log.l.info, "getUserRemoteData: Now, wait for timeout=" + timeout + "s");
                                 AppData._userRemoteDataPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
                                     Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");
-                                    AppData._curGetUserRemoteDataId = 0;
                                     AppData.getUserRemoteData();
                                     AppData.getCRVeranstOption();
                                 });
@@ -550,15 +552,16 @@
                                 //    AppData.setErrorMsg(AppBar.scope.binding,
                                 //        { status: 404, statusText: errorResponse.statusText });
                                 //}
-                                var timeout = AppData._persistentStates.odata.replInterval || 30;
-                                Log.print(Log.l.info, "getUserRemoteData: Now, wait for timeout=" + timeout + "s");
+                                AppData._curGetUserRemoteDataId = 0;
+                                AppData._inGetUserRemotedata = false;
                                 if (AppData._userRemoteDataPromise) {
                                     Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
                                     AppData._userRemoteDataPromise.cancel();
                                 }
+                                var timeout = AppData._persistentStates.odata.replInterval || 30;
+                                Log.print(Log.l.info, "getUserRemoteData: Now, wait for timeout=" + timeout + "s");
                                 AppData._userRemoteDataPromise = WinJS.Promise.timeout(timeout * 1000).then(function() {
                                     Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");
-                                    AppData._curGetUserRemoteDataId = 0;
                                     AppData.getUserRemoteData();
                                 });
                             });
