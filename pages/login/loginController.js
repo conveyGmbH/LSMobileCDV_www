@@ -204,7 +204,8 @@
                             var location = json.d.ODataLocation;
                             if (location !== that.binding.appSettings.odata.onlinePath) {
                                 that.binding.appSettings.odata.onlinePath = location + AppData._persistentStatesDefaults.odata.onlinePath;
-                                that.binding.appSettings.odata.registerPath = location + AppData._persistentStatesDefaults.odata.registerPath;
+                                //register user always uses main server
+                                //that.binding.appSettings.odata.registerPath = location + AppData._persistentStatesDefaults.odata.registerPath;
                             }
                             Application.pageframe.savePersistentStates();
                         }
