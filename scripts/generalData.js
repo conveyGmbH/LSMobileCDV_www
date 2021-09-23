@@ -422,7 +422,9 @@
                 Log.print(Log.l.trace, "getUserRemoteData: no logon information provided!");
             } else if (AppRepl.replicator &&
                 AppRepl.replicator.networkstate !== "Offline" &&
-                AppRepl.replicator.networkstate !== "Unknown") { 
+                AppRepl.replicator.networkstate !== "Unknown" &&
+                DBInit &&
+                DBInit.loginRequest) { 
                 var userId = AppData.getRecordId("Mitarbeiter");
                 if (userId && userId !== AppData._curGetUserRemoteDataId) {
                     if (AppData._persistentStates.odata.useOffline && (!AppData._db || !AppData._dbInit)) {
