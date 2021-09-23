@@ -174,20 +174,11 @@
                     for (var l = 0; l < elements.length; l++) {
                         if (bDisabled) {
                             elements[l].style.color = "#808080";
-                        } else if (WinJS.Utilities.hasClass("text-lightcolor")) {
-                            elements[l].style.color = "#f0f0f0";
                         } else {
-                            elements[l].style.color = Colors.tileTextColor;
+                            elements[l].style.color = "#f0f0f0";
                         }
-
                     }
-                    // bow only light gray symbols used!
-                    // var svgObject = button.querySelector(".action-image-list");
-                    //if (svgObject) {
-                    //    var svgRoot = svgObject.firstChild;
-                    //    Colors.changeSVGColor(svgRoot, bDisabled ? "#808080" : Colors.tileTextColor, true, false);
-                    //    button.svgLoaded = true;
-                    //}
+                    // now only light gray symbols used!
                     var svgObject = button.querySelector(".action-image-list, .action-image-new");
                     if (svgObject) {
                         var svgRoot = svgObject.firstChild;
