@@ -422,9 +422,7 @@
                 Log.print(Log.l.trace, "getUserRemoteData: no logon information provided!");
             } else if (AppRepl.replicator &&
                 AppRepl.replicator.networkstate !== "Offline" &&
-                AppRepl.replicator.networkstate !== "Unknown" &&
-                DBInit &&
-                DBInit.loginRequest) { 
+                AppRepl.replicator.networkstate !== "Unknown") { 
                 var userId = AppData.getRecordId("Mitarbeiter");
                 if (userId && userId !== AppData._curGetUserRemoteDataId) {
                     if (AppData._persistentStates.odata.useOffline && (!AppData._db || !AppData._dbInit)) {
@@ -505,10 +503,13 @@
                                         AppRepl.replicator.networkState !== "Unknown" &&
                                         DBInit &&
                                         DBInit.loginRequest) {
+                                        var prevRegisterPath = AppData._persistentStates.odata.registerPath;
+                                        AppData._persistentStates.odata.registerPath = AppData._persistentStatesDefaults.odata.registerPath;
                                         DBInit.loginRequest.insert(function(json) {
                                             // this callback will be called asynchronously
                                             // when the response is available
                                             Log.print(Log.l.trace, "loginRequest: success!");
+                                            AppData._persistentStates.odata.registerPath = prevRegisterPath;
                                             // loginData returns object already parsed from json file in response
                                             if (json && json.d && json.d.ODataLocation) {
                                                 if (json.d.InactiveFlag) {
@@ -517,7 +518,7 @@
                                                         AppData.setErrorMsg(AppBar.scope.binding, err);
                                                         alert(err.statusText);
                                                     }
-                                                } else if (json.d.ODataLocation !== AppData._persistentStates.odata.onlinePath) {
+                                                } else if (json.d.ODataLocation + AppData._persistentStatesDefaults.odata.onlinePath !== AppData._persistentStates.odata.onlinePath) {
                                                     if (AppBar.scope) {
                                                         err = { status: 404, statusText: getResourceText("login.modified") + "\n\n" + AppData._persistentStates.odata.login };
                                                         AppData.setErrorMsg(AppBar.scope.binding, err);
@@ -535,6 +536,7 @@
                                             // called asynchronously if an error occurs
                                             // or server returns response with an error status.
                                             Log.print(Log.l.error, "loginRequest error: " + AppData.getErrorMsgFromResponse(errorResponse));
+                                            AppData._persistentStates.odata.registerPath = prevRegisterPath;
                                             // ignore this error here for compatibility!
                                         }, {
                                             LoginName: AppData._persistentStates.odata.login
