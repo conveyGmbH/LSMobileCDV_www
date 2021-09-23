@@ -181,13 +181,14 @@
                         }
 
                     }
-                    var svgObject = button.querySelector(".action-image-list");
-                    if (svgObject) {
-                        var svgRoot = svgObject.firstChild;
-                        Colors.changeSVGColor(svgRoot, bDisabled ? "#808080" : Colors.tileTextColor, true, false);
-                        button.svgLoaded = true;
-                    }
-                    svgObject = button.querySelector(".action-image-new");
+                    // bow only light gray symbols used!
+                    // var svgObject = button.querySelector(".action-image-list");
+                    //if (svgObject) {
+                    //    var svgRoot = svgObject.firstChild;
+                    //    Colors.changeSVGColor(svgRoot, bDisabled ? "#808080" : Colors.tileTextColor, true, false);
+                    //    button.svgLoaded = true;
+                    //}
+                    var svgObject = button.querySelector(".action-image-list, .action-image-new");
                     if (svgObject) {
                         var svgRoot = svgObject.firstChild;
                         Colors.changeSVGColor(svgRoot, bDisabled ? "#808080" : "#f0f0f0", true, false);

@@ -575,6 +575,24 @@
                     ret = WinJS.Promise.as();
                 }
             } else {
+                if (!AppRepl.replicator ||
+                    !(DBInit && DBInit.loginRequest)) {
+                    AppData.appSettings.odata.serverFailure = true;
+                    NavigationBar.disablePage("listRemote");
+                    NavigationBar.disablePage("search");
+                    AppData._curGetUserRemoteDataId = 0;
+                    AppData._inGetUserRemotedata = false;
+                    if (AppData._userRemoteDataPromise) {
+                        Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                        AppData._userRemoteDataPromise.cancel();
+                    }
+                    var timeout = 5;
+                    Log.print(Log.l.info, "getUserRemoteData: Now, wait for timeout=" + timeout + "s");
+                    AppData._userRemoteDataPromise = WinJS.Promise.timeout(timeout * 1000).then(function() {
+                        Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");
+                        AppData.getUserRemoteData();
+                    });
+                }
                 ret = AppData.getUserData();
             }
             Log.ret(Log.l.trace);
