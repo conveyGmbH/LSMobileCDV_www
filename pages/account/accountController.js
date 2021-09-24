@@ -107,6 +107,7 @@
                     Log.call(Log.l.trace, "Account.Controller.");
                     if (AppData._userRemoteDataPromise) {
                         AppData._userRemoteDataPromise.cancel();
+                        AppData._userRemoteDataPromise = null;
                     }
                     AppData._userData.Bereich = null;
                     AppData._userData.inOut = null;

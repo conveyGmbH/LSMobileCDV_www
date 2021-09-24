@@ -467,14 +467,15 @@
                                     if (AppData._userRemoteData.CurrentTS) {
                                         var msString = AppData._userRemoteData.CurrentTS.replace("\/Date(", "").replace(")\/", "");
                                         var millisecondsRemote = parseInt(msString) - AppData.appSettings.odata.timeZoneRemoteAdjustment * 60000;
-                                        AppData.appSettings.odata.timeZoneRemoteDiffMs = millisecondsLocal - millisecondsRemote;
+                                        AppData.appSettings.odata.timeZoneRemoteDiffMs = Math.min(millisecondsLocal - millisecondsRemote, 0);
                                         if (!AppData.appSettings.odata.replPrevSelectMs) {
                                             var now = new Date();
                                             AppData.appSettings.odata.replPrevSelectMs = now.getTime() - AppData.appSettings.odata.timeZoneRemoteDiffMs;
                                         }
                                     }
                                     Log.print(Log.l.info, "timeZoneRemoteAdjustment=" + AppData.appSettings.odata.timeZoneRemoteAdjustment +
-                                        " timeZoneRemoteDiffMs=" + AppData.appSettings.odata.timeZoneRemoteDiffMs);
+                                        " timeZoneRemoteDiffMs=" + AppData.appSettings.odata.timeZoneRemoteDiffMs + 
+                                        " replPrevSelectMs=" + AppData.appSettings.odata.replPrevSelectMs);
                                     if (AppBar.scope && AppData._userRemoteData.Message) {
                                         Log.print(Log.l.error, "Message=" + AppData._userRemoteData.Message);
                                         AppData.setErrorMsg(AppBar.scope.binding, AppData._userRemoteData.Message);
