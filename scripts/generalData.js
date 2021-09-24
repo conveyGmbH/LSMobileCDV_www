@@ -467,7 +467,7 @@
                                     if (AppData._userRemoteData.CurrentTS) {
                                         var msString = AppData._userRemoteData.CurrentTS.replace("\/Date(", "").replace(")\/", "");
                                         var millisecondsRemote = parseInt(msString) - AppData.appSettings.odata.timeZoneRemoteAdjustment * 60000;
-                                        AppData.appSettings.odata.timeZoneRemoteDiffMs = Math.min(millisecondsLocal - millisecondsRemote, 0);
+                                        AppData.appSettings.odata.timeZoneRemoteDiffMs = Math.max(millisecondsLocal - millisecondsRemote, 0);
                                         if (!AppData.appSettings.odata.replPrevSelectMs) {
                                             var now = new Date();
                                             AppData.appSettings.odata.replPrevSelectMs = now.getTime() - AppData.appSettings.odata.timeZoneRemoteDiffMs;

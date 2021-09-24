@@ -142,63 +142,20 @@
             if (AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut)) {
                 id = "barcode";
             } else {
-            if (AppData.generalData.privacyText && 
-                AppData.generalData.privacyText.length > 0 &&
-                Application.navigator._lastPage !== Application.getPagePath("privacy")) {
-                id = "privacy";
-            } else {
-                for (var y = 0; y < Application.navigationBarPages.length; y++) {
-                if (Application.navigationBarPages[y].id === id) {
-                    if (Application.navigationBarPages[y].disabled === true) {
-                        id = "start";
-                        break;
+                if (AppData.generalData.privacyText && 
+                    AppData.generalData.privacyText.length > 0 &&
+                    Application.navigator._lastPage !== Application.getPagePath("privacy")) {
+                    id = "privacy";
+                } else {
+                    for (var y = 0; y < Application.navigationBarPages.length; y++) {
+                        if (Application.navigationBarPages[y].id === id) {
+                            if (Application.navigationBarPages[y].disabled === true) {
+                                id = "start";
+                                break;
+                            }
+                        }
                     }
                 }
-            }
-        }
-        }
-        }
-        if (id === "start" || (id === "barcode" && (AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut)))) {
-            if (!AppData._userRemoteDataPromise) {
-                AppData._userRemoteDataPromise = WinJS.Promise.timeout(0).then(function () {
-                    Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + 100 + "s is over!");
-                    AppData._curGetUserRemoteDataId = 0;
-                    AppData.getUserRemoteData();
-                    Log.print(Log.l.info, "getCRVeranstOption: Now, timeout=" + 100 + "s is over!");
-                    AppData.getCRVeranstOption();
-                });
-            }
-            if (device &&
-                (device.platform === "Android" || device.platform === "windows") &&
-                AppData.generalData.useBarcodeActivity &&
-                Barcode &&
-                !Barcode.listening) {
-                Barcode.startListenDelayed(250);
-            }
-            if (AppData.generalData.useExternalCamera &&
-                cordova.file.picturesDirectory &&
-                CameraGlobals &&
-                !CameraGlobals.listening) {
-                CameraGlobals.startListenDelayed(1000);
-            }
-        } else if (id === "login") {
-            if (AppData._userRemoteDataPromise) {
-                AppData._userRemoteDataPromise.cancel();
-                AppData._userRemoteDataPromise = null;
-            }
-            if (device &&
-                (device.model === "TC20")) {
-                AppData._persistentStates.useBarcodeActivity = true;
-            }
-            if (device &&
-                (device.platform === "Android") &&
-                AppData._persistentStates.useBarcodeActivity &&
-                navigator &&
-                navigator.broadcast_intent_plugin &&
-                typeof navigator.broadcast_intent_plugin.listen === "function" &&
-                Barcode &&
-                !Barcode.listening) {
-                Barcode.startListenDelayed(250);
             }
         }
         Log.ret(Log.l.trace);

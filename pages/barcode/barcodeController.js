@@ -603,6 +603,28 @@
                     //First time always call immediately
                     Barcode.dontScan = AppData.generalData.useBarcodeActivity;
                     that.refreshResults();
+                    if (!AppData._userRemoteDataPromise) {
+                        AppData._userRemoteDataPromise = WinJS.Promise.timeout(0).then(function () {
+                            Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + 100 + "s is over!");
+                            AppData._curGetUserRemoteDataId = 0;
+                            AppData.getUserRemoteData();
+                            Log.print(Log.l.info, "getCRVeranstOption: Now, timeout=" + 100 + "s is over!");
+                            AppData.getCRVeranstOption();
+                        });
+                    }
+                    if (device &&
+                        (device.platform === "Android" || device.platform === "windows") &&
+                        AppData.generalData.useBarcodeActivity &&
+                        Barcode &&
+                        !Barcode.listening) {
+                        Barcode.startListenDelayed(250);
+                    }
+                    if (AppData.generalData.useExternalCamera &&
+                        cordova.file.picturesDirectory &&
+                        CameraGlobals &&
+                        !CameraGlobals.listening) {
+                        CameraGlobals.startListenDelayed(1000);
+                    }
                 } else {
                     if (!Barcode.dontScan) {
                         that.scanBarcode();

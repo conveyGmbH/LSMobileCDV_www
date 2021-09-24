@@ -17,6 +17,24 @@
     WinJS.Namespace.define("Login", {
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Login.Controller.");
+            if (AppData._userRemoteDataPromise) {
+                AppData._userRemoteDataPromise.cancel();
+                AppData._userRemoteDataPromise = null;
+            }
+            if (device &&
+                (device.model === "TC20")) {
+                AppData._persistentStates.useBarcodeActivity = true;
+            }
+            if (device &&
+                (device.platform === "Android") &&
+                AppData._persistentStates.useBarcodeActivity &&
+                navigator &&
+                navigator.broadcast_intent_plugin &&
+                typeof navigator.broadcast_intent_plugin.listen === "function" &&
+                Barcode &&
+                !Barcode.listening) {
+                Barcode.startListenDelayed(250);
+            }
             var bIgnoreDuplicate = false;
             // delete login data first
             AppData.generalData.logOffOptionActive = true;
