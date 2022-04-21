@@ -31,21 +31,33 @@
                     <div class="field_line field_line_odd">
                         <span class="label win-type-caption portrait_only"
                               data-win-res="{textContent: 'account.login'}"></span>
-                        <span class="label landscape_only"
+                        <span class="label win-type-caption landscape_only"
                               data-win-res="{textContent: 'account.login'}"></span>
                         <input class="input_field win-textbox" type="text"
-                               data-win-bind="value: dataLogin.Login Binding.Mode.twoway; style.display: doEdit Binding.Converter.toDisplay" />
+                               data-win-bind="value: dataLogin.Login Binding.Mode.twoway; style.display: doEdit Binding.Converter.toDisplay" 
+                               data-win-bind-onevent="oninput"/>
                         <span class="input_field win-type-subtitle" 
                               data-win-bind="textContent: dataLogin.Login; style.display: doEdit Binding.Converter.toDisplayNone"></span>
                     </div>
                     <div class="field_line field_line_even"
-                         data-win-bind="style.display: doEdit Binding.Converter.toDisplay">
+                         data-win-bind="style.display: enableChangePassword Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only"
                               data-win-res="{textContent: 'account.password'}"></span>
                         <span class="label landscape_only"
                               data-win-res="{textContent: 'account.password'}"></span>
                         <input class="input_field win-textbox" type="password"
-                               data-win-bind="value: dataLogin.Password Binding.Mode.twoway" />
+                               data-win-bind="value: dataLogin.Password Binding.Mode.twoway"
+                               data-win-bind-onevent="oninput"/>
+                    </div>
+                    <div class="field_line field_line_even"
+                         data-win-bind="style.display: doEdit Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only"
+                              data-win-res="{textContent: 'account.password'}"></span>
+                        <span class="label win-type-caption landscape_only"
+                              data-win-res="{textContent: 'account.password'}"></span>
+                        <input class="input_field win-textbox" type="password"
+                               data-win-bind="value: dataLogin.Password Binding.Mode.twoway" 
+                               data-win-bind-onevent="oninput"/>
                     </div>
                     <div class="line-separator"></div>
                     <div class="field_line"
@@ -57,7 +69,7 @@
                          data-win-bind="style.display: progress.show Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only"
                               data-win-res="{textContent: 'account.progress'}"></span>
-                        <span class="label landscape_only"
+                        <span class="label win-type-caption landscape_only"
                               data-win-res="{textContent: 'account.progress'}"></span>
                         <progress class="progress_field win-progress-bar"
                                   data-win-bind="value: progress.percent"
@@ -65,12 +77,11 @@
                         <span class="large_field"
                               data-win-bind="textContent: progress.text"></span>
                     </div>
-                    <div class="line-separator"></div>
                     <div class="field_line field_line_odd"
                          data-win-bind="style.display: generalData.logOffOptionActive Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only"
                               data-win-res="{textContent: 'account.doEdit'}"></span>
-                        <span class="label landscape_only"
+                        <span class="label win-type-caption landscape_only"
                               data-win-res="{textContent: 'account.doEdit'}"></span>
                         <div class="input_field toggle-switch-parent">
                             <div id="doEdit" class="input_field"
@@ -80,6 +91,18 @@
                             </div>
                         </div>
                     </div>
+                    <div class="field_line field_line_even"
+                     data-win-bind="style.display: prevMitarbeiterID Binding.Converter.toDisplay">
+                    <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'account.language'}"></span>
+                    <span class="label win-type-caption landscape_only" data-win-res="{textContent: 'account.language'}"></span>
+                    <select id="InitSprache"
+                            class="input_field win-dropdown"
+                            data-win-control="WinJS.UI.Repeater"
+                            data-win-bind="value: dataLogin.INITSpracheID Binding.Mode.twoway">
+                        <option data-win-bind="value: INITSpracheID; textContent: TITLE"></option>
+                    </select>
+                </div>
+                <div class="line-separator"></div>
                     <div class="field_line field_line_even"
                          data-win-bind="style.display: doEdit Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only"

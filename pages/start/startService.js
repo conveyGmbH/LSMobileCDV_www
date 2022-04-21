@@ -63,7 +63,7 @@
         _actions: null,
         actions: {
             get: function () {
-                if (!Start._actions) {
+                //if (!Start._actions) {
                     Start._actions = new WinJS.Binding.List([
                         {
                             id: "recent",
@@ -122,7 +122,7 @@
                             }
                         }
                     ]);
-                }
+                //}
                 return Start._actions;
             }
         }

@@ -31,6 +31,7 @@
                     LanguageID: null
                 },
                 doEdit: false,
+                enableChangePassword: false,
                 doReloadDb: false,
                 progress: {
                     percent: 0,
@@ -39,7 +40,8 @@
                 },
                 portalLinkUrl : (AppData._persistentStates.odata.https ? "https://" : "http://") +
                     AppData._persistentStates.odata.hostName +
-                    getResourceText("account.portalPath")
+                    getResourceText("account.portalPath"),
+                prevMitarbeiterID: AppData.generalData.getRecordId("Mitarbeiter")
             }, commandList]);
 
             var prevLogin = AppData._persistentStates.odata.login;
@@ -69,6 +71,7 @@
             }
 
             var contentarea = pageElement.querySelector(".contentarea");
+            var initSprache = pageElement.querySelector("#InitSprache");
 
             var that = this;
 
@@ -133,6 +136,8 @@
                             AppData._persistentStates.isDarkTheme = false;
                             Application.pageframe.savePersistentStates();
                             that.binding.doEdit = false;
+                            that.binding.generalData.notAuthorizedUser = false;
+                            that.binding.enableChangePassword = false;
                             Application.navigateById("login", event);
                         } else {
                             Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");
@@ -209,12 +214,14 @@
                         if (that.binding.appSettings.odata.hostName !== prevHostName) {
                             that.binding.doReloadDb = true;
                         }
+                        if (!that.binding.enableChangePassword) {
                         that.binding.doEdit = true;
+                        }
                     }
-                    if (!that.binding.dataLogin.Login || !that.binding.dataLogin.Password) {
+                    /*if (!that.binding.dataLogin.Login || !that.binding.dataLogin.Password) {
                         that.binding.dataLogin.PrivacyPolicyFlag = false;
                         that.binding.dataLogin.PrivacyPolicydisabled = false;
-                    }
+                    }*/
                     if (AppBar.busy || (!that.binding.dataLogin.Login || !that.binding.dataLogin.Password || !that.binding.dataLogin.PrivacyPolicyFlag)) {
                         NavigationBar.disablePage("start");
                         NavigationBar.disablePage("search");
@@ -226,6 +233,9 @@
                     return AppBar.busy || (!that.binding.dataLogin.Login || !that.binding.dataLogin.Password || !that.binding.dataLogin.PrivacyPolicyFlag);
                 },
                 clickLogoff: function() {
+                    if (that.binding.generalData.notAuthorizedUser) {
+                        return false;
+                    }
                     return !that.binding.generalData.logOffOptionActive;
                 }
             };
@@ -266,6 +276,74 @@
             };
             that.openDb = openDb;
 
+            var setLanguage = function (results) {
+                Log.call(Log.l.trace, "Account.Controller.");
+                if (initSprache && results) {
+                    for (var i = 0; i < results.length; i++) {
+                        var row = results[i];
+                        if (row.LanguageID === AppData.getLanguageId()) {
+                            Log.print(Log.l.info, "found LanguageId=" + row.LanguageID);
+                            that.binding.dataLogin.INITSpracheID = row.INITSpracheID;
+                            break;
+                        }
+                    }
+                }
+                Log.ret(Log.l.trace);
+            }
+
+            var getLanguage = function () {
+                var ret = null;
+                Log.call(Log.l.trace, "Account.Controller.");
+                var results = Account.initSpracheView.getResults();
+                var map = Account.initSpracheView.getMap();
+                if (map && results) {
+                    var curIndex = map[that.binding.dataLogin.INITSpracheID];
+                    if (typeof curIndex !== "undefined") {
+                        var row = results[curIndex];
+                        Log.print(Log.l.info, "found LanguageId=" + row.LanguageID);
+                        ret = row.LanguageID;
+                    }
+                }
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+
+            var loadData = function () {
+                Log.call(Log.l.trace, "Account.Controller.");
+                AppData.setErrorMsg(that.binding);
+                var ret = new WinJS.Promise.as().then(function () {
+                    if (!Account.initSpracheView.getResults().length) {
+                        Log.print(Log.l.trace, "calling select initSpracheView...");
+                        //@nedra:25.09.2015: load the list of INITAnrede for Combobox
+                        return Account.initSpracheView.select(function (json) {
+                            Log.print(Log.l.trace, "initSpracheView: success!");
+                            if (json && json.d) {
+                                var results = json.d.results;
+                                // Now, we call WinJS.Binding.List to get the bindable list
+                                if (initSprache && initSprache.winControl) {
+                                    initSprache.winControl.data = new WinJS.Binding.List(results);
+                                    setLanguage(results);
+                                }
+                            }
+                        }, function (errorResponse) {
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        });
+                    } else {
+                        if (initSprache && initSprache.winControl) {
+                            var results = Account.initSpracheView.getResults();
+                            initSprache.winControl.data = new WinJS.Binding.List(results);
+                            setLanguage(results);
+                        }
+                        return WinJS.Promise.as();
+                    }
+                });
+                Log.ret(Log.l.trace);
+                return ret;
+            };
+            this.loadData = loadData;
+
             var saveData = function (complete, error) {
                 var err = null, ret;
                 Log.call(Log.l.trace, "Account.Controller.");
@@ -278,11 +356,29 @@
                 }
                 that.binding.messageText = null;
                 AppData.setErrorMsg(that.binding);
+                that.binding.messageText = null;
+                AppData.setErrorMsg(that.binding);
+                var newLanguageId = getLanguage();
+                var prevLanguageId = AppData._persistentStates.languageId;
+                if (newLanguageId !== prevLanguageId) {
+                    AppData._persistentStates.languageId = newLanguageId;
+                    Application.pageframe.savePersistentStates();
+                }
+                if (!that.binding.doEdit && that.binding.enableChangePassword) {
+                    that.binding.doEdit = true;
+                }
+                if (!that.binding.doEdit && newLanguageId === prevLanguageId) { /* && newLanguageId === prevLanguageId*/
+                    ret = WinJS.Promise.as();
+                    complete({});
+                }
                 if (!that.binding.doEdit && !AppData._persistentStates.odata.dbinitIncomplete) {
                     ret = WinJS.Promise.as();
                     complete({});
                 } else {
                     AppBar.busy = true;
+                    if (that.binding.enableChangePassword) {
+                        that.binding.doEdit = !that.binding.enableChangePassword;
+                    }
                     that.binding.appSettings.odata.onlinePath = AppData._persistentStatesDefaults.odata.onlinePath;
                     that.binding.appSettings.odata.registerPath = AppData._persistentStatesDefaults.odata.registerPath;
                     ret = Account.loginRequest.insert(function (json) {
@@ -295,7 +391,7 @@
                                 AppBar.busy = false;
                                 err = { status: 503, statusText: getResourceText("account.inactive") };
                                 AppData.setErrorMsg(that.binding, err);
-                                alert(err.statusText);
+                                //alert(err.statusText);
                                 error(err);
                             } else {
                                 var location = json.d.ODataLocation;
@@ -303,13 +399,13 @@
                                     that.binding.appSettings.odata.onlinePath = location + AppData._persistentStatesDefaults.odata.onlinePath;
                                     that.binding.appSettings.odata.registerPath = location + AppData._persistentStatesDefaults.odata.registerPath;
                                 }
-                                Application.pageframe.savePersistentStates();
+                                //Application.pageframe.savePersistentStates();
                             }
                         } else {
                             AppBar.busy = false;
                             err = { status: 404, statusText: getResourceText("account.unknown") + "\n\n" + that.binding.dataLogin.Login };
                             AppData.setErrorMsg(that.binding, err);
-                            alert(err.statusText);
+                            //alert(err.statusText);
                             error(err);
                         }
                         return WinJS.Promise.as();
@@ -330,7 +426,7 @@
                             var dataLogin = {
                                 Login: that.binding.dataLogin.Login,
                                 Password: that.binding.dataLogin.Password,
-                                LanguageID: AppData.getLanguageId(),
+                                LanguageID: parseInt(that.binding.dataLogin.INITSpracheID), /*AppData.getLanguageId()nicht aufrufen!!*/
                                 Aktion: deviceID
                             };
                             return Account.loginView.insert(function (json) {
@@ -377,6 +473,8 @@
                                             AppData.generalData.setRecordId("Mitarbeiter", dataLogin.MitarbeiterID);
                                             Application.pageframe.savePersistentStates();
                                         }
+                                        that.binding.generalData.notAuthorizedUser = false;
+                                        that.binding.generalData.oDataErrorMsg = null;
                                         if (that.binding.appSettings.odata.useOffline) {
                                             if (doReloadDb) {
                                                 if (!that.binding.doReloadDb) {
@@ -386,18 +484,24 @@
                                                 Application.pageframe.savePersistentStates();
                                                 return that.openDb(complete, error);
                                             } else {
+                                                if (prevPassword !== that.binding.dataLogin.Password) {
+                                                    Application.pageframe.savePersistentStates();
+                                                }
                                                 AppBar.busy = false;
                                                 AppData._curGetUserDataId = 0;
                                                 AppData.getUserData();
-                                                complete(json);
+                                                complete(dataLogin);
                                                 return WinJS.Promise.as();
                                             }
                                         } else {
+                                            if (prevPassword !== that.binding.dataLogin.Password) {
+                                                Application.pageframe.savePersistentStates();
+                                            }
                                             AppBar.busy = false;
                                             AppData.generalData.setRecordId("Kontakt", dataLogin.KontaktID);
                                             AppData._curGetUserDataId = 0;
                                             AppData.getUserData();
-                                            complete(json);
+                                            complete(dataLogin);
                                             return WinJS.Promise.as();
                                         }
                                     } else {
@@ -492,6 +596,27 @@
                 } else {
                     return WinJS.Promise.as();
                 }
+            }).then(function () {
+                Log.print(Log.l.trace, "Binding wireup page complete");
+                if (that.binding.prevMitarbeiterID) {
+                    return that.loadData();
+                } else {
+                    return WinJS.Promise.as();
+                }
+            }).then(function () {
+                if (that.binding.generalData.notAuthorizedUser) {
+                    Log.print(Log.l.trace, "notAuthorizedUser: " + that.binding.generalData.notAuthorizedUser);
+                    that.binding.enableChangePassword = that.binding.generalData.notAuthorizedUser;
+                    that.binding.generalData.logOffOptionActive = false;
+                    var errorMessage = getResourceText("general.unauthorizedUser");
+                    alert(errorMessage);
+                    if (AppBar.scope.binding.generalData.oDataErrorMsg) {
+                        AppData.setErrorMsg(that.binding, AppBar.scope.binding.generalData.oDataErrorMsg);
+                    }
+                }
+            }).then(function () {
+                Log.print(Log.l.trace, "Data loaded");
+                AppBar.notifyModified = true;
             }).then(function () {
                 Log.print(Log.l.trace, "Appheader refresh complete");
                 Application.pageframe.hideSplashScreen();

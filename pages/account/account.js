@@ -69,7 +69,12 @@
                             if (result) {
                                 ret = that.controller.saveData(function (response) {
                                     // called asynchronously if ok
+                                        Application.pageframe.reCheckForLanguage(function () {
                                     complete(response);
+                                        }, function () {
+                                            var errorResponse = "Error: failed to switch language!";
+                                            error(errorResponse);
+                                        });
                                 },
                                 function (errorResponse) {
                                     error(errorResponse);
@@ -82,7 +87,12 @@
                 } else {
                     ret = this.controller.saveData(function (response) {
                         // called asynchronously if ok
+                            Application.pageframe.reCheckForLanguage(function () {
                         complete(response);
+                            }, function () {
+                                var errorResponse = "Error: failed to switch language!";
+                                error(errorResponse);
+                            });
                     },
                     function (errorResponse) {
                         error(errorResponse);

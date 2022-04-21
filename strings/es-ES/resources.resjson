@@ -16,6 +16,7 @@
     "general.december"      : "Dez",
 	"general.internet"      : "Keine Verbindung zum Internet",
 	"general.ckeckServer"   : "Überprüfe Verbindung zum Server/Internet",
+    "general.unauthorizedUser" : "Invalid username/password!\nlogon denied!\nPassword may have been changed, please enter the new password",
 
     "command.backward"      : "Zurück",
     "command.edit"          : "Bearbeiten",
