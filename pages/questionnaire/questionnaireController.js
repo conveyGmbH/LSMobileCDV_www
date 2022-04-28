@@ -280,7 +280,7 @@
                         if (item.Combobox) {
                             ssItems.push({
                                 title: "",
-                                value: null
+                                value: 0 /*null*/
                             });
                         }
                         for (i = 1; i <= 28; i++) {
