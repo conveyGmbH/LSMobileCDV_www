@@ -1392,13 +1392,22 @@
                     Log.ret(Log.l.trace);
                 },
                 onModified: function (event) {
-                    if (that.selectQuestionIdxs && event && event.currentTarget &&
+                    if (event && event.currentTarget &&
                         listView && listView.winControl) {
                         var element = event.currentTarget.parentElement;
                         while (element && element !== listView) {
                             if (element.className === "questionnaire-row") {
                                 var i = listView.winControl.indexOfElement(element.parentElement);
-                                that.checkForSelectionQuestion(i);
+                                var selIdxs = listView.winControl.selection && listView.winControl.selection.getIndices();
+                                var promise;
+                                if (!selIdxs || selIdxs.indexOf(i) < 0) {
+                                    promise = listView.winControl.selection.set(i);
+                                } else {
+                                    promise = WinJS.Promise.as();
+                                }
+                                promise.then(function () {
+                                    that.checkForSelectionQuestion(i);
+                                });
                                 break;
                             }
                             element = element.parentElement;
