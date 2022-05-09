@@ -129,6 +129,7 @@
     "contact.firstName"     : "Prénom",
     "contact.middleName"    : "Deuxième Prénom",
     "contact.position"      : "Position",
+    "contact.industry"		: "Branche",
     "contact.formOf"        : "Civilité ",
     "contact.academicTitle" : "Titre",
     "contact.company"       : "Société",
