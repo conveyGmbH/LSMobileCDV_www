@@ -1081,6 +1081,14 @@
                     }*/
                     AppData._persistentStates.showvisitorFlowContact = parseInt(item.LocalValue);
                     break;
+                case 50:
+                    /*if (item.LocalValue) {
+                        AppData._persistentStates.showvisitorFlow = true;
+                    } else {
+                        AppData._persistentStates.showvisitorFlow = false;
+                    }*/
+                    AppData._persistentStates.visitorFlowInterval = parseInt(item.LocalValue);
+                    break;
                 default:
                     // defaultvalues
             }
