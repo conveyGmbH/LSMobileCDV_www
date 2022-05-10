@@ -248,6 +248,8 @@
     "search.ID"             : "ID",
     "search.deviceID"       : "Appareil",
     "search.company"        : "Société",
+    "search.position"       : "Position",
+    "search.industry"		: "Branche",
     "search.firstName"      : "Prénom",
     "search.name"           : "Nom",
     "search.email"          : "Adresse e-mail",

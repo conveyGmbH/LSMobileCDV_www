@@ -62,17 +62,27 @@
                     </div>
                     <div class="line-separator"></div>
                     <div class="field_line field_line_odd">
+                        <span class="label win-type-caption portrait_only_left" data-win-res="{textContent: 'contact.position'}"></span>
+                        <span class="label win-type-caption portrait_only_half" data-win-res="{textContent: 'contact.industry'}"></span>
+                        <!--<span class="label landscape_only" data-win-res="{textContent: 'contact.position'}"></span>-->
+                        <div class="label landscape_only"><span data-win-res="{textContent: 'contact.position'}"></span> / <span data-win-res="{textContent: 'contact.industry'}"></span></div>
+                        <div class="input_group">
+                            <input class="input_half_left win-textbox" type="text" data-win-bind="value: restriction.Position Binding.Mode.twoway; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplayNone" />
+                            <input class="input_half_right win-textbox" type="text" data-win-bind="value: restriction.Branche Binding.Mode.twoway; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplayNone" />
+                        </div>
+                    </div>
+                    <div class="field_line field_line_even">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'search.email'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'search.email'}"></span>
                         <input type="text" class="input_field win-textbox" data-win-bind="value: restriction.EMail Binding.Mode.twoway" />
                     </div>
-                    <div class="field_line field_line_even">
+                    <div class="line-separator"></div>
+                    <div class="field_line field_line_odd">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'search.address'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'search.address'}"></span>
                         <input class="input_field win-textbox" type="text" data-win-bind="value: restriction.Strasse Binding.Mode.twoway" />
                     </div>
-                    <div class="line-separator"></div>
-                    <div class="field_line field_line_odd">
+                    <div class="field_line field_line_even">
                         <span class="label win-type-caption portrait_only_left" data-win-res="{textContent: 'search.zip'}"></span>
                         <span class="label win-type-caption portrait_only_right" data-win-res="{textContent: 'search.city'}"></span>
                         <span class="label landscape_only">
@@ -83,7 +93,8 @@
                             <input type="text" class="input_small_right win-textbox" data-win-bind="value: restriction.Stadt Binding.Mode.twoway" />
                         </div>
                     </div>
-                    <div class="field_line field_line_even">
+                    <div class="line-separator"></div>
+                    <div class="field_line field_line_odd">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'search.country'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'search.country'}"></span>
                         <select id="InitLandSearch"
@@ -92,6 +103,9 @@
                                 data-win-bind="value: restriction.INITLandID Binding.Mode.twoway">
                             <option data-win-bind="value: INITLandID; textContent: TITLE"></option>
                         </select>
+                    </div>
+                    <div class="field_line field_line_even">
+ 
                     </div>
                     <div class="line-separator"></div>
                     <div class="field_line field_line_odd">
