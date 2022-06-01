@@ -517,7 +517,7 @@
                                     //AppData.setErrorMsg(AppBar.scope.binding, errorResponse);
                                     // user is not authorized to access this service
                                     WinJS.Promise.timeout(1000).then(function () {
-                                        Application.navigateById("Account");
+                                        Application.navigateById("account");
                                     });
                                 }
                                 //if (errorResponse.response["\n\'error'"].code)
