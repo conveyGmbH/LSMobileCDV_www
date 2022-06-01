@@ -292,7 +292,7 @@
                             WinJS.Navigation.canGoBack === true) {
                             WinJS.Navigation.back(1).done( /* Your success and error handlers */);
                         } else {
-                            Application.navigateById("Account", null, null);
+                            Application.navigateById("account", null, null);
                         }
                     });
                     Log.ret(Log.l.trace, "User cancelled");
