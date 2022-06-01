@@ -81,6 +81,7 @@
                         if (!prevDocViewer) {
                             that.docViewer = getDocViewer();
                         }
+                        var contentarea = pageElement.querySelector(".contentarea");
                         that._getHammerExcludeRect = function () {
                             var parentElement = pageElement.querySelector("#svghost");
                             if (parentElement) {
@@ -88,11 +89,12 @@
                                 if (NavigationBar.orientation === "horizontal") {
                                     extraOffsetTop += NavigationBar.navHorzHeight;
                                 }
+                                var scrollTopContent = contentarea.scrollTop;
                                 that._hammerExcludeRect = {
                                     left: parentElement.offsetLeft,
-                                    top: parentElement.offsetTop + extraOffsetTop,
+                                    top: parentElement.offsetTop + extraOffsetTop - scrollTopContent - 20,
                                     right: parentElement.offsetLeft + parentElement.clientWidth,
-                                    bottom: parentElement.offsetTop + extraOffsetTop + parentElement.clientHeight
+                                    bottom: parentElement.offsetTop + extraOffsetTop + parentElement.clientHeight - scrollTopContent + 20
                                 };
                             }
                             return that._hammerExcludeRect;
