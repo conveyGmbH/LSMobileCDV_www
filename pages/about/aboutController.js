@@ -156,7 +156,16 @@
                         }, function (msg) {
                             Log.print(Log.l.error, "Sharing failed with message: " + msg);
                         });*/
-                        window.plugins.socialsharing.share(message, subject, [fileName]);
+                        if (typeof device === "object" && (device.platform === "Android" || device.platform === "iOS")) {
+                            window.plugins.socialsharing.share(message, subject, [fileName]);
+                        } else {
+                            window.resolveLocalFileSystemURL(dataDirectory, function(dirEntry) {
+                                if (dirEntry && dirEntry.filesystem.winpath) {
+                                    fileName = dirEntry.filesystem.winpath.replace(/\//g, "\\") + dbName;
+                                    window.plugins.socialsharing.share(message, subject, [fileName]);
+                                }
+                            });
+                        }
 
                         /*try {
                             window.resolveLocalFileSystemURL(dataDirectory, function (dirEntry) {
