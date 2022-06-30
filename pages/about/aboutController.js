@@ -132,7 +132,8 @@
                         dataDirectory = cordova.file.databaseDirectory;
                         //applicationStorageDirectory
                     } else if (typeof device === "object" && device.platform === "iOS") {
-                        dataDirectory = cordova.file.documentsDirectory;
+                        var testDataDirectory = cordova.file.documentsDirectory;
+                        dataDirectory = cordova.file.applicationStorageDirectory + "Library/LocalDatabase/";
                     } else {
                         dataDirectory = cordova.file.dataDirectory;
                     }
@@ -160,7 +161,7 @@
                             window.plugins.socialsharing.share(message, subject, [fileName]);
                         } else {
                             window.resolveLocalFileSystemURL(dataDirectory, function(dirEntry) {
-                                if (dirEntry && dirEntry.filesystem.winpath) {
+                                if (dirEntry && dirEntry.filesystem && dirEntry.filesystem.winpath) {
                                     fileName = dirEntry.filesystem.winpath.replace(/\//g, "\\") + dbName;
                                     window.plugins.socialsharing.share(message, subject, [fileName]);
                                 }
