@@ -118,20 +118,47 @@
                 },
                 clickShareDB: function (event) {
                     Log.call(Log.l.trace, "Info.Controller.");
+                    var dbName = Application.pageframe.name;
+                    var dataDirectory = cordova.file.dataDirectory;
+                    if (dbName && typeof dbName === "string") {
+                        dbName = dbName.toLowerCase();
+                    } else {
+                        dbName = 'leadsuccess';
+                    }
+                    dbName += '.db';
+                    // cordova.file
+                    Log.print(Log.l.trace, "cordova.file: success!" + cordova.file);
+                    if (typeof device === "object" && device.platform === "Android") {
+                        dataDirectory = cordova.file.databaseDirectory;
+                        //applicationStorageDirectory
+                    } else if (typeof device === "object" && device.platform === "iOS") {
+                        dataDirectory = cordova.file.documentsDirectory;
+                    } else {
+                        dataDirectory = cordova.file.dataDirectory;
+                    }
                     if (window.plugins &&
                         window.plugins.socialsharing &&
                         typeof window.plugins.socialsharing.share === "function" &&
                         typeof window.resolveLocalFileSystemURL === "function" &&
                         typeof cordova !== "undefined" &&
                         cordova.file &&
-                        (cordova.file.tempDirectory || cordova.file.externalDataDirectory) &&
+                        cordova.file.dataDirectory &&
                         Application.pageframe &&
                         Application.pageframe.name) {
-                        var dataDirectory = cordova.file.externalDataDirectory || cordova.file.tempDirectory;
-                        var fileName = "leadsuccess.db";
-                        var subject = "leadsuccess.db";
-                        var message = "leadsuccess.db" + " " + getResourceText("info.share");
-                        try {
+                        //var dataDirectory = cordova.file.dataDirectory;
+                        var fileName = dataDirectory + dbName;
+                        var subject = dbName;
+                        var message = dbName + " " + getResourceText("info.share");
+                        var options = { subject: subject, message: message, files: [fileName] }
+                        /*window.plugins.socialsharing.shareWithOptions(options, function(result) {
+                            Log.print(Log.l.info, "Share completed? " + result.completed); // On Android apps mostly return false even while it's true
+                            Log.print(Log.l.info, "Shared to app: " + result.app); // On Android result.app since plugin version 5.4.0 this is no longer empty. On iOS it's empty when sharing is cancelled (result.completed=false)
+                        }, function (msg) {
+                            Log.print(Log.l.error, "Sharing failed with message: " + msg);
+                        });*/
+                        window.plugins.socialsharing.share(message, subject, [fileName]);
+
+                        /*try {
                             window.resolveLocalFileSystemURL(dataDirectory, function (dirEntry) {
                                 if (dirEntry) {
                                     try {
@@ -141,6 +168,7 @@
                                         }, function (fileEntry) {
                                             if (fileEntry) {
                                                 fileEntry.file(function (file) {
+                                                    window.plugins.socialsharing.share(message, subject, file);
                                                     try {
                                                         var reader = new FileReader();
                                                         reader.onerror = function (errorResponse) {
@@ -149,11 +177,11 @@
                                                         reader.onloadend = function () {
                                                             var blob = utf8_decode(this.result);
                                                             var encoded = b64.fromByteArray(blob);
-                                                            var data = "data:text/log;base64," + encoded;
+                                                            var data = "data:application/db;base64," + encoded;
                                                             Log.print(Log.l.info, "Successful file read! fileName=" + fileName + " data-length=" + data);
                                                             window.plugins.socialsharing.share(message, subject, data);
                                                         };
-                                                        reader.readAsText(file);
+                                                        reader.readAsBinaryString(file);
                                                     } catch (ex) {
                                                         console.log("Failed new FileReader error: " + JSON.stringify(ex));
                                                     }
@@ -173,7 +201,7 @@
                             });
                         } catch (ex) {
                             AppData.setErrorMsg(that.binding, "Exception in share file: " + JSON.stringify(ex));
-                        }
+                        }*/
                     }
                     Log.ret(Log.l.trace);
                 },
@@ -211,6 +239,10 @@
                         Application.pageframe.name) ? false : true;
                 },
                 clickOk: function () {
+                    // always enabled!
+                    return false;
+                },
+                clickShareDB: function () {
                     // always enabled!
                     return false;
                 }
