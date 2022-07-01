@@ -42,6 +42,7 @@
     "command.print"         : "Stampa",
 	"command.save"			: "Salvare",
     "command.share"			: "Condividere",
+    "command.shareDB"       : "Condividere backup",
     "command.qrcode"		: "QR-Code",
     "command.barcodeEdit"	: "Inserisci barcode",
     "command.resetRestriction" : "Elimina",
@@ -456,6 +457,7 @@
     "info.lognostack"       : "Ottimizzazione call stack",
     "info.logtarget"        : "File",
     "info.share"            : "Condividere il file di log",
+    "info.shareBackup"      : "Condividi il backup",
     "info.logWinJS"         : "Protocollo di Framework",
     "info.cameraOptions"    : "Opzioni fotocamera",
     "info.cameraQuality"    : "Qualità",
@@ -481,6 +483,9 @@
     "info.barcodeDeviceStatus" : "Condizione",
     "info.turnThumbsLeft"   : "Girare l'anteprima a sinistra",
     "info.cameraMegapixel"  : "Camera megapixels",
+
+    "backup.title"          : "Backup",
+    "backup.info"			: "Hier kannst du ein backup erstellen",
 
     "infodesk.actualEmployee"     : "Employee attuale",
     "infodesk.employee"     : "Employee",
@@ -592,6 +597,7 @@
     "label.employeeGenPWList"     : "Pregenerati",
     "label.support"		    : "Support",
     "label.barcode"			: "Visitor Flow",
+    "label.backup"			: "Backup",
 
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Annulla",

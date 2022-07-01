@@ -6,12 +6,12 @@
 /// <reference path="~/www/lib/convey/scripts/logging.js" />
 /// <reference path="~/www/lib/convey/scripts/navigator.js" />
 /// <reference path="~/www/lib/convey/scripts/appbar.js" />
-/// <reference path="~/www/pages/about/aboutController.js" />
+/// <reference path="~/www/pages/backup/backupController.js" />
 
 (function () {
     "use strict";
 
-    var pageName = Application.getPagePath("about");
+    var pageName = Application.getPagePath("backup");
 
     WinJS.UI.Pages.define(pageName, {
         // This function is called whenever a user navigates to this page. It
@@ -22,12 +22,11 @@
             // add page specific commands to AppBar
             var commandList = [
                 { id: "clickBack", label: getResourceText("command.backward"), tooltip: getResourceText("tooltip.backward"), section: "primary", svg: "navigate_left" },
-                { id: "clickShareDB", label: getResourceText("Condividi il backup"), tooltip: getResourceText("info.shareBackup"), section: "primary", svg: "data_floppy_disk" },
-                { id: "clickShare", label: getResourceText("command.share"), tooltip: getResourceText("info.share"), section: "primary", svg: "share" },
+                { id: "clickShareDB", label: getResourceText("info.shareBackup"), tooltip: getResourceText("info.shareBackup"), section: "primary", svg: "data_floppy_disk" },
                 { id: "clickOk", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check", key: WinJS.Utilities.Key.enter }
             ];
 
-            this.controller = new About.Controller(element, commandList);
+            this.controller = new Backup.Controller(element, commandList);
             Log.ret(Log.l.trace);
         },
 

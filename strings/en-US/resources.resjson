@@ -42,6 +42,7 @@
     "command.print"         : "Print",
 	"command.save"			: "Save", 
     "command.share"			: "Share",
+    "command.shareDB"       : "Backup teilen",
     "command.qrcode"		: "QR-Code",
     "command.barcodeEdit"	: "Enter barcode",
 	"command.resetRestriction" : "Delete Filters",
@@ -454,6 +455,7 @@
     "info.log6"             : "Details",
     "info.logtarget"        : "File",
     "info.share"            : "Share log file",
+    "info.shareBackup"      : "Share backup",
     "info.logWinJS"         : "Framework protocol",
     "info.loggroup"         : "Group",
     "info.lognostack"       : "Optimized call stack",
@@ -481,6 +483,9 @@
     "info.barcodeDeviceStatus" : "Status",
     "info.turnThumbsLeft"   : "Turn thumbs left",
     "info.cameraMegapixel"  : "Camera megapixels",
+
+    "backup.title"          : "Backup",
+    "backup.info"			: "Hier kannst du ein backup erstellen",
 
     "infodesk.actualEmployee"     : "Current employee",
     "infodesk.employee"     : "Employee",
@@ -592,6 +597,7 @@
     "label.employeeGenPWList"     : "Pre-generated",
     "label.support"		    : "Support",
     "label.barcode"			: "Visitor Flow",
+    "label.backup"			: "Backup",
 
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Cancel",
