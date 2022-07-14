@@ -192,21 +192,6 @@
                             NavigationBar.groups = Application.navigationBarGroups;
                         });
                         Application.pageframe.savePersistentStates();
-                        var pValue;
-                        if (that.binding.generalData.isDarkTheme) {
-                            pValue = "1";
-                        } else {
-                            pValue = "0";
-                        }
-                        AppData.call("PRC_SETVERANSTOPTION", {
-                            pVeranstaltungID: AppData.getRecordId("Veranstaltung"),
-                            pOptionTypeID: 18,
-                            pValue: pValue
-                        }, function (json) {
-                            Log.print(Log.l.info, "call success! ");
-                        }, function (error) {
-                            Log.print(Log.l.error, "call error");
-                        });
                     }
                     Log.ret(Log.l.trace);
                 },
