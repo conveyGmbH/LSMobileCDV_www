@@ -44,6 +44,7 @@
         inputBorderBottom: true,
         iconStrokeWidth: 150,
         prevNavigateNewId: "newContact",
+        manualTheme: true,
         odata: {
             https: true,
             hostName: "leadsuccess.convey.de",

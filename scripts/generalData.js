@@ -975,6 +975,14 @@
                         }
                         Colors.isDarkTheme = AppData._persistentStates.isDarkTheme;
                     }
+                    if (AppData._persistentStates.manualTheme) {
+                        if (item.LocalValue === "1") {
+                            AppData._persistentStates.isDarkTheme = true;
+                        } else {
+                            AppData._persistentStates.isDarkTheme = false;
+                        }
+                        Colors.isDarkTheme = AppData._persistentStates.isDarkTheme;
+                    }
                     break;
                 case 19:
                     if (item.LocalValue === "1") {
@@ -1153,6 +1161,7 @@
                 data.off = getResourceText("settings.off");
                 data.dark = getResourceText("settings.dark");
                 data.light = getResourceText("settings.light");
+                data.system = getResourceText("settings.system");
                 data.present = getResourceText("userinfo.present");
                 data.absend = getResourceText("userinfo.absend");
                 data.limit = AppData._userData.Limit || AppData.getVisitorFlowLimit();

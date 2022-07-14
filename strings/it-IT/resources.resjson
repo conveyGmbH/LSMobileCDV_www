@@ -344,6 +344,7 @@
     "settings.theme"        : "Colore tema",
     "settings.light"        : "Chiaro",
     "settings.dark"         : "Scuro",
+    "settings.system"       : "Sistema",
     "settings.inputBorder"  : "Bordo campi immissione",
     "settings.inputBorderRadius"  : "Angolo campi immissione",
     "settings.border0"      : "Nessuno",
@@ -485,7 +486,7 @@
     "info.cameraMegapixel"  : "Camera megapixels",
 
     "backup.title"          : "Backup",
-    "backup.info"			: "Hier kannst du ein backup erstellen",
+    "backup.info"			: "Qui puoi creare un backup e condividerlo con convey information system gmbh",
 
     "infodesk.actualEmployee"     : "Employee attuale",
     "infodesk.employee"     : "Employee",

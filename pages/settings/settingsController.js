@@ -27,8 +27,11 @@
             }
             Application.Controller.apply(this, [pageElement, {
                 isAndroid: isAndroid,
-                showSettingsFlag: null
+                showSettingsFlag: null,
+                themeId: 2
             }, commandList]);
+
+            var themeSelect = pageElement.querySelector("#themeSelect");
 
             var that = this;
 
@@ -158,6 +161,55 @@
                     }
                     Log.ret(Log.l.trace);
                 },
+                changedTheme: function (event) {
+                    Log.call(Log.l.trace, "Settings.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified &&
+                        that.binding && that.binding.generalData) {
+                        var themeId = event.currentTarget.value;
+                        if (typeof themeId === "string") {
+                            themeId = parseInt(themeId);
+                        }
+                        if (themeId === 2 && typeof window.matchMedia === "function") {
+                            that.binding.generalData.manualTheme = false;
+                            var prefersColorSchemeDark = window.matchMedia("(prefers-color-scheme: dark)");
+                            that.binding.generalData.isDarkTheme = prefersColorSchemeDark && prefersColorSchemeDark.matches;
+                        } else {
+                            that.binding.generalData.manualTheme = true;
+                            that.binding.generalData.isDarkTheme = (themeId === 1);
+                        }
+                        Log.print(Log.l.trace, "isDarkTheme=" + that.binding.generalData.isDarkTheme +
+                            " manualTheme=" + that.binding.generalData.manualTheme);
+                        WinJS.Promise.timeout(0).then(function () {
+                            Colors.isDarkTheme = that.binding.generalData.isDarkTheme;
+                            that.createColorPicker("backgroundColor");
+                            that.createColorPicker("textColor");
+                            that.createColorPicker("labelColor");
+                            that.createColorPicker("tileTextColor");
+                            that.createColorPicker("tileBackgroundColor");
+                            that.createColorPicker("navigationColor");
+                            that.createColorPicker("dashboardColor");
+                            AppBar.loadIcons();
+                            NavigationBar.groups = Application.navigationBarGroups;
+                        });
+                        Application.pageframe.savePersistentStates();
+                        var pValue;
+                        if (that.binding.generalData.isDarkTheme) {
+                            pValue = "1";
+                        } else {
+                            pValue = "0";
+                        }
+                        AppData.call("PRC_SETVERANSTOPTION", {
+                            pVeranstaltungID: AppData.getRecordId("Veranstaltung"),
+                            pOptionTypeID: 18,
+                            pValue: pValue
+                        }, function (json) {
+                            Log.print(Log.l.info, "call success! ");
+                        }, function (error) {
+                            Log.print(Log.l.error, "call error");
+                        });
+                    }
+                    Log.ret(Log.l.trace);
+                },
                 clickIndividualColors: function (event) {
                     Log.call(Log.l.trace, "Settings.Controller.");
                     if (event.currentTarget && AppBar.notifyModified &&
@@ -279,6 +331,33 @@
                         that.binding.showSettingsFlag = true;
                     }
                 }
+                var ret = new WinJS.Promise.as().then(function() {
+                    if (themeSelect && themeSelect.winControl) {
+                        var themeSelectList = new WinJS.Binding.List([
+                            { themeId: 0, label: that.binding.generalData.light },
+                            { themeId: 1, label: that.binding.generalData.dark },
+                            { themeId: 2, label: that.binding.generalData.system }
+                        ]);
+                        themeSelect.winControl.data = themeSelectList;
+                        that.binding.themeId = that.binding.generalData.manualTheme
+                            ? (that.binding.generalData.isDarkTheme ? 1 : 0)
+                            : 2;
+                    }
+                    return WinJS.Promise.as();
+                }).then(function () {
+                    /*for (var i = 0; i < Application.navigationBarGroups.length; i++) {
+                        if (Application.navigationBarGroups[i].id === "events") {
+                            if (!Application.navigationBarGroups[i].disabled) {
+                                if (that.binding) {
+                                    that.binding.showSettingsFlag = true;
+                                }
+                            }
+                            break;
+                        }
+                    }*/
+                    var colors = Colors.updateColors();
+                    return (colors && colors._loadCssPromise) || WinJS.Promise.as();
+                });
               /*  return Settings.CR_VERANSTOPTION_ODataView.select(function (json) {
                     // this callback will be called asynchronously
                     // when the response is available
@@ -306,8 +385,8 @@
                     Colors.updateColors();
                     return WinJS.Promise.as();
                 //});*/
-                    Colors.updateColors();
-                    return WinJS.Promise.as();
+                    /*Colors.updateColors();
+                    return WinJS.Promise.as();*/
             };
             this.loadData = loadData;
             AppData.setErrorMsg(this.binding);

@@ -46,13 +46,20 @@
                     <div class="field_line field_line_odd">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'settings.theme'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'settings.theme'}"></span>
-                        <div class="input_field toggle-switch-parent">
+                        <!--<div class="input_field toggle-switch-parent">
                             <div id="isDarkTheme" class="input_field"
                                  data-win-control="WinJS.UI.ToggleSwitch"
                                  data-win-bind="winControl.checked: generalData.isDarkTheme; winControl.labelOn: generalData.dark; winControl.labelOff: generalData.light"
                                  onchange="AppBar.handleEvent('change', 'clickIsDarkTheme', event)">
                             </div>
-                        </div>
+                        </div>-->
+                        <select id="themeSelect"
+                                class="input_field win-dropdown"
+                                data-win-control="WinJS.UI.Repeater"
+                                data-win-bind="value: themeId"
+                                onchange="AppBar.handleEvent('change', 'changedTheme', event)">
+                            <option data-win-bind="value: themeId; textContent: label"></option>
+                        </select>
                     </div>
                     <div class="individual-color-settings" data-win-bind="style.display: showSettingsFlag Binding.Converter.toDisplay">
                         <div class="field_line field_line_even">

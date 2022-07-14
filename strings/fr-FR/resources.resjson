@@ -344,6 +344,7 @@
     "settings.theme"        : "Couleur de Thème",
     "settings.light"        : "Clair",
     "settings.dark"         : "Foncé",
+    "settings.system"       : "Système",
     "settings.inputBorder"  : "Input bordure",
     "settings.inputBorderRadius"  : "Input coincer",
     "settings.border0"      : "aucun",
@@ -485,7 +486,7 @@
     "info.cameraMegapixel"  : "Camera megapixels",
 
     "backup.title"          : "Backup",
-    "backup.info"			: "Hier kannst du ein backup erstellen",
+    "backup.info"			: "Ici, vous pouvez créer une sauvegarde et la partager avec convey information system gmbh",
 
     "infodesk.actualEmployee"     : "Personnel actuel",
     "infodesk.employee"     : "Personnel",
