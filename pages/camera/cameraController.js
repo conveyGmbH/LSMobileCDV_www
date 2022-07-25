@@ -339,7 +339,7 @@
                             destinationType: Camera.DestinationType.DATA_URL,
                             sourceType: Camera.PictureSourceType.CAMERA,
                             allowEdit: !isWindows10,
-                            quality: AppData.generalData.cameraQuality,
+                            quality: typeof AppData.generalData.cameraQuality === "string" ? parseInt(AppData.generalData.cameraQuality) : AppData.generalData.cameraQuality,
                             targetWidth: -1,
                             targetHeight: -1,
                             encodingType: Camera.EncodingType.JPEG,
