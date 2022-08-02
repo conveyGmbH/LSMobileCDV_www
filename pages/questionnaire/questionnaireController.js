@@ -413,7 +413,7 @@
                 var hideQuestion = false;
                 if (item && typeof sortIdx === "number") {
                     var value, key;
-                    if (sortIdx > 0 && sortIdx < 9) {
+                    if (sortIdx > 0 && sortIdx <= 9) {
                         value = "0" + sortIdx.toString();
                     } else {
                         value = sortIdx.toString();
