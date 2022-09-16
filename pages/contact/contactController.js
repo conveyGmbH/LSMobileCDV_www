@@ -91,6 +91,10 @@
                 if (newDataContact.Bemerkungen === null) {
                     newDataContact.Bemerkungen = "";
                 }
+                newDataContact.Flag_NoEdit = !!newDataContact.Flag_NoEdit;
+                if (!newDataContact.Flag_NoEdit) {
+                    newDataContact.Flag_NoEdit = AppRepl.replicator && AppRepl.replicator.inFastRepl;
+                }
                 that.binding.dataContact = newDataContact;
                 if (!that.binding.dataContact.KontaktVIEWID) {
                     that.binding.dataContact.Nachbearbeitet = 1;
@@ -444,8 +448,6 @@
                             AppData.setErrorMsg(that.binding);
                             Log.print(Log.l.trace, "contactView: success!");
                             if (json && json.d) {
-                                // now always edit!
-                                json.d.Flag_NoEdit = AppRepl.replicator && AppRepl.replicator.inFastRepl;
                                 that.setDataContact(json.d);
                                 if (that.binding.dataContact.Request_Barcode) {
                                     AppData._barcodeRequest = that.binding.dataContact.Request_Barcode;
@@ -561,8 +563,6 @@
                             Log.print(Log.l.info, "contactData insert: success!");
                             // contactData returns object already parsed from json file in response
                             if (json && json.d) {
-                                // now always edit!
-                                json.d.Flag_NoEdit = AppRepl.replicator && AppRepl.replicator.inFastRepl;
                                 that.setDataContact(json.d);
                                 setRecordId(that.binding.dataContact.KontaktVIEWID);
                                 AppData.getUserData();
