@@ -287,23 +287,35 @@
             AppData.setErrorMsg(that.binding);
             var takePhoto = function() {
                 Log.call(Log.l.trace, "Camera.Controller.");
-                if (that.binding.generalData.useClippingCamera &&
-                    scan &&
-                    typeof scan.scanDoc === "function") {
                     var autoShutterTime = 0;
+                var cameraQuality = 0;
+                var cameraMegapixel = 0;
                     if (typeof that.binding.generalData.autoShutterTime === "string") {
                         autoShutterTime = parseInt(that.binding.generalData.autoShutterTime);
                     } else if (typeof that.binding.generalData.autoShutterTime === "number") {
                         autoShutterTime = that.binding.generalData.autoShutterTime;
                     }
+                if (typeof AppData.generalData.cameraQuality === "string") {
+                    cameraQuality = parseInt(AppData.generalData.cameraQuality);
+                } else if (typeof that.binding.generalData.autoShutterTime === "number") {
+                    cameraQuality = AppData.generalData.cameraQuality;
+                }
+                if (typeof AppData.generalData.cameraMegapixel === "string") {
+                    cameraMegapixel = parseInt(AppData.generalData.cameraMegapixel);
+                } else if (typeof AppData.generalData.cameraMegapixel === "number") {
+                    cameraMegapixel = AppData.generalData.cameraMegapixel;
+                }
+                if (that.binding.generalData.useClippingCamera &&
+                    scan &&
+                    typeof scan.scanDoc === "function") {
                     AppBar.busy = true;
                     scan.scanDoc(onPhotoDataSuccess, onPhotoDataFail, {
                         sourceType : 1,
                         returnBase64 : true,
                         fileName : "photo",
-                        quality: (1.0 - AppData.generalData.cameraQuality / 100.0) * 4.0 + 1.0,
+                        quality: (1.0 - cameraQuality / 100.0) * 4.0 + 1.0,
                         convertToGrayscale: AppData.generalData.cameraUseGrayscale,
-                        maxResolution: AppData.generalData.cameraMegapixel * 1000000,
+                        maxResolution: cameraMegapixel * 1000000,
                         autoShutter: autoShutterTime
                     });
                 } else {
@@ -322,9 +334,9 @@
                             sourceType : 1,
                             returnBase64 : true,
                             fileName : "photo",
-                            quality: (1.0 - AppData.generalData.cameraQuality / 100.0) * 4.0 + 1.0,
+                            quality: (1.0 - cameraQuality / 100.0) * 4.0 + 1.0,
                             convertToGrayscale: AppData.generalData.cameraUseGrayscale,
-                            maxResolution: AppData.generalData.cameraMegapixel * 1000000,
+                            maxResolution: cameraMegapixel * 1000000,
                             autoShutter: 0,
                             dontClip: true
                         });
