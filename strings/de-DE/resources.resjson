@@ -463,7 +463,7 @@
     "info.cameraOptions"    : "Kameraoptionen",
     "info.cameraQuality"    : "Qualität",
     "info.cameraUseGrayscale" : "Graustufen",
-    "info.useClippingCamera": "Automatische Erkennung",
+    "info.useClippingCamera": "Automatisch Zuschneiden",
     "info.scannerOptions"   : "Scanneroptionen",
     "info.useExternalCamera": "Visitenkarten Scanner",
     "info.replication"      : "Synchronisationsoptionen",

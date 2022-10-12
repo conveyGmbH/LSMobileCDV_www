@@ -54,8 +54,13 @@
                 barcodeDeviceStatus: Barcode.deviceStatus,
                 hasScannerOption: hasScannerOption,
                 lastError: lastError,
-                logToFile: AppData.generalData.logTarget === 2 ? true : false
+                logToFile: AppData.generalData.logTarget === 2 ? true : false,
+                showClippingCamera: !isAndroid
             }, commandList]);
+
+            if (isAndroid) {
+                this.binding.generalData.useClippingCamera = false;
+            }
 
             this.picturesDirectorySubFolder = AppData.generalData.picturesDirectorySubFolder;
             this.binding.generalData.picturesDirectorySubFolder = "";

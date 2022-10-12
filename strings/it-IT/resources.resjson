@@ -463,7 +463,7 @@
     "info.cameraOptions"    : "Opzioni fotocamera",
     "info.cameraQuality"    : "Qualità",
     "info.cameraUseGrayscale" : "Scala di grigi",
-    "info.useClippingCamera": "Riconoscimento automatico",
+    "info.useClippingCamera": "Taglio automatico",
     "info.scannerOptions"   : "Opzioni scanner",
     "info.useExternalCamera": "Scanner per biglietti da visita",
     "info.replication"      : "Opzioni di sincronizzazione",

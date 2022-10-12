@@ -463,7 +463,7 @@
     "info.cameraOptions"    : "Camera options",
     "info.cameraQuality"    : "Quality",
     "info.cameraUseGrayscale" : "Grayscale",
-    "info.useClippingCamera": "Automatic recognition",
+    "info.useClippingCamera": "Automatic clip",
     "info.scannerOptions"   : "Scanner options",
     "info.useExternalCamera": "Businesscard scanner",
     "info.replication"      : "Synchronisation options",

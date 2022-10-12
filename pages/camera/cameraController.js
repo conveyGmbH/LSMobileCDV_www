@@ -290,6 +290,10 @@
                     var autoShutterTime = 0;
                 var cameraQuality = 0;
                 var cameraMegapixel = 0;
+                var isAndroid = false;
+                if (typeof device === "object" && device.platform === "Android") {
+                    isAndroid = true;
+                }
                     if (typeof that.binding.generalData.autoShutterTime === "string") {
                         autoShutterTime = parseInt(that.binding.generalData.autoShutterTime);
                     } else if (typeof that.binding.generalData.autoShutterTime === "number") {
@@ -297,7 +301,7 @@
                     }
                 if (typeof AppData.generalData.cameraQuality === "string") {
                     cameraQuality = parseInt(AppData.generalData.cameraQuality);
-                } else if (typeof that.binding.generalData.autoShutterTime === "number") {
+                } else if (typeof that.binding.generalData.cameraQuality === "number") {
                     cameraQuality = AppData.generalData.cameraQuality;
                 }
                 if (typeof AppData.generalData.cameraMegapixel === "string") {
@@ -306,6 +310,7 @@
                     cameraMegapixel = AppData.generalData.cameraMegapixel;
                 }
                 if (that.binding.generalData.useClippingCamera &&
+                    !isAndroid &&
                     scan &&
                     typeof scan.scanDoc === "function") {
                     AppBar.busy = true;
