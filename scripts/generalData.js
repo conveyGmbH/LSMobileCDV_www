@@ -617,7 +617,7 @@
                                     var url = AppData.getBaseURL(AppData.appSettings.odata.onlinePort) + "/" + AppData.getOnlinePath(true) + "/$metadata";
                                     var options = {
                                         type: "GET",
-                                        url: url, //bho-kvp-ex02.noerr.local:8091 "http://domino.convey.de:8090/odata_register/$metadata"
+                                        url: url, 
                                         user: user,
                                         password: password,
                                         customRequestInitializer: function (req) {
@@ -635,19 +635,14 @@
                                         try {
                                             var result = response.responseText;
                                             Log.call(Log.l.info, "AppData.call dummy Test xhr metadata.", "method=GET " + result);
-                                            //complete(json);
                                             return WinJS.Promise.as();
                                         } catch (exception) {
                                             Log.print(Log.l.error, "resource parse error " + (exception && exception.message));
-                                            //error({ status: 500, statusText: "call " + name + " parse error " + (exception && exception.message) });
                                         }
                                         Log.ret(Log.l.info);
                                         return WinJS.Promise.as();
                                     }, function (errorResponse) {
                                         Log.print(Log.l.error, "error=" + AppData.getErrorMsgFromResponse(errorResponse));
-                                        /*if (errorResponse.status === 401) {
-                                            that.binding.generalData.enableChangePassword = true;
-                                        }*/
                                         AppData.setErrorMsg(AppBar.scope.binding, errorResponse);
                                         return WinJS.Promise.as();
                                     });
