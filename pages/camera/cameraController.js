@@ -137,10 +137,10 @@
                     if (err) {
                         return WinJS.Promise.as();
                     }
-                    if (imageData.length < 500000) {
+                    /*if (imageData.length < 500000) {
                         // keep original 
                         return WinJS.Promise.as();
-                    }
+                    }*/
                     return Colors.resizeImageBase64(imageData, "image/jpeg", 2560, AppData.generalData.cameraQuality, 0.25);
                 }).then(function (resizeData) {
                     if (err) {
