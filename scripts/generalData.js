@@ -366,6 +366,15 @@
                             AppData.applyColorSetting(property, item.colorValue);
                         }
                     }
+                    function resultMandatoryConverter (item) {
+                        if (item.INITOptionTypeID === 22) {
+                            if (item.LocalValue === "1") {
+                                AppData._persistentStates.showConfirmQuestion = true;
+                            } else {
+                                AppData._persistentStates.showConfirmQuestion = false;
+                            }
+                        }
+                    }
                     var results = json.d.results;
                     // this callback will be called asynchronously
                     // when the response is available
@@ -381,6 +390,10 @@
                             if (json.d.results.length > 0) {
                                 results.forEach(function (item, index) {
                                     resultConverter(item, index);
+                                });
+                                AppData._persistentStates.showConfirmQuestion = false;
+                                results.forEach(function (item) {
+                                    resultMandatoryConverter(item);
                                 });
                             }
                             Application.pageframe.savePersistentStates();

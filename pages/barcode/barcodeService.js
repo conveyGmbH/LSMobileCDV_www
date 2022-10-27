@@ -50,7 +50,7 @@
         },
         _cr_V_BereichView: {
             get: function () {
-                return AppData.getFormatView("CR_V_Bereich", 20613, false);
+                return AppData.getFormatView("CR_V_Bereich", 20613, false); // remote wird momentan aufgerufen..
             }
         },
         cr_V_BereichView: {
@@ -58,7 +58,7 @@
                 Log.call(Log.l.trace, "cr_V_BereichView.");
                 var ret;
                 if (recordID) {
-                    ret = Barcode.cr_V_BereichView.selectById(complete, error, recordID);
+                    ret = Barcode._cr_V_BereichView.selectById(complete, error, recordID);
                 } else {
                     ret = Barcode._cr_V_BereichView.select(complete, error, restriction, {
                         ordered: true,
