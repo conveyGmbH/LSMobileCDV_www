@@ -31,6 +31,7 @@
             this.docIds = null;
             this.selectQuestionIdxs = null;
             this.showHideModified = false;
+            this.hideQuestion = false;
 
             var checkIPhoneBug = function () {
                 if (navigator.appVersion) {
@@ -497,6 +498,7 @@
                             selQuestionIdx = item.SelektierteFrageIdx - 1;
                             selItem = items[selQuestionIdx];
                             item.hideQuestion = getHideQuestion(selItem, item.SelektierteAntwortIdx);
+                            that.hideQuestion = item.hideQuestion;
                             if (!that.selectQuestionIdxs) {
                                 that.selectQuestionIdxs = [];
                             }
@@ -519,6 +521,7 @@
                             selQuestionIdx = item.SelektierteFrageIdx - 1;
                             selItem = that.questions.getAt(selQuestionIdx);
                             var hideQuestion = getHideQuestion(selItem, item.SelektierteAntwortIdx);
+                            that.hideQuestion = hideQuestion;
                             if (hideQuestion !== item.hideQuestion) {
                                 item.hideQuestion = hideQuestion;
                                 that.questions.setAt(i, item);
@@ -1306,43 +1309,7 @@
                         var visible = eventInfo.detail.visible;
                         if (visible) {
                             if (that.questions && that.nextUrl) {
-                                that.loading = true;
-                                if (progress && progress.style) {
-                                    progress.style.display = "inline";
-                                }
-                                if (counter && counter.style) {
-                                    counter.style.display = "none";
-                                }
-                                AppData.setErrorMsg(that.binding);
-                                Log.print(Log.l.trace, "calling select Questionnaire.questionnaireView...");
-                                var nextUrl = that.nextUrl;
-                                that.nextUrl = null;
-                                Questionnaire.questionnaireView.selectNext(function (json) {
-                                    // this callback will be called asynchronously
-                                    // when the response is available
-                                    Log.print(Log.l.trace, "Questionnaire.questionnaireView: success!");
-                                    // startContact returns object already parsed from json file in response
-                                    if (json && json.d && that.questions) {
-                                        that.nextUrl = Questionnaire.questionnaireView.getNextUrl(json);
-                                        var results = json.d.results;
-                                        results.forEach(function (item) {
-                                            that.resultConverter(item, that.binding.count);
-                                            that.binding.count = that.questions.push(item);
-                                        });
-                                        that.checkForHideQuestion();
-                                    }
-                                }, function (errorResponse) {
-                                    // called asynchronously if an error occurs
-                                    // or server returns response with an error status.
-                                    AppData.setErrorMsg(that.binding, errorResponse);
-                                    if (progress && progress.style) {
-                                        progress.style.display = "none";
-                                    }
-                                    if (counter && counter.style) {
-                                        counter.style.display = "inline";
-                                    }
-                                    that.loading = false;
-                                }, null, nextUrl);
+                                that.loadNextUrl();
                             } else {
                                 if (progress && progress.style) {
                                     progress.style.display = "none";
@@ -1473,6 +1440,57 @@
                 }.bind(this), true);
             }
 
+            var loadNextUrl = function () {
+                if (that.questions && that.nextUrl && listView) {
+                    progress = listView.querySelector(".list-footer .progress");
+                    counter = listView.querySelector(".list-footer .counter");
+                    that.loading = true;
+                    if (progress && progress.style) {
+                        progress.style.display = "inline";
+                    }
+                    if (counter && counter.style) {
+                        counter.style.display = "none";
+                    }
+                    AppData.setErrorMsg(that.binding);
+                    Log.print(Log.l.trace, "calling select QuestionnaireRemote.questionnaireView...");
+                    var nextUrl = that.nextUrl;
+                    that.nextUrl = null;
+                    Questionnaire.questionnaireView.selectNext(function (json) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                        Log.print(Log.l.trace, "QuestionnaireRemote.questionnaireView: success!");
+                        // startContact returns object already parsed from json file in response
+                        if (json && json.d) {
+                            that.nextUrl = Questionnaire.questionnaireView.getNextUrl(json);
+                            var results = json.d.results;
+                            results.forEach(function (item) {
+                                that.resultConverter(item, that.binding.count);
+                                that.binding.count = that.questions.push(item);
+                            });
+                            that.checkForHideQuestion();
+                            if (that.hideQuestion) {
+                                WinJS.Promise.timeout(200).then(function () {
+                                    that.loadNextUrl();
+                                });
+                            }
+                        }
+                    }, function (errorResponse) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        AppData.setErrorMsg(that.binding, errorResponse);
+                        if (progress && progress.style) {
+                            progress.style.display = "none";
+                        }
+                        if (counter && counter.style) {
+                            counter.style.display = "inline";
+                        }
+                        that.loading = false;
+                    }, null, nextUrl);
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.loadNextUrl = loadNextUrl;
+
             var loadPicture = function (pictureId) {
                 Log.call(Log.l.trace, "Questionnaire.Controller.", "pictureId=" + pictureId);
                 var ret = null;
@@ -1508,7 +1526,7 @@
                 Log.ret(Log.l.trace);
                 return ret;
             }
-            that.loadPicture = loadPicture;
+            this.loadPicture = loadPicture;
 
             var loadData = function () {
                 Log.call(Log.l.trace, "Questionnaire.Controller.");
@@ -1582,6 +1600,11 @@
                                         that.binding.count = that.questions.push(item);
                                     });
                                     that.checkForHideQuestion();
+                                }
+                                if (that.hideQuestion) {
+                                    WinJS.Promise.timeout(200).then(function () {
+                                        that.loadNextUrl();
+                                    });
                                 }
                                 if (listView && listView.winControl) {
                                     // fix focus handling

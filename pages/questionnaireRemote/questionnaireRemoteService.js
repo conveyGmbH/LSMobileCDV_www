@@ -22,7 +22,9 @@
         },
         _questionnaireView20433: {
             get: function () {
-                return AppData.getFormatView("Zeilenantwort", 20433, false);
+                var ret = AppData.getFormatView("Zeilenantwort", 20433, false);
+                ret.maxPageSize = 20;
+                return ret;
             }
         },
         _questionnaireView: {
