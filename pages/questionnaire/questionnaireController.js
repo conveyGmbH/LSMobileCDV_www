@@ -498,7 +498,9 @@
                             selQuestionIdx = item.SelektierteFrageIdx - 1;
                             selItem = items[selQuestionIdx];
                             item.hideQuestion = getHideQuestion(selItem, item.SelektierteAntwortIdx);
-                            that.hideQuestion = item.hideQuestion;
+                            if (item.hideQuestion) {
+                                that.hideQuestion = item.hideQuestion;
+                            }
                             if (!that.selectQuestionIdxs) {
                                 that.selectQuestionIdxs = [];
                             }
@@ -521,7 +523,9 @@
                             selQuestionIdx = item.SelektierteFrageIdx - 1;
                             selItem = that.questions.getAt(selQuestionIdx);
                             var hideQuestion = getHideQuestion(selItem, item.SelektierteAntwortIdx);
-                            that.hideQuestion = hideQuestion;
+                            if (hideQuestion) {
+                                that.hideQuestion = hideQuestion;
+                            }
                             if (hideQuestion !== item.hideQuestion) {
                                 item.hideQuestion = hideQuestion;
                                 that.questions.setAt(i, item);
