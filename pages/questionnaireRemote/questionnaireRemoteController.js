@@ -1378,6 +1378,7 @@
                     that.images.length = 0;
                 }
                 that.docCount = 0;
+                that.hideQuestion = false;
                 var contactId = AppData.getRecordId("Kontakt_Remote");
                 var ret = new WinJS.Promise.as().then(function () {
                     if (!contactId) {
