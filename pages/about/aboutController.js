@@ -27,7 +27,8 @@
                 isDarkTheme: Colors.isDarkTheme,
                 version: Application.version,
                 environment: "Platform: " + navigator.appVersion,
-                lastError: lastError
+                lastError: lastError,
+                siteId: AppData._persistentStates.odata.dbSiteId ? "DBSiteId " + AppData._persistentStates.odata.dbSiteId : ""
             }, commandList]);
 
             var that = this;
