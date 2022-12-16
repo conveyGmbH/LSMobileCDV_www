@@ -25,6 +25,7 @@
         cameraUseGrayscale: true,
         cameraMaxSize: 2560,
         useClippingCamera: false,
+        useClippingCameraNewMode: false,
         autoShutterTime: 0,
         useBarcodeActivity: false,
         barcodeDevice: "",

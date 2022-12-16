@@ -484,6 +484,7 @@
     "info.barcodeDeviceStatus" : "Status",
     "info.turnThumbsLeft"   : "Turn thumbs left",
     "info.cameraMegapixel"  : "Camera megapixels",
+	"info.useClippingCameraNewMode" : "Geniusscan Plugin",
 
     "backup.title"          : "Backup",
     "backup.info"			: "You can create a backup here and share it with convey information systems GmbH",

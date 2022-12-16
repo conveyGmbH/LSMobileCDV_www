@@ -54,13 +54,9 @@
                 barcodeDeviceStatus: Barcode.deviceStatus,
                 hasScannerOption: hasScannerOption,
                 lastError: lastError,
-                logToFile: AppData.generalData.logTarget === 2 ? true : false,
-                showClippingCamera: !isAndroid
+                logToFile: AppData.generalData.logTarget === 2 ? true : false
             }, commandList]);
 
-            if (isAndroid) {
-                this.binding.generalData.useClippingCamera = false;
-            }
 
             this.picturesDirectorySubFolder = AppData.generalData.picturesDirectorySubFolder;
             this.binding.generalData.picturesDirectorySubFolder = "";
@@ -194,6 +190,19 @@
                         var toggle = event.currentTarget.winControl;
                         if (toggle) {
                             that.binding.generalData.useClippingCamera = toggle.checked;
+                            if (!toggle.checked) {
+                                that.binding.generalData.useClippingCameraNewMode = toggle.checked;
+                            }
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                clickUseClippingNewModeCamera: function (event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var toggle = event.currentTarget.winControl;
+                        if (toggle) {
+                            that.binding.generalData.useClippingCameraNewMode = toggle.checked;
                         }
                     }
                     Log.ret(Log.l.trace);

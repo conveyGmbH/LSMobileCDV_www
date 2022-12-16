@@ -20,6 +20,8 @@
 (function () {
     "use strict";
 
+    var b64 = window.base64js;
+	
     WinJS.Namespace.define("Camera", {
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Camera.Controller.");
@@ -28,7 +30,8 @@
                     errorMessage: ""
                 },
                 contact: { KontaktVIEWID: 0 },
-                cardscan: { IMPORT_CARDSCANVIEWID: 0 }
+                cardscan: { IMPORT_CARDSCANVIEWID: 0 }, 
+                ocrResult: null
             }, commandList]);
 
             var that = this;
@@ -70,7 +73,160 @@
                     }
                 }
             };
-
+			
+			var loadDataFile = function (dataDirectory, fileName, bUseRootDir, retryCount) {
+                var fileExt;
+                var filePath;
+                Log.call(Log.l.trace, "WavSketch.Controller.", "dataDirectory=" + dataDirectory + " fileName=" + fileName + " bUseRootDir=" + bUseRootDir);
+                var readFileFromDirEntry = function (dirEntry) {
+                    if (dirEntry) {
+                        Log.print(Log.l.info, "resolveLocalFileSystemURL: dirEntry open!");
+                        dirEntry.getFile(filePath, {
+                            create: false,
+                            exclusive: false
+                        },
+                        function(fileEntry) {
+                            if (fileEntry) {
+                                Log.print(Log.l.info, "resolveLocalFileSystemURL: fileEntry open!");
+                                var deleteFile = function() {
+                                    fileEntry.remove(function() {
+                                        Log.print(Log.l.info, "file deleted!");
+                                    },
+                                    function(errorResponse) {
+                                        Log.print(Log.l.error, "file delete: Failed remove file " + filePath + " error: " + JSON.stringify(errorResponse));
+                                    },
+                                    function() {
+                                        Log.print(Log.l.trace, "file delete: extra ignored!");
+                                    });
+                                }
+                                fileEntry.file(function(file) {
+                                        var reader = new FileReader();
+                                        reader.onerror = function(errorResponse) {
+                                            Log.print(Log.l.error,
+                                                "Failed read file " +
+                                                filePath +
+                                                " error: " +
+                                                JSON.stringify(errorResponse));
+                                            AppData.setErrorMsg(that.binding, errorResponse);
+                                            deleteFile();
+                                            AppBar.busy = false;
+                                        };
+                                        reader.onloadend = function() {
+                                            var data = new Uint8Array(this.result);
+                                            /*Log.print(Log.l.info,
+                                                "Successful file read! fileExt=" +
+                                                fileExt +
+                                                " data-length=" +
+                                                data.length);
+                                            switch (fileExt) {
+                                            case "amr":
+                                                try {
+                                                    var buffer = AMR.toWAV(data);
+                                                    Log.print(Log.l.info, "AMR.toWAV: data-length=" + buffer.length);
+                                                    data = buffer;
+                                                    fileExt = "wav";
+                                                } catch (exception) {
+                                                    Log.print(Log.l.error,
+                                                        "ARM exception " + (exception && exception.message));
+                                                }
+                                                break;
+                                            }*/
+                                            var encoded = b64.fromByteArray(data);
+                                            if (encoded && encoded.length > 0) {
+												var cameraImage = new Image();
+												// Show the captured photo
+												// The inline CSS rules are used to resize the image
+												//
+												cameraImage.src = "data:image/jpeg;base64," + encoded;
+												var width = cameraImage.width;
+												var height = cameraImage.height;
+												Log.print(Log.l.trace, "width=" + width + " height=" + height);
+												if (width > 0 && height > 0) {
+													Log.print(Log.l.trace, "width=" + width + " height=" + height);
+													ret = that.insertCameradata(encoded, width, height);
+												} else if (retryCount < 0) {
+													Log.print(Log.l.trace, "Invalid data ignored");
+												} else if (retryCount < 5) {
+													Log.print(Log.l.info, "Invalid data retry");
+													WinJS.Promise.timeout(100).then(function () {
+														onPhotoDataSuccess(encoded, retryCount + 1);
+													});
+												} else {
+													Log.print(Log.l.error, "Invalid data error");
+													return onPhotoDataFail("Invalid data received!");
+												}
+                                            } else {
+                                                var err = "file read error NO data!";
+                                                Log.print(Log.l.error, err);
+                                                AppData.setErrorMsg(that.binding, err);
+                                            }
+                                            deleteFile();
+                                            AppBar.busy = false;
+                                        };
+                                        reader.readAsArrayBuffer(file);
+                                    },
+                                    function(errorResponse) {
+                                        Log.print(Log.l.error, "file read error: " + JSON.stringify(errorResponse));
+                                        AppData.setErrorMsg(that.binding, errorResponse);
+                                        deleteFile();
+                                        AppBar.busy = false;
+                                    });
+                            } else {
+                                var err = "file read error NO fileEntry!";
+                                Log.print(Log.l.error, err);
+                                AppData.setErrorMsg(that.binding, err);
+                                AppBar.busy = false;
+                            }
+                        },
+                        function(errorResponse) {
+                            Log.print(Log.l.error,
+                                "getFile(" + filePath + ") error: " + JSON.stringify(errorResponse));
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                            AppBar.busy = false;
+                        });
+                    } else {
+                        var err = "file read error NO dirEntry!";
+                        Log.print(Log.l.error, err);
+                        AppData.setErrorMsg(that.binding, err);
+                        AppBar.busy = false;
+                    }
+                }
+                
+                var fileExtPos = fileName.lastIndexOf(".");
+                if (fileExtPos >= 0) {
+                    fileExt = fileName.substr(fileExtPos + 1);
+                }
+                if (bUseRootDir) {
+                    filePath = decodeURI(dataDirectory + "/" + fileName);
+                    if (typeof window.requestFileSystem === "function") {
+                        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fs) {
+                            readFileFromDirEntry(fs.root);
+                        }, function(errorResponse) {
+                            Log.print(Log.l.error, "requestFileSystem error: " + JSON.stringify(errorResponse));
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                            AppBar.busy = false;
+                        });
+                    } else {
+                        Log.print(Log.l.error, "requestFileSystem is undefined");
+                        AppBar.busy = false;
+                    }
+                } else {
+                    filePath = fileName;
+                    if (typeof window.resolveLocalFileSystemURL === "function") {
+                        window.resolveLocalFileSystemURL(dataDirectory, readFileFromDirEntry, function(errorResponse) {
+                            Log.print(Log.l.error, "resolveLocalFileSystemURL error: " + JSON.stringify(errorResponse));
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                            AppBar.busy = false;
+                        });
+                    } else {
+                        Log.print(Log.l.error, "resolveLocalFileSystemURL is undefined");
+                        AppBar.busy = false;
+                    }
+                }
+                Log.ret(Log.l.trace);
+            };
+            this.loadDataFile = loadDataFile;
+			
             var insertCameradata = function (imageData, width, height) {
                 var err = null;
                 Log.call(Log.l.trace, "Camera.Controller.");
@@ -79,8 +235,9 @@
                         HostName: window.device && window.device.uuid,
                         MitarbeiterID: AppData.generalData.getRecordId("Mitarbeiter"),
                         VeranstaltungID: AppData.generalData.getRecordId("Veranstaltung"),
-                        Nachbearbeitet: 1/*,
-                        Freitext4: AppData.generalData.area,
+                        Nachbearbeitet: 1,
+                        Freitext1: that.binding.ocrResult
+                        /*Freitext4: AppData.generalData.area,
                         Freitext5: AppData.generalData.inOut*/
                     };
                     Log.print(Log.l.trace, "insert new contactView for MitarbeiterID=" + newContact.MitarbeiterID);
@@ -249,7 +406,6 @@
                 retryCount = retryCount || 0;
                 var ret = null;
                 Log.call(Log.l.trace, "Camera.Controller.", "retryCount=" + retryCount);
-
                 if (imageData && imageData.length > 0) {
                     // Get image handle
                     //
@@ -275,7 +431,60 @@
                         Log.print(Log.l.error, "Invalid data error");
                         return onPhotoDataFail("Invalid data received!");
                     }
-                } else {
+                } else if(imageData && imageData.scans && imageData.scans.length > 0) {
+					var mediaFiles = imageData.scans;
+					if (mediaFiles) {
+						var i, len;
+						for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+							var bUseRootDir = false;
+							var rootDirectory = cordova.file.externalRootDirectory;;
+							var dataDirectory = "";
+							var fullPath = mediaFiles[i].enhancedUrl;
+                            //var ocrResult = null;
+                            if(mediaFiles[i].ocrResult  && mediaFiles[i].ocrResult.text) {
+                                that.binding.ocrResult = mediaFiles[i].ocrResult.text;
+                            }
+							var pos = fullPath.lastIndexOf("/");
+							if (pos < 0) {
+								pos = fullPath.lastIndexOf("\\");
+							}
+							var fileName;
+							if (pos >= 0) {
+								fileName = fullPath.substr(pos + 1);
+							} else {
+								fileName = fullPath;
+							}
+							if (typeof device === "object") {
+								Log.print(Log.l.trace, "platform=" + device.platform);
+								switch (device.platform) {
+								case "Android":
+									if (pos >= 0) {
+										dataDirectory = fullPath.substr(0, pos);
+										if (dataDirectory.indexOf(rootDirectory) >= 0) {
+											dataDirectory = dataDirectory.replace(rootDirectory, "");
+											bUseRootDir = true;
+										}
+									}
+									break;
+								case "iOS":
+									dataDirectory = cordova.file.tempDirectory;
+									break;
+								default:
+									dataDirectory = cordova.file.dataDirectory;
+								}
+							} else {
+								dataDirectory = cordova.file.dataDirectory;
+							}
+							if (mediaFiles[i].ocrResult && mediaFiles[i].ocrResult.text) {
+								
+							}
+							// do something interesting with the file
+							that.loadDataFile(dataDirectory, fileName, bUseRootDir, retryCount);
+						}
+					} else {
+						AppBar.busy = false;
+					}
+				} else {
                     return onPhotoDataFail("No data received!");
                 }
                 Log.ret(Log.l.trace);
@@ -287,18 +496,9 @@
             AppData.setErrorMsg(that.binding);
             var takePhoto = function() {
                 Log.call(Log.l.trace, "Camera.Controller.");
-                    var autoShutterTime = 0;
+                var autoShutterTime = 0;
                 var cameraQuality = 0;
                 var cameraMegapixel = 0;
-                var isAndroid = false;
-                if (typeof device === "object" && device.platform === "Android") {
-                    isAndroid = true;
-                }
-                    if (typeof that.binding.generalData.autoShutterTime === "string") {
-                        autoShutterTime = parseInt(that.binding.generalData.autoShutterTime);
-                    } else if (typeof that.binding.generalData.autoShutterTime === "number") {
-                        autoShutterTime = that.binding.generalData.autoShutterTime;
-                    }
                 if (typeof AppData.generalData.cameraQuality === "string") {
                     cameraQuality = parseInt(AppData.generalData.cameraQuality);
                 } else if (typeof that.binding.generalData.cameraQuality === "number") {
@@ -309,8 +509,16 @@
                 } else if (typeof AppData.generalData.cameraMegapixel === "number") {
                     cameraMegapixel = AppData.generalData.cameraMegapixel;
                 }
+				/*if (that.binding.generalData.useClippingCamera &&
+                    cordova.plugins.GeniusScan &&
+                    typeof cordova.plugins.GeniusScan.scanWithConfiguration === "function") {
+					cordova.plugins.GeniusScan.scanWithConfiguration({
+                        ocrConfiguration: {
+                            languages: ["eng", "deu"]   
+                        }  
+                    }, onPhotoDataSuccess, onPhotoDataFail);
+				}*/
                 if (that.binding.generalData.useClippingCamera &&
-                    !isAndroid &&
                     scan &&
                     typeof scan.scanDoc === "function") {
                     AppBar.busy = true;
@@ -373,14 +581,57 @@
                 Log.ret(Log.l.trace);
             }
             this.takePhoto = takePhoto;
-
+            
+            
+            var takePhotoWithGeniusScan = function() {
+                Log.call(Log.l.trace, "Camera.Controller.");
+                if (that.binding.generalData.useClippingCamera &&
+                    cordova.plugins.GeniusScan &&
+                    typeof cordova.plugins.GeniusScan.scanWithConfiguration === "function") {
+                    /*{
+                        ocrConfiguration: {
+                            languages: ["eng"],
+                            languagesDirectoryUrl: "ocr_lanuage" 
+                        }
+                    } */
+                    cordova.plugins.GeniusScan.scanWithConfiguration(null, onPhotoDataSuccess, onPhotoDataFail);
+                } else {
+                    Log.print(Log.l.error, "camera.cordova.plugins.GeniusScan.scanWithConfiguration not supported...");
+                    that.updateStates({ errorMessage: "cordova.plugins.GeniusScan.scanWithConfiguration not supported" });
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.takePhotoWithGeniusScan = takePhotoWithGeniusScan;
+            
             that.processAll().then(function () {
+                if (that.binding.generalData.useClippingCameraNewMode &&
+                    cordova.plugins.GeniusScan &&
+                    typeof cordova.plugins.GeniusScan.setLicenceKey === "function") {
+                    cordova.plugins.GeniusScan.setLicenceKey(
+                        "533c500653550608095401503955504d070c5c12514f1c75317b5b045e54557326623b530e020500550b040554",
+                        function(success) {
+                            Log.print(Log.l.trace, "LicenceKey valid" + success);
+                            return WinJS.Promise.as();
+                        },
+                        function(error) {
+                            Log.print(Log.l.error, "LicenceKey not valid" + error);
+                            return WinJS.Promise.as();
+                        });
+                } else {
+                    Log.print(Log.l.trace, "Not Using Genius Scan");
+                    return WinJS.Promise.as();
+                }
+            }).then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 return WinJS.Promise.timeout(0);
             }).then(function() {
                 if (!CameraGlobals.dontCapture) {
-                    that.takePhoto();
+                    if (that.binding.generalData.useClippingCameraNewMode) {
+                        that.takePhotoWithGeniusScan();
+                    } else {
+                        that.takePhoto();
+                    }
                 }
             });
             Log.ret(Log.l.trace);
