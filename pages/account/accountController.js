@@ -346,6 +346,7 @@
 
             var saveData = function (complete, error) {
                 var err = null, ret;
+                var clickOk = false;
                 Log.call(Log.l.trace, "Account.Controller.");
                 if (AppData._userRemoteDataPromise) {
                     AppData._userRemoteDataPromise.cancel();
@@ -514,6 +515,7 @@
                                                 if (result) {
                                                     Log.print(Log.l.trace, "clickLogoff: user choice OK");
                                                     bIgnoreDuplicate = true;
+                                                    clickOk = true;
                                                     return that.saveData(complete, error);
                                                 } else {
                                                     Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");
@@ -552,7 +554,7 @@
                             return WinJS.Promise.as();
                         }
                     }).then(function () {
-                        if (!err && !AppData.appSettings.odata.serverFailure) {
+                        if (clickOk && !err && !AppData.appSettings.odata.serverFailure) {
                             // load color settings
                             return Account.CR_VERANSTOPTION_ODataView.select(function (json) {
                                 // this callback will be called asynchronously

@@ -204,6 +204,7 @@
                 that.binding.messageText = null;
                 AppData.setErrorMsg(that.binding);
                 AppBar.busy = true;
+                var clickOk = false;
                 that.binding.appSettings.odata.onlinePath = AppData._persistentStatesDefaults.odata.onlinePath;
                 that.binding.appSettings.odata.registerPath = AppData._persistentStatesDefaults.odata.registerPath;
                 var ret = Login.loginRequest.insert(function (json) {
@@ -325,13 +326,14 @@
                                     if (dataLogin.Aktion &&
                                         dataLogin.Aktion.substr(0, 9).toUpperCase() === "DUPLICATE") {
                                         var confirmTitle = dataLogin.MessageText;
-                                        return confirm(confirmTitle, function (result) {
+                                        confirm(confirmTitle, function (result) {
                                             if (result) {
-                                                Log.print(Log.l.trace, "clickLogoff: user choice OK");
+                                                Log.print(Log.l.trace, "clickLogin: user choice OK");
                                                 bIgnoreDuplicate = true;
+                                                clickOk = true;
                                                 return that.saveData(complete, error);
                                             } else {
-                                                Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");
+                                                Log.print(Log.l.trace, "clickLogin: user choice CANCEL");
                                                 that.binding.messageText = dataLogin.MessageText;
                                                 err = { status: 401, statusText: dataLogin.MessageText, duplicate: duplicate };
                                                 AppData.setErrorMsg(that.binding, err);
@@ -368,7 +370,7 @@
                     }
                 }).then(function () {
                     Log.print(Log.l.trace, "veranstoption=" + AppData._persistentStates.veranstoption);
-                    if (!err && !AppData.appSettings.odata.serverFailure) {
+                    if (clickOk && !err && !AppData.appSettings.odata.serverFailure) {
                         // load color settings
                         return Login.CR_VERANSTOPTION_ODataView.select(function (json) {
                             // this callback will be called asynchronously

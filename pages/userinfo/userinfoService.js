@@ -72,7 +72,7 @@
         },
         _userPhotoView: {
             get: function () {
-                return AppData.getFormatView("DOC1Mitarbeiter", 0);
+                return AppData.getFormatView("DOC1Mitarbeiter", 0, false);
             }
         },
         userPhotoView: {

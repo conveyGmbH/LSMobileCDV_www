@@ -582,7 +582,6 @@
             }
             this.takePhoto = takePhoto;
             
-            
             var takePhotoWithGeniusScan = function() {
                 Log.call(Log.l.trace, "Camera.Controller.");
                 if (that.binding.generalData.useClippingCamera &&

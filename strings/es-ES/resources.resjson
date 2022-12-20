@@ -483,7 +483,7 @@
     "info.barcodeDeviceId"  : "Gerät",
     "info.barcodeDeviceStatus" : "Status",
     "info.turnThumbsLeft"   : "Vorschaubilder nach links drehen",
-	"info.cameraMegapixel"  : "Kamera Megapixel",,
+	"info.cameraMegapixel"  : "Kamera Megapixel",
 	"info.useClippingCameraNewMode" : "Geniusscan Plugin",
     
     "backup.title"          : "Backup",

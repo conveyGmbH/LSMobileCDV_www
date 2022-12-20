@@ -98,7 +98,7 @@
         { id: "account", group: 3, disabled: false },
         { id: "backup", group: 3, disabled: false },
         { id: "login", group: 4, disabled: false },
-        { id: "register", group: 4, disabled: false },
+        //{ id: "register", group: 4, disabled: false },
         { id: "recover", group: 4, disabled: false },
         { id: "backup", group: 4, disabled: false },
         { id: "contactRemote", group: 5, disabled: false },
