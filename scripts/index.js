@@ -25,7 +25,7 @@
         cameraUseGrayscale: true,
         cameraMaxSize: 2560,
         useClippingCamera: false,
-        useClippingCameraNewMode: false,
+        useClippingCameraNewMode: true,
         autoShutterTime: 0,
         useBarcodeActivity: false,
         barcodeDevice: "",
@@ -146,7 +146,7 @@
             if (AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut)) {
                 id = "barcode";
             } else {
-                if (AppData.generalData.privacyText && 
+                if (AppData.generalData.privacyText &&
                     AppData.generalData.privacyText.length > 0 &&
                     Application.navigator._lastPage !== Application.getPagePath("privacy")) {
                     id = "privacy";

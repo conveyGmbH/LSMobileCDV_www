@@ -149,11 +149,11 @@
                                         AppBar.busy = false;
 									});
                                 }, function (errorResponse) {
-                                        Log.print(Log.l.error, "file read error: " + JSON.stringify(errorResponse));
-                                        AppData.setErrorMsg(that.binding, errorResponse);
-                                        deleteFile();
-                                        AppBar.busy = false;
-                                    });
+									Log.print(Log.l.error, "file read error: " + JSON.stringify(errorResponse));
+									AppData.setErrorMsg(that.binding, errorResponse);
+									deleteFile();
+									AppBar.busy = false;
+								});
                             } else {
                                 var err = "file read error NO fileEntry!";
                                 Log.print(Log.l.error, err);
@@ -472,9 +472,9 @@
 										var err = "file read error NO data!";
 										Log.print(Log.l.error, err);
 										AppData.setErrorMsg(that.binding, err);
-                            }
+									}
 								}));
-                        }
+                            }
 							var cameraImages = [];
 
 							WinJS.Promise.join(filePromises).then(function() {
@@ -504,16 +504,16 @@
 								canvas.width = canvas.width + cameraImages[0].width;
 								for (var i = 0; i < cameraImages.length; i++) {
 									canvas.height = canvas.height + cameraImages[i].height;
-                        }
-                        var x = 0;
-                        var y = 0;
+								}
+								var x = 0;
+								var y = 0;
 								for (var i = 0; i < cameraImages.length; i++) {
 									ctx.drawImage(cameraImages[i], x, y);
 									y = y + cameraImages[i].height;
-                        }
-                        var base64Canvas = canvas.toDataURL("image/jpeg").split(';base64,')[1];
+								}
+								var base64Canvas = canvas.toDataURL("image/jpeg").split(';base64,')[1];
 								that.insertCameradata(base64Canvas, canvas.width, canvas.height);
-                    });
+							});
                         }
                 } else {
                     return onPhotoDataFail("No data received!");
@@ -640,7 +640,8 @@
                     cordova.plugins.GeniusScan &&
                     typeof cordova.plugins.GeniusScan.setLicenceKey === "function") {
                     cordova.plugins.GeniusScan.setLicenceKey(
-                        "533c500653550608095401503955504d070c5c12514f1c75317b5b045e54557326623b530e020500550b040554",
+                        //"533c500653550608095401503955504d070c5c12514f1c75317b5b045e54557326623b530e020500550b040554",
+                        "533c50075554000701520e573955504d070c5c12514f1c75317b5b045e54557326623b530f0404075102050457",
                         function (success) {
                             Log.print(Log.l.trace, "LicenceKey valid" + success);
                             return WinJS.Promise.as();
@@ -659,7 +660,8 @@
                 return WinJS.Promise.timeout(0);
             }).then(function () {
                 if (!CameraGlobals.dontCapture) {
-                    if (that.binding.generalData.useClippingCameraNewMode) {
+                    if (that.binding.generalData.useClippingCameraNewMode &&
+                        cordova.plugins.GeniusScan) {
                         that.takePhotoWithGeniusScan();
                     } else {
                         that.takePhoto();
