@@ -220,9 +220,9 @@
                         MitarbeiterID: AppData.generalData.getRecordId("Mitarbeiter"),
                         VeranstaltungID: AppData.generalData.getRecordId("Veranstaltung"),
                         Nachbearbeitet: 1,
-                        Branche: that.binding.ocrResult,
-                        Freitext1: that.binding.ocrResult
-                        /*Freitext4: AppData.generalData.area,
+                        Freitext4: that.binding.ocrResult
+                        /*Freitext1: that.binding.ocrResult
+                        Freitext4: AppData.generalData.area,
                         Freitext5: AppData.generalData.inOut*/
                     };
                     Log.print(Log.l.trace, "insert new contactView for MitarbeiterID=" + newContact.MitarbeiterID);
@@ -646,16 +646,18 @@
                     } */
                     var assetLanguageUri = cordova.file.applicationDirectory + "www/eng.traineddata";
                     var appFolder = window.cordova.platformId === "android" ? cordova.file.externalDataDirectory : cordova.file.dataDirectory;
-                    copy(assetLanguageUri, appFolder, "eng.traineddata", function () {
+                    copy(cordova.file.applicationDirectory + "www/eng.traineddata", appFolder, "eng.traineddata", 
+                        copy(cordova.file.applicationDirectory + "www/deu.traineddata", appFolder, "deu.traineddata", function () {
                         var configuration = {
                             source: "camera",
                             ocrConfiguration: {
-                                languages: ["eng"],
+                                    languages: ["eng", "deu"],
                                 languagesDirectoryUrl: appFolder
                             }
                         };
                         cordova.plugins.GeniusScan.scanWithConfiguration(configuration, onPhotoDataSuccess, onPhotoDataFail);
-                    });
+                        })
+                    );
                 } else {
                     Log.print(Log.l.error, "camera.cordova.plugins.GeniusScan.scanWithConfiguration not supported...");
                     that.updateStates({ errorMessage: "cordova.plugins.GeniusScan.scanWithConfiguration not supported" });
