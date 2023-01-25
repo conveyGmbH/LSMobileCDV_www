@@ -220,6 +220,7 @@
                         MitarbeiterID: AppData.generalData.getRecordId("Mitarbeiter"),
                         VeranstaltungID: AppData.generalData.getRecordId("Veranstaltung"),
                         Nachbearbeitet: 1,
+                        Branche: that.binding.ocrResult,
                         Freitext1: that.binding.ocrResult
                         /*Freitext4: AppData.generalData.area,
                         Freitext5: AppData.generalData.inOut*/
@@ -614,6 +615,25 @@
 
             var takePhotoWithGeniusScan = function () {
                 Log.call(Log.l.trace, "Camera.Controller.");
+                function onError(error) {
+                    alert("Error: " + JSON.stringify(error));
+                }
+                  
+                function copy(filepath, toDirectory, filename, callback) {
+                    window.resolveLocalFileSystemURL(filepath, function(fileEntry) {
+                      window.resolveLocalFileSystemURL(toDirectory, function(dirEntry) {
+                        dirEntry.getFile(filename, { create: true, exclusive: false }, function(targetFileEntry) {
+                          fileEntry.file(function(file) {
+                            targetFileEntry.createWriter(function(fileWriter) {
+                              fileWriter.write(file);
+                              callback();
+                            });
+                          });
+                        }, onError);
+                      }, onError);
+                    }, onError);
+                  }
+                
                 if (that.binding.generalData.useClippingCamera &&
                     cordova.plugins.GeniusScan &&
                     typeof cordova.plugins.GeniusScan.scanWithConfiguration === "function") {
@@ -621,12 +641,21 @@
                         flashButtonHidden: true
                         ocrConfiguration: {
                             languages: ["eng"],
-                            languagesDirectoryUrl: "..\ocrlanguage" 
+                            languagesDirectoryUrl: ${cordova.file.applicationDirectory}www/ocrlanguage
                         }
                     } */
-                    cordova.plugins.GeniusScan.scanWithConfiguration({
-                        flashButtonHidden: true
-                    }, onPhotoDataSuccess, onPhotoDataFail);
+                    var assetLanguageUri = `${cordova.file.applicationDirectory}www/eng.traineddata`
+                    var appFolder = window.cordova.platformId == 'android' ? cordova.file.externalDataDirectory : cordova.file.dataDirectory;
+                    copy(assetLanguageUri, appFolder, 'eng.traineddata', function() {
+                      var configuration = {
+                        source: 'camera',
+                        ocrConfiguration: {
+                          languages: ['eng'],
+                          languagesDirectoryUrl: appFolder
+                        }
+                      };
+                      cordova.plugins.GeniusScan.scanWithConfiguration(configuration, onPhotoDataSuccess, onPhotoDataFail);
+                    });
                 } else {
                     Log.print(Log.l.error, "camera.cordova.plugins.GeniusScan.scanWithConfiguration not supported...");
                     that.updateStates({ errorMessage: "cordova.plugins.GeniusScan.scanWithConfiguration not supported" });
