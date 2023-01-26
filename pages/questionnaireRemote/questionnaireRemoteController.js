@@ -725,7 +725,7 @@
             var showConfirmBoxMandatory = function () {
                 var ret = false;
                 var i;
-                
+
                 for (i = 0; i < that.questions.length; i++) {
                     var question = that.questions.getAt(i);
                     if (question &&
@@ -737,7 +737,7 @@
                         that.actualquestion = question;
                         var newRecord = that.getFieldEntries(i, curScope.type);
                         var prop;
-                        
+
                         ret = true;
                         if (curScope.type === "multi-rating") {
                             for (prop in newRecord) {
@@ -747,7 +747,7 @@
                                             ret = false;
                                             break;
                                         }
-                                    }    
+                                    }
                                 }
                             }
                             if (ret) {
@@ -762,7 +762,7 @@
                                             ret = false;
                                             break;
                                         }
-                                    } 
+                                    }
                                 }
                             }
                             if (ret) {
@@ -886,12 +886,12 @@
                         var confirmTitle = getResourceText("questionnaireRemote.labelConfirmMandatoryField") + ":\n" +
                             that.actualquestion.FRAGESTELLUNG;
                         confirm(confirmTitle, function (result) {
-                           if (result) {
-                               Application.navigateById('sketchRemote', event);
-                           } else {
-                               that.selectRecordId(that.actualquestion.ZeilenantwortVIEWID);
-                           }
-                        });   
+                            if (result) {
+                                Application.navigateById('sketchRemote', event);
+                            } else {
+                                that.selectRecordId(that.actualquestion.ZeilenantwortVIEWID);
+                            }
+                        });
                     } else {
                         Application.navigateById('sketchRemote', event);
                     }
@@ -1161,7 +1161,7 @@
                                     counter.style.display = "inline";
                                 }
                                 that.loading = false;
-                                if (flipView &&  flipView.parentElement && flipView.winControl &&
+                                if (flipView && flipView.parentElement && flipView.winControl &&
                                     WinJS.Utilities.hasClass(flipView.parentElement, "img-footer-container")) {
                                     flipView.winControl.forceLayout();
                                 }

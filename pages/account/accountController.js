@@ -38,7 +38,7 @@
                     text: "",
                     show: null
                 },
-                portalLinkUrl : (AppData._persistentStates.odata.https ? "https://" : "http://") +
+                portalLinkUrl: (AppData._persistentStates.odata.https ? "https://" : "http://") +
                     AppData._persistentStates.odata.hostName +
                     getResourceText("account.portalPath"),
                 prevMitarbeiterID: AppData.generalData.getRecordId("Mitarbeiter")
@@ -86,7 +86,7 @@
 
             // define handlers
             this.eventHandlers = {
-                clickPrivacyLink: function(event) {
+                clickPrivacyLink: function (event) {
                     Log.call(Log.l.trace, "Account.Controller.");
                     var url = getResourceText("account.privacyPolicyLink");
                     if (isAppleDevice && cordova.InAppBrowser) {
@@ -96,7 +96,7 @@
                     }
                     Log.ret(Log.l.trace);
                 },
-                clickPortalLink: function(event) {
+                clickPortalLink: function (event) {
                     Log.call(Log.l.trace, "Account.Controller.");
                     var url = that.binding.portalLinkUrl;
                     if (isAppleDevice && cordova.InAppBrowser) {
@@ -215,7 +215,7 @@
                             that.binding.doReloadDb = true;
                         }
                         if (!that.binding.enableChangePassword) {
-                        that.binding.doEdit = true;
+                            that.binding.doEdit = true;
                         }
                     }
                     /*if (!that.binding.dataLogin.Login || !that.binding.dataLogin.Password) {
@@ -232,7 +232,7 @@
                     }
                     return AppBar.busy || (!that.binding.dataLogin.Login || !that.binding.dataLogin.Password || !that.binding.dataLogin.PrivacyPolicyFlag);
                 },
-                clickLogoff: function() {
+                clickLogoff: function () {
                     if (that.binding.generalData.notAuthorizedUser) {
                         return false;
                     }
@@ -351,7 +351,7 @@
                 if (AppData._userRemoteDataPromise) {
                     AppData._userRemoteDataPromise.cancel();
                 }
-                AppData.userData = { };
+                AppData.userData = {};
                 if (contentarea) {
                     contentarea.scrollTop = 0;
                 }
@@ -446,7 +446,7 @@
                                         if (AppData._persistentStates.showvisitorFlow === 1 &&
                                             AppData._persistentStates.showvisitorFlowContact === 0) {
                                             NavigationBar.disablePage("search");
-                                        } 
+                                        }
                                         var prevMitarbeiterId = AppData.generalData.getRecordId("Mitarbeiter");
                                         var doReloadDb = false;
                                         if (!AppData._persistentStates.odata.dbSiteId ||
