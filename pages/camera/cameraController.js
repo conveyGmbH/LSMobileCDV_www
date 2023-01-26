@@ -646,7 +646,7 @@
                     } */
                     var assetLanguageUri = cordova.file.applicationDirectory + "www/eng.traineddata";
                     Log.print(Log.l.trace, "Copy Directory - cordova.file.externalDataDirectory: " + cordova.file.externalDataDirectory + " or cordova.file.dataDirectory: " + cordova.file.dataDirectory + " for platform" + window.cordova.platformId);
-                    var appFolder = window.cordova.platformId === "android" ? cordova.file.externalDataDirectory : cordova.file.dataDirectory;
+                    var appFolder = device.platform === "Android" ? cordova.file.externalDataDirectory : cordova.file.applicationDirectory;
                     Log.print(Log.l.trace, "Copy param - assetLanguageUri: " + assetLanguageUri + "appFolder: " + appFolder);
                     copy(cordova.file.applicationDirectory + "www/eng.traineddata", appFolder, "eng.traineddata", 
                         copy(cordova.file.applicationDirectory + "www/deu.traineddata", appFolder, "deu.traineddata", function () {
