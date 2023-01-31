@@ -648,18 +648,18 @@
                     } */
                     Log.print(Log.l.trace, "Copy Directory - cordova.file.externalDataDirectory: " + cordova.file.externalDataDirectory + " or cordova.file.dataDirectory: " + cordova.file.dataDirectory + " for platform" + device.platform);
                     var appFolder = device.platform === "Android" ? cordova.file.externalDataDirectory : cordova.file.dataDirectory;
-                    copy(cordova.file.applicationDirectory + "www/eng.traineddata", appFolder, "eng.traineddata", 
-                        copy(cordova.file.applicationDirectory + "www/deu.traineddata", appFolder, "deu.traineddata", function () {
+                    //copy(cordova.file.applicationDirectory + "www/eng.traineddata", appFolder, "eng.traineddata", 
+                        //copy(cordova.file.applicationDirectory + "www/deu.traineddata", appFolder, "deu.traineddata", function () {
                         var configuration = {
                             source: "camera",
                             ocrConfiguration: {
-                                    languages: ["eng", "deu"],
-                                languagesDirectoryUrl: appFolder
+                                languages: ["eng", "deu"],
+                                languagesDirectoryUrl: cordova.file.applicationDirectory + "www/ocrlanguage"
                             }
                         };
                         cordova.plugins.GeniusScan.scanWithConfiguration(configuration, onPhotoDataSuccess, onPhotoDataFail);
-                        })
-                    );
+                        //})
+                    //);
                 } else {
                     Log.print(Log.l.error, "camera.cordova.plugins.GeniusScan.scanWithConfiguration not supported...");
                     that.updateStates({ errorMessage: "cordova.plugins.GeniusScan.scanWithConfiguration not supported" });
@@ -669,7 +669,8 @@
             this.takePhotoWithGeniusScan = takePhotoWithGeniusScan;
 
             that.processAll().then(function () {
-                if (that.binding.generalData.useClippingCameraNewMode &&
+                // useClippingCamera useClippingCameraNewMode
+                if (that.binding.generalData.useClippingCamera &&
                     cordova.plugins.GeniusScan &&
                     typeof cordova.plugins.GeniusScan.setLicenceKey === "function") {
                     cordova.plugins.GeniusScan.setLicenceKey(
@@ -693,7 +694,7 @@
                 return WinJS.Promise.timeout(0);
             }).then(function () {
                 if (!CameraGlobals.dontCapture) {
-                    if (that.binding.generalData.useClippingCameraNewMode &&
+                    if (that.binding.generalData.useClippingCamera &&
                         cordova.plugins.GeniusScan) {
                         that.takePhotoWithGeniusScan();
                     } else {
