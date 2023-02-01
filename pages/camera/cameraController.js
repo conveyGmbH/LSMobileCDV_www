@@ -618,7 +618,7 @@
             var takePhotoWithGeniusScan = function () {
                 Log.call(Log.l.trace, "Camera.Controller.");
                 function onError(error) {
-                    alert("Error: " + JSON.stringify(error));
+                    Log.print(Log.l.error, "camera.cordova.plugins.GeniusScan.scanWithConfiguration not supported..." + JSON.stringify(error));
                 }
 
                 function copy(filepath, toDirectory, filename, callback) {
@@ -648,18 +648,18 @@
                     } */
                     Log.print(Log.l.trace, "Copy Directory - cordova.file.externalDataDirectory: " + cordova.file.externalDataDirectory + " or cordova.file.dataDirectory: " + cordova.file.dataDirectory + " for platform" + device.platform);
                     var appFolder = device.platform === "Android" ? cordova.file.externalDataDirectory : cordova.file.dataDirectory;
-                    //copy(cordova.file.applicationDirectory + "www/eng.traineddata", appFolder, "eng.traineddata", 
-                        //copy(cordova.file.applicationDirectory + "www/deu.traineddata", appFolder, "deu.traineddata", function () {
+                    copy(cordova.file.applicationDirectory + "www/eng.traineddata", appFolder, "eng.traineddata", 
+                        copy(cordova.file.applicationDirectory + "www/deu.traineddata", appFolder, "deu.traineddata", function () {
                         var configuration = {
                             source: "camera",
                             ocrConfiguration: {
                                 languages: ["eng", "deu"],
-                                languagesDirectoryUrl: cordova.file.applicationDirectory + "www/ocrlanguage"
+                                languagesDirectoryUrl: appFolder
                             }
                         };
                         cordova.plugins.GeniusScan.scanWithConfiguration(configuration, onPhotoDataSuccess, onPhotoDataFail);
-                        //})
-                    //);
+                        })
+                    );
                 } else {
                     Log.print(Log.l.error, "camera.cordova.plugins.GeniusScan.scanWithConfiguration not supported...");
                     that.updateStates({ errorMessage: "cordova.plugins.GeniusScan.scanWithConfiguration not supported" });
