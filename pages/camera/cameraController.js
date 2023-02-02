@@ -622,6 +622,7 @@
                 }
 
                 function copy(filepath, toDirectory, filename, callback) {
+                    Log.call(Log.l.trace, "Camera.Controller.");
                     window.resolveLocalFileSystemURL(filepath, function (fileEntry) {
                         window.resolveLocalFileSystemURL(toDirectory, function (dirEntry) {
                             dirEntry.getFile(filename, { create: true, exclusive: false }, function (targetFileEntry) {
@@ -634,6 +635,7 @@
                             }, onError);
                         }, onError);
                     }, onError);
+                    Log.ret(Log.l.trace);
                 }
 
                 if (that.binding.generalData.useClippingCamera &&
@@ -648,7 +650,7 @@
                     } */
                     Log.print(Log.l.trace, "Copy Directory - cordova.file.externalDataDirectory: " + cordova.file.externalDataDirectory + " or cordova.file.dataDirectory: " + cordova.file.dataDirectory + " for platform" + device.platform);
                     var appFolder = device.platform === "Android" ? cordova.file.externalDataDirectory : cordova.file.dataDirectory;
-                    copy(cordova.file.applicationDirectory + "www/eng.traineddata", appFolder, "eng.traineddata", 
+                    copy(cordova.file.applicationDirectory + "www/eng.traineddata", appFolder, "eng.traineddata", function () {
                         copy(cordova.file.applicationDirectory + "www/deu.traineddata", appFolder, "deu.traineddata", function () {
                         var configuration = {
                             source: "camera",
@@ -658,8 +660,8 @@
                             }
                         };
                         cordova.plugins.GeniusScan.scanWithConfiguration(configuration, onPhotoDataSuccess, onPhotoDataFail);
-                        })
-                    );
+                        });
+                    });
                 } else {
                     Log.print(Log.l.error, "camera.cordova.plugins.GeniusScan.scanWithConfiguration not supported...");
                     that.updateStates({ errorMessage: "cordova.plugins.GeniusScan.scanWithConfiguration not supported" });
