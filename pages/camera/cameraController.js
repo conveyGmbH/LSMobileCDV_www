@@ -650,8 +650,8 @@
                     } */
                     Log.print(Log.l.trace, "Copy Directory - cordova.file.externalDataDirectory: " + cordova.file.externalDataDirectory + " or cordova.file.dataDirectory: " + cordova.file.dataDirectory + " for platform" + device.platform);
                     var appFolder = device.platform === "Android" ? cordova.file.externalDataDirectory : cordova.file.dataDirectory;
-                    copy(cordova.file.applicationDirectory + "www/eng.traineddata", appFolder, "eng.traineddata", function () {
-                        copy(cordova.file.applicationDirectory + "www/deu.traineddata", appFolder, "deu.traineddata", function () {
+                    copy(cordova.file.applicationDirectory + "www/ocrlanguage/eng.traineddata", appFolder, "eng.traineddata", function () {
+                        copy(cordova.file.applicationDirectory + "www/ocrlanguage/deu.traineddata", appFolder, "deu.traineddata", function () {
                         var configuration = {
                             source: "camera",
                             ocrConfiguration: {
