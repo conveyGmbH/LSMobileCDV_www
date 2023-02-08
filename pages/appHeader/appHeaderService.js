@@ -9,7 +9,7 @@
     WinJS.Namespace.define("AppHeader", {
         _userPhotoView: {
             get: function () {
-                return AppData.getFormatView("DOC1Mitarbeiter", 0, false);
+                return AppData.getFormatView("DOC1Mitarbeiter", 0);
             }
         },
         userPhotoView: {
