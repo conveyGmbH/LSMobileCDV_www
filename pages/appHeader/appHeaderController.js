@@ -127,14 +127,11 @@
             }
             this.loadData = loadData;
 
-            // Finally, wire up binding
+            // Finally, wire up. don't call loadData() initial, db not open yet!
             WinJS.Resources.processAll(that.element).then(function () {
                 return WinJS.Binding.processAll(that.element, that.binding);
             }).then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
-                return that.loadData();
-            }).then(function () {
-                Log.print(Log.l.trace, "Data loaded");
             });
             Log.ret(Log.l.trace);
         }, {
