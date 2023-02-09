@@ -628,8 +628,10 @@
                             dirEntry.getFile(filename, { create: true, exclusive: false }, function (targetFileEntry) {
                                 fileEntry.file(function (file) {
                                     targetFileEntry.createWriter(function (fileWriter) {
+                                        fileWriter.onwriteend = function() {
+                                            callback();
+                                        };
                                         fileWriter.write(file);
-                                        callback();
                                     });
                                 });
                             }, onError);
