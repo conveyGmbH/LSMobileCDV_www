@@ -644,7 +644,7 @@
                     cordova.plugins.GeniusScan &&
                     typeof cordova.plugins.GeniusScan.scanWithConfiguration === "function") {
                     //Log.print(Log.l.trace, "Copy Directory - cordova.file.externalDataDirectory: " + cordova.file.externalDataDirectory + " or cordova.file.dataDirectory: " + cordova.file.dataDirectory + " for platform" + device.platform);
-                    var appFolder = device.platform === "Android" ? cordova.file.externalDataDirectory : cordova.file.applicationDirectory;
+                    var appFolder = device.platform === "Android" ? cordova.file.externalDataDirectory : cordova.file.applicationDirectory + "www/ocrlanguage";
                     //copy(cordova.file.applicationDirectory + "www/ocrlanguage/eng.traineddata", appFolder, "eng.traineddata", function () {
                     //    copy(cordova.file.applicationDirectory + "www/ocrlanguage/deu.traineddata", appFolder, "deu.traineddata", function () {
                     var configuration = {
