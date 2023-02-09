@@ -280,7 +280,7 @@
                         return WinJS.Promise.as();
                     }
                     /*if (imageData.length < 500000) {
-                        // keep original 
+                        // keep original
                         return WinJS.Promise.as();
                     }*/
                     return Colors.resizeImageBase64(imageData, "image/jpeg", 2560, AppData.generalData.cameraQuality, 0.25);
@@ -302,7 +302,7 @@
                     var now = new Date();
                     var dateStringUtc = now.toUTCString();
 
-                    // decodierte Dateigröße
+                    // decodierte Dateigr��e
                     var contentLength = Math.floor(imageData.length * 3 / 4);
 
                     var newPicture = {
@@ -501,7 +501,7 @@
                             }
                             return WinJS.Promise.join(imagePromises);
                             // Show the captured photo
-                            // The inline CSS rules are used to resize the image										
+                            // The inline CSS rules are used to resize the image
 
                         }).then(function () {
                             canvas.width = canvas.width + cameraImages[0].width;
@@ -547,8 +547,8 @@
                     typeof cordova.plugins.GeniusScan.scanWithConfiguration === "function") {
                     cordova.plugins.GeniusScan.scanWithConfiguration({
                         ocrConfiguration: {
-                            languages: ["eng", "deu"]   
-                        }  
+                            languages: ["eng", "deu"]
+                        }
                     }, onPhotoDataSuccess, onPhotoDataFail);
                 }*/
                 if (that.binding.generalData.useClippingCamera &&
@@ -643,27 +643,20 @@
                 if (that.binding.generalData.useClippingCamera &&
                     cordova.plugins.GeniusScan &&
                     typeof cordova.plugins.GeniusScan.scanWithConfiguration === "function") {
-                    /*{
-                        flashButtonHidden: true
+                    //Log.print(Log.l.trace, "Copy Directory - cordova.file.externalDataDirectory: " + cordova.file.externalDataDirectory + " or cordova.file.dataDirectory: " + cordova.file.dataDirectory + " for platform" + device.platform);
+                    var appFolder = device.platform === "Android" ? cordova.file.externalDataDirectory : cordova.file.applicationDirectory;
+                    //copy(cordova.file.applicationDirectory + "www/ocrlanguage/eng.traineddata", appFolder, "eng.traineddata", function () {
+                    //    copy(cordova.file.applicationDirectory + "www/ocrlanguage/deu.traineddata", appFolder, "deu.traineddata", function () {
+                    var configuration = {
+                        source: "camera",
                         ocrConfiguration: {
-                            languages: ["eng"],
-                            languagesDirectoryUrl: ${cordova.file.applicationDirectory}www/ocrlanguage
+                            languages: ["eng", "deu"],
+                            languagesDirectoryUrl: appFolder
                         }
-                    } */
-                    Log.print(Log.l.trace, "Copy Directory - cordova.file.externalDataDirectory: " + cordova.file.externalDataDirectory + " or cordova.file.dataDirectory: " + cordova.file.dataDirectory + " for platform" + device.platform);
-                    var appFolder = device.platform === "Android" ? cordova.file.externalDataDirectory : cordova.file.dataDirectory;
-                    copy(cordova.file.applicationDirectory + "www/ocrlanguage/eng.traineddata", appFolder, "eng.traineddata", function () {
-                        copy(cordova.file.applicationDirectory + "www/ocrlanguage/deu.traineddata", appFolder, "deu.traineddata", function () {
-                        var configuration = {
-                            source: "camera",
-                            ocrConfiguration: {
-                                languages: ["eng", "deu"],
-                                languagesDirectoryUrl: appFolder
-                            }
-                        };
-                        cordova.plugins.GeniusScan.scanWithConfiguration(configuration, onPhotoDataSuccess, onPhotoDataFail);
-                        });
-                    });
+                    };
+                    cordova.plugins.GeniusScan.scanWithConfiguration(configuration, onPhotoDataSuccess, onPhotoDataFail);
+                    //});
+                    //});
                 } else {
                     Log.print(Log.l.error, "camera.cordova.plugins.GeniusScan.scanWithConfiguration not supported...");
                     that.updateStates({ errorMessage: "cordova.plugins.GeniusScan.scanWithConfiguration not supported" });
