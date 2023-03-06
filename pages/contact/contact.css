@@ -1,2 +1,30 @@
 ﻿body {
 }
+
+@keyframes loadSpinner {
+    from {
+        transform: rotate(0deg);
+    } to {
+          transform: rotate(-360deg);
+      }
+}
+
+#loader_container {
+    display: flex;
+    justify-content: center;
+}
+
+#tempLoader {
+    animation: loadSpinner 3s ease-in-out 0s infinite;
+    filter: none;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    width: 40%;
+    height: auto;
+}
+
+.blur {
+    filter: blur(5px);
+}

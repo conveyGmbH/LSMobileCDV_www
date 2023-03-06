@@ -515,6 +515,10 @@
                         showPhoto();
                         return WinJS.Promise.as();
                     }
+                }).then(function () {
+                    if (that.binding.dataContact.Flag_NoEdit) {
+                        document.querySelector(".content-record").classList.add("blur")
+                }
                 });
                 Log.ret(Log.l.trace);
                 return ret;

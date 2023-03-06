@@ -44,3 +44,21 @@
     margin-left: calc(16% - 30px);
     margin-right: calc(16% - 30px);
 }
+
+.NoAttachments {
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.NoAttachments > img {
+    height: 50%;
+    width: auto;
+}
+
+.NoAttachments > p {
+    font-size: 2.5rem;
+}
