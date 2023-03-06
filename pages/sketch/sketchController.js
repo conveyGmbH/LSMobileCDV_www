@@ -616,7 +616,7 @@
                             text.innerHTML = "No Attachments";
                             break;
                         case 1036:
-                            text.innerHTML = "Pas de pièces jointes"
+                            text.innerHTML = "Pas d'annexes"
                             break;
                         case 1040:
                             text.innerHTML = "Nessun allegato"
