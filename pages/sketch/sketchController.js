@@ -53,14 +53,17 @@
                 Log.call(Log.l.trace, "Sketch.Controller.", "count=" + count);
                 if (count > 1) {
                     that.binding.moreNotes = true;
+                    document.querySelector(".NoAttachments").style.display = "none";
                 } else if (count > 0) {
                     that.binding.moreNotes = false;
+                    document.querySelector(".NoAttachments").style.display = "none";
                 } else {
                     that.binding.moreNotes = false;
                     that.binding.showSvg = false;
                     that.binding.showPhoto = false;
                     that.binding.showAudio = false;
                     that.showToolbox("addNotesToolbar");
+                    document.querySelector(".NoAttachments").style.display = "flex";
                 }
                 if (!that.binding.userHidesList) {
                     if (that.binding.showList !== that.binding.moreNotes) {
