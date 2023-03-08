@@ -657,6 +657,12 @@
                                     }, function (errorResponse) {
                                         Log.print(Log.l.error, "error=" + AppData.getErrorMsgFromResponse(errorResponse));
                                         //AppData.setErrorMsg(AppBar.scope.binding, errorResponse);
+                                        AppData.appSettings.odata.serverFailure = true;
+                                        NavigationBar.disablePage("listRemote");
+                                        NavigationBar.disablePage("search");
+                                        if (AppBar.scope && typeof AppBar.scope.checkListButtonStates === "function") {
+                                            AppBar.scope.checkListButtonStates();
+                                        }
                                         return WinJS.Promise.as();
                                     });
                                 } else {
