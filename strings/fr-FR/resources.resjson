@@ -226,6 +226,7 @@
     "sketch.hideList"       : "Masquer la liste",
     "sketch.questionDelete"	: "Voulez-vous supprimer cette annexe?",
     "sketch.noPlayer"		    : "Lecture non prise en charge sur ce navigateur",
+    "sketch.noAttachments"  : "Pas d'annexes",
 
 	"sketchRemote.title"          : "Annexes",
     "sketchRemote.comment"        : "Utilisez le bouton Retour sur cette page pour y retourner!",

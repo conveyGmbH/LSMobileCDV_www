@@ -226,6 +226,7 @@
   	"sketch.hideList"       : "Liste verstecken",
   	"sketch.questionDelete"	: "Wollen Sie den aktuellen Anhang löschen?",
     "sketch.noPlayer"       : "Wiedergabe wird auf diesem Browser nicht unterstützt",
+	"sketch.noAttachments"  : "Keine Anhänge",
 
 	"sketchRemote.title"          : "Anhänge",
     "sketchRemote.comment"        : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",

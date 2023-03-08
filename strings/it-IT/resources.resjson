@@ -226,6 +226,7 @@
     "sketch.hideList"       : "Nascondi lista",
     "sketch.questionDelete"	: "Vuoi eliminare questo attacco?",
     "sketch.noPlayer"		    : "Riproduzione non supportata in questo browser",
+    "sketch.noAttachments"  : "Nessun Attacchi",
 
 	"sketchRemote.title"          : "Attacchi",
     "sketchRemote.comment"        : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",

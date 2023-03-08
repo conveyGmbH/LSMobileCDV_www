@@ -226,6 +226,7 @@
     "Sketch.hideList"       : "Hide List",   
     "sketch.questionDelete" : "Do you want to delete the current attachment?",
     "sketch.noPlayer"       : "Playback not supported on this browser",
+    "sketch.noAttachments"  : "No Attachments",
 
 	"sketchRemote.title"          : "Attachments",
     "sketchRemote.comment"        : "On this page, use the Back button to go back!",

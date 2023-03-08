@@ -656,7 +656,7 @@
                                         return WinJS.Promise.as();
                                     }, function (errorResponse) {
                                         Log.print(Log.l.error, "error=" + AppData.getErrorMsgFromResponse(errorResponse));
-                                        AppData.setErrorMsg(AppBar.scope.binding, errorResponse);
+                                        //AppData.setErrorMsg(AppBar.scope.binding, errorResponse);
                                         return WinJS.Promise.as();
                                     });
                                 } else {
@@ -1197,7 +1197,9 @@
             },
             getResults: function () {
                 Log.call(Log.l.trace, "AppData.initAnredeView.");
-                var ret = AppData._initAnredeView.results;
+                var ret = AppData._initAnredeView.results.filter(function (item, index) {
+                    return (item && item.INITAnredeID !== 3);
+                });
                 Log.ret(Log.l.trace);
                 return ret;
             },
@@ -1218,6 +1220,14 @@
             getResults: function () {
                 Log.call(Log.l.trace, "AppData.initLandView.");
                 var ret = AppData._initLandView.results;
+                ret.every(function (item, index) {
+                    if (item && item.INITLandID === 53) {
+                        ret.splice(index, 1);
+                        ret.splice(1, 0, item);
+                        return false;
+                    }
+                    return true;
+                });
                 Log.ret(Log.l.trace);
                 return ret;
             },

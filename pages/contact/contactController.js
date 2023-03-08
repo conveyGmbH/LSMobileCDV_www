@@ -369,9 +369,12 @@
                             that.removeDisposablePromise(initAnredeSelectPromise);
                             Log.print(Log.l.trace, "initAnredeView: success!");
                             if (json && json.d && json.d.results) {
+                                var results = json.d.results.filter(function (item, index) {
+                                    return (item && item.INITAnredeID !== 3);
+                                });
                                 // Now, we call WinJS.Binding.List to get the bindable list
                                 if (initAnrede && initAnrede.winControl) {
-                                    initAnrede.winControl.data = new WinJS.Binding.List(json.d.results);
+                                    initAnrede.winControl.data = new WinJS.Binding.List(results);
                                 }
                             }
                         }, function (errorResponse) {
@@ -398,8 +401,18 @@
                             Log.print(Log.l.trace, "initLandView: success!");
                             if (json && json.d && json.d.results) {
                                 // Now, we call WinJS.Binding.List to get the bindable list
+                                var results = json.d.results;
+                                // item Deutschland, Germany and so on to the top
+                                results.every(function(item, index) {
+                                    if (item && item.INITLandID === 53) {
+                                        results.splice(index, 1);
+                                        results.splice(1, 0, item);
+                                        return false;
+                                    }
+                                    return true;
+                                });
                                 if (initLand && initLand.winControl) {
-                                    initLand.winControl.data = new WinJS.Binding.List(json.d.results);
+                                    initLand.winControl.data = new WinJS.Binding.List(results);
                                 }
                             }
                         }, function (errorResponse) {
@@ -516,8 +529,9 @@
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
-                    if (that.binding.dataContact.Flag_NoEdit) {
-                        document.querySelector(".content-record").classList.add("blur")
+                    var contentRecord = document.querySelector(".content-record");
+                    if (contentRecord && that.binding.dataContact.Flag_NoEdit) {
+                        contentRecord.classList.add("blur");
                 }
                 });
                 Log.ret(Log.l.trace);

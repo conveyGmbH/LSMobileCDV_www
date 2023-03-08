@@ -288,7 +288,6 @@
                             radios[5].checked = true;
                         }*/
                         that.binding.restriction.MitarbeiterID = savedRestriction.MitarbeiterID;
-
                     }
                     var defaultRestriction = Search.defaultValue;
                     var prop;

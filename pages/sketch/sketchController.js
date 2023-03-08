@@ -605,26 +605,6 @@
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 return that.loadData();
             }).then(function () {
-                    var lang = AppData.getLanguageId();
-                    var text = document.querySelector(".NoAttachments > p");
-                    console.log(text);
-                    switch (lang) {
-                        case 1031:
-                            text.innerHTML = "Keine Anhänge";
-                            break;
-                        case 1033:
-                            text.innerHTML = "No Attachments";
-                            break;
-                        case 1036:
-                            text.innerHTML = "Pas d'annexes"
-                            break;
-                        case 1040:
-                            text.innerHTML = "Nessun allegato"
-                            break;
-                        default:
-                            text.innerHTML = "No Attachments"
-                    }
-                }).then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Data loaded");
             });

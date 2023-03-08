@@ -739,10 +739,8 @@
             }).then(function () {
                 if (!AppData._userRemoteDataPromise) {
                     AppData._userRemoteDataPromise = WinJS.Promise.timeout(0).then(function () {
-                        Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + 100 + "s is over!");
                         AppData._curGetUserRemoteDataId = 0;
                         AppData.getUserRemoteData();
-                        Log.print(Log.l.info, "getCRVeranstOption: Now, timeout=" + 100 + "s is over!");
                         AppData.getCRVeranstOption();
                     });
                 }
