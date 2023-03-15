@@ -529,10 +529,10 @@
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
-                    var contentRecord = document.querySelector(".content-record");
+                    var contentRecord = pageElement.querySelector(".content-record");
                     if (contentRecord && that.binding.dataContact.Flag_NoEdit) {
                         contentRecord.classList.add("blur");
-                }
+                    }
                 });
                 Log.ret(Log.l.trace);
                 return ret;

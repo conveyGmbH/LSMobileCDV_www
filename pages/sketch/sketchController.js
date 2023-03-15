@@ -15,7 +15,7 @@
         getClassNameOffline: function (useOffline) {
             return (useOffline ? "field_line field_line_even" : "hide-element");
         },
-        
+
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Sketch.Controller.");
             var that = this;
@@ -31,6 +31,7 @@
                 showAudio: false,
                 showList: false,
                 moreNotes: false,
+                noAttachements: false,
                 userHidesList: false,
                 showRecordingFeature: true,
                 contactId: AppData.getRecordId("Kontakt"),
@@ -53,22 +54,25 @@
                 Log.call(Log.l.trace, "Sketch.Controller.", "count=" + count);
                 if (count > 1) {
                     that.binding.moreNotes = true;
-                    document.querySelector(".NoAttachments").style.display = "none";
+                    that.binding.noAttachements = false;
+                    //pageElement.querySelector(".NoAttachments").style.display = "none";
                 } else if (count > 0) {
                     that.binding.moreNotes = false;
-                    document.querySelector(".NoAttachments").style.display = "none";
+                    that.binding.noAttachements = false;
+                    //pageElement.querySelector(".NoAttachments").style.display = "none";
                 } else {
                     that.binding.moreNotes = false;
                     that.binding.showSvg = false;
                     that.binding.showPhoto = false;
                     that.binding.showAudio = false;
                     that.showToolbox("addNotesToolbar");
-                    document.querySelector(".NoAttachments").style.display = "flex";
+                    that.binding.noAttachements = true;
+                    //pageElement.querySelector(".NoAttachments").style.display = "flex";
                 }
                 if (!that.binding.userHidesList) {
                     if (that.binding.showList !== that.binding.moreNotes) {
                         that.binding.showList = that.binding.moreNotes;
-                        WinJS.Promise.timeout(50).then(function() {
+                        WinJS.Promise.timeout(50).then(function () {
                             var pageControl = pageElement.winControl;
                             if (pageControl && pageControl.updateLayout) {
                                 pageControl.prevWidth = 0;
@@ -187,7 +191,7 @@
                         ret = WinJS.Promise.as();
                     }
                     if (that.binding.showSvg) {
-                        that._getHammerExcludeRect = function() {
+                        that._getHammerExcludeRect = function () {
                             var parentElement = pageElement.querySelector("#svghost");
                             if (parentElement) {
                                 var extraOffsetTop = 0;
@@ -280,7 +284,7 @@
                         Log.print(Log.l.trace, "use existing contactID=" + that.binding.contactId);
                         return WinJS.Promise.as();
                     }
-                }).then(function() {
+                }).then(function () {
                     if (!noteId) {
                         //load list first -> noteId, showSvg, showPhoto, moreNotes set
                         return that.loadList(noteId);
@@ -351,7 +355,7 @@
                 if (curToolbox) {
                     //var height = -curToolbox.clientHeight;
                     //var offset = { top: height.toString() + "px", left: "0px" };
-                    WinJS.UI.Animation.slideDown(curToolbox).done(function() {
+                    WinJS.UI.Animation.slideDown(curToolbox).done(function () {
                         curToolbox.style.display = "none";
                     });
                     if (that.docViewer && that.docViewer.controller && that.docViewer.controller.svgEditor) {
@@ -363,7 +367,7 @@
             this.hideToolbox = hideToolbox;
 
             var toggleToolbox = function (id) {
-                WinJS.Promise.timeout(0).then(function() {
+                WinJS.Promise.timeout(0).then(function () {
                     Log.call(Log.l.trace, "Sketch.Controller.toggleToolbox");
                     if (!that.showToolbox(id)) {
                         that.hideToolbox(id);
@@ -397,12 +401,12 @@
                     Application.navigateById("start", event);
                     Log.ret(Log.l.trace);
                 },
-                clickDelete: function(event) {
+                clickDelete: function (event) {
                     Log.call(Log.l.trace, "Sketch.Controller.");
                     if (that.docViewer &&
                         that.docViewer.controller &&
                         that.docViewer.controller.binding &&
-                        that.docViewer.controller.binding.noteId && 
+                        that.docViewer.controller.binding.noteId &&
                         typeof that.docViewer.controller.deleteData === "function") {
                         if (that.docViewer.controller.svgEditor) {
                             that.docViewer.controller.svgEditor.unregisterTouchEvents();
@@ -488,8 +492,8 @@
                                 if (Application.navigator) {
                                     Application.navigator._updateFragmentsLayout();
                                 }
-                                WinJS.Promise.timeout(0).then(function() {
-                                    WinJS.UI.Animation.slideDown(mySketchList).done(function() {
+                                WinJS.Promise.timeout(0).then(function () {
+                                    WinJS.UI.Animation.slideDown(mySketchList).done(function () {
                                         that.binding.showList = false;
                                         replaceCommands(newShowList);
                                     });
@@ -515,7 +519,7 @@
                         // save previous
                         that.docViewer.canUnload(function () {
                             loadDoc(null, AppData.DocGroup.Text, 75);
-                        }, function() {
+                        }, function () {
                             // error occured!
                         });
                     } else {
@@ -591,7 +595,7 @@
                         return true;
                     }
                 },
-                clickAddNote: function() {
+                clickAddNote: function () {
                     if (that.binding.contactId) {
                         return AppBar.busy;
                     } else {
@@ -599,9 +603,9 @@
                     }
                 }
             }
-            
+
             // finally, load the data
-            that.processAll().then(function() {
+            that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 return that.loadData();
             }).then(function () {

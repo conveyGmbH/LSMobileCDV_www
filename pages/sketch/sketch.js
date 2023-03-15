@@ -43,6 +43,23 @@
                     }
                 }
             }
+            var appLogoContainer = document.querySelector(".no-attachments-container");
+            if (appLogoContainer) {
+                NavigationBar._logoLoaded = true;
+                var rgb = Colors.hex2rgb(Colors.navigationColor);
+                var rgbStr = (rgb.r + rgb.g + rgb.b) / 3 >= 128 ? "#000000" : "#ffffff";
+                // load the image file
+                var svgObject = appLogoContainer.querySelector(".no-attachements-logo");
+                if (svgObject && !(svgObject.firstElementChild || svgObject.firstChild)) {
+                    Colors.loadSVGImage({
+                        fileName: svgObject.id,
+                        element: svgObject,
+                        size: { width: "50%", height: "50%" },
+                        useStrokeColor: false,
+                        strokeWidth: 100
+                    });
+                }
+            }
 
             // add page specific commands to AppBar
             var commandList = [

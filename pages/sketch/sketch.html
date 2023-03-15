@@ -21,10 +21,13 @@
                             <span class="date-field" data-win-bind="textContent: generalData.contactDate Binding.Converter.toDateString"></span>
                         </div>
                     </div>
-                    <div class="NoAttachments">
-                        <img src="../../images/paperclip.svg"/>
-                        <p data-win-res="{textContent: 'sketch.noAttachments'}"></p>
+                    <div class="no-attachments-container" data-win-bind="style.display: noAttachements Binding.Converter.toDisplay">
+                        <div class="no-attachements-logo" id="paperclip"></div>
+                        <span class="no-attachments-text" data-win-res="{textContent: 'sketch.noAttachments'}" data-win-bind="style.display: noAttachements Binding.Converter.toDisplay"></span>
                     </div>
+                    <!--<div class="no-attachments-label-container" data-win-bind="style.display: noAttachements Binding.Converter.toDisplay">
+                        <span class="no-attachments-text" data-win-res="{textContent: 'sketch.noAttachments'}" data-win-bind="style.display: noAttachements Binding.Converter.toDisplay"></span>
+                    </div>-->
                     <div data-win-bind="style.display: showSvg Binding.Converter.toDisplay">
                         <div id="svghost" class="sketchfragmenthost"></div>
                     </div>
