@@ -65,16 +65,17 @@
     top: 65%;
     left: 50%;
     transform: translate(-50%, -50%);
+    text-align: center;
 }
 
 .view-size-small .no-attachments-text {
     top: 70%;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin-top: 20px;
     margin-bottom: 10px;
 }
 
 .view-size-medium .no-attachments-text {
     top: 70%;
-    font-size: 2.0rem;
+    font-size: 1.8rem;
 }
