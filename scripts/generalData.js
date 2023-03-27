@@ -1204,11 +1204,6 @@
             getResults: function () {
                 Log.call(Log.l.trace, "AppData.initAnredeView.");
                 var ret = AppData._initAnredeView.results;
-                if (ret) {
-                    ret = ret.filter(function (item, index) {
-                        return (item && item.INITAnredeID !== 3);
-                    });
-                }
                 Log.ret(Log.l.trace);
                 return ret;
             },
@@ -1229,16 +1224,6 @@
             getResults: function () {
                 Log.call(Log.l.trace, "AppData.initLandView.");
                 var ret = AppData._initLandView.results;
-                if (ret) {
-                    ret.every(function (item, index) {
-                        if (item && item.INITLandID === 53) {
-                            ret.splice(index, 1);
-                            ret.splice(1, 0, item);
-                            return false;
-                        }
-                        return true;
-                    });
-                }
                 Log.ret(Log.l.trace);
                 return ret;
             },
