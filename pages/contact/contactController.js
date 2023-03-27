@@ -26,6 +26,8 @@
                 showModified: false
             }, commandList]);
             this.img = null;
+            this.initAnredeList = null;
+            this.initLandList = null;
 
             var that = this;
 
@@ -57,6 +59,29 @@
                     removePhoto();
                     that.img.src = "";
                     that.img = null;
+                }
+                that.initAnredeList = null;
+                that.initLandList = null;
+            }
+
+            var initAnredeFilter = function (item) {
+                return (item.INITAnredeID !== 3);
+            }
+
+            var initLandSorter = function (firstItem, secondItem) {
+                if (firstItem.TITLE === secondItem.TITLE) {
+                    return 0;
+                }
+                if (firstItem.INITLandID === 53) {
+                    return -1;
+                }
+                if (secondItem.INITLandID === 53) {
+                    return 1;
+                }
+                if (firstItem.TITLE > secondItem.TITLE) {
+                    return 1;
+                } else {
+                    return -1;
                 }
             }
 
@@ -371,7 +396,8 @@
                             if (json && json.d && json.d.results) {
                                 // Now, we call WinJS.Binding.List to get the bindable list
                                 if (initAnrede && initAnrede.winControl) {
-                                    initAnrede.winControl.data = new WinJS.Binding.List(results);
+                                    that.initAnredeList = new WinJS.Binding.List(json.d.results);
+                                    initAnrede.winControl.data = that.initAnredeList.createFiltered(initAnredeFilter);
                                 }
                             }
                         }, function (errorResponse) {
@@ -383,7 +409,8 @@
                         return that.addDisposablePromise(initAnredeSelectPromise);
                     } else {
                         if (initAnrede && initAnrede.winControl) {
-                            initAnrede.winControl.data = new WinJS.Binding.List(AppData.initAnredeView.getResults());
+                            that.initAnredeList = new WinJS.Binding.List(AppData.initAnredeView.getResults());
+                            initAnrede.winControl.data = that.initAnredeList.createFiltered(initAnredeFilter);
                         }
                         return WinJS.Promise.as();
                     }
@@ -398,9 +425,9 @@
                             Log.print(Log.l.trace, "initLandView: success!");
                             if (json && json.d && json.d.results) {
                                 // Now, we call WinJS.Binding.List to get the bindable list
-                                var results = json.d.results;
                                 if (initLand && initLand.winControl) {
-                                    initLand.winControl.data = new WinJS.Binding.List(results);
+                                    that.initLandList = new WinJS.Binding.List(json.d.results);
+                                    initLand.winControl.data = that.initLandList.createSorted(initLandSorter);
                                 }
                             }
                         }, function (errorResponse) {
@@ -412,7 +439,8 @@
                         return that.addDisposablePromise(initLandSelectPromise);
                     } else {
                         if (initLand && initLand.winControl) {
-                            initLand.winControl.data = new WinJS.Binding.List(AppData.initLandView.getResults());
+                            that.initLandList = new WinJS.Binding.List(AppData.initLandView.getResults());
+                            initLand.winControl.data = that.initLandList.createSorted(initLandSorter);
                         }
                         return WinJS.Promise.as();
                     }
