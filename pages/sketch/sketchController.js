@@ -33,7 +33,6 @@
                 moreNotes: false,
                 noAttachements: false,
                 userHidesList: false,
-                showRecordingFeature: true,
                 contactId: AppData.getRecordId("Kontakt"),
                 hideAddImg: !AppData._persistentStates.cameraFeatureSupported
             }, commandList]);
@@ -42,13 +41,13 @@
             this.docViewer = null;
             this.toolboxIds = ['addNotesToolbar'];
 
-            if (typeof device === "object" &&
+            /*if (typeof device === "object" &&
                 device.platform === "iOS" &&
                 typeof device.version === "string" &&
                 (device.version.substr(0, 4) === "16.2" || device.version.substr(0, 4) === "16.3" || device.version.substr(0, 4) === "16.4")) {
                 // Bug: iOS16.2 and 16.3 audio recording interface broken
                 that.binding.showRecordingFeature = false;
-            }
+            }*/
 
             var setNotesCount = function (count) {
                 Log.call(Log.l.trace, "Sketch.Controller.", "count=" + count);
