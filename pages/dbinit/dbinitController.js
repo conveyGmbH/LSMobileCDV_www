@@ -276,7 +276,8 @@
                     }).then(function () {
                         if (updateMessage) {
                             return WinJS.Promise.timeout(250).then(function () {
-                                return that.openDb(complete, error, true);
+                                AppData._persistentStates.odata.dbSiteId = null;
+                                return that.saveData(complete, error);
                             });
                         } else {
                             if (!doReloadDb && !failed && typeof complete === "function") {
@@ -332,91 +333,91 @@
                     // ignore this error here for compatibility!
                     return WinJS.Promise.as();
                 }, {
-                        LoginName: AppData._persistentStates.odata.login
-                    }).then(function () {
-                        if (!err) {
-                            var deviceID = "";
-                            if (window.device && window.device.uuid) {
-                                deviceID = "DeviceID=" + window.device.uuid;
-                            }
-                            var dataLogin = {
-                                Login: AppData._persistentStates.odata.login,
-                                Password: AppData._persistentStates.odata.password,
-                                LanguageID: AppData.getLanguageId(),
-                                Aktion: deviceID
-                            };
-                            return DBInit.loginView.insert(function (json) {
-                                // this callback will be called asynchronously
-                                // when the response is available
-                                Log.call(Log.l.trace, "loginData: success!");
-                                // loginData returns object already parsed from json file in response
-                                if (json && json.d) {
-                                    dataLogin = json.d;
-                                    if (dataLogin.OK_Flag === "X" && dataLogin.MitarbeiterID) {
-                                        NavigationBar.enablePage("settings");
-                                        NavigationBar.enablePage("info");
-                                        NavigationBar.enablePage("search");
-                                        var prevMitarbeiterId = AppData.generalData.getRecordId("Mitarbeiter");
-                                        var doReloadDb = false;
-                                        if (!AppData._persistentStates.odata.dbSiteId ||
-                                            prevMitarbeiterId !== dataLogin.MitarbeiterID ||
-                                            AppData._persistentStates.odata.dbinitIncomplete) {
-                                            doReloadDb = true;
-                                        }
-                                        Log.print(Log.l.info, "loginData: doReloadDb=" + doReloadDb + " useOffline=" + that.binding.appSettings.odata.useOffline);
+                    LoginName: AppData._persistentStates.odata.login
+                }).then(function () {
+                    if (!err) {
+                        var deviceID = "";
+                        if (window.device && window.device.uuid) {
+                            deviceID = "DeviceID=" + window.device.uuid;
+                        }
+                        var dataLogin = {
+                            Login: AppData._persistentStates.odata.login,
+                            Password: AppData._persistentStates.odata.password,
+                            LanguageID: AppData.getLanguageId(),
+                            Aktion: deviceID
+                        };
+                        return DBInit.loginView.insert(function (json) {
+                            // this callback will be called asynchronously
+                            // when the response is available
+                            Log.call(Log.l.trace, "loginData: success!");
+                            // loginData returns object already parsed from json file in response
+                            if (json && json.d) {
+                                dataLogin = json.d;
+                                if (dataLogin.OK_Flag === "X" && dataLogin.MitarbeiterID) {
+                                    NavigationBar.enablePage("settings");
+                                    NavigationBar.enablePage("info");
+                                    NavigationBar.enablePage("search");
+                                    var prevMitarbeiterId = AppData.generalData.getRecordId("Mitarbeiter");
+                                    var doReloadDb = false;
+                                    if (!AppData._persistentStates.odata.dbSiteId ||
+                                        prevMitarbeiterId !== dataLogin.MitarbeiterID ||
+                                        AppData._persistentStates.odata.dbinitIncomplete) {
+                                        doReloadDb = true;
+                                    }
+                                    Log.print(Log.l.info, "loginData: doReloadDb=" + doReloadDb + " useOffline=" + that.binding.appSettings.odata.useOffline);
+                                    if (doReloadDb) {
+                                        AppData._persistentStates.allRestrictions = {};
+                                        AppData._persistentStates.allRecIds = {};
+                                        AppData._userData = {};
+                                        AppData._persistentStates.veranstoption = {};
+                                        AppData._userRemoteData = {};
+                                        AppData._contactData = {};
+                                        AppData._photoData = null;
+                                        AppData._barcodeType = null;
+                                        AppData._barcodeRequest = null;
+                                        AppData.generalData.setRecordId("Mitarbeiter", dataLogin.MitarbeiterID);
+                                    }
+                                    if (that.binding.appSettings.odata.useOffline) {
                                         if (doReloadDb) {
-                                            AppData._persistentStates.allRestrictions = {};
-                                            AppData._persistentStates.allRecIds = {};
-                                            AppData._userData = {};
-                                            AppData._persistentStates.veranstoption = {};
-                                            AppData._userRemoteData = {};
-                                            AppData._contactData = {};
-                                            AppData._photoData = null;
-                                            AppData._barcodeType = null;
-                                            AppData._barcodeRequest = null;
-                                            AppData.generalData.setRecordId("Mitarbeiter", dataLogin.MitarbeiterID);
+                                            AppData._persistentStates.odata.dbSiteId = dataLogin.Mitarbeiter_AnmeldungVIEWID;
+                                            Application.pageframe.savePersistentStates();
                                         }
-                                        if (that.binding.appSettings.odata.useOffline) {
-                                            if (doReloadDb) {
-                                                AppData._persistentStates.odata.dbSiteId = dataLogin.Mitarbeiter_AnmeldungVIEWID;
-                                                Application.pageframe.savePersistentStates();
-                                            }
-                                            return that.openDb(complete, error, doReloadDb);
-                                        } else {
-                                            AppBar.busy = false;
-                                            AppData.generalData.setRecordId("Kontakt", dataLogin.KontaktID);
-                                            AppData._curGetUserDataId = 0;
-                                            AppData.getUserData();
-                                            complete(json);
-                                            return WinJS.Promise.as();
-                                        }
+                                        return that.openDb(complete, error, doReloadDb);
                                     } else {
                                         AppBar.busy = false;
-                                        that.binding.messageText = dataLogin.MessageText;
-                                        err = { status: 401, statusText: dataLogin.MessageText };
-                                        AppData.setErrorMsg(that.binding, err);
-                                        error(err);
+                                        AppData.generalData.setRecordId("Kontakt", dataLogin.KontaktID);
+                                        AppData._curGetUserDataId = 0;
+                                        AppData.getUserData();
+                                        complete(json);
                                         return WinJS.Promise.as();
                                     }
                                 } else {
                                     AppBar.busy = false;
-                                    err = { status: 404, statusText: "no data found" };
+                                    that.binding.messageText = dataLogin.MessageText;
+                                    err = { status: 401, statusText: dataLogin.MessageText };
                                     AppData.setErrorMsg(that.binding, err);
                                     error(err);
                                     return WinJS.Promise.as();
                                 }
-                            }, function (errorResponse) {
+                            } else {
                                 AppBar.busy = false;
-                                // called asynchronously if an error occurs
-                                // or server returns response with an error status.
-                                AppData.setErrorMsg(that.binding, errorResponse);
-                                error(errorResponse);
+                                err = { status: 404, statusText: "no data found" };
+                                AppData.setErrorMsg(that.binding, err);
+                                error(err);
                                 return WinJS.Promise.as();
-                            }, dataLogin);
-                        } else {
+                            }
+                        }, function (errorResponse) {
+                            AppBar.busy = false;
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                            error(errorResponse);
                             return WinJS.Promise.as();
-                        }
-                    });
+                        }, dataLogin);
+                    } else {
+                        return WinJS.Promise.as();
+                    }
+                });
                 Log.ret(Log.l.trace);
                 return ret;
             };
