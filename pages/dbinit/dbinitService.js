@@ -50,7 +50,44 @@
                     });
                 Log.ret(Log.l.trace);
                 return ret;
-
+            }
+        },
+        _versionView: {
+            get: function () {
+                return AppData.getFormatView("MobileVersionSpec", 0, true);
+            }
+        },
+        versionView: {
+            select: function (complete, error, restriction) {
+                Log.call(Log.l.trace, "versionView.");
+                var ret = DBInit._versionView.select(complete,
+                    error,
+                    restriction,
+                    {
+                        ordered: true,
+                        desc: true
+                    });
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+        },
+        _replicationFlowSpecView: {
+            get: function () {
+                return AppData.getFormatView("ReplicationFlowSpec", 0, true);
+            }
+        },
+        replicationFlowSpecView: {
+            select: function (complete, error, restriction) {
+                Log.call(Log.l.trace, "versionView.");
+                var ret = DBInit._replicationFlowSpecView.select(complete,
+                    error,
+                    restriction,
+                    {
+                        ordered: true,
+                        desc: true
+                    });
+                Log.ret(Log.l.trace);
+                return ret;
             }
         }
     });

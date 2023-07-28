@@ -42,6 +42,7 @@
             canvas.width = 0;
             canvas.height = 0;
             var imagesObjects = [];
+            var isLicenceKeyValid = true;
 
             var updateStates = function (states) {
                 Log.call(Log.l.trace, "Camera.Controller.", "errorMessage=" + states.errorMessage + "");
@@ -679,6 +680,7 @@
                         },
                         function (error) {
                             Log.print(Log.l.error, "LicenceKey not valid" + error);
+                            isLicenceKeyValid = false;
                             return WinJS.Promise.as();
                         });
                 } else {
@@ -691,7 +693,7 @@
                 return WinJS.Promise.timeout(0);
             }).then(function () {
                 if (!CameraGlobals.dontCapture) {
-                    if (that.binding.generalData.useClippingCamera &&
+                    if (isLicenceKeyValid && that.binding.generalData.useClippingCamera &&
                         cordova.plugins.GeniusScan) {
                         that.takePhotoWithGeniusScan();
                     } else {
