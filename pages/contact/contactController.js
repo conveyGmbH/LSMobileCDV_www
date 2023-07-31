@@ -308,21 +308,21 @@
             };
 
             this.disableHandlers = {
-                clickBack: function() {
+                clickBack: function () {
                     if (WinJS.Navigation.canGoBack === true) {
                         return false;
                     } else {
                         return true;
                     }
                 },
-                clickNew: function() {
+                clickNew: function () {
                     if (that.binding.dataContact && that.binding.dataContact.KontaktVIEWID) {
                         return false;
                     } else {
                         return true;
                     }
                 },
-                clickDelete: function() {
+                clickDelete: function () {
                     if (that.binding.dataContact && that.binding.dataContact.KontaktVIEWID && !AppBar.busy) {
                         return false;
                     } else {
@@ -383,9 +383,65 @@
             }
             this.loadInitSelection = loadInitSelection;
 
+            var reloadData = function (prevModifiedTS) {
+                Log.call(Log.l.trace, "Contact.Controller.");
+                AppData.setErrorMsg(that.binding);
+                var ret = new WinJS.Promise.as().then(function () {
+                    var recordId = getRecordId();
+                    if (recordId) {
+                        //load of format relation record data
+                        Log.print(Log.l.trace, "calling select contactView...");
+                        var contactSelectPromise = Contact.contactView.select(function (json) {
+                            that.removeDisposablePromise(contactSelectPromise);
+                            AppData.setErrorMsg(that.binding);
+                            Log.print(Log.l.trace, "contactView: success!");
+                            var modifiedTS = null;
+                            if (json && json.d) {
+                                modifiedTS = json.d.ModifiedTS;
+                                if (prevModifiedTS !== modifiedTS) {
+                                    that.setDataContact(json.d);
+                                    if (that.binding.dataContact.Request_Barcode) {
+                                        AppData._barcodeRequest = that.binding.dataContact.Request_Barcode;
+                                    } else {
+                                        AppData._barcodeRequest = null;
+                                    }
+                                    AppData.generalData.setRecordId("DOC1IMPORT_CARDSCAN",
+                                        json.d.DOC1Import_CardscanID);
+                                    loadInitSelection();
+                                }
+                                that.addDisposablePromise(WinJS.Promise.timeout(2000).then(function () {
+                                    if (prevModifiedTS === modifiedTS) {
+                                        that.reloadData(prevModifiedTS);
+                                    } else {
+                                        var addresscontainer = pageElement.querySelector(".address-container");
+                                        if (addresscontainer && WinJS.Utilities.hasClass(addresscontainer, "blur")) {
+                                            addresscontainer.classList.remove("blur");
+                                        }
+                                    }
+                                }));
+                            } else {
+                                that.addDisposablePromise(WinJS.Promise.timeout(2000).then(function () {
+                                    that.reloadData(prevModifiedTS);
+                                }));
+                            }
+                        }, function (errorResponse) {
+                            that.removeDisposablePromise(contactSelectPromise);
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        }, recordId);
+
+                    } else {
+                        return WinJS.Promise.as();
+                    }
+                });
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+            this.reloadData = reloadData;
+
             var loadData = function () {
                 Log.call(Log.l.trace, "Contact.Controller.");
                 AppData.setErrorMsg(that.binding);
+                var prevModifiedTS = null;
                 var ret = new WinJS.Promise.as().then(function () {
                     if (!AppData.initAnredeView.getResults().length) {
                         Log.print(Log.l.trace, "calling select initAnredeData...");
@@ -464,8 +520,8 @@
                         // or server returns response with an error status.
                         AppData.setErrorMsg(that.binding, errorResponse);
                     }, {
-                        LanguageSpecID: AppData.getLanguageId()
-                    });
+                            LanguageSpecID: AppData.getLanguageId()
+                        });
                     return that.addDisposablePromise(contactMandatorySelectPromise);
                 }).then(function () {
                     var recordId = getRecordId();
@@ -478,6 +534,7 @@
                             Log.print(Log.l.trace, "contactView: success!");
                             if (json && json.d) {
                                 that.setDataContact(json.d);
+                                prevModifiedTS = that.binding.dataContact.ModifiedTS;
                                 if (that.binding.dataContact.Request_Barcode) {
                                     AppData._barcodeRequest = that.binding.dataContact.Request_Barcode;
                                 } else {
@@ -545,9 +602,15 @@
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
-                    var contentRecord = pageElement.querySelector(".content-record");
-                    if (contentRecord && that.binding.dataContact.Flag_NoEdit) {
-                        contentRecord.classList.add("blur");
+                    var addresscontainer = pageElement.querySelector(".address-container");
+                    if (addresscontainer && that.binding.dataContact.Flag_NoEdit) {
+                        addresscontainer.classList.add("blur");
+                    }
+                }).then(function () {
+                    if (that.binding.dataContact.Flag_NoEdit) {
+                        return that.reloadData(prevModifiedTS);
+                    } else {
+                        return WinJS.Promise.as();
                     }
                 });
                 Log.ret(Log.l.trace);
@@ -611,7 +674,7 @@
                         }, dataContact);
                     }
                 } else if (AppBar.busy) {
-                    ret = WinJS.Promise.timeout(100).then(function() {
+                    ret = WinJS.Promise.timeout(100).then(function () {
                         return that.saveData(complete, error);
                     });
                 } else {
@@ -628,7 +691,7 @@
             // set  Nachbearbeitet
             this.binding.dataContact.Nachbearbeitet = 1;
 
-            that.processAll().then(function() {
+            that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 return that.loadData();
             }).then(function () {
