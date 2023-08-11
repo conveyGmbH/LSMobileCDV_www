@@ -189,10 +189,12 @@
                                 </label>
                             </div>
                         </div>
+                        <div data-win-bind="style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplay">
                         <div class="field_line field_line_odd" data-win-bind="style.display: dataContact.Request_Barcode Binding.Converter.toDisplay">
                             <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.barcode'}"></span>
                             <span class="label landscape_only" data-win-res="{textContent: 'contact.barcode'}"></span>
                             <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.Request_Barcode"></span>
+                        </div>
                         </div>
                         <div class="field_line field_line_even" data-win-bind="style.display:  dataContact.Freitext3 Binding.Converter.toDisplay">
                             <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.barcodeState'}"></span>
