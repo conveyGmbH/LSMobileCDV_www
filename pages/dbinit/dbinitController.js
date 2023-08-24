@@ -112,7 +112,7 @@
 
             var openDb = function (complete, error, doReloadDb) {
                 AppBar.busy = true;
-                var ret, loginIsEmpty = false, failed = false, updateMessage = null, moveMitarbeiterMessage = null;
+                var ret, loginIsEmpty = false, failed = false, updateMessage = null, moveMitarbeiterMessage = null, newDBRequired = null;
                 Log.call(Log.l.info, "DBInit.Controller.");
                 if (AppRepl.replicator && AppRepl.replicator.state === "running") {
                     Log.print(Log.l.info, "replicator still running - try later!");
@@ -219,6 +219,7 @@
                                 if (json && json.d && json.d.results &&
                                     json.d.results[0] && json.d.results[0].NewDBRequired === 1) {
                                     updateMessage = json.d.results[0].UpdateMessage || "Database update required!";
+                                    newDBRequired = json.d.results[0].NewDBRequired;
                                 }
                             }, function (err) {
                                 Log.print(Log.l.error, "PRC_CheckMobileVersion call error - ignore that!");
@@ -245,7 +246,7 @@
                             return WinJS.Promise.as();
                         } else if (AppRepl.replicator &&
                             AppRepl.replicator.networkState !== "Offline" &&
-                            AppRepl.replicator.networkState !== "Unknown") {
+                            AppRepl.replicator.networkState !== "Unknown" && newDBRequired) {
                             return AppData.call("PRC_MoveAppMitarbeiter", {
                                 pMitarbeiterID: AppData.generalData.getRecordId("Mitarbeiter")
                             }, function (json) {
