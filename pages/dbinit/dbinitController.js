@@ -246,7 +246,7 @@
                             return WinJS.Promise.as();
                         } else if (AppRepl.replicator &&
                             AppRepl.replicator.networkState !== "Offline" &&
-                            AppRepl.replicator.networkState !== "Unknown" && newDBRequired) {
+                            AppRepl.replicator.networkState !== "Unknown" && newDBRequired === 2) {
                             return AppData.call("PRC_MoveAppMitarbeiter", {
                                 pMitarbeiterID: AppData.generalData.getRecordId("Mitarbeiter")
                             }, function (json) {
