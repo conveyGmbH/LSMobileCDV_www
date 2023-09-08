@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="580px" height="580px" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="nonzero" clip-rule="nonzero" viewBox="0 0 5800 5800" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>window_master_detail icon</title>
+	<desc>window_master_detail icon from the IconExperience.com I-Collection. Copyright by INCORS GmbH (www.incors.com).</desc>
+	<path id="curve0" fill="#000000" d="M 2100,1500 V 4900 H 5300 V 1500 Z M 1900,4900 V 1500 H 500 V 4900 Z M 600,700 h 4600 c 165,0 300,135 300,300 V 5100 H 300 V 1000 C 300,835 435,700 600,700 Z M 5200,900 H 600 c -55,0 -100,45 -100,100 v 300 h 4800 v -300 c 0,-55 -45,-100 -100,-100 z" />
+</svg>
