@@ -69,8 +69,7 @@
                     // cordova.file
                     Log.print(Log.l.trace, "cordova.file: success!" + cordova.file);
                     if (typeof device === "object" && device.platform === "Android") {
-                        dataDirectory = cordova.file.databaseDirectory;
-                        //applicationStorageDirectory
+                        dataDirectory = cordova.file.applicationStorageDirectory + "databases/";
                     } else if (typeof device === "object" && device.platform === "iOS") {
                         dataDirectory = cordova.file.applicationStorageDirectory + "Library/LocalDatabase/";
                     } else {

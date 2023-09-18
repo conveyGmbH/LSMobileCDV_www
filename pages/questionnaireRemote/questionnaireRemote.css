@@ -55,6 +55,7 @@
 
 .questionnaireRemoteLayout label.radio, .questionnaire label.checkbox {
     padding: 4px 4px 4px 0;
+    word-wrap: break-word;
 }
 
 .questionnaireRemoteLayout input.radio, .questionnaireRemoteLayout input.checkbox {

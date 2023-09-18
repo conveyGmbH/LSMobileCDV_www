@@ -55,6 +55,7 @@
 
 .questionnaireLayout label.radio, .questionnaire label.checkbox {
     padding: 4px 4px 4px 0;
+    word-wrap: break-word;
 }
 
 .questionnaireLayout input.radio, .questionnaireLayout input.checkbox {
