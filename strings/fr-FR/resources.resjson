@@ -47,6 +47,7 @@
     "command.barcodeEdit"	: "Entrer code-barres",
 	"command.resetRestriction" : "Supprimer",
     "command.buttonQRCodeLogin": "Connexion par code QR",
+    "command.scrollToSignature" : "Champ de signature",
 
     "tooltip.backward"      : "Page présédente",
     "tooltip.edit"          : "Modifier le contact en cours",
@@ -90,6 +91,7 @@
     "tooltip.barcodeEdit"	: "Saisie manuelle du code barres",
     "tooltip.resetRestriction" : "Supprimer le filtre",
 	"tooltip.buttonQRCodeLogin" : "Kamera",
+    "tooltip.scrollToSignature" : "Faire défiler jusqu'au champ de signature",
 
     "start.title"           : "Accueil",
     "start.comment"         : "Utilisez les boutons sur cette page pour accéder à d'autres pages!",
@@ -205,6 +207,8 @@
     "questionnaire.attachments" : "Pièce détachée",
     "questionnaire.requiredmarker" : "*",
     "questionnaire.labelConfirmMandatoryField" : "Question obligatoire non remplie",
+    "questionnaire.labelConfirmPflichtfeldAntwort" : "Champ obligatoire non rempli",
+    "questionnaire.labelNoEditPflichtfeldAntwort" : "Les données ne sont pas encore traitées !"
 
 	"questionnaireRemote.title"   : "Répondre aux questions",
     "questionnaireRemote.comment" : "Utilisez le bouton Retour sur cette page pour y retourner!",

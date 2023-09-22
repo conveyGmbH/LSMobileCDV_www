@@ -21,9 +21,15 @@
                                   data-win-bind="textContent: userData.VeranstaltungName"></span>
                         </div>
                     </div>
-                    <button class="win-button status-on-off titlearea-bkg"
+
+                    <div id="menu1" data-win-control="WinJS.UI.Menu">
+                        <button data-win-control="WinJS.UI.MenuCommand" onclick="AppBar.handleEvent('click', 'clickChangeUserState', event)" data-win-options="{id: 'accountbutton', type:'button'}" data-win-res="{textContent: 'userinfo.title'}"></button>
+                        <button data-win-control="WinJS.UI.MenuCommand" onclick="AppBar.handleEvent('click', 'clickLogoff', event)" data-win-options="{id: 'logoffbutton', type:'button'}" data-win-res="{textContent: 'account.logoff'}"></button>
+                    </div>
+
+                    <button id="menuButton" class="win-button status-on-off titlearea-bkg"
                             data-win-bind="style.visibility: userData.Login Binding.Converter.emptyToHidden"
-                            onclick="AppBar.handleEvent('click', 'clickChangeUserState', event)">
+                            onclick="AppBar.handleEvent('click', 'clickTopButton', event)">
                         <div id="username" class="user-name-container win-type-ellipsis">
                             <span class="user-name-field"
                                   data-win-bind="textContent: userData.Login; style.display: showNameInHeader Binding.Converter.toDisplayNone"></span>

@@ -130,14 +130,21 @@
 }
 
 .action-image-container {
-     display: inline-block;
-     width: 100%;
-     padding-left: calc(50% - 20px);
+    display: inline-block;
+    width: 100%;
+    padding-left: calc(50% - 20px);
 }
+
+.action-image-container-disconnect {
+    display: none;
+    width: 100%;
+    padding-left: calc(50% - 20px);
+}
+
 .action-image {
-     margin-right: 4px;
-     width: 40px;
-     display: inline-block;
+    margin-right: 4px;
+    width: 40px;
+    display: inline-block;
 }
 
  .start-div-right{

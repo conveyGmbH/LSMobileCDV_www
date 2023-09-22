@@ -349,3 +349,8 @@
 .view-size-small .questionnaireLayout span.radio {
     padding-top: 12px;
 }
+
+.alertPflichtfeld {
+    color: #f44363;
+    font-weight: bold;
+}

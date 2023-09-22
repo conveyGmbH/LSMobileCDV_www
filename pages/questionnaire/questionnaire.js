@@ -14,25 +14,25 @@
             this._site = null;
             this._surface = null;
         },
-        {
-            // This sets up any state and CSS layout on the surface of the custom layout
-            initialize: function (site) {
-                this._site = site;
-                this._surface = this._site.surface;
+            {
+                // This sets up any state and CSS layout on the surface of the custom layout
+                initialize: function (site) {
+                    this._site = site;
+                    this._surface = this._site.surface;
 
-                // Add a CSS class to control the surface level layout
-                WinJS.Utilities.addClass(this._surface, "questionnaireLayout");
+                    // Add a CSS class to control the surface level layout
+                    WinJS.Utilities.addClass(this._surface, "questionnaireLayout");
 
-                return WinJS.UI.Orientation.vertical;
-            },
+                    return WinJS.UI.Orientation.vertical;
+                },
 
-            // Reset the layout to its initial state
-            uninitialize: function () {
-                WinJS.Utilities.removeClass(this._surface, "questionnaireLayout");
-                this._site = null;
-                this._surface = null;
-            }
-        })
+                // Reset the layout to its initial state
+                uninitialize: function () {
+                    WinJS.Utilities.removeClass(this._surface, "questionnaireLayout");
+                    this._site = null;
+                    this._surface = null;
+                }
+            })
     });
 
     var pageName = Application.getPagePath("questionnaire");
@@ -83,9 +83,9 @@
                     var confirmTitle = getResourceText("questionnaire.labelConfirmMandatoryField") + ":\n" +
                         this.controller.actualquestion.FRAGESTELLUNG;
                     if (AppData._persistentStates.showConfirmQuestion) {
-                        ret = alert(confirmTitle, function(result) {
+                        ret = alert(confirmTitle, function (result) {
                             that.controller.selectRecordId(that.controller.actualquestion.ZeilenantwortVIEWID);
-                        }).then(function(result) {
+                        }).then(function (result) {
                             error(result);
                         });
                     } else {
@@ -103,6 +103,36 @@
                             });
                         });
                     }
+                } /* else {
+                    ret = that.controller.saveData(function (response) {
+                        // called asynchronously if ok
+                        complete(response);
+                    }, function (errorResponse) {
+                        error(errorResponse);
+                    });
+                }*/
+                var showConfirmBoxPflichtfeldAntwort = this.controller.showConfirmBoxPflichtfeldAntwort();
+                if (showConfirmBoxPflichtfeldAntwort && this.controller.actualquestion) {
+                    var confirmTitle = getResourceText("questionnaire.labelConfirmPflichtfeldAntwort") + ": " + this.controller.pflichtfeldName + "\n" +
+                        this.controller.actualquestion.FRAGESTELLUNG;
+
+                    if (AppData._contactData && AppData._contactData.Flag_NoEdit) {
+                        confirmTitle = getResourceText("questionnaire.labelNoEditPflichtfeldAntwort");
+                    }
+
+                    ret = confirm(confirmTitle, function (result) {
+                        if (!result) {
+                            that.controller.selectRecordId(that.controller.actualquestion.ZeilenantwortVIEWID);
+                            error(result);
+                        }
+                    }, null, "alertPflichtfeld").then(function () {
+                        return that.controller.saveData(function (response) {
+                            // called asynchronously if ok
+                            complete(response);
+                        }, function (errorResponse) {
+                            error(errorResponse);
+                        });
+                    });
                 } else {
                     ret = that.controller.saveData(function (response) {
                         // called asynchronously if ok
@@ -111,11 +141,6 @@
                         error(errorResponse);
                     });
                 }
-            } else {
-                ret = WinJS.Promise.as().then(function () {
-                    var err = { status: 500, statusText: "fatal: page already deleted!" };
-                    error(err);
-                });
             }
             Log.ret(Log.l.trace);
             return ret;
@@ -131,11 +156,11 @@
             // TODO: Respond to changes in viewState.
             var ret = null;
             var that = this;
-            var refreshFlipViewDelayed = function(flipView) {
-                return WinJS.Promise.timeout(50).then(function() {
+            var refreshFlipViewDelayed = function (flipView) {
+                return WinJS.Promise.timeout(50).then(function () {
                     return that.updateLayout(element, viewState, lastViewState);
-                }).then(function() {
-                    return WinJS.Promise.timeout(50).then(function() {
+                }).then(function () {
+                    return WinJS.Promise.timeout(50).then(function () {
                         if (flipView.winControl) {
                             flipView.winControl.forceLayout();
                         }
@@ -194,8 +219,8 @@
                                 }
                             }
                             if (navigator.appVersion &&
-                            (navigator.appVersion.indexOf("iPhone OS") >= 0 ||
-                                navigator.appVersion.indexOf("iPod OS") >= 0)) {
+                                (navigator.appVersion.indexOf("iPhone OS") >= 0 ||
+                                    navigator.appVersion.indexOf("iPod OS") >= 0)) {
                                 if (headerInner) {
                                     WinJS.Utilities.addClass(headerInner, "no-transform");
                                 }

@@ -197,6 +197,18 @@
                     that.binding.dataLogin.privacyPolicyFlag = event.currentTarget.checked;
                     AppBar.triggerDisableHandlers();
                     Log.ret(Log.l.trace);
+                },
+                clickTopButton: function (event) {
+                    Log.call(Log.l.trace, "Contact.Controller.");
+                    if (AppData.generalData.logOffOptionActive) {
+                        var anchor = document.getElementById("menuButton");
+                        var menu = document.getElementById("menu1").winControl;
+                        var placement = "bottom";
+                        menu.show(anchor, placement);
+                    } else {
+                        Application.navigateById("userinfo", event);
+                    }
+                    Log.ret(Log.l.trace);
                 }
             };
 
@@ -233,6 +245,10 @@
                     return AppBar.busy || (!that.binding.dataLogin.Login || !that.binding.dataLogin.Password || !that.binding.dataLogin.PrivacyPolicyFlag);
                 },
                 clickLogoff: function () {
+                    var logoffbutton = document.getElementById("logoffbutton");
+                    if (logoffbutton) {
+                        logoffbutton.disabled = that.binding.generalData.notAuthorizedUser ? false : that.binding.generalData.logOffOptionActive ? false : true;
+                    }
                     if (that.binding.generalData.notAuthorizedUser) {
                         return false;
                     }

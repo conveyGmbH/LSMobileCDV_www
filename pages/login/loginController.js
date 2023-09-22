@@ -130,6 +130,18 @@
                     Log.call(Log.l.trace, "Login.Controller.");
                     Application.navigateById("barcode", event, true);
                     Log.ret(Log.l.trace);
+                },
+                clickTopButton: function (event) {
+                    Log.call(Log.l.trace, "Contact.Controller.");
+                    if (AppData.generalData.logOffOptionActive) {
+                        var anchor = document.getElementById("menuButton");
+                        var menu = document.getElementById("menu1").winControl;
+                        var placement = "bottom";
+                        menu.show(anchor, placement);
+                    } else {
+                        Application.navigateById("userinfo", event);
+                    }
+                    Log.ret(Log.l.trace);
                 }
             };
 

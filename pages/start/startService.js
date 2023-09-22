@@ -97,6 +97,11 @@
                                 content: getResourceText("start.buttonListRemote") + ": " + AppData.generalData.contactCountRemote,
                                 svg: "cloud_upload"
                             },
+                            button1Disconnect: {
+                                id: "listRemote",
+                                content: getResourceText("start.buttonListRemote") + ": " + AppData.generalData.contactCountRemote,
+                                svg: "cloud_no_connection"
+                            },
                             button2: {
                                 id: "search",
                                 content: getResourceText("start.buttonSearch"),

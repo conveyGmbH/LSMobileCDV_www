@@ -307,6 +307,18 @@
                         replaceCommands(newShowList);
                     }
                     Log.ret(Log.l.trace);
+                },
+                clickTopButton: function (event) {
+                    Log.call(Log.l.trace, "SketchRemote.Controller.");
+                    if (AppData.generalData.logOffOptionActive) {
+                        var anchor = document.getElementById("menuButton");
+                        var menu = document.getElementById("menu1").winControl;
+                        var placement = "bottom";
+                        menu.show(anchor, placement);
+                    } else {
+                        Application.navigateById("userinfo", event);
+                    }
+                    Log.ret(Log.l.trace);
                 }
             };
 
@@ -335,6 +347,37 @@
                     } else {
                         return true;
                     }
+                },
+                clickLogoff: function () {
+                    Log.call(Log.l.trace, "Start.Controller.");
+                    var confirmTitle = getResourceText("account.confirmLogOff");
+                    confirm(confirmTitle, function (result) {
+                        if (result) {
+                            Log.print(Log.l.trace, "clickLogoff: user choice OK");
+                            AppData._persistentStates.veranstoption = {};
+                            AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
+                            AppData._persistentStates.individualColors = false;
+                            AppData._persistentStates.isDarkTheme = false;
+                            var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
+                            AppData._persistentStates.individualColors = false;
+                            AppData._persistentStates.isDarkTheme = false;
+                            Application.pageframe.savePersistentStates();
+                            that.binding.doEdit = false;
+                            that.binding.generalData.notAuthorizedUser = false;
+                            that.binding.enableChangePassword = false;
+                            Application.navigateById("login", event);
+                        } else {
+                            Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");
+                        }
+                    });
+                    /*AppData._persistentStates.privacyPolicyFlag = false;
+                    if (AppHeader && AppHeader.controller && AppHeader.controller.binding.userData) {
+                        AppHeader.controller.binding.userData = {};
+                        if (!AppHeader.controller.binding.userData.VeranstaltungName) {
+                            AppHeader.controller.binding.userData.VeranstaltungName = "";
+                        }
+                    }*/
+                    Log.ret(Log.l.trace);
                 }
             }
 

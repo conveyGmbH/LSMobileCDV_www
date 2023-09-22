@@ -27,11 +27,13 @@
             this.loading = false;
             this.questions = null;
             this.actualquestion = null;
+            this.pflichtfeldName = null;
             this.images = null;
             this.docIds = null;
             this.selectQuestionIdxs = null;
             this.showHideModified = false;
             this.hideQuestion = false;
+            this.pfAntwortFeature = false;
 
             var checkIPhoneBug = function () {
                 if (navigator.appVersion) {
@@ -77,6 +79,9 @@
                 }
                 if (that.actualquestion) {
                     that.actualquestion = null;
+                }
+                if (that.pflichtfeldName) {
+                    that.pflichtfeldName = null;
                 }
                 if (that.images) {
                     that.images = null;
@@ -410,6 +415,66 @@
             }
             this.resultMandatoryConverter = resultMandatoryConverter;
 
+            var checkPfQestionFeature = function (items) {
+                var i, item, selItem, selQuestionIdx;
+                if (items) {
+                    for (i = 0; i < items.length; i++) {
+                        item = items[i];
+                        if (item.PFAttributeIdxList && item.PFAntwortIdxList) {
+                            var pfAttributeIdxList = item.PFAttributeIdxList.split(",");
+                            var pfAntwortIdxList = item.PFAntwortIdxList.split(",");
+                            item.pfAttributeIdx = pfAttributeIdxList;
+                            item.pfAntwortIdx = pfAntwortIdxList;
+                            item.pfAntwortFeature = true;
+                            Log.print(Log.l.trace, "TEST" + AppData._generalContactView._attribSpecs);
+                            /*for (var x = 0; x < pfAttributeIdxList.length; x++) {
+                                for (var y = 0; y < AppData._generalContactView._attribSpecs.length; y++) {
+                                    var attribspecsAttribute = AppData._generalContactView._attribSpecs[y].AttributeIDX;
+                                    var pfAttributeIdxList = parseInt(item.PFAttributeIdxList[x]);
+                                    if (attribspecsAttribute === pfAttributeIdxList &&
+                                        AppData._contactData &&
+                                        AppData._contactData[AppData._generalContactView._attribSpecs[y].Name] === null) {
+                                        item.pfAntwortFeature = true;
+                                        break;
+                                    } else {
+                                        item.pfAntwortFeature = false;
+                                    }
+                                }
+                            }*/
+                        } else {
+                            item.pfAntwortFeature = false;
+                        }
+                    }
+                } else if (that.questions) {
+                    for (i = 0; i < that.questions.length; i++) {
+                        item = that.questions.getAt(i);
+                        if (item.PFAttributeIdxList && item.PFAntwortIdxList) {
+                            var pfAttributeIdxList = item.PFAttributeIdxList.split(",");
+                            var pfAntwortIdxList = item.PFAntwortIdxList.split(",");
+                            item.pfAttributeIdx = pfAttributeIdxList;
+                            item.pfAntwortIdx = pfAntwortIdxList;
+                            Log.print(Log.l.trace, "TEST" + AppData._generalContactView._attribSpecs);
+                            for (var x = 0; x < pfAttributeIdxList.length; x++) {
+                                for (var y = 0; y < AppData._generalContactView._attribSpecs.length; y++) {
+                                    var attribspecsAttribute = AppData._generalContactView._attribSpecs[y].AttributeIDX;
+                                    var pfAttributeIdxList = parseInt(item.PFAttributeIdxList[x]);
+                                    if (attribspecsAttribute === pfAttributeIdxList &&
+                                        AppData._contactData &&
+                                        AppData._contactData[AppData._generalContactView._attribSpecs[y].Name] === null) {
+                                        item.pfAntwortFeature = true;
+                                    } else {
+                                        item.pfAntwortFeature = false;
+                                    }
+                                }
+                            }
+                        } else {
+                            item.pfAntwortFeature = false;
+                        }
+                    }
+                }
+            }
+            this.checkPfQestionFeature = checkPfQestionFeature;
+
             var getHideQuestion = function (item, sortIdx) {
                 var hideQuestion = false;
                 if (item && typeof sortIdx === "number") {
@@ -420,12 +485,12 @@
                         value = sortIdx.toString();
                     }
                     switch (item.type) {
-                        case "single-rating":
-                            if (sortIdx >= 1 && sortIdx <= 6) {
-                                if (item.RRANTWORT === value) {
-                                    hideQuestion = false;
-                                } else {
-                                    hideQuestion = true;
+                    case "single-rating":
+                        if (sortIdx >= 1 && sortIdx <= 6) {
+                            if (item.RRANTWORT === value) {
+                                hideQuestion = false;
+                            } else {
+                                hideQuestion = true;
                                 }
                             }
                         break;
@@ -782,6 +847,97 @@
                 return ret;
             };
             this.showConfirmBoxMandatory = showConfirmBoxMandatory;
+
+            var showConfirmBoxPflichtfeldAntwort = function() {
+                var ret = false;
+                Log.call(Log.l.trace, "Questionnaire.Controller.");
+                if (that.questions) {
+                    for (var i = 0; i < that.questions.length; i++) {
+                        var question = that.questions.getAt(i);
+                        if (question &&
+                            typeof question === "object" &&
+                            question.pfAntwortFeature) {
+                            var curScope = question;
+                            that.actualquestion = question;
+                            var newRecord = that.getFieldEntries(i, curScope.type);
+                            var prop;
+
+                            //ret = true;
+                            if (curScope.type.substr(0, 5) === "multi") {
+                                for (prop in newRecord) {
+                                    if (newRecord.hasOwnProperty(prop)) {
+                                        var propPrefix = prop.substr(0, 9);
+                                        if (propPrefix === "MSANTWORT" || propPrefix === "MsAntwort" || propPrefix === "MrAntwort") {
+                                            for (var x = 0; x < curScope.pfAttributeIdx.length; x++) {
+                                                for (var y = 0; y < AppData._generalContactView._attribSpecs.length; y++) {
+                                                    var attribspecsAttribute = AppData._generalContactView._attribSpecs[y].AttributeIDX;
+                                                    var pfAttributeIdxList = parseInt(curScope.pfAttributeIdx[x]);
+                                                    var pfAntwortIdx = parseInt(curScope.pfAntwortIdx[x]);
+                                                    if (attribspecsAttribute === pfAttributeIdxList &&
+                                                        AppData._contactData &&
+                                                        AppData._contactData[AppData._generalContactView._attribSpecs[y].Name] === null &&
+                                                        prop.includes(pfAntwortIdx.toString()) &&
+                                                        newRecord[prop] === "X") {
+                                                        that.pflichtfeldName = AppData._generalContactView._attribSpecs[y].Name;
+                                                        ret = true;
+                                                        break;
+                                                    } else {
+                                                        ret = false;
+                                                    }
+                                                }
+                                                if (ret) {
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (ret) {
+                                        break;
+                                    }
+                                }
+                                if (ret) {
+                                    break;
+                                }
+                            } else {
+                                if (curScope.type === "single-rating") {
+                                    prop = "RRANTWORT";
+                                } else {
+                                    prop = "SSANTWORT";
+                                }
+                                if (newRecord[prop] && newRecord[prop].length > 0 && newRecord[prop] !== "0" && newRecord[prop] !== "00") {
+                                    Log.call(Log.l.u1, "Questionnaire.Controller. Answer not empty" + newRecord.prop);
+                                    for (var x = 0; x < curScope.pfAttributeIdx.length; x++) {
+                                        for (var y = 0; y < AppData._generalContactView._attribSpecs.length; y++) {
+                                            var attribspecsAttribute = AppData._generalContactView._attribSpecs[y].AttributeIDX;
+                                            var pfAttributeIdxList = parseInt(curScope.pfAttributeIdx[x]);
+                                            var pfAntwortIdx = parseInt(curScope.pfAntwortIdx[x]);
+                                            if (attribspecsAttribute === pfAttributeIdxList &&
+                                                AppData._contactData &&
+                                                AppData._contactData[AppData._generalContactView._attribSpecs[y].Name] === null &&
+                                                newRecord[prop].includes(pfAntwortIdx.toString())) {
+                                                that.pflichtfeldName = AppData._generalContactView._attribSpecs[y].Name;
+                                                ret = true;
+                                                break;
+                                            } else {
+                                                ret = false;
+                                            }
+                                        }
+                                        if (ret) {
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (ret) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                Log.ret(Log.l.u1);
+                return ret;
+            };
+            this.showConfirmBoxPflichtfeldAntwort = showConfirmBoxPflichtfeldAntwort;
 
             var getNextDocId = function () {
                 var ret = null;
@@ -1384,6 +1540,49 @@
                             element = element.parentElement;
                         }
                     }
+                },
+                clickTopButton: function (event) {
+                    Log.call(Log.l.trace, "Contact.Controller.");
+                    if (AppData.generalData.logOffOptionActive) {
+                        var anchor = document.getElementById("menuButton");
+                        var menu = document.getElementById("menu1").winControl;
+                        var placement = "bottom";
+                        menu.show(anchor, placement);
+                    } else {
+                        Application.navigateById("userinfo", event);
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                clickLogoff: function (event) {
+                    Log.call(Log.l.trace, "Start.Controller.");
+                    var confirmTitle = getResourceText("account.confirmLogOff");
+                    confirm(confirmTitle, function (result) {
+                        if (result) {
+                            Log.print(Log.l.trace, "clickLogoff: user choice OK");
+                            AppData._persistentStates.veranstoption = {};
+                            AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
+                            AppData._persistentStates.individualColors = false;
+                            AppData._persistentStates.isDarkTheme = false;
+                            var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
+                            AppData._persistentStates.individualColors = false;
+                            AppData._persistentStates.isDarkTheme = false;
+                            Application.pageframe.savePersistentStates();
+                            that.binding.doEdit = false;
+                            that.binding.generalData.notAuthorizedUser = false;
+                            that.binding.enableChangePassword = false;
+                            Application.navigateById("login", event);
+                        } else {
+                            Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");
+                        }
+                    });
+                    /*AppData._persistentStates.privacyPolicyFlag = false;
+                    if (AppHeader && AppHeader.controller && AppHeader.controller.binding.userData) {
+                        AppHeader.controller.binding.userData = {};
+                        if (!AppHeader.controller.binding.userData.VeranstaltungName) {
+                            AppHeader.controller.binding.userData.VeranstaltungName = "";
+                        }
+                    }*/
+                    Log.ret(Log.l.trace);
                 }
             };
 
@@ -1416,6 +1615,16 @@
                     } else {
                         return false;
                     }
+                },
+                clickLogoff: function () {
+                    var logoffbutton = document.getElementById("logoffbutton");
+                    if (logoffbutton) {
+                        logoffbutton.disabled = that.binding.generalData.notAuthorizedUser ? false : that.binding.generalData.logOffOptionActive ? false : true;
+                    }
+                    if (that.binding.generalData.notAuthorizedUser) {
+                        return false;
+                    }
+                    return !that.binding.generalData.logOffOptionActive;
                 }
             }
 
@@ -1472,6 +1681,8 @@
                                 that.binding.count = that.questions.push(item);
                             });
                             that.checkForHideQuestion();
+                            that.checkPfQestionFeature();
+                            Log.print(Log.l.trace, "TEST" + AppData._generalContactView.attribSpec);
                             if (that.hideQuestion) {
                                 WinJS.Promise.timeout(200).then(function () {
                                     that.loadNextUrl();
@@ -1596,6 +1807,7 @@
                                         that.resultConverter(item, index);
                                     });
                                     that.checkForHideQuestion(results);
+                                    that.checkPfQestionFeature(results);
                                     // Now, we call WinJS.Binding.List to get the bindable list
                                     that.questions = new WinJS.Binding.List(results);
                                     that.binding.count = that.questions.length;
@@ -1605,6 +1817,7 @@
                                         that.binding.count = that.questions.push(item);
                                     });
                                     that.checkForHideQuestion();
+                                    that.checkPfQestionFeature();
                                 }
                                 if (that.hideQuestion) {
                                     WinJS.Promise.timeout(200).then(function () {
@@ -1643,6 +1856,10 @@
 
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
+                // Alle 10 sekunden aufrufen
+                return AppData.getContactData();
+            }).then(function () {
+                Log.print(Log.l.trace, "Contact Data loaded");
                 return that.loadData();
             }).then(function () {
                 AppBar.notifyModified = true;

@@ -43,7 +43,7 @@
             var layout = null;
             var actions = Start.actions;
 
-            this.dispose = function() {
+            this.dispose = function () {
                 if (listView && listView.winControl) {
                     listView.winControl.itemDataSource = null;
                 }
@@ -53,8 +53,8 @@
             var listTemplate = pageElement.querySelector(".startActions-list-template").winControl;
             var newTemplate = pageElement.querySelector(".startActions-new-template").winControl;
             // Conditional renderer that chooses between templates
-            var listStartRenderer = function(itemPromise) {
-                return itemPromise.then(function(item) {
+            var listStartRenderer = function (itemPromise) {
+                return itemPromise.then(function (item) {
                     if (item.data.id === "recent") {
                         return recentTemplate.renderItem(itemPromise);
                     } else if (item.data.id === "list") {
@@ -69,7 +69,7 @@
             this.listStartRenderer = listStartRenderer;
 
             // define data handling standard methods
-            var getRecordId = function() {
+            var getRecordId = function () {
                 return AppData.getRecordId("Kontakt");
             };
             this.getRecordId = getRecordId;
@@ -80,7 +80,7 @@
                 if (buttonElement) {
                     if (buttonElement.parentElement && buttonElement.parentElement.style &&
                         buttonElement.parentElement.style.visibility !== "visible") {
-                        ret = WinJS.Promise.timeout(Math.floor(Math.random() * 150) + 50).then(function() {
+                        ret = WinJS.Promise.timeout(Math.floor(Math.random() * 150) + 50).then(function () {
                             buttonElement.parentElement.style.visibility = "visible";
                             var tile = buttonElement.parentElement;
                             while (tile && !WinJS.Utilities.hasClass(tile, "tile")) {
@@ -141,11 +141,11 @@
             this.imageRotate = imageRotate;
 
             // show business card photo
-            var showPhoto = function() {
+            var showPhoto = function () {
                 Log.call(Log.l.trace, "Start.Controller.");
                 var businessCardContainer = listView.querySelector("#businessCardContact");
                 if (!businessCardContainer) {
-                    WinJS.Promise.timeout(150).then(function() {
+                    WinJS.Promise.timeout(150).then(function () {
                         that.showPhoto();
                     });
                 } else {
@@ -179,11 +179,22 @@
                         }
                     }
                     // now only light gray symbols used!
-                    var svgObject = button.querySelector(".action-image-list, .action-image-new");
-                    if (svgObject) {
-                        var svgRoot = svgObject.firstChild;
-                        Colors.changeSVGColor(svgRoot, bDisabled ? "#808080" : "#f0f0f0", true, false);
-                        button.svgLoaded = true;
+                    var svgObjects = button.querySelectorAll(".action-image-list, .action-image-new");
+                    for (var i = 0; i < svgObjects.length; i++) {
+                        var svgObject = svgObjects[i];
+                        if (svgObjects.length > 1) {
+                            var svgParent = svgObject.parentElement;
+                            if (WinJS.Utilities.hasClass(svgParent, "action-image-container-disconnect")) {
+                                svgParent.style.display = bDisabled ? "inline-block" : "none";
+                            } else {
+                                svgParent.style.display = bDisabled ? "none" : "inline-block";
+                            }
+                        }
+                        if (svgObject) {
+                            var svgRoot = svgObject.firstChild;
+                            Colors.changeSVGColor(svgRoot, bDisabled ? "#808080" : "#f0f0f0", true, false);
+                            button.svgLoaded = true;
+                        }
                     }
                 }
                 Log.ret(Log.l.trace);
@@ -203,14 +214,14 @@
                             case "search": {
                                 disableButton(button, AppData.appSettings.odata.serverFailure);
                             }
-                            break;
+                                break;
                             case "barcode": {
                                 disableButton(button,
                                     AppData._persistentStates.hideBarcodeScan ||
                                     (!AppData._persistentStates.cameraFeatureSupported &&
-                                     !AppData._persistentStates.useBarcodeActivity));
+                                        !AppData._persistentStates.useBarcodeActivity));
                             }
-                            break;
+                                break;
                             case "camera": {
                                 disableButton(button,
                                     AppData._persistentStates.hideCameraScan ||
@@ -237,13 +248,13 @@
                 Log.ret(Log.l.trace);
             };
 
-            var updateActions = function(bReload) {
+            var updateActions = function (bReload) {
                 Log.call(Log.l.trace, "Start.Controller.");
                 if (bReload) {
                     that.loadData();
                 } else if (listView && listView.winControl) {
-                    var updateAction = function(i, actionLine) {
-                        WinJS.Promise.timeout(20).then(function() {
+                    var updateAction = function (i, actionLine) {
+                        WinJS.Promise.timeout(20).then(function () {
                             if (actions && typeof actions.setAt === "function") {
                                 actions.setAt(i, actionLine);
                                 that.checkListButtonStates();
@@ -383,7 +394,7 @@
             };
             this.setRecordId = setRecordId;
 
-            var loadData = function() {
+            var loadData = function () {
                 Log.call(Log.l.trace, "Start.Controller.");
                 AppData.setErrorMsg(that.binding);
                 var ret = new WinJS.Promise.as().then(function () {
@@ -393,7 +404,7 @@
                         return WinJS.Promise.as();
                     } else {
                         Log.print(Log.l.trace, "calling select startContact...");
-                        return Start.contactView.select(function(json) {
+                        return Start.contactView.select(function (json) {
                             // this callback will be called asynchronously
                             // when the response is available
                             Log.print(Log.l.trace, "startContact: success!");
@@ -402,7 +413,7 @@
                                 that.binding.dataContact = json.d;
                             }
                             return WinJS.Promise.as();
-                        }, function(errorResponse) {
+                        }, function (errorResponse) {
                             that.binding.dataContact = {};
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
@@ -410,13 +421,13 @@
                             return WinJS.Promise.as();
                         }, recordId).then();
                     }
-                }).then(function() {
+                }).then(function () {
                     if (!AppData._photoData) {
                         var importCardscanId = AppData.getRecordId("DOC1IMPORT_CARDSCAN");
                         if (importCardscanId) {
                             // todo: load image data and set src of img-element
                             Log.print(Log.l.trace, "calling select contactView...");
-                            return Start.cardScanView.select(function(json) {
+                            return Start.cardScanView.select(function (json) {
                                 AppData.setErrorMsg(that.binding);
                                 Log.print(Log.l.trace, "cardScanData: success!");
                                 if (json && json.d) {
@@ -431,7 +442,7 @@
                                         AppData._photoData = docContent.substr(sub + 4);
                                     }
                                 }
-                            }, function(errorResponse) {
+                            }, function (errorResponse) {
                                 AppData.setErrorMsg(that.binding, errorResponse);
                             }, importCardscanId);
                         } else {
@@ -448,23 +459,23 @@
                     return WinJS.Promise.as();
                 }).then(function () {
                     if (AppData._persistentStates.showvisitorFlow === 1 || AppData._persistentStates.showvisitorFlow === 2) {
-                    //load of format relation record data
-                    Log.print(Log.l.trace, "calling select benutzerView...");
-                    return Start.benutzerView.select(function (json) {
-                        AppData.setErrorMsg(that.binding);
-                        Log.print(Log.l.trace, "benutzerView: success!");
-                        if (json && json.d) {
-                            // that.setDataBenutzer(json.d);
-                            var record = json.d.results[0];
-                            setRecordId(record.CR_V_BereichID);
-                        }
-                    }, function (errorResponse) {
-                        if (errorResponse.status === 404) {
-                            // ignore NOT_FOUND error here!
-                            //that.setDataBenutzer(getEmptyDefaultValue(UserInfo.benutzerView.defaultValue));
-                        } else {
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                        }
+                        //load of format relation record data
+                        Log.print(Log.l.trace, "calling select benutzerView...");
+                        return Start.benutzerView.select(function (json) {
+                            AppData.setErrorMsg(that.binding);
+                            Log.print(Log.l.trace, "benutzerView: success!");
+                            if (json && json.d) {
+                                // that.setDataBenutzer(json.d);
+                                var record = json.d.results[0];
+                                setRecordId(record.CR_V_BereichID);
+                            }
+                        }, function (errorResponse) {
+                            if (errorResponse.status === 404) {
+                                // ignore NOT_FOUND error here!
+                                //that.setDataBenutzer(getEmptyDefaultValue(UserInfo.benutzerView.defaultValue));
+                            } else {
+                                AppData.setErrorMsg(that.binding, errorResponse);
+                            }
                         }, null);
                     } else {
                         //that.setDataBenutzer(getEmptyDefaultValue(UserInfo.benutzerView.defaultValue));
@@ -536,7 +547,7 @@
             };
             this.loadData = loadData;
 
-            var resizeTiles = function() {
+            var resizeTiles = function () {
                 if (Start.prevHeight > 0 && Start.prevWidth > 0 && actions && actions.length > 0) {
                     var tileHeaderHeight = 60;
                     var tileRecentHeight = 200;
@@ -651,7 +662,6 @@
                                     svgInfo.element.parentNode) {
                                     var buttonElement = svgInfo.element.parentNode.parentNode;
                                     if (buttonElement) {
-                                        checkListButtonStates(buttonElement);
                                         ret = WinJS.Promise.timeout(20).then(function () {
                                             return showButtonElement(buttonElement);
                                         });
@@ -664,7 +674,7 @@
                             };
                             resetSvgLoaded();
                             var js = {};
-                                js.recent = Colors.loadSVGImageElements(listView, "action-image-right", 80, Colors.textColor, "name", showTileButton);
+                            js.recent = Colors.loadSVGImageElements(listView, "action-image-right", 80, Colors.textColor, "name", showTileButton);
                             js.list = Colors.loadSVGImageElements(listView, "action-image-list", 40, "#f0f0f0", "name", showTileButton);
                             js.new = Colors.loadSVGImageElements(listView, "action-image-new", 40, "#f0f0f0", "name", showTileButton, {
                                 "barcode-qr": { useStrokeColor: false }
@@ -678,20 +688,76 @@
                                         return Application.pageframe.hideSplashScreen();
                                     });
                                 }
+                                return WinJS.Promise.timeout(20);
+                            }).then(function () {
+                                checkListButtonStates();
                             });
                         }
                     }
+                    Log.ret(Log.l.trace);
+                },
+                clickTopButton: function (event) {
+                    Log.call(Log.l.trace, "Start.Controller.");
+                    if (AppData.generalData.logOffOptionActive) {
+                        var anchor = document.getElementById("menuButton");
+                        var menu = document.getElementById("menu1").winControl;
+                        var placement = "bottom";
+                        menu.show(anchor, placement);
+                    } else {
+                        Application.navigateById("userinfo", event);
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                clickLogoff: function (event) {
+                    Log.call(Log.l.trace, "Start.Controller.");
+                    var confirmTitle = getResourceText("account.confirmLogOff");
+                    confirm(confirmTitle, function (result) {
+                        if (result) {
+                            Log.print(Log.l.trace, "clickLogoff: user choice OK");
+                            AppData._persistentStates.veranstoption = {};
+                            AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
+                            AppData._persistentStates.individualColors = false;
+                            AppData._persistentStates.isDarkTheme = false;
+                            var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
+                            AppData._persistentStates.individualColors = false;
+                            AppData._persistentStates.isDarkTheme = false;
+                            Application.pageframe.savePersistentStates();
+                            that.binding.doEdit = false;
+                            that.binding.generalData.notAuthorizedUser = false;
+                            that.binding.enableChangePassword = false;
+                            Application.navigateById("login", event);
+                        } else {
+                            Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");
+                        }
+                    });
+                    /*AppData._persistentStates.privacyPolicyFlag = false;
+                    if (AppHeader && AppHeader.controller && AppHeader.controller.binding.userData) {
+                        AppHeader.controller.binding.userData = {};
+                        if (!AppHeader.controller.binding.userData.VeranstaltungName) {
+                            AppHeader.controller.binding.userData.VeranstaltungName = "";
+                        }
+                    }*/
                     Log.ret(Log.l.trace);
                 }
             };
 
             this.disableHandlers = {
-                clickBack: function() {
+                clickBack: function () {
                     if (WinJS.Navigation.canGoBack === true) {
                         return false;
                     } else {
                         return true;
                     }
+                },
+                clickLogoff: function () {
+                    var logoffbutton = document.getElementById("logoffbutton");
+                    if (logoffbutton) {
+                        logoffbutton.disabled = that.binding.generalData.notAuthorizedUser ? false : that.binding.generalData.logOffOptionActive ? false : true;
+                    }
+                    if (that.binding.generalData.notAuthorizedUser) {
+                        return false;
+                    }
+                    return !that.binding.generalData.logOffOptionActive;
                 }
             };
 
@@ -704,17 +770,17 @@
                 cordova && cordova.plugins &&
                 cordova.plugins.featureDetection &&
                 typeof cordova.plugins.featureDetection.camera === "function") {
-                cordova.plugins.featureDetection.camera(function ( result ) {
+                cordova.plugins.featureDetection.camera(function (result) {
                     Log.print(Log.l.trace, "featureDetection.camera returned: " + result);
                     AppData._persistentStates.cameraFeatureSupported = result;
                     updateActions();
-                }, function ( err ) {
-                    Log.print(Log.l.error, "featureDetection.camera failed: " + err );
+                }, function (err) {
+                    Log.print(Log.l.error, "featureDetection.camera failed: " + err);
                 });
             }
 
             // finally, load the data
-            that.processAll().then(function() {
+            that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete, now load data");
                 if (listView && listView.winControl) {
                     // no list selection
@@ -757,15 +823,12 @@
                     !CameraGlobals.listening) {
                     CameraGlobals.startListenDelayed(1000);
                 }
-            });
+            })/*.then(function () {
+                if (AppData._userData && AppData._userData.Message) {
+                    alert(AppData._userData.Message);
+                } 
+            })*/;
             Log.ret(Log.l.trace);
         })
     });
 })();
-
-
-
-
-
-
-

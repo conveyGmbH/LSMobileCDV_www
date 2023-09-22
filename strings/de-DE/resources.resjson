@@ -47,6 +47,7 @@
     "command.barcodeEdit"	: "Barcode eingeben",
 	"command.resetRestriction" : "Zurücksetzen",
     "command.buttonQRCodeLogin" : "QR-Code Login",
+	"command.scrollToSignature" : "Unterschriftsfeld",
 
     "tooltip.backward"      : "Zurück blättern",
     "tooltip.edit"          : "Aktuellen Datensatz bearbeiten",
@@ -90,6 +91,7 @@
     "tooltip.barcodeEdit"	: "Barcode von Hand eingeben",
 	"tooltip.resetRestriction" : "Filter löschen",
 	"tooltip.buttonQRCodeLogin" : "Kamera",
+    "tooltip.scrollToSignature" : "Zur Unterschriftsfeld scrollen",
 
     "start.title"           : "Startseite",
     "start.comment"         : "Verwende die Schaltflächen auf dieser Seite um auf weitere Seiten zu gehen!",
@@ -205,6 +207,8 @@
     "questionnaire.attachments" : "Anhänge",
     "questionnaire.requiredmarker" : "*",
   	"questionnaire.labelConfirmMandatoryField" : "Pflichtfrage nicht ausgefüllt",
+	"questionnaire.labelConfirmPflichtfeldAntwort" : "Pflichtfeld nicht ausgefüllt",
+    "questionnaire.labelNoEditPflichtfeldAntwort" : "Daten sind noch nicht verarbeitet!",
 
 	"questionnaireRemote.title"   : "Beantwortete Fragen",
     "questionnaireRemote.comment" : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
