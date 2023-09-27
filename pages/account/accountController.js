@@ -200,7 +200,7 @@
                 },
                 clickTopButton: function (event) {
                     Log.call(Log.l.trace, "Contact.Controller.");
-                    if (AppData.generalData.logOffOptionActive) {
+                    if (AppData.generalData.logOffOptionActive || that.binding.generalData.notAuthorizedUser) {
                         var anchor = document.getElementById("menuButton");
                         var menu = document.getElementById("menu1").winControl;
                         var placement = "bottom";
