@@ -443,7 +443,7 @@
                             var dataLogin = {
                                 Login: that.binding.dataLogin.Login,
                                 Password: that.binding.dataLogin.Password,
-                                LanguageID: parseInt(that.binding.dataLogin.INITSpracheID), /*AppData.getLanguageId()nicht aufrufen!!*/
+                                LanguageID: getLanguage(), /*AppData.getLanguageId()nicht aufrufen!!*/
                                 Aktion: deviceID
                             };
                             return Account.loginView.insert(function (json) {
@@ -616,9 +616,10 @@
                 }
             }).then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
-                if (that.binding.prevMitarbeiterID) {
+                if (!AppData.appSettings.odata.serverFailure) {
                     return that.loadData();
                 } else {
+                    that.binding.prevMitarbeiterID = 0;
                     return WinJS.Promise.as();
                 }
             }).then(function () {
