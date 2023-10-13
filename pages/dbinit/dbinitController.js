@@ -124,6 +124,12 @@
             };
 
             this.disableHandlers = {
+                clickLogoff: function () {
+                    WinJS.Promise.timeout(10000).then(function () {
+                        return false;
+                    });
+                    return true;
+                }
             }
 
             var checkForNumberReplication = function () {

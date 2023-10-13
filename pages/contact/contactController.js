@@ -359,14 +359,18 @@
                     }
                 },
                 clickNew: function () {
-                    if (that.binding.dataContact && that.binding.dataContact.KontaktVIEWID) {
+                    if (that.binding.dataContact && that.binding.dataContact.KontaktVIEWID &&
+                        !that.binding.dataContact.Flag_NoEdit) {
                         return false;
                     } else {
                         return true;
                     }
                 },
                 clickDelete: function () {
-                    if (that.binding.dataContact && that.binding.dataContact.KontaktVIEWID && !AppBar.busy) {
+                    if (that.binding.dataContact &&
+                        that.binding.dataContact.KontaktVIEWID &&
+                        !AppBar.busy &&
+                        !that.binding.dataContact.Flag_NoEdit) {
                         return false;
                     } else {
                         return true;
@@ -380,13 +384,18 @@
                     }
                 },
                 clickBarcodeEdit: function () {
-                    return AppData._persistentStates.hideBarcodeScan || AppBar.busy;
+                    if (!AppData._persistentStates.hideBarcodeScan) {
+                        return that.binding.dataContact.Flag_NoEdit;
+                    } else {
+                        return true;
+                    }
                 },
                 clickForward: function () {
                     return AppBar.busy;
                 },
                 clickShare: function () {
-                    if (that.binding.dataContact && that.binding.dataContact.KontaktVIEWID) {
+                    if (that.binding.dataContact && that.binding.dataContact.KontaktVIEWID &&
+                        !that.binding.dataContact.Flag_NoEdit) {
                         return false;
                     } else {
                         return true;
