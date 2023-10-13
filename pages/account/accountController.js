@@ -464,6 +464,7 @@
                                             NavigationBar.disablePage("search");
                                         }
                                         var prevMitarbeiterId = AppData.generalData.getRecordId("Mitarbeiter");
+                                        AppData.generalData.logOffOptionActive = false;
                                         var doReloadDb = false;
                                         if (!AppData._persistentStates.odata.dbSiteId ||
                                             prevMitarbeiterId !== dataLogin.MitarbeiterID ||
