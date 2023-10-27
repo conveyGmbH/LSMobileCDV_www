@@ -92,9 +92,9 @@
                                 var scrollTopContent = contentarea.scrollTop;
                                 that._hammerExcludeRect = {
                                     left: parentElement.offsetLeft,
-                                    top: parentElement.offsetTop + extraOffsetTop - scrollTopContent - 20,
+                                    top: parentElement.offsetTop + extraOffsetTop - scrollTopContent - 20 - 10,
                                     right: parentElement.offsetLeft + parentElement.clientWidth,
-                                    bottom: parentElement.offsetTop + extraOffsetTop + parentElement.clientHeight - scrollTopContent + 20
+                                    bottom: parentElement.offsetTop + extraOffsetTop + parentElement.clientHeight - scrollTopContent + 20 + 10
                                 };
                             }
                             return that._hammerExcludeRect;

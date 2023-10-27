@@ -17,6 +17,8 @@
 	"general.internet"      : "Nessuna connessione a Internet",
 	"general.ckeckServer"   : "Verifica connessione al server/Internet",
     "general.unauthorizedUser" : "Invalid username/password!\nlogon denied!\nPassword may have been changed, please enter the new password",
+    "general.eventFinishedMsg1" : "La fiera è terminata, si prega di registrare i contatti in attesa entro 7 giorni, dopodiché non sarà più possibile registrare i contatti per questo evento.",
+    "general.eventFinishedMsg2" : "Si prega di notare che il vostro account è assegnato alla fiera XXXX che è finita da almeno 30 giorni. Non è possibile aggiungere altri contatti, ma solo modificare quelli già aggiunti. Se si desidera aggiungere altri contatti, contattare l'amministratore o il fornitore.",
 
     "command.backward"      : "Indietro",
     "command.edit"          : "Modifica",
@@ -761,5 +763,5 @@
 	"pdfExport.msg" : "Modifica/collegamento",
 
     "support.title" : "Support",
-    "support.url" : "https://www.convey.de/en/contact-2/"
+    "support.url" : "https://www.convey.de/en/help-desk/"
 }

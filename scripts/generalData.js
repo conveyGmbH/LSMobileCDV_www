@@ -265,6 +265,27 @@
                                     // preset with not-on-site!
                                     AppData._userData.Present = 0;
                                 }
+                                if (AppData._userData.Enddatum) {
+                                    var actualDate = new Date();
+                                    //var value = AppData._userData.Enddatum;
+                                    var msString = AppData._userData.Enddatum.replace("\/Date(", "").replace(")\/", "");
+                                    var timeZoneAdjustment = AppData.appSettings.odata.timeZoneAdjustment || 0;
+                                    var milliseconds = parseInt(msString) - timeZoneAdjustment * 60000;
+                                    var endDate = new Date(milliseconds);
+                                    var diffTime = Math.abs(endDate - actualDate);
+                                    var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                                    if (diffDays > 23) {
+                                        AppData.setErrorMsg(AppBar.scope.binding, getResourceText("general.eventFinishedMsg1"));
+                                    }
+                                    if (diffDays > 30) {
+                                        var message = getResourceText("general.eventFinishedMsg2");
+                                        if (AppData._userData.VeranstaltungName) {
+                                            message = getResourceText("general.eventFinishedMsg2")
+                                                .replace("XXXX", AppData._userData.VeranstaltungName);
+                                        }
+                                        AppData.setErrorMsg(AppBar.scope.binding, message);
+                                    }
+                                }
                                 if ((AppData._persistentStates.showvisitorFlow === 1 ||
                                 (AppData._persistentStates.showvisitorFlow === 2 &&
                                     AppData.generalData.area &&
@@ -1000,9 +1021,9 @@
                     break;
                 case 19:
                     if (item.LocalValue === "1") {
-                        AppData._persistentStates.hideCameraQuestionnaire = true;
-                    } else {
                         AppData._persistentStates.hideCameraQuestionnaire = false;
+                    } else {
+                        AppData._persistentStates.hideCameraQuestionnaire = true;
                     }
                     break;
                 case 20:

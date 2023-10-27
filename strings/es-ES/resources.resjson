@@ -17,6 +17,8 @@
 	"general.internet"      : "Keine Verbindung zum Internet",
 	"general.ckeckServer"   : "Überprüfe Verbindung zum Server/Internet",
     "general.unauthorizedUser" : "Invalid username/password!\nlogon denied!\nPassword may have been changed, please enter the new password",
+    "general.eventFinishedMsg1" : "Messe ist vorbei, bitte erfassen Sie innerhalb 7 Tage ihre noch ausstehende Kontakte, danach wird es nicht mehr möglich sein für diese Veransltatung Kontakte zu erfassen",
+    "general.eventFinishedMsg2" : "Bitte beachten, Ihr Account ist zur Messe XXXX zugeordnet die seit mindestens 30 Tage vorbei ist. Sie koennen keine weiteren Kontakte erfassen, nur bereits erfasste Kontakte modifizieren. Bitte kontaktieren Sie ihren Administrator oder convey, wenn Sie weitere Kontakte erfassen möchten",
 
     "command.backward"      : "Zurück",
     "command.edit"          : "Bearbeiten",
@@ -761,5 +763,5 @@
 	"pdfExport.msg" : "Bearbeitung / Link",
 
 	"support.title" : "Support",
-	"support.url" : "https://www.convey.de/kontakt/"
+	"support.url" : "https://www.convey.de/help-desk/"
 }			

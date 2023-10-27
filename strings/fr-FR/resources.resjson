@@ -17,6 +17,8 @@
 	"general.internet"      : "Pas de connexion à Internet",
 	"general.ckeckServer"   : "Vérifier la connexion au serveur/Internet",
     "general.unauthorizedUser" : "Invalid username/password!\nlogon denied!\nPassword may have been changed, please enter the new password",
+    "general.eventFinishedMsg1" : "Le salon est terminé, veuillez saisir vos contacts en attente dans les 7 jours, après quoi il ne sera plus possible de saisir des contacts pour cet événement.",
+    "general.eventFinishedMsg2" : "Veuillez noter que votre compte est associé au salon XXXX qui est terminé depuis au moins 30 jours. Vous ne pouvez pas saisir d'autres contacts, seulement modifier les contacts déjà saisis. Veuillez contacter votre administrateur ou convey si vous souhaitez saisir d'autres contacts.",
 
     "command.backward"      : "Présédent",
     "command.edit"          : "Modifier",
@@ -761,5 +763,5 @@
 	"pdfExport.msg" : "Modifier/lier",
 
     "support.title" : "Support",
-    "support.url" : "https://www.convey.de/en/contact-2/"
+    "support.url" : "https://www.convey.de/en/help-desk/"
 }
