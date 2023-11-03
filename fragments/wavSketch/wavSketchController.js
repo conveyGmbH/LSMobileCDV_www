@@ -280,7 +280,7 @@
                     fileExt = fileName.substr(fileExtPos + 1);
                 }
                 if (bUseRootDir) {
-                    filePath = decodeURI(dataDirectory + "/" + fileName);
+                    filePath = decodeURIComponent(dataDirectory + "/" + fileName);
                     if (typeof window.requestFileSystem === "function") {
                         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fs) {
                             readFileFromDirEntry(fs.root);
@@ -350,7 +350,7 @@
                     var i, len;
                     for (i = 0, len = mediaFiles.length; i < len; i += 1) {
                         var bUseRootDir = false;
-                        var rootDirectory = cordova.file.externalRootDirectory;;
+                        var rootDirectory = cordova.file.externalRootDirectory;
                         var dataDirectory = "";
                         var fullPath = mediaFiles[i].fullPath;
                         var pos = fullPath.lastIndexOf("/");
