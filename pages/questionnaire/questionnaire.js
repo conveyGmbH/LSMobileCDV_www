@@ -79,6 +79,7 @@
             Log.call(Log.l.trace, pageName + ".");
             if (this.controller) {
                 var showconfirmbox = this.controller.showConfirmBoxMandatory();
+                var showConfirmBoxPflichtfeldAntwort = this.controller.showConfirmBoxPflichtfeldAntwort();
                 if (showconfirmbox && this.controller.actualquestion) {
                     var confirmTitle = getResourceText("questionnaire.labelConfirmMandatoryField") + ":\n" +
                         this.controller.actualquestion.FRAGESTELLUNG;
@@ -103,15 +104,17 @@
                             });
                         });
                     }
-                } /* else {
+                } else {
+                    if (showConfirmBoxPflichtfeldAntwort) {
+                        return WinJS.Promise.as();
+                    }
                     ret = that.controller.saveData(function (response) {
                         // called asynchronously if ok
                         complete(response);
                     }, function (errorResponse) {
                         error(errorResponse);
                     });
-                }*/
-                var showConfirmBoxPflichtfeldAntwort = this.controller.showConfirmBoxPflichtfeldAntwort();
+                }
                 if (showConfirmBoxPflichtfeldAntwort && this.controller.actualquestion) {
                     var confirmTitle = getResourceText("questionnaire.labelConfirmPflichtfeldAntwort") + ": " + this.controller.pflichtfeldName + "\n" +
                         this.controller.actualquestion.FRAGESTELLUNG;
@@ -134,6 +137,9 @@
                         });
                     });
                 } else {
+                    if (showconfirmbox) {
+                        return WinJS.Promise.as();
+                    }
                     ret = that.controller.saveData(function (response) {
                         // called asynchronously if ok
                         complete(response);
