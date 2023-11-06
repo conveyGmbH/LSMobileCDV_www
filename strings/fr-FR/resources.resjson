@@ -210,7 +210,7 @@
     "questionnaire.requiredmarker" : "*",
     "questionnaire.labelConfirmMandatoryField" : "Question obligatoire non remplie",
     "questionnaire.labelConfirmPflichtfeldAntwort" : "Champ obligatoire non rempli",
-    "questionnaire.labelNoEditPflichtfeldAntwort" : "Les données ne sont pas encore traitées !"
+    "questionnaire.labelNoEditPflichtfeldAntwort" : "Les données ne sont pas encore traitées !",
 
 	"questionnaireRemote.title"   : "Répondre aux questions",
     "questionnaireRemote.comment" : "Utilisez le bouton Retour sur cette page pour y retourner!",
