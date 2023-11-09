@@ -261,7 +261,7 @@
                             }, function (json) {
                                 Log.print(Log.l.info, "PRC_CheckMobileVersion call success!");
                                 if (json && json.d && json.d.results &&
-                                    json.d.results[0] && json.d.results[0].NewDBRequired === 1) {
+                                    json.d.results[0] && json.d.results[0].NewDBRequired) {
                                     updateMessage = json.d.results[0].UpdateMessage || "Database update required!";
                                     newDBRequired = json.d.results[0].NewDBRequired;
                                 }
