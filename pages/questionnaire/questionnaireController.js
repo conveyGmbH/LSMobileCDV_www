@@ -27,6 +27,7 @@
             this.loading = false;
             this.questions = null;
             this.actualquestion = null;
+            this.actualPfquestion = null;
             this.pflichtfeldName = null;
             this.images = null;
             this.docIds = null;
@@ -79,6 +80,9 @@
                 }
                 if (that.actualquestion) {
                     that.actualquestion = null;
+                }
+                if (that.actualPfquestion) {
+                    that.actualPfquestion = null;
                 }
                 if (that.pflichtfeldName) {
                     that.pflichtfeldName = null;
@@ -858,7 +862,7 @@
                             typeof question === "object" &&
                             question.pfAntwortFeature) {
                             var curScope = question;
-                            that.actualquestion = question;
+                            that.actualPfquestion = question;
                             var newRecord = that.getFieldEntries(i, curScope.type);
                             var prop;
 

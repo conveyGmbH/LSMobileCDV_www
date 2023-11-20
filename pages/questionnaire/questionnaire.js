@@ -80,66 +80,59 @@
             if (this.controller) {
                 var showconfirmbox = this.controller.showConfirmBoxMandatory();
                 var showConfirmBoxPflichtfeldAntwort = this.controller.showConfirmBoxPflichtfeldAntwort();
-                if (showconfirmbox && this.controller.actualquestion) {
-                    var confirmTitle = getResourceText("questionnaire.labelConfirmMandatoryField") + ":\n" +
-                        this.controller.actualquestion.FRAGESTELLUNG;
-                    if (AppData._persistentStates.showConfirmQuestion) {
-                        ret = alert(confirmTitle, function (result) {
-                            that.controller.selectRecordId(that.controller.actualquestion.ZeilenantwortVIEWID);
-                        }).then(function (result) {
-                            error(result);
-                        });
-                    } else {
-                        ret = confirm(confirmTitle, function (result) {
-                            if (!result) {
-                                that.controller.selectRecordId(that.controller.actualquestion.ZeilenantwortVIEWID);
-                                error(result);
-                            }
-                        }).then(function () {
-                            return that.controller.saveData(function (response) {
-                                // called asynchronously if ok
-                                complete(response);
-                            }, function (errorResponse) {
-                                error(errorResponse);
-                            });
-                        });
+                var confirmTitle = "";
+                if ((showconfirmbox && this.controller.actualquestion) ||
+                    (showConfirmBoxPflichtfeldAntwort && this.controller.actualPfquestion)) {
+                    if (showconfirmbox) {
+                        confirmTitle = getResourceText("questionnaire.labelConfirmMandatoryField") +
+                            ":\n" +
+                            this.controller.actualquestion.FRAGESTELLUNG;
                     }
-                } else {
                     if (showConfirmBoxPflichtfeldAntwort) {
-                        return WinJS.Promise.as();
+                        confirmTitle = confirmTitle + getResourceText("questionnaire.labelConfirmPflichtfeldAntwort") +
+                            ": " +
+                            this.controller.pflichtfeldName +
+                            "\n" +
+                            this.controller.actualPfquestion.FRAGESTELLUNG;
                     }
-                    ret = that.controller.saveData(function (response) {
-                        // called asynchronously if ok
-                        complete(response);
-                    }, function (errorResponse) {
-                        error(errorResponse);
-                    });
-                }
-                if (showConfirmBoxPflichtfeldAntwort && this.controller.actualquestion) {
-                    var confirmTitle = getResourceText("questionnaire.labelConfirmPflichtfeldAntwort") + ": " + this.controller.pflichtfeldName + "\n" +
-                        this.controller.actualquestion.FRAGESTELLUNG;
 
                     if (AppData._contactData && AppData._contactData.Flag_NoEdit) {
                         confirmTitle = getResourceText("questionnaire.labelNoEditPflichtfeldAntwort");
                     }
-
-                    ret = confirm(confirmTitle, function (result) {
-                        if (!result) {
-                            that.controller.selectRecordId(that.controller.actualquestion.ZeilenantwortVIEWID);
-                            error(result);
-                        }
-                    }, null, "alertPflichtfeld").then(function () {
-                        return that.controller.saveData(function (response) {
-                            // called asynchronously if ok
-                            complete(response);
-                        }, function (errorResponse) {
-                            error(errorResponse);
-                        });
-                    });
-                } else {
-                    if (showconfirmbox) {
-                        return WinJS.Promise.as();
+                    if (showconfirmbox && AppData._persistentStates.showConfirmQuestion) {
+                        ret = alert(confirmTitle,
+                            function (result) {
+                                that.controller.selectRecordId(that.controller.actualquestion.ZeilenantwortVIEWID);
+                            }).then(function (result) {
+                                error(result);
+                            });
+                    } else {
+                        var styleClass = showConfirmBoxPflichtfeldAntwort ? "alertPflichtfeld" : null;
+                        ret = confirm(confirmTitle,
+                            function (result) {
+                                if (!result) {
+                                    var recordId = null;
+                                    if (that.controller.actualPfquestion && that.controller.actualPfquestion.ZeilenantwortVIEWID) {
+                                        recordId = that.controller.actualPfquestion.ZeilenantwortVIEWID;
+                                    }
+                                    if (that.controller.actualquestion && that.controller.actualquestion.ZeilenantwortVIEWID) {
+                                        recordId = that.controller.actualquestion.ZeilenantwortVIEWID;
+                                    }
+                                    that.controller.selectRecordId(recordId);
+                                    error(result);
+                                }
+                            },
+                            null,
+                            styleClass).then(function () {
+                                return that.controller.saveData(function (response) {
+                                    // called asynchronously if ok
+                                    complete(response);
+                                }, function (errorResponse) {
+                                    error(errorResponse);
+                                });
+                            });
                     }
+                } else {
                     ret = that.controller.saveData(function (response) {
                         // called asynchronously if ok
                         complete(response);
