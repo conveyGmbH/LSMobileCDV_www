@@ -272,7 +272,7 @@
                                     var timeZoneAdjustment = AppData.appSettings.odata.timeZoneAdjustment || 0;
                                     var milliseconds = parseInt(msString) - timeZoneAdjustment * 60000;
                                     var endDate = new Date(milliseconds);
-                                    var diffTime = Math.abs(endDate - actualDate);
+                                    var diffTime = actualDate.getTime() - endDate.getTime();
                                     var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                                     if (diffDays > 23) {
                                         AppData.setErrorMsg(AppBar.scope.binding, getResourceText("general.eventFinishedMsg1"));
