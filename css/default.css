@@ -133,8 +133,8 @@ img .field_line {
 }
 
 .win-selectionstylefilled .win-selected .win-textbox {
-    background-color: #ffffff !important;
-    border-color: rgba(0, 0, 0, 0.4) !important;
+    background-color: #ffffff;
+    border-color: rgba(0, 0, 0, 0.4);
 }
 .win-selectionstylefilled .win-selected .win-textbox:focus {
     border-color: HighLight !important;
@@ -1497,6 +1497,15 @@ button.win-button {
     padding-top: 6px;
 }
 
+.view-size-smallest .list-portrait-only {
+    display: none;
+}
+
+.view-size-smallest .list-compact-only {
+    display: block;
+    width: 65px;
+}
+
 .mandatory-bkg {
     background-color: rgba(0, 120, 215, 0.3);
 }
@@ -1513,11 +1522,160 @@ button.win-button {
     -webkit-transform: translate3d(0, 0, 0);
 }
 
+
+
+/*Styles used in the Item Template of Split-View doc area*/
+.overlaid-item-template {
+    width: 100%;
+}
+
+.overlaid-item-template img {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    bottom: 0;
+    left: 0;
+}
+
+.overlaid-item-template .overlay {
+    position: absolute;
+    background-color: rgba(0,0,0,0.65);
+    height: 20px;
+    padding: 20px 15px;
+    overflow: hidden;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+}
+
+.overlaid-item-template .overlay .item-title {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.img-footer-container {
+    width: 100%;
+    display: none;
+}
+
+.view-size-medium-small .img-footer-container {
+    display: inline;
+}
+
+.view-size-small .img-footer-container {
+    display: inline;
+}
+
+.view-size-split .img-footer-container {
+    display: none;
+}
+
 .lightthemeMandatory {
     background-color: lightyellow;
 }
 
 .darkthemeMandatory {
     background-color: #8b4513;
+}
+.bkgcolor-hoverable:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+.bkgcolor-activatable.bkgcolor-hoverable:hover:active, .bkgcolor-activatable:active {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #000000;
+}
+.use-border-radius {
+    border-radius: 0;
+}
+
+.resize-helper-gripper {
+    display: block;
+    position: absolute;
+    user-select: none;
+    z-index: 20000;
+    background-color: #6e6e6e;
+    opacity: 0;
+    touch-action: none;
+}
+.cnv-ui-dark .resize-helper-gripper {
+    background-color: #a0a0a0;
+}
+.resize-helper-vertical {
+    bottom: 0;
+    left: 0;
+    height: 6px;
+    cursor: s-resize;
+    width: 100%;
+}
+.resize-helper-horizontal {
+    top: 0;
+    right: 0;
+    width: 6px;
+    cursor: e-resize;
+    height: 100%;
+}
+
+.resize-helper-command-container {
+    display: block;
+    position: absolute !important;
+    right: 6px;
+    z-index: 20000 !important;
+    top: 0;
+}
+.navigationbar-container .resize-helper-command-container {
+    right: 0 !important;
+}
+.navigationbar-container .resize-helper-command-container button.win-command {
+    height: 47px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: gray;
+}
+
+.resize-helper-command-container.win-commandingsurface .win-commandingsurface-actionarea {
+    background-color: transparent !important;
+}
+
+.resize-helper-command-container button.win-command {
+    border: none;
+    width: 32px;
+    min-width: 32px;
+}
+
+.resize-helper-command-container button.win-command:disabled {
+    display: none
+}
+
+.resize-helper-command-container .win-commandicon {
+    width: 24px;
+    height: 24px;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.win-splitview-pane-closed .win-splitview-pane .resize-helper-gripper {
+    display: none;
+}
+
+.label-text-message {
+    text-align: justify;
+    margin-left: 25px;
+    margin-right: 25px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.win-toggleswitch .win-toggleswitch-values {
+     max-width: calc(100% - 50px);
+}
+
+html.win-hoverable .win-listview.win-selectionstylefilled .win-container.win-disabled:hover .win-itembox,
+html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-container.win-disabled:hover .win-itembox {
+    background-color: inherit;
+    color: inherit;
+}
+.win-listview:not(.win-selectionstylefilled) .win-container.win-selected.win-disabled .win-selectionborder,
+.win-itemcontainer:not(.win-selectionstylefilled).win-container.win-selected.win-disabled .win-selectionborder {
+    border-color: inherit;
+    color: inherit;
 }
 

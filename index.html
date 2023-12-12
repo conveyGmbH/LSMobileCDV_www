@@ -73,7 +73,7 @@
     <script type="text/javascript" src="lib/convey/scripts/pageController.js"></script>
     <script type="text/javascript" src="lib/convey/scripts/fragmentController.js"></script>
     <script type="text/javascript" src="lib/convey/scripts/inertia.js"></script>
-	<script type="text/javascript" src="lib/convey/scripts/filep.js"></script>	
+	<script type="text/javascript" src="lib/convey/scripts/filep.js"></script>
     <!-- vCard references -->
     <script type="text/javascript" src="lib/vcard/scripts/vcardformatter.js"></script>
     <script type="text/javascript" src="lib/vcard/scripts/vcard.js"></script>
@@ -94,7 +94,7 @@
         <div class="navigationbar-item navigationbar-horizontal-item win-type-subtitle">
             <div class="navigationbar-text navigationbar-horizontal-text"
                  data-win-bind="style.display: disabled Binding.Converter.toDisplayNone">
-                <span class="navigationbar-inner-text" 
+                <span class="navigationbar-inner-text"
                       data-win-bind="textContent: text"></span>
             </div>
             <div class="navigationbar-text navigationbar-horizontal-text navigationbar-text-gray"
@@ -148,7 +148,8 @@
         <div id="masterhost" class="masterhost-container">
         </div>
         <!-- Page Navigationbar -->
-        <div class="navigationbar-container navigationbar-container-horizontal">
+        <div class="navigationbar-container navigationbar-container-horizontal"
+             data-win-bind="disabled: disabled">
             <div id="navigationbar_horizontal"
                  class="win-selectionstylefilled navigationbar"
                  data-win-control="WinJS.UI.ListView"
@@ -161,7 +162,8 @@
                  }">
             </div>
         </div>
-        <div class="navigationbar-container navigationbar-container-vertical">
+        <div class="navigationbar-container navigationbar-container-vertical"
+             data-win-bind="disabled: disabled">
             <div id="navigationbar_vertical"
                  class="win-selectionstylefilled navigationbar"
                  data-win-control="WinJS.UI.ListView"
