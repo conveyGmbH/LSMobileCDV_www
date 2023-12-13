@@ -126,8 +126,8 @@
                             }
                             if (that.controller.hasDoc()) {
                                 if (width > 699) {
-                                    fieldWidth = width / 2;
-                                    var maxDocContainerWidth = height / Math.sqrt(2) - 16;
+                                    fieldWidth = Math.floor(width / 2);
+                                    var maxDocContainerWidth = Math.floor(height / Math.sqrt(2)) - 16;
                                     if (fieldWidth > maxDocContainerWidth) {
                                         docWidth = maxDocContainerWidth;
                                         fieldWidth = width - docWidth - 16;
