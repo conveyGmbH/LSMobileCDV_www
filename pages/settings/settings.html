@@ -145,7 +145,8 @@
                         </div>
                         <div class="line-separator"
                              data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay"></div>
-                        <div class="field_line field_line_odd">
+                        <div class="field_line field_line_odd"
+                             data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay">
                             <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'settings.inputBorder'}"></span>
                             <span class="label landscape_only" data-win-res="{textContent: 'settings.inputBorder'}"></span>
                             <span class="input_field win-type-subtitle" data-win-bind="textContent: generalData.inputBorder Binding.Converter.toInputBorderName"></span>
@@ -153,10 +154,10 @@
                                    type="range" min="0" max="2" step="1"
                                    data-win-bind="value: generalData.inputBorder"
                                    onchange="AppBar.handleEvent('change', 'changedInputBorder', event)"
-                                   oninput="AppBar.handleEvent('change', 'changedInputBorder', event)"
-                                   />
+                                   oninput="AppBar.handleEvent('change', 'changedInputBorder', event)" />
                         </div>
-                        <div class="field_line field_line_even">
+                        <div class="field_line field_line_even"
+                             data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay">
                             <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'settings.inputBorderRadius'}"></span>
                             <span class="label landscape_only" data-win-res="{textContent: 'settings.inputBorderRadius'}"></span>
                             <span class="input_field win-type-subtitle" data-win-bind="textContent: generalData.inputBorderRadius"></span>
@@ -164,8 +165,34 @@
                                    type="range" min="0" max="12" step="1"
                                    data-win-bind="value: generalData.inputBorderRadius"
                                    onchange="AppBar.handleEvent('change', 'changedInputBorderRadius', event)"
-                                   oninput="AppBar.handleEvent('change', 'changedInputBorderRadius', event)"
-                            />
+                                   oninput="AppBar.handleEvent('change', 'changedInputBorderRadius', event)" />
+                        </div>
+                        <div class="line-separator"
+                             data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay"></div>
+                        <div class="field_line field_line_odd"
+                             data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay">
+                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'settings.inputBorderBottom'}"></span>
+                            <span class="label landscape_only" data-win-res="{textContent: 'settings.inputBorderBottom'}"></span>
+                            <div class="input_field toggle-switch-parent">
+                                <div id="inputBorderBottom"
+                                     data-win-control="WinJS.UI.ToggleSwitch"
+                                     data-win-bind="winControl.checked: generalData.inputBorderBottom; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
+                                     onchange="AppBar.handleEvent('change', 'clickInputBorderBottom', event)">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="line-separator"
+                             data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay"></div>
+                        <div class="field_line field_line_odd"
+                             data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay">
+                            <span class="label win-type-caption portrait_only_left" data-win-res="{textContent: 'settings.iconStrokeWidth'}"></span>
+                            <span class="label win-type-caption portrait_only_half"></span>
+                            <div class="label landscape_only"><span data-win-res="{textContent: 'settings.iconStrokeWidth'}"></span></div>
+                            <div class="input_group">
+                                <input id="iconStrokeWidth" class="input_small_left win-textbox" type="text"
+                                       data-win-bind="value: generalData.iconStrokeWidth"
+                                       oninput="AppBar.handleEvent('change', 'ChangeIconStrokeWidth', event)" />
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -348,7 +348,7 @@
     "settings.tiletextcolor": "Start symbol color",
     "settings.tilebkgcolor" : "Start background",
     "settings.shopAppBkg"   : "Background image",
-    "settings.theme"        : "Theme color",
+    "settings.theme"        : "Color theme",
     "settings.light"        : "Light",
     "settings.dark"         : "Dark",
     "settings.system"       : "System",
