@@ -33,6 +33,7 @@
         picturesDirectorySubFolder: "",
         cameraFeatureSupported: true,
         useBinaryQrCode: false,
+        hideManually: false,
         logEnabled: false,
         fullScreen: false,
         logLevel: 3,
