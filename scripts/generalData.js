@@ -1132,6 +1132,14 @@
                     }*/
                     AppData._persistentStates.visitorFlowInterval = parseInt(item.LocalValue);
                     break;
+                case 52:
+                    //item.pageProperty = "camera";
+                    if (item.LocalValue === "1") {
+                        AppData._persistentStates.hideManually = true;
+                    } else {
+                        AppData._persistentStates.hideManually = false;
+                    }
+                    break;
                 default:
                     // defaultvalues
             }

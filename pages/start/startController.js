@@ -227,6 +227,10 @@
                                     AppData._persistentStates.hideCameraScan ||
                                     !AppData._persistentStates.cameraFeatureSupported);
                             }
+                                break;
+                            case "newContact": {
+                                disableButton(button, AppData._persistentStates.hideManually);
+                                }
                         }
                         if (buttonElement) {
                             break;
