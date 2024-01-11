@@ -333,8 +333,45 @@
                         //@nedra:25.09.2015: load the list of INITAnrede for Combobox
                         return Account.initSpracheView.select(function (json) {
                             Log.print(Log.l.trace, "initSpracheView: success!");
-                            if (json && json.d) {
-                                var results = json.d.results;
+                            if (json && json.d && json.d.results && json.d.results.length > 0) {
+                                var results;
+                                var resources = Resources.get();
+                                if (resources) {
+                                    var sysLanguages = Resources.languages;
+                                    var defLanguages = AppData.getDefLanguages();
+                                    if (sysLanguages && sysLanguages.length > 0 &&
+                                        defLanguages && defLanguages.length > 0) {
+                                        results = [];
+                                        json.d.results.forEach(function (item) {
+                                            var languageId = item.LanguageID;
+                                            var defLanguagesFound = defLanguages.filter(function(item) {
+                                                return item.LanguageSpecID === languageId;
+                                            });
+                                            var sysLanguagesFound = [];
+                                            if (defLanguagesFound && defLanguagesFound[0] && typeof defLanguagesFound[0].DOMCode === "string") {
+                                                var defLanguage = defLanguagesFound[0].DOMCode.toLowerCase();
+                                                sysLanguagesFound = sysLanguages.filter(function(item) {
+                                                    if (typeof item === "string") {
+                                                        var sysLanguage = item.toLowerCase();
+                                                        if (defLanguage === sysLanguage) {
+                                                            return true;
+                                                        } else if (defLanguage.split("-")[0] === sysLanguage.split("-")[0]) {
+                                                            return true;
+                                                        }
+                                                    }
+                                                    return false;
+                                                });
+                                            }
+                                            if (sysLanguagesFound.length > 0) {
+                                                results.push(item);
+                                            }
+                                        });
+                                    } else {
+                                        results = json.d.results;
+                                    }
+                                } else {
+                                    results = json.d.results;
+                                }
                                 // Now, we call WinJS.Binding.List to get the bindable list
                                 if (initSprache && initSprache.winControl) {
                                     initSprache.winControl.data = new WinJS.Binding.List(results);
