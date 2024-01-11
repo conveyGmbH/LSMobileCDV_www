@@ -1,4 +1,15 @@
-﻿.status-on-off {
+﻿.window-color {
+    color: WindowText;
+    background-color: Window;
+}
+
+.win-listview .win-focusedoutline,
+.win-itemcontainer .win-focusedoutline {
+    outline-style: dotted !important;
+    outline-width: 1px !important;
+}
+
+.status-on-off {
     background-color: transparent;
 }
 
@@ -17,6 +28,12 @@
     border-right-width: 2px;
     border-right-color: transparent;
     */
+}
+.masterhost-background {
+    background-color: transparent;
+}
+.contenthost-background {
+    background-color: transparent;
 }
 /*
 .win-selectionstylefilled.win-listview .win-selected {
@@ -54,30 +71,96 @@
 #root-split-view-pane {
     overflow-y: auto;
 }
+#root-split-view.rootsplitview-full:not(.win-splitview-pane-opened) .win-splitview-panewrapper,
+#root-split-view.rootsplitview-tablet:not(.win-splitview-pane-opened) .win-splitview-panewrapper {
+    width: 48px;
+}
+#root-split-view.rootsplitview-full:not(.win-splitview-pane-opened) .win-splitview-pane,
+#root-split-view.rootsplitview-tablet:not(.win-splitview-pane-opened) .win-splitview-pane {
+    width: 65px;
+}
 #root-split-view.win-splitview-pane-opened.rootsplitview-mobile .win-splitview-panewrapper,
 #root-split-view.win-splitview-pane-opened.rootsplitview-mobile .win-splitview-pane {
-    width:100%;
+    width: 100%;
 }
 #root-split-view.win-splitview-pane-opened.rootsplitview-tablet .win-splitview-pane,
 #root-split-view.win-splitview-pane-opened.rootsplitview-full .win-splitview-pane {
-    width:280px
+    width: 280px;
+}
+
+#root-split-view-submenu {
+    margin: 0;
+    padding: 0;
+    left: 48px;
+    top: 48px;
+    width: 280px;
+    height: calc(100% - 48px);
+    display: none;
+    position: absolute;
+    overflow: hidden;
+}
+
+.pane-submenu-list {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    /*
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-right-color: #e6e6e6;
+    */
+}
+
+.pane-submenu-list .win-disabled .win-item {
+    background-color: transparent;
+    border-color: transparent;
+    opacity: 0.4;
+}
+
+.pane-submenu-list .win-container:hover .win-itembox.win-disabled {
+    background-color: transparent !important;
+}
+
+.win-splitviewcommand-button {
+    width: calc(100% - 40px);
 }
 
 .win-splitviewcommand-button-content {
     padding-left: 12px;
     padding-right: 12px;
+    width: calc(100% - 16px);
 }
 .win-splitviewcommand-label {
-    color: WindowText;
+    color: var(--WindowText);
     font-size: 20px;
     margin-top: 12px;
     margin-bottom: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.win-splitviewcommand.submenu-collapsed .win-splitviewcommand-icon,
+.win-splitviewcommand.submenu-expanded .win-splitviewcommand-icon {
+    margin-right: 3px;
+}
+.win-splitviewcommand.submenu-collapsed .win-splitviewcommand-label:before {
+    font-size: 8px;
+    font-weight: 600;
+    font-family: "Segoe MDL2 Assets", "Symbols";
+    content: "\e0e3\00a0\00a0";
+}
+.win-splitviewcommand.submenu-expanded .win-splitviewcommand-label:before {
+    font-size: 8px;
+    font-weight: 600;
+    font-family: "Segoe MDL2 Assets", "Symbols";
+    content: "\e019\00a0\00a0";
 }
 
 .win-splitviewcommand.win-disabled {
     background-color: transparent;
     border-color: transparent;
-    opacity: 0.2;
+    opacity: 0.4;
 }
 html.win-hoverable .win-disabled .win-splitviewcommand-button:hover {
     background-color: transparent;
@@ -98,6 +181,9 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     border-bottom-style: solid;
     border-bottom-width: 1px;
     border-bottom-color: gray;
+}
+.has-resize-helper #navigationbar_horizontal.win-listview {
+    width: calc(100% - 32px);
 }
 
 #navigationbar_vertical.win-listview {
@@ -133,10 +219,53 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     left: 0;
 }
 
+.pane-submenu {
+
+}
+.pane-submenu .win-splitviewcommand-button-content {
+    padding-left: 56px;
+    width: calc(100% - 68px);
+}
+
+.pane-submenu .win-splitviewcommand-icon {
+    margin: 16px 8px 0 0;
+    padding: 0;
+}
+
+.pane-submenu .win-splitviewcommand-label {
+    font-size: 16px;
+}
+
 .navigationbar-horizontal-template,
-.navigationbar-vertical-template {
+.navigationbar-vertical-template,
+.pane-submenu-template {
     margin: 0;
     padding: 0;
+}
+
+.pane-submenu-header {
+    width: 100%;
+    height: 48px;
+}
+.pane-submenu-header-text {
+    margin: 0 6px;
+    padding-top: 12px;
+    padding-bottom: 0;
+    padding-right: 0;
+    height: 36px;
+    display: inherit;
+}
+.pane-submenu-list .win-container {
+    margin: 4px 0 !important;
+    padding: 0 !important;
+    width: 100%;
+}
+
+.pane-submenu-item {
+    margin: 0;
+    padding: 0 16px;
+    width: 100%;
+    height: 48px;
 }
 
 .navigationbar-item {
@@ -164,7 +293,30 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     text-transform: uppercase;
     display: inherit;
 }
-.navigationbar-text-gray {
+
+.pane-submenu-icon-container {
+    margin: 16px 8px 0 0;
+    padding: 0;
+    float: left;
+}
+.pane-submenu-icon {
+
+}
+.pane-submenu-icon-gray {
+}
+
+.pane-submenu-text {
+    margin: 0;
+    padding-top: 9px;
+    padding-bottom: 0;
+    padding-right: 0;
+    height: 36px;
+    display: inherit;
+    width: calc(100% - 56px);
+    float: left;
+}
+.navigationbar-text-gray,
+.pane-submenu-text-gray {
     color: #a0a0a0;
 }
 
@@ -182,6 +334,8 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     width: calc(100% - 12px);
 }
 
+.pane-submenu-inner-text {
+}
 .navigationbar-inner-text {
 
 }
@@ -349,15 +503,18 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     width: 100%;
 }
 
+.appHeader .win-button {
+    z-index: 9900;
+}
 .publish-button {
-    background-color: #f2f2f2;
-    color: #ed3330;
-    width: 128px;
-    padding: 2px 6px;
     display: block;
+    background-color: #f2f2f2;
+    color: red;
+    width: 300px;
+    padding: 2px 6px;
     position: relative;
-    margin-left: calc(100% - 128px);
-    margin-top: -22px;
+    margin-left: calc(100% - 300px);
+    margin-top: -27px;
 }
 
 /*

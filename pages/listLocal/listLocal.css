@@ -17,13 +17,41 @@
 #listLocalContacts .win-listview .win-itembox {
     background-color: transparent;
 }
+.listLocal .contentarea {
+    overflow-y: hidden !important;
+}
+
+.listLocal .content-header {
+    height: auto !important;
+    min-height: 48px;
+}
+
+.listLocal .master-list-header {
+    height: auto !important;
+}
+
+.listLocal .master-list-header.list-compact-only {
+    padding-top: 48px;
+}
 
 #listLocalContacts .listview {
     position: relative;
     left: 0;
     top: 0;
-    width: 200px;
+    width: 100%;
     height: calc(100% - 56px);
+}
+
+#listLocalContacts .list-header {
+    font-weight: bold;
+    display: flex;
+}
+
+#listLocalContacts .win-headercontainer {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    /* Add any other styles you need for the header */
 }
 
 /* Styles used for the custom layout */
@@ -46,7 +74,7 @@
 }
 */
 #listLocalContacts .win-item {
-    width: calc(100% - 52px);
+    width: auto;
     padding-left: 26px;
     padding-right: 26px;
     padding-top: 2px;
@@ -78,14 +106,12 @@
 }
 */
 .view-size-bigger #listLocalContacts .win-item {
-    width: calc(100% - 52px);
     padding-top: 8px;
     padding-bottom: 8px;
 }
 
 .action-image-right {
     /*width: 100%;*/
-    margin-right: 4px;
     float: right;
 }
 
@@ -101,7 +127,6 @@
 
 
 .view-size-medium #listLocalContacts .win-item {
-    width: calc(100% - 36px);
     padding-left: 18px;
     padding-right: 18px;
     padding-top: 8px;
@@ -120,7 +145,6 @@
 */
 
 .view-size-small #listLocalContacts .win-item {
-    width: calc(100% - 20px);
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 4px;
@@ -132,6 +156,3 @@
     opacity: 0.6;
 }
 
-.size-big{
-    height: 120px;
-}

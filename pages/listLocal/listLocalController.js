@@ -72,6 +72,7 @@
             var resultConverter = function (item, index) {
                 var map = AppData.initLandView.getMap();
                 var results = AppData.initLandView.getResults();
+
                 if (map && results) {
                     var curIndex = map[item.INITLandID];
                     if (typeof curIndex !== "undefined") {

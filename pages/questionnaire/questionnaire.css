@@ -190,6 +190,7 @@
     padding: 0;
     width: calc(100% - 16px);
     height: 100%;
+    touch-action: pan-x !important;
 }
 
 /*Styles used in the Item Template*/

@@ -319,34 +319,6 @@
                         Application.navigateById("userinfo", event);
                     }
                     Log.ret(Log.l.trace);
-                }
-            };
-
-            this.disableHandlers = {
-                clickBack: function () {
-                    if (WinJS.Navigation.canGoBack === true) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                },
-                clickNew: function () {
-                    if (that.binding.contactId) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                },
-                clickForward: function () {
-                    // never disable!
-                    return false;
-                },
-                clickShowList: function () {
-                    if (that.binding.moreNotes) {
-                        return false;
-                    } else {
-                        return true;
-                    }
                 },
                 clickLogoff: function () {
                     Log.call(Log.l.trace, "Start.Controller.");
@@ -379,6 +351,66 @@
                     }*/
                     Log.ret(Log.l.trace);
                 }
+            };
+
+            this.disableHandlers = {
+                clickBack: function () {
+                    if (WinJS.Navigation.canGoBack === true) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                clickNew: function () {
+                    if (that.binding.contactId) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                clickForward: function () {
+                    // never disable!
+                    return false;
+                },
+                clickShowList: function () {
+                    if (that.binding.moreNotes) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                },
+                clickLogoff: function () {
+                    var logoffbutton = document.getElementById("logoffbutton");
+                    if (logoffbutton) {
+                        logoffbutton.disabled = that.binding.generalData.notAuthorizedUser ? false : that.binding.generalData.logOffOptionActive ? false : true;
+                    }
+                    if (that.binding.generalData.notAuthorizedUser) {
+                        return false;
+                    }
+                    return !that.binding.generalData.logOffOptionActive;
+                }
+            }
+
+            that._getHammerExcludeRect = function () {
+                if (that.binding.showList) {
+                    var parentElement = pageElement.querySelector("#listhost");
+                    if (parentElement) {
+                        var extraOffsetTop = 0;
+                        if (NavigationBar.orientation === "horizontal") {
+                            extraOffsetTop += NavigationBar.navHorzHeight;
+                        }
+                        var excludeRect = {
+                            left: parentElement.offsetLeft,
+                            top: parentElement.offsetTop + extraOffsetTop,
+                            right: parentElement.offsetLeft + parentElement.clientWidth,
+                            bottom: parentElement.offsetTop + extraOffsetTop + parentElement.clientHeight
+                        };
+                        that._hammerExcludeRect = excludeRect;
+                    }
+                } else {
+                    that._hammerExcludeRect = { left: 0, top: 0, right: 0, bottom: 0 };
+                }
+                return that._hammerExcludeRect;
             }
 
             // finally, load the data

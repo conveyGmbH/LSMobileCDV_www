@@ -12,13 +12,43 @@
     background-color: transparent;
 }
 
+.listRemote .contentarea {
+    overflow-y: hidden !important;
+}
+
+.listRemote .content-header {
+    height: auto !important;
+    min-height: 48px;
+}
+
+.listRemote .master-list-header {
+    height: auto !important;
+}
+
+.listRemote .master-list-header.list-compact-only {
+    padding-top: 48px;
+}
+
 #listRemoteContacts .listview {
     position: relative;
     left: 0;
     top: 0;
-    width: 200px;
+    width: 100%;
     height: calc(100% - 56px);
 }
+
+#listRemoteContacts .list-header {
+    font-weight: bold;
+    display: flex;
+}
+
+#listRemoteContacts .win-headercontainer {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    /* Add any other styles you need for the header */
+}
+
 
 /* Styles used for the custom layout */
 .listView .listRemoteLayout {
@@ -40,7 +70,7 @@
 }
 */
 #listRemoteContacts .win-item {
-    width: calc(100% - 52px);
+    width: auto;
     padding-left: 26px;
     padding-right: 26px;
     padding-top: 2px;
@@ -72,7 +102,6 @@
 }
 */
 .view-size-bigger #listRemoteContacts .win-item {
-    width: calc(100% - 52px);
     padding-top: 8px;
     padding-bottom: 8px;
 }
@@ -95,7 +124,6 @@
 */
 
 .view-size-medium #listRemoteContacts .win-item {
-    width: calc(100% - 36px);
     padding-left: 18px;
     padding-right: 18px;
     padding-top: 8px;
@@ -116,7 +144,6 @@
 */
 
 .view-size-small #listRemoteContacts .win-item {
-    width: calc(100% - 20px);
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 4px;

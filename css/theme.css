@@ -86,6 +86,12 @@ body.cnv-ui-dark, body.cnv-ui-dark * {
 .cnv-ui-dark #navigationbar_horizontal.win-listview {
     border-bottom-color: #525252;
 }
+.navigationbar-container .resize-helper-command-container button.win-command {
+    border-bottom-color: #e6e6e6;
+}
+.cnv-ui-dark .navigationbar-container .resize-helper-command-container button.win-command {
+    border-bottom-color: #525252;
+}
 
 .win-commandingsurface .win-commandingsurface-actionarea {
     border-top-color: #e6e6e6;
@@ -169,5 +175,21 @@ body.cnv-ui-dark, body.cnv-ui-dark * {
     border-bottom-color: #393939;
     border-bottom-style: solid;
 }
+.cnv-ui-dark .win-selectionstylefilled .win-selected .win-textbox {
+    background-color: rgba(250,250,250,0.2);
+}
+.cnv-ui-dark .win-selectionstylefilled .win-selected .win-textbox:focus {
+    background-color: #ffffff;
+}
 
-
+.win-textbox:disabled,
+.win-textarea:disabled {
+    border-color: #e6e6e6;
+    color: GrayText;
+    background-color: rgba(0,0,0,0.1);
+}
+.cnv-ui-dark .win-textbox:disabled,
+.cnv-ui-dark .win-textarea:disabled {
+    border-color: #393939;
+    background-color: rgba(255,255,255,0.1);
+}

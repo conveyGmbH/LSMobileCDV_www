@@ -7,8 +7,9 @@
 #sketchListController .contentarea .win-type-body {
     height: 170px;
 }
-.contentarea .win-type-body .win-listview {
+#sketchList.listview {
     height: 170px;
+    touch-action: pan-x !important;
 }
 
 .list-img {
