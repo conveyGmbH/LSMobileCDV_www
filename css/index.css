@@ -46,6 +46,70 @@
     height: 48px;
     z-index: -10000;
 }
+.master-maximized .navigationbar-container-horizontal:not(has-resize-helper) {
+    display: none;
+}
+
+.navigationbar-container-horizontal .win-navleft {
+    left: 0%;
+    top: 0;
+}
+.navigationbar-container-horizontal .win-navright {
+    left: 100%;
+    top: 0;
+    margin-left: -32px;
+}
+.master-detail:not(.master-maximized) .navigationbar-container-horizontal.has-resize-helper .win-navright {
+    margin-left: -64px
+}
+.navigationbar-container-horizontal .win-navbutton {
+    touch-action: manipulation;
+    border: none;
+    width: 32px;
+    height: 47px;
+    z-index: 1000;
+    position: absolute;
+    font-family: "Segoe MDL2 Assets", "Symbols";
+    font-size: 16px;
+    padding: 0;
+    min-width: 0;
+    color: WindowText;
+    -webkit-backdrop-filter: blur(0.75px);
+    backdrop-filter: blur(0.75px);
+}
+.navigationbar-container-horizontal .win-navbutton > span {
+    display: inline-block;
+    position: relative;
+    width: 20px;
+    height: 24px;
+    margin: 4px;
+    padding-top: calc(50% - 6px);
+}
+.navigationbar-container-horizontal .win-navbutton {
+    background-color: rgba(252, 252, 252, 0.8);
+}
+.cnv-ui-dark .navigationbar-container-horizontal .win-navbutton {
+    background-color: rgba(16, 16, 16, 0.8);
+}
+.navigationbar-container-horizontal .win-navbutton > span {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+.cnv-ui-dark .navigationbar-container-horizontal .win-navbutton > span {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+html.win-hoverable .navigationbar-container-horizontal .win-navbutton:hover > span {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+html.win-hoverable .cnv-ui-dark .navigationbar-container-horizontal .win-navbutton:hover > span {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+html.win-hoverable .navigationbar-container-horizontal .win-navbutton:active > span {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+html.win-hoverable .cnv-ui-dark .navigationbar-container-horizontal .win-navbutton:active > span {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
 .navigationbar-container-vertical {
     width: 244px;
     z-index: -10001;
@@ -169,6 +233,10 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     background-color: transparent;
 }
 
+.master-maximized .resize-helper-gripper {
+    pointer-events: none;
+}
+
 #navigationbar_horizontal .win-selected,
 #navigationbar_vertical .win-selected {
     color: WindowText;
@@ -182,8 +250,12 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     border-bottom-width: 1px;
     border-bottom-color: gray;
 }
-.has-resize-helper #navigationbar_horizontal.win-listview {
+.master-detail:not(.master-maximized) .has-resize-helper #navigationbar_horizontal.win-listview {
     width: calc(100% - 32px);
+}
+
+.master-maximized .navigationbar-container-horizontal #navigationbar_horizontal.win-listview {
+    display: none;
 }
 
 #navigationbar_vertical.win-listview {
@@ -337,6 +409,7 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 .pane-submenu-inner-text {
 }
 .navigationbar-inner-text {
+    white-space: nowrap;
 
 }
 
