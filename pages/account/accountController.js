@@ -41,7 +41,8 @@
                 portalLinkUrl: (AppData._persistentStates.odata.https ? "https://" : "http://") +
                     AppData._persistentStates.odata.hostName +
                     getResourceText("account.portalPath"),
-                prevMitarbeiterID: AppData.generalData.getRecordId("Mitarbeiter")
+                prevMitarbeiterID: AppData.generalData.getRecordId("Mitarbeiter"),
+                languageInfo: false
             }, commandList]);
 
             var prevLogin = AppData._persistentStates.odata.login;
@@ -372,6 +373,7 @@
                                 } else {
                                     results = json.d.results;
                                 }
+                                that.binding.languageInfo = that.binding.prevMitarbeiterID && results.length < AppData._defLanguages.length;
                                 // Now, we call WinJS.Binding.List to get the bindable list
                                 if (initSprache && initSprache.winControl) {
                                     initSprache.winControl.data = new WinJS.Binding.List(results);
@@ -386,6 +388,7 @@
                     } else {
                         if (initSprache && initSprache.winControl) {
                             var results = Account.initSpracheView.getResults();
+                            that.binding.languageInfo = that.binding.prevMitarbeiterID && Account.initSpracheView.getResults().length < AppData._defLanguages.length;
                             initSprache.winControl.data = new WinJS.Binding.List(results);
                             setLanguage(results);
                         }

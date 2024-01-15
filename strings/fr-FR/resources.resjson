@@ -448,6 +448,7 @@
     "account.language"      : "Langue",
     "account.unknown"       : "Utilisateur spécifié introuvable!",
     "account.inactive"      : "Le service est actuellement inactif!",
+    "account.languageInfo"      :"Se non vedete la vostra lingua nel menu a tendina, installate il pacchetto linguistico per quella lingua nel vostro sistema operativo Windows. Le lingue supportate sono: Tedesco, Inglese, Francese e Italiano.",
     
     "info.title"            : "Informations sur l’application",
     "info.comment"          : "&copy; convey Information Systems GmbH",

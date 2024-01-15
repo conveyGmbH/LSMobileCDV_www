@@ -446,6 +446,7 @@
     "account.language"      : "Language",
     "account.unknown"       : "Specified user not found!",
     "account.inactive"      : "The service is currently inactive!",
+    "account.languageInfo"  : "If you do not see your language in the drop drow, please install the language package for that language in your Windows operating system. The supported languages are: German, English, French and Italian.",
     
     "info.title"            : "Information about the app",
     "info.comment"          : "&copy; convey Information Systems GmbH",

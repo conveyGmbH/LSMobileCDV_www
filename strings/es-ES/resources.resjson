@@ -448,6 +448,7 @@
     "account.language"      : "Sprache",
     "account.unknown"       : "Angegebener Benutzer nicht gefunden!",
     "account.inactive"      : "Der Dienst ist zur Zeit inaktiv!",
+    "account.languageInfo"  : "Wenn Sie Ihre Sprache nicht in der Dropdown-Liste sehen, installieren Sie bitte das Sprachpaket für diese Sprache in Ihrem Windows-Betriebssystem. Die unterstützten Sprachen sind: Deutsch, Englisch, Französisch und Italienisch.",
      
     "info.title"            : "Informationen über die App",
     "info.comment"          : "&copy; convey Information Systems GmbH",

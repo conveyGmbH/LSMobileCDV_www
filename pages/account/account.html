@@ -17,7 +17,7 @@
                         <div class="half-circle half-circle-textcolor">&nbsp;</div>
                         <div class="content-header-line win-type-caption">
                             <span class="id-field"></span>
-                            <span class="caption-field" 
+                            <span class="caption-field"
                                   data-win-res="{textContent: 'account.title'}"></span>
                             <span class="date-field"></span>
                         </div>
@@ -34,9 +34,9 @@
                         <span class="label win-type-caption landscape_only"
                               data-win-res="{textContent: 'account.login'}"></span>
                         <input class="input_field win-textbox" type="text"
-                               data-win-bind="value: dataLogin.Login Binding.Mode.twoway; style.display: doEdit Binding.Converter.toDisplay" 
-                               data-win-bind-onevent="oninput"/>
-                        <span class="input_field win-type-subtitle" 
+                               data-win-bind="value: dataLogin.Login Binding.Mode.twoway; style.display: doEdit Binding.Converter.toDisplay"
+                               data-win-bind-onevent="oninput" />
+                        <span class="input_field win-type-subtitle"
                               data-win-bind="textContent: dataLogin.Login; style.display: doEdit Binding.Converter.toDisplayNone"></span>
                     </div>
                     <div class="field_line field_line_even"
@@ -47,7 +47,7 @@
                               data-win-res="{textContent: 'account.password'}"></span>
                         <input class="input_field win-textbox" type="password"
                                data-win-bind="value: dataLogin.Password Binding.Mode.twoway"
-                               data-win-bind-onevent="oninput"/>
+                               data-win-bind-onevent="oninput" />
                     </div>
                     <div class="field_line field_line_even"
                          data-win-bind="style.display: doEdit Binding.Converter.toDisplay">
@@ -56,8 +56,8 @@
                         <span class="label win-type-caption landscape_only"
                               data-win-res="{textContent: 'account.password'}"></span>
                         <input class="input_field win-textbox" type="password"
-                               data-win-bind="value: dataLogin.Password Binding.Mode.twoway" 
-                               data-win-bind-onevent="oninput"/>
+                               data-win-bind="value: dataLogin.Password Binding.Mode.twoway"
+                               data-win-bind-onevent="oninput" />
                     </div>
                     <div class="line-separator"></div>
                     <div class="field_line"
@@ -92,15 +92,20 @@
                         </div>
                     </div>
                     <div class="field_line field_line_even"
-                     data-win-bind="style.display: prevMitarbeiterID Binding.Converter.toDisplay">
-                    <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'account.language'}"></span>
-                    <span class="label win-type-caption landscape_only" data-win-res="{textContent: 'account.language'}"></span>
-                    <select id="InitSprache"
-                            class="input_field win-dropdown"
-                            data-win-control="WinJS.UI.Repeater"
-                            data-win-bind="value: dataLogin.INITSpracheID Binding.Mode.twoway">
-                        <option data-win-bind="value: INITSpracheID; textContent: TITLE"></option>
-                    </select>
+                         data-win-bind="style.display: prevMitarbeiterID Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'account.language'}"></span>
+                        <span class="label win-type-caption landscape_only" data-win-res="{textContent: 'account.language'}"></span>
+                        <select id="InitSprache"
+                                class="input_field win-dropdown"
+                                data-win-control="WinJS.UI.Repeater"
+                                data-win-bind="value: dataLogin.INITSpracheID Binding.Mode.twoway">
+                            <option data-win-bind="value: INITSpracheID; textContent: TITLE"></option>
+                        </select>
+                    </div>
+                <div class="line-separator"></div>
+                <div class="field_line field_line_full" data-win-bind="style.display: languageInfo Binding.Converter.toDisplay">
+                    <span class="large_field"
+                          data-win-res="{textContent: 'account.languageInfo'}"></span>
                 </div>
                 <div class="line-separator"></div>
                     <div class="field_line field_line_even"
@@ -124,7 +129,7 @@
                             <input type="checkbox" class="win-checkbox checkbox"
                                    data-win-bind="checked: dataLogin.PrivacyPolicyFlag Binding.Mode.twoway; disabled: dataLogin.PrivacyPolicydisabled"
                                    onclick="AppBar.handleEvent('click', 'clickPrivacyPolicy', event)" />
-                            <span class="checkbox" 
+                            <span class="checkbox"
                                   data-win-res="{textContent: 'account.privacyPolicy'}"></span>
                         </label>
                         <div class="large_field">
