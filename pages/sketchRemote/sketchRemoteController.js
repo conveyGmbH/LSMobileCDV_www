@@ -392,23 +392,28 @@
             }
 
             that._getHammerExcludeRect = function () {
+                var extraOffsetTop = 0;
+                var headerhost = document.querySelector("#headerhost");
+                if (headerhost) {
+                    extraOffsetTop += headerhost.clientHeight;
+                }
+                if (NavigationBar.orientation === "horizontal") {
+                    extraOffsetTop += NavigationBar.navHorzHeight;
+                }
+                that._hammerExcludeRect = { left: 0, top: 0, right: 0, bottom: 0 };
+
+                var excludeRect = null, parentElement = null;
                 if (that.binding.showList) {
-                    var parentElement = pageElement.querySelector("#listhost");
+                    parentElement = pageElement.querySelector("#listhost");
                     if (parentElement) {
-                        var extraOffsetTop = 0;
-                        if (NavigationBar.orientation === "horizontal") {
-                            extraOffsetTop += NavigationBar.navHorzHeight;
-                        }
-                        var excludeRect = {
+                        excludeRect = {
                             left: parentElement.offsetLeft,
-                            top: parentElement.offsetTop + extraOffsetTop,
+                            top: excludeRect ? excludeRect.top : parentElement.offsetTop + extraOffsetTop,
                             right: parentElement.offsetLeft + parentElement.clientWidth,
                             bottom: parentElement.offsetTop + extraOffsetTop + parentElement.clientHeight
                         };
                         that._hammerExcludeRect = excludeRect;
                     }
-                } else {
-                    that._hammerExcludeRect = { left: 0, top: 0, right: 0, bottom: 0 };
                 }
                 return that._hammerExcludeRect;
             }

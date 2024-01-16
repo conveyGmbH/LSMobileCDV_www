@@ -4,11 +4,7 @@
     height: 160px;
 }
 
-#sketchListController .contentarea .win-type-body {
-    height: 170px;
-}
-#sketchList.listview {
-    height: 170px;
+#sketchList.listview .win-viewport.win-horizontal {
     touch-action: pan-x !important;
 }
 

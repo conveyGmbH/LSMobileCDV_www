@@ -42,7 +42,7 @@
     display: flex;
 }
 
-#listRemoteContacts .win-headercontainer {
+pagecontrol:not(.view-size-bigger) #listRemoteContacts .win-headercontainer {
     position: sticky;
     top: 0;
     z-index: 1;

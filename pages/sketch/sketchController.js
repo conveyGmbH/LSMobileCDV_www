@@ -638,6 +638,10 @@
 
             that._getHammerExcludeRect = function () {
                 var extraOffsetTop = 0;
+                var headerhost = document.querySelector("#headerhost");
+                if (headerhost) {
+                    extraOffsetTop += headerhost.clientHeight;
+                }
                 if (NavigationBar.orientation === "horizontal") {
                     extraOffsetTop += NavigationBar.navHorzHeight;
                 }
