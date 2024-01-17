@@ -391,33 +391,6 @@
                 }
             }
 
-            that._getHammerExcludeRect = function () {
-                var extraOffsetTop = 0;
-                var headerhost = document.querySelector("#headerhost");
-                if (headerhost) {
-                    extraOffsetTop += headerhost.clientHeight;
-                }
-                if (NavigationBar.orientation === "horizontal") {
-                    extraOffsetTop += NavigationBar.navHorzHeight;
-                }
-                that._hammerExcludeRect = { left: 0, top: 0, right: 0, bottom: 0 };
-
-                var excludeRect = null, parentElement = null;
-                if (that.binding.showList) {
-                    parentElement = pageElement.querySelector("#listhost");
-                    if (parentElement) {
-                        excludeRect = {
-                            left: parentElement.offsetLeft,
-                            top: excludeRect ? excludeRect.top : parentElement.offsetTop + extraOffsetTop,
-                            right: parentElement.offsetLeft + parentElement.clientWidth,
-                            bottom: parentElement.offsetTop + extraOffsetTop + parentElement.clientHeight
-                        };
-                        that._hammerExcludeRect = excludeRect;
-                    }
-                }
-                return that._hammerExcludeRect;
-            }
-
             // finally, load the data
             that.processAll().then(function() {
                 Log.print(Log.l.trace, "Binding wireup page complete");

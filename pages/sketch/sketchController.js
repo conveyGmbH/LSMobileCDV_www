@@ -645,28 +645,21 @@
                 if (NavigationBar.orientation === "horizontal") {
                     extraOffsetTop += NavigationBar.navHorzHeight;
                 }
+                if (AppBar.barElement && AppBar.barControl &&
+                    AppBar._commandList && AppBar._commandList.length > 0 &&
+                    !AppBar.barControl.disabled &&
+                    AppBar.barControl.placement === "top") {
+                    extraOffsetTop += AppBar.barElement.clientHeight;
+                }
                 that._hammerExcludeRect = { left: 0, top: 0, right: 0, bottom: 0 };
-
                 var excludeRect = null, parentElement = null;
                 if (that.binding.showSvg) {
                     parentElement = pageElement.querySelector("#svghost");
                     if (parentElement) {
                         excludeRect = {
-                            left: parentElement.offsetLeft,
+                            left: -20000,
                             top: parentElement.offsetTop + extraOffsetTop,
-                            right: parentElement.offsetLeft + parentElement.clientWidth,
-                            bottom: parentElement.offsetTop + extraOffsetTop + parentElement.clientHeight
-                        };
-                        that._hammerExcludeRect = excludeRect;
-                    }
-                }
-                if (that.binding.showList) {
-                    parentElement = pageElement.querySelector("#listhost");
-                    if (parentElement) {
-                        excludeRect = {
-                            left: parentElement.offsetLeft,
-                            top: excludeRect ? excludeRect.top : parentElement.offsetTop + extraOffsetTop,
-                            right: parentElement.offsetLeft + parentElement.clientWidth,
+                            right: 20000,
                             bottom: parentElement.offsetTop + extraOffsetTop + parentElement.clientHeight
                         };
                         that._hammerExcludeRect = excludeRect;

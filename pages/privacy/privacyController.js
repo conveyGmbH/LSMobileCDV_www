@@ -81,28 +81,6 @@
                         if (!prevDocViewer) {
                             that.docViewer = getDocViewer();
                         }
-                        var contentarea = pageElement.querySelector(".contentarea");
-                        that._getHammerExcludeRect = function () {
-                            var parentElement = pageElement.querySelector("#svghost");
-                            if (parentElement) {
-                                var extraOffsetTop = 0;
-                                var headerhost = document.querySelector("#headerhost");
-                                if (headerhost) {
-                                    extraOffsetTop += headerhost.clientHeight;
-                                }
-                                if (NavigationBar.orientation === "horizontal") {
-                                    extraOffsetTop += NavigationBar.navHorzHeight;
-                                }
-                                var scrollTopContent = contentarea.scrollTop;
-                                that._hammerExcludeRect = {
-                                    left: parentElement.offsetLeft,
-                                    top: parentElement.offsetTop + extraOffsetTop - scrollTopContent - 20 - 10,
-                                    right: parentElement.offsetLeft + parentElement.clientWidth,
-                                    bottom: parentElement.offsetTop + extraOffsetTop + parentElement.clientHeight - scrollTopContent + 20 + 10
-                                };
-                            }
-                            return that._hammerExcludeRect;
-                        }
                         // reset semaphore
                         inLoadDoc = false;
                         AppBar.triggerDisableHandlers();
@@ -341,6 +319,58 @@
                     }
                     return !that.binding.generalData.logOffOptionActive;
                 }
+            }
+
+            var contentarea = pageElement.querySelector(".contentarea");
+            that._getHammerExcludeRect = function () {
+                var parentElement = pageElement.querySelector("#svghost");
+                if (parentElement) {
+                    var extraOffsetTop = 0;
+                    var extraOffsetLeft = 0;
+                    var headerhost = document.querySelector("#headerhost");
+                    if (headerhost) {
+                        extraOffsetTop += headerhost.clientHeight;
+                    }
+                    if (NavigationBar.orientation === "horizontal") {
+                        extraOffsetTop += NavigationBar.navHorzHeight;
+                    } else {
+                        extraOffsetLeft += NavigationBar.navVertWidth;
+                    }
+                    if (AppBar.barElement && AppBar.barControl &&
+                        AppBar._commandList && AppBar._commandList.length > 0 &&
+                        !AppBar.barControl.disabled &&
+                        AppBar.barControl.placement === "top") {
+                        extraOffsetTop += AppBar.barElement.clientHeight;
+                    }
+                    var splitViewPaneInline = false;
+                    // SplitView element
+                    var splitViewRoot = Application.navigator.splitViewRoot;
+                    if (splitViewRoot && splitViewRoot.winControl) {
+                        var splitViewControl = splitViewRoot.winControl;
+                        if (splitViewControl.paneOpened &&
+                            splitViewControl.openedDisplayMode === WinJS.UI.SplitView.OpenedDisplayMode.inline) {
+                            splitViewPaneInline = true;
+                        } else if (!splitViewControl.paneOpened &&
+                            splitViewControl.closedDisplayMode === WinJS.UI.SplitView.ClosedDisplayMode.inline) {
+                            splitViewPaneInline = true;
+                        }
+                    }
+                    if (splitViewPaneInline) {
+                        var splitViewPane = Application.navigator.splitViewPane;
+                        if (splitViewPane) {
+                            extraOffsetLeft += splitViewPane.clientWidth;
+                        }
+                    }
+                    that._hammerExcludeRect = { left: 0, top: 0, right: 0, bottom: 0 };
+                    var scrollTopContent = contentarea.scrollTop;
+                    that._hammerExcludeRect = {
+                        left: -20000,
+                        top: parentElement.offsetTop + extraOffsetTop - scrollTopContent - 20 - 10,
+                        right: 20000,
+                        bottom: parentElement.offsetTop + extraOffsetTop + parentElement.clientHeight - scrollTopContent + 20 + 10
+                    };
+                }
+                return that._hammerExcludeRect;
             }
 
             var contentarea = pageElement.querySelector(".contentarea");
