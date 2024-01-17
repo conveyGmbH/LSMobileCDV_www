@@ -47,7 +47,7 @@
     display: flex;
 }
 
-pagecontrol:not(.view-size-bigger) #listLocalContacts .win-headercontainer {
+.pagecontrol:not(.view-size-bigger) #listLocalContacts .win-headercontainer {
     position: sticky;
     top: 0;
     z-index: 1;
