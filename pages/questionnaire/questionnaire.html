@@ -1059,7 +1059,9 @@
                     </div>
                     <div class="img-list-item" data-win-control="WinJS.Binding.Template" style="display: none">
                         <div class="overlaid-item-template">
-                            <img class="list-image" data-win-bind="src: picture; alt: title" />
+                            <div class="image-container">
+                                <img class="list-image" data-win-bind="src: picture; alt: title"/>
+                            </div>
                             <div class="overlay">
                                 <div class="win-type-subtitle item-title" data-win-bind="textContent: title"></div>
                             </div>
@@ -1104,7 +1106,7 @@
                                  data-win-control="WinJS.UI.FlipView"
                                  data-win-options="{
                                      itemTemplate: select('.img-list-item'),
-                                     itemSpacing : 16
+                                     itemSpacing : 0
                                 }">
                             </div>
                         </div>

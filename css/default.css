@@ -18,12 +18,7 @@ body {
 label {
     cursor: pointer;
 }
-img .list-image,
-img .photo-fullwidth,
-img .field_line {
-    max-width: 100%;
-    height: auto !important;
-}
+
 .logo-title {
     color: #ffffff;
     width: calc(100% - 240px);
@@ -1663,14 +1658,19 @@ button.win-button {
 /*Styles used in the Item Template of Split-View doc area*/
 .overlaid-item-template {
     width: 100%;
+    height: 100%;
+    background-image: url("../images/bkgtexture.png");
 }
 
-.overlaid-item-template img {
-    position: absolute;
+.overlaid-item-template .image-container {
+    display: inline-flex;
     width: 100%;
-    height: auto;
-    bottom: 0;
-    left: 0;
+    height: 100%;
+    object-position: 50% 50%;
+}
+
+.overlaid-item-template .image-container > img {
+    object-fit: contain;
 }
 
 .overlaid-item-template .overlay {
@@ -1679,9 +1679,9 @@ button.win-button {
     height: 20px;
     padding: 20px 15px;
     overflow: hidden;
-    width: 100%;
     bottom: 0;
-    left: 0;
+    width: calc(100% - 48px);
+    left: 18px;
 }
 
 .overlaid-item-template .overlay .item-title {
@@ -1697,8 +1697,18 @@ button.win-button {
     display: inline;
 }
 
+.view-size-small .overlay {
+    width: calc(100% - 40px);
+    left: 10px;
+}
+
 .view-size-small .img-footer-container {
     display: inline;
+}
+
+.view-size-split .overlay {
+    width: 100%;
+    left: 0;
 }
 
 .view-size-split .img-footer-container {
