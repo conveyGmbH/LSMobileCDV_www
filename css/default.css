@@ -1840,6 +1840,21 @@ html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-container.win
 .win-flipview > div > .win-surface::-webkit-scrollbar {
     display: none;
     -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
 }
 
+@-moz-document url-prefix() {
+    .win-flipview > div > .win-surface.win-horizontal {
+        height: calc(100% + 18px) !important;
+        margin-bottom: -18px !important;
+    }
+
+    .win-flipview > div > .win-surface.win-vertical:not(:dir(rtl)) {
+        width: calc(100% + 18px) !important;
+        margin-right: -18px !important;
+    }
+
+    .win-flipview > div > .win-surface.win-vertical:dir(rtl) {
+        width: calc(100% + 18px) !important;
+        margin-left: -18px !important;
+    }
+}
