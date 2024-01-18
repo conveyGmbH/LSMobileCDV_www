@@ -1837,3 +1837,9 @@ html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-container.win
     border-radius: 0;
 }
 
+.win-flipview > div > .win-surface::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
