@@ -89,12 +89,15 @@
             }
             this.hasDoc = hasDoc;
 
-            var forceFlipViewLayout = function() {
+            that.inForceFlipViewLayout = false;
+            var forceFlipViewLayout = function () {
+                var ret = null;
                 Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
-                if (that.images && listView && listView.winControl) {
-                    var pageControl = pageElement.winControl;
-                    if (pageControl && !pageControl.inResize) {
-                        WinJS.Promise.timeout(50).then(function() {
+                var pageControl = pageElement.winControl;
+                if (pageControl && !pageControl.inResize && !that.inForceFlipViewLayout) {
+                    if (that.images && listView && listView.winControl) {
+                        that.inForceFlipViewLayout = true;
+                        ret = WinJS.Promise.timeout(50).then(function () {
                             if (pageControl && pageControl.updateLayout) {
                                 pageControl.prevWidth = 0;
                                 pageControl.prevHeight = 0;
@@ -102,21 +105,24 @@
                             } else {
                                 return WinJS.Promise.as();
                             }
-                        }).then(function() {
+                        }).then(function () {
                             if (flipView && flipView.parentElement && flipView.winControl) {
-                                flipView.winControl.currentPage = 0;
                                 flipView.winControl.forceLayout();
                             }
-                        });
-                    } else {
-                        WinJS.Promise.timeout(50).then(function() {
-                            if (typeof that.forceFlipViewLayout === "function") {
-                                that.forceFlipViewLayout();
-                            }
+                            return WinJS.Promise.timeout(50);
+                        }).then(function () {
+                            that.inForceFlipViewLayout = true;
                         });
                     }
+                } else {
+                    ret = WinJS.Promise.timeout(250).then(function () {
+                        if (!that.disposed) {
+                            that.forceFlipViewLayout();
+                        }
+                    });
                 }
                 Log.ret(Log.l.trace);
+                return ret || WinJS.Promise.as();
             }
             that.forceFlipViewLayout = forceFlipViewLayout;
 
@@ -1163,7 +1169,7 @@
                                 that.loading = false;
                                 if (flipView && flipView.parentElement && flipView.winControl &&
                                     WinJS.Utilities.hasClass(flipView.parentElement, "img-footer-container")) {
-                                    flipView.winControl.forceLayout();
+                                    that.forceFlipViewLayout();
                                 }
                             }
                         }

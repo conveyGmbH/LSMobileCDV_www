@@ -209,7 +209,7 @@
                                 listView.winControl.layout = { type: layout };
                             }
                         } else if (listView.winControl.loadingState === "complete") {
-                            Colors.loadSVGImageElements(listView, "list-icon-item", 80, Colors.navigationColor, "name");
+                            Colors.loadSVGImageElements(listView, "list-icon-item", 80, Colors.textColor, "name");
                             scaleItemsAfterResize();
                         }
                     }
