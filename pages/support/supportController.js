@@ -30,6 +30,7 @@
                 return false;
             };
             var isAppleDevice = checkIPhoneBug();
+            var isWindowsDevice = device && (device.platform === "windows");
 
             var that = this;
 
@@ -121,7 +122,7 @@
 
             var conveyUrl = function () {
                 var url = getResourceText("support.url");
-                if (isAppleDevice && cordova.InAppBrowser) {
+                if ((isAppleDevice || isWindowsDevice) && cordova.InAppBrowser) {
                     cordova.InAppBrowser.open(url, '_system');
                     WinJS.Navigation.back(1).done();
                 } else {
