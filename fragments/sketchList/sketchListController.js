@@ -29,7 +29,36 @@
             // now do anything...
             var listView = fragmentElement.querySelector("#sketchList.listview");
 
+            var doScrollIntoViewAnimation = false;
+            var initialScrollPosition = 0;
+            var wheelValueFactor = 100;
+            var waitingForMouseScroll = false;
+            var wheelScrollAdd = 0;
+            var checkForWheelEndPromise = null;
+
+            var onTouch = function (eventId, x, y) {
+                if (listView && listView.winControl) {
+                    listView.winControl.scrollPosition = initialScrollPosition + x / 8;
+                }
+            };
+            var touchPhysics = new TouchPhysics.TouchPhysics(onTouch);
+            var checkForWheelEnd = function (eventInfo) {
+                if (checkForWheelEndPromise) {
+                    checkForWheelEndPromise.cancel();
+                }
+                checkForWheelEndPromise = WinJS.Promise.timeout(TouchPhysics.wheelEndTimerMs).then(function () {
+                    waitingForMouseScroll = false;
+                    checkForWheelEndPromise = null;
+                    touchPhysics.processUp(MANIPULATION_PROCESSOR_MANIPULATIONS.MANIPULATION_TRANSLATE_X, wheelScrollAdd * wheelValueFactor, 0);
+                    wheelScrollAdd = 0;
+                });
+            }
+            this.checkForWheelEnd = checkForWheelEnd;
+
             this.dispose = function () {
+                if (checkForWheelEndPromise) {
+                    checkForWheelEndPromise.cancel();
+                }
                 if (listView && listView.winControl) {
                     listView.winControl.itemDataSource = null;
                 }
@@ -219,6 +248,7 @@
                                         that.binding.noteId = item.data.KontaktNotizVIEWID;
                                         that.binding.DocGroup = item.data.DocGroup;
                                         that.binding.DocFormat = item.data.DocFormat;
+                                        doScrollIntoViewAnimation = true;
                                         if (AppBar.scope &&
                                             AppBar.scope.pageElement &&
                                             AppBar.scope.pageElement.winControl &&
@@ -229,7 +259,6 @@
                                                 if (AppBar.scope && typeof AppBar.scope.loadData === "function") {
                                                     AppBar.scope.loadData(that.binding.noteId, that.binding.DocGroup, that.binding.DocFormat);
                                                 }
-                                                listControl.ensureVisible(item.index);
                                             }, function(errorResponse) {
                                                 // error handled in saveData!
                                             });
@@ -238,8 +267,18 @@
                                             if (AppBar.scope && typeof AppBar.scope.loadData === "function") {
                                                 AppBar.scope.loadData(that.binding.noteId, that.binding.DocGroup, that.binding.DocFormat);
                                             }
-                                            listControl.ensureVisible(item.index);
                                         }
+                                        WinJS.Promise.timeout(50).then(function () {
+                                            Log.print(Log.l.trace, "now update layout...");
+                                            var fragmentControl = fragmentElement.winControl;
+                                            if (fragmentControl && fragmentControl.updateLayout) {
+                                                fragmentControl.prevWidth = 0;
+                                                fragmentControl.prevHeight = 0;
+                                                return fragmentControl.updateLayout.call(fragmentControl, fragmentElement);
+                                            } else {
+                                                return WinJS.Promise.as();
+                                            }
+                                        });
                                     }
                                 });
                             }
@@ -273,14 +312,116 @@
                         }
                     }
                     Log.ret(Log.l.trace);
+                },
+                wheelHandler: function (eventInfo) {
+                    if (eventInfo && listView && listView.winControl) {
+                        var wheelWithinListView = eventInfo.target && (listView.contains(eventInfo.target) || listView === eventInfo.target);
+                        if (wheelWithinListView) {
+                            eventInfo.stopPropagation();
+                            eventInfo.preventDefault();
+
+                            var wheelValue;
+                            if (!waitingForMouseScroll) {
+                                waitingForMouseScroll = true;
+                                initialScrollPosition = listView.winControl.scrollPosition;
+                                if (typeof eventInfo.deltaY === 'number') {
+                                    wheelValue = Math.abs(eventInfo.deltaX || eventInfo.deltaY || 0);
+                                } else {
+                                    wheelValue = Math.abs(eventInfo.wheelDelta || 0);
+                                }
+                                if (wheelValue) {
+                                    wheelValueFactor = Math.min(10000 / wheelValue, 120);
+                                }
+                                touchPhysics.processDown(MANIPULATION_PROCESSOR_MANIPULATIONS.MANIPULATION_TRANSLATE_X, 0, 0);
+                                WinJS.Promise.timeout(TouchPhysics.wheelStartTimerMs).then(function () {
+                                    that.eventHandlers.wheelHandler(eventInfo);
+                                });
+                                return;
+                            }
+                            var wheelingForward;
+
+                            if (typeof eventInfo.deltaY === 'number') {
+                                wheelingForward = (eventInfo.deltaX || eventInfo.deltaY) > 0;
+                                wheelValue = Math.abs(eventInfo.deltaX || eventInfo.deltaY || 0);
+                            } else {
+                                wheelingForward = eventInfo.wheelDelta < 0;
+                                wheelValue = Math.abs(eventInfo.wheelDelta || 0);
+                            }
+                            wheelScrollAdd += wheelingForward ? wheelValue : -wheelValue;
+
+                            touchPhysics.processMove(MANIPULATION_PROCESSOR_MANIPULATIONS.MANIPULATION_TRANSLATE_X, wheelScrollAdd * wheelValueFactor, 0);
+                            that.checkForWheelEnd(eventInfo);
+                        }
+                    }
                 }
             }
             this.eventHandlers = eventHandlers;
+
+            var scrollIntoView = function (curIndex) {
+                Log.call(Log.l.u1, "SketchList.Controller.");
+                if (listView && listView.winControl) {
+                    var listControl = listView.winControl;
+                    var containers = listView.querySelectorAll(".win-container");
+                    if (containers && that.sketches && containers.length === that.sketches.length && containers[0]) {
+                        var surface = listView.querySelector(".win-surface");
+                        if (surface) {
+                            var overflow = surface.clientWidth - listView.clientWidth;
+                            if (overflow > 0) {
+                                var doScroll = true;
+                                var containersWidth = 0;
+                                var i = curIndex - 1;
+                                if (i >= 0 && i < containers.length - 1) {
+                                    containersWidth = containers[curIndex].offsetLeft;
+                                    var margin = containers[curIndex].offsetLeft -
+                                        (containers[i].offsetLeft + containers[i].offsetWidth);
+                                    if (containersWidth - Math.max(60, containers[i].offsetWidth / 4) < listControl.scrollPosition) {
+                                        containersWidth -= Math.max(60, containers[i].offsetWidth / 4);
+                                    } else if (containersWidth + containers[curIndex].offsetWidth +
+                                        ((curIndex + 1 < containers.length) ? Math.max(60, containers[curIndex + 1].offsetWidth / 4) : margin) -
+                                        listView.clientWidth > listControl.scrollPosition) {
+                                        containersWidth += containers[curIndex].offsetWidth +
+                                            ((curIndex + 1 < containers.length) ? Math.max(60, containers[curIndex + 1].offsetWidth / 4) : margin) -
+                                            listView.clientWidth;
+                                    } else {
+                                        Log.ret(Log.l.u1, "extra ignored");
+                                        doScroll = false;
+                                    }
+                                }
+                                if (doScroll) {
+                                    var scrollPosition = Math.floor(containersWidth);
+                                    if (scrollPosition < 0) {
+                                        scrollPosition = 0;
+                                    } else if (scrollPosition > overflow) {
+                                        scrollPosition = overflow;
+                                    }
+                                    if (listControl.scrollPosition !== scrollPosition) {
+                                        if (doScrollIntoViewAnimation) {
+                                            var prevScrollPosition = listControl.scrollPosition;
+                                            var animationDistanceX = (scrollPosition - prevScrollPosition) / 3;
+                                            var animationOptions = { top: "0px", left: animationDistanceX.toString() + "px" };
+                                            listControl.scrollPosition = scrollPosition;
+                                            WinJS.UI.Animation.enterContent(surface, animationOptions).done(function () {
+                                                doScrollIntoViewAnimation = false;
+                                            });
+                                        } else {
+                                            listControl.scrollPosition = scrollPosition;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Log.ret(Log.l.u1);
+            }
+            that.scrollIntoView = scrollIntoView;
 
             // register ListView event handler
             if (listView) {
                 this.addRemovableEventListener(listView, "selectionchanged", this.eventHandlers.onSelectionChanged.bind(this));
                 this.addRemovableEventListener(listView, "loadingstatechanged", this.eventHandlers.onLoadingStateChanged.bind(this));
+                this.addRemovableEventListener(listView, "wheel", this.eventHandlers.wheelHandler.bind(this));
+                this.addRemovableEventListener(listView, "mousewheel", this.eventHandlers.wheelHandler.bind(this));
             }
 
             var saveData = function (complete, error) {

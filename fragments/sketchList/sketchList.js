@@ -63,8 +63,8 @@
             if (element && !that.inResize) {
                 that.inResize = 1;
                 ret = WinJS.Promise.timeout(0).then(function () {
-                    var listview = element.querySelector(".listview");
-                    if (listview && listview.style) {
+                    var listView = element.querySelector(".listview");
+                    if (listView && listView.style) {
                         var contentarea = element.querySelector(".contentarea");
                         if (contentarea) {
                             var width = contentarea.clientWidth;
@@ -72,11 +72,24 @@
                             
                             if (width > 0 && width !== that.prevWidth) {
                                 that.prevWidth = width;
-                                listview.style.width = width.toString() + "px";
+                                listView.style.width = width.toString() + "px";
+                                var listControl = listView.winControl;
+                                if (listControl && listControl.selection && that.controller) {
+                                    var selectionCount = listControl.selection.count();
+                                    if (selectionCount === 1 && typeof that.controller.scrollIntoView === "function") {
+                                        // Only one item is selected, show the page
+                                        listControl.selection.getItems().done(function (items) {
+                                            var item = items[0];
+                                            if (item) {
+                                                that.controller.scrollIntoView(item.index);
+                                            }
+                                        });
+                                    }
+                                }
                             }
                             if (height > 0 && height !== that.prevHeight) {
                                 that.prevHeight = height;
-                                listview.style.height = height.toString() + "px";
+                                listView.style.height = height.toString() + "px";
                             }
                         }
                     }

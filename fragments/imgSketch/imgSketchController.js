@@ -339,7 +339,8 @@
                                     pinchElement.style.touchAction = "pan-x pan-y";
                                 }
                             }
-                            WinJS.Promise.timeout(0).then(function () {
+                            WinJS.Promise.timeout(10).then(function () {
+                                var ret = null;
                                 if (AppBar.scope) {
                                     var pageElement = AppBar.scope.pageElement;
                                     if (pageElement) {
@@ -347,11 +348,11 @@
                                         if (pageControl && pageControl.updateLayout) {
                                             pageControl.prevWidth = 0;
                                             pageControl.prevHeight = 0;
-                                            pageControl.updateLayout.call(pageControl, pageElement);
+                                            ret = pageControl.updateLayout.call(pageControl, pageElement);
                                         }
                                     }
                                 }
-                                return WinJS.Promise.as();
+                                return ret || WinJS.Promise.timeout(10);
                             }).then(function () {
                                 imgRotation = 0;
                                 imgScale = 1;
@@ -369,12 +370,19 @@
                                 }
                                 photoItemBox.appendChild(that.img);
 
+                                var photoViewport = fragmentElement.querySelector("#notePhoto .win-viewport");
+                                if (photoViewport && photoViewport.style) {
+                                    photoViewport.style.overflow = "hidden";
+                                }
                                 var animationDistanceX = imgWidth / 4;
                                 var animationOptions = { top: "0px", left: animationDistanceX.toString() + "px" };
                                 if (that.img.style) {
                                     that.img.style.visibility = "";
                                 }
                                 WinJS.UI.Animation.enterContent(that.img, animationOptions).then(function () {
+                                    if (photoViewport && photoViewport.style) {
+                                        photoViewport.style.overflow = "";
+                                    }
                                     if (that.img.style) {
                                         that.img.style.display = "";
                                         that.img.style.position = "";
@@ -407,7 +415,7 @@
 
             var showPhotoAfterResize = function () {
                 Log.call(Log.l.trace, "ImgSketch.Controller.");
-                var ret = WinJS.Promise.timeout(0).then(function () {
+                var ret = WinJS.Promise.timeout(10).then(function () {
                     var promise = null;
                     var fragmentControl = fragmentElement.winControl;
                     if (fragmentControl && fragmentControl.updateLayout) {
