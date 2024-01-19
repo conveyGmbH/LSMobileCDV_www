@@ -187,7 +187,8 @@
                                 height -= contentheader.clientHeight;
                             }
                             if (that.controller.hasDoc()) {
-                                if (width > Application.maxViewSize.mediumSmall) {
+                                if (docContainer.style.display === "none" && width > Application.maxViewSize.mediumSmall + 20 ||
+                                    docContainer.style.display !== "none" && width > Application.maxViewSize.mediumSmall) {
                                     fieldWidth = Math.floor(width / 2);
                                     var maxDocContainerWidth = Math.floor(height / Math.sqrt(2)) - 16;
                                     if (fieldWidth > maxDocContainerWidth) {
