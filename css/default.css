@@ -1857,4 +1857,8 @@ html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-container.win
         width: calc(100% + 18px) !important;
         margin-left: -18px !important;
     }
+    
+    .win-flipview .win-item .overlaid-item-template .overlay {
+        bottom: 18px;
+    }
 }
