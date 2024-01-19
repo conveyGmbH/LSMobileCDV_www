@@ -40,20 +40,47 @@
 
             var scaleItemsAfterResize = function() {
                 Log.call(Log.l.trace, "SketchList.Controller.");
-                if (fragmentElement &&
+                if (listView && fragmentElement &&
                     fragmentElement.winControl &&
                     fragmentElement.winControl.prevWidth &&
                     fragmentElement.winControl.prevHeight) {
                     var i;
+                    var imgScale = 1;
+                    var imgWidth = 0;
+                    var imgHeight = 0;
+                    var marginLeft = 0;
+                    var marginTop = 0;
                     // scale SVG images
-                    var svglist = listView.querySelectorAll(".list-svg");
-                    if (svglist) {
-                        for (i = 0; i < svglist.length; i++) {
-                            var svg = svglist[i].firstElementChild;
-                            if(svg) {
+                    var svgList = listView.querySelectorAll(".list-svg");
+                    if (svgList) {
+                        for (i = 0; i < svgList.length; i++) {
+                            imgWidth = svgList[i].clientWidth;
+                            imgHeight = svgList[i].clientHeight;
+                            var svg = svgList[i].firstElementChild;
+                            if (svg) {
                                 WinJS.Utilities.addClass(svg, "list-svg-item");
-                                svg.viewBox.baseVal.height = svg.height && svg.height.baseVal && svg.height.baseVal.value;
-                                svg.viewBox.baseVal.width = svg.width && svg.width.baseVal && svg.width.baseVal.value;
+                                var height = Math.floor(svg.height && svg.height.baseVal && svg.height.baseVal.value || 0);
+                                var width = Math.floor(svg.width && svg.width.baseVal && svg.width.baseVal.value || 0);
+                                if (height && width) {
+                                    if (height > width) {
+                                        imgScale = width / height;
+                                        marginTop = 0;
+                                        marginLeft = Math.floor(imgHeight * (1 - imgScale) / 2);
+                                        imgWidth = Math.floor(imgHeight * imgScale);
+                                    } else {
+                                        imgScale = height / width;
+                                        marginLeft = 0;
+                                        marginTop = Math.floor(imgWidth * (1 - imgScale) / 2);
+                                        imgHeight = Math.floor(imgWidth * imgScale);
+                                    }
+                                    svg.setAttribute("viewBox", "0 0 " + width + " " + height);
+                                    if (svg.style) {
+                                        svg.style.marginLeft = marginLeft + "px";
+                                        svg.style.marginTop = marginTop + "px";
+                                        svg.style.width = imgWidth + "px";
+                                        svg.style.height = imgHeight + "px";
+                                    }
+                                }
                                 var surface = svg.querySelector("#surface");
                                 if (surface) {
                                     surface.setAttribute("fill", "#ffffff");
@@ -62,14 +89,44 @@
                         }
                     }
                     // scale photo images
-                    var imglist = listView.querySelectorAll(".list-img");
-                    if (imglist) {
-                        for (i = 0; i < imglist.length; i++) {
-                            var img = imglist[i].querySelector(".list-img-item");
-                            if (img && img.src && img.naturalWidth && img.naturalHeight && img.style) {
-                                var offset = (imglist[i].clientHeight -
-                                    (imglist[i].clientWidth * img.naturalHeight) / img.naturalWidth) / 2;
-                                img.style.marginTop = offset.toString() + "px";
+                    var imgList = listView.querySelectorAll(".list-img");
+                    if (imgList) {
+                        for (i = 0; i < imgList.length; i++) {
+                            var img = imgList[i].querySelector(".list-img-item");
+                            if (img && img.src && img.style) {
+                                if (img.naturalWidth && img.naturalHeight) {
+                                    if (imgList[i].clientWidth < img.naturalWidth) {
+                                        imgScale = imgList[i].clientWidth / img.naturalWidth;
+                                        imgWidth = imgList[i].clientWidth;
+                                    } else {
+                                        imgScale = 1;
+                                        imgWidth = img.naturalWidth;
+                                    }
+                                    imgHeight = img.naturalHeight * imgScale;
+                                    if (imgList[i].clientHeight < imgHeight) {
+                                        imgScale *= imgList[i].clientHeight / imgHeight;
+                                        imgHeight = imgList[i].clientHeight;
+                                    }
+                                    imgWidth = img.naturalWidth * imgScale;
+
+                                    if (imgWidth < imgList[i].clientWidth) {
+                                        marginLeft = (imgList[i].clientWidth - imgWidth) / 2;
+                                    } else {
+                                        marginLeft = 0;
+                                    }
+                                    if (imgHeight < imgList[i].clientHeight) {
+                                        marginTop = (imgList[i].clientHeight - imgHeight) / 2;
+                                    } else {
+                                        marginTop = 0;
+                                    }
+                                    img.style.marginLeft = marginLeft + "px";
+                                    img.style.marginTop = marginTop + "px";
+                                    img.style.width = imgWidth + "px";
+                                    img.style.height = imgHeight + "px";
+                                } else {
+                                    img.style.objectFit = "contain";
+                                    imgList[i].style.objectPosition = "50% 50%";
+                                }
                             }
                         }
                     }
@@ -172,6 +229,7 @@
                                                 if (AppBar.scope && typeof AppBar.scope.loadData === "function") {
                                                     AppBar.scope.loadData(that.binding.noteId, that.binding.DocGroup, that.binding.DocFormat);
                                                 }
+                                                listControl.ensureVisible(item.index);
                                             }, function(errorResponse) {
                                                 // error handled in saveData!
                                             });
@@ -180,6 +238,7 @@
                                             if (AppBar.scope && typeof AppBar.scope.loadData === "function") {
                                                 AppBar.scope.loadData(that.binding.noteId, that.binding.DocGroup, that.binding.DocFormat);
                                             }
+                                            listControl.ensureVisible(item.index);
                                         }
                                     }
                                 });
@@ -220,12 +279,8 @@
 
             // register ListView event handler
             if (listView) {
-                this.addRemovableEventListener(listView,
-                    "selectionchanged",
-                    this.eventHandlers.onSelectionChanged.bind(this));
-                this.addRemovableEventListener(listView,
-                    "loadingstatechanged",
-                    this.eventHandlers.onLoadingStateChanged.bind(this));
+                this.addRemovableEventListener(listView, "selectionchanged", this.eventHandlers.onSelectionChanged.bind(this));
+                this.addRemovableEventListener(listView, "loadingstatechanged", this.eventHandlers.onLoadingStateChanged.bind(this));
             }
 
             var saveData = function (complete, error) {

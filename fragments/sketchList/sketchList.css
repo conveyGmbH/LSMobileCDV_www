@@ -4,42 +4,57 @@
     height: 160px;
 }
 
-#sketchList.listview .win-viewport.win-horizontal {
-    touch-action: pan-x !important;
+#sketchList .win-surface {
+    overflow-y: hidden;
 }
 
-.list-img {
+#sketchListController .contentarea .win-type-body {
+    height: 190px;
+    overflow-y: hidden;
+}
+
+.sketchList .contentarea .win-type-body .win-listview {
+    height: 190px;
+}
+
+.sketchList .list-img {
     width: 150px;
     height: 150px;
     display: block;
 }
 
-.list-svg {
+.sketchList .list-svg {
     width: 150px;
     height: 150px;
     display: block;
+    background-color: #fff;
 }
 
-.list-icon {
+.sketchList .list-icon {
     width: 150px;
     height: 115px;
     display: block;
 }
 
-.list-img-item {
+.sketchList .list-img-item {
     width: 100%;
     height: auto;
     max-height: 150px;
+    margin-left: auto;
+    margin-top: auto;
 }
 
-.list-svg-item {
-    width: 100%;
+.sketchList .list-svg-item {
+    width: auto;
     height: auto;
+    max-width: 150px;
     max-height: 150px;
     background-color: #fff;
+    margin-left: auto;
+    margin-top: auto;
 }
 
-.list-icon-item {
+.sketchList .list-icon-item {
     margin-left: calc(50% - 40px);
     margin-top: calc(50% - 40px);
     width: 80px;
@@ -47,15 +62,45 @@
     display: block !important;
 }
 
-.list-caption-container {
-    height: 20px;
+.sketchList .list-caption-container {
+    height: 28px;
     bottom: 0;
     position: absolute;
     display: block;
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(242, 242, 242, 0.9);
     width: 100%;
     text-align: center;
+    padding-bottom: 4px;
 }
-.list-caption {
-    color: #101010;
+
+.sketchList .win-itembox:hover .list-caption-container {
+    background-color: rgba(242, 242, 242, 0.8);
+}
+
+.sketchList .win-selected .list-caption-container,
+.sketchList .win-itembox:active .list-caption-container {
+    background-color: rgba(242, 242, 242, 0.6);
+}
+
+.cnv-ui-dark .sketchList .list-caption-container {
+    background-color: rgba(57, 57, 57, 0.9);
+}
+
+.cnv-ui-dark .sketchList .win-itembox:hover .list-caption-container {
+    background-color: rgba(57, 57, 57, 0.8);
+}
+
+.cnv-ui-dark .sketchList .win-selected .list-caption-container,
+.cnv-ui-dark .sketchList .win-itembox:active .list-caption-container {
+    background-color: rgba(57, 57, 57, 0.6);
+}
+
+.sketchList .win-itembox:active .list-caption-container > .label-color,
+.sketchList .win-selected .list-caption-container > .label-color {
+    color: #000;
+}
+
+.cnv-ui-dark .sketchList .win-itembox:active .list-caption-container > .label-color,
+.cnv-ui-dark .sketchList .win-selected .list-caption-container > .label-color {
+    color: #fff;
 }

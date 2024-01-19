@@ -1,20 +1,19 @@
-﻿
-.sketchfragmenthost {
+﻿.sketch .sketchfragmenthost {
     width: 100%;
-    height: calc(100% - 170px);
+    height: calc(100% - 190px);
     z-index: 4;
 }
 
 
-.listfragmenthost {
+.sketch .listfragmenthost {
     width: 100%;
-    height: 170px;
+    height: 190px;
     position: relative;
     bottom: 0;
     z-index: 5;
 }
 
-.add-box {
+.sketch .add-box {
     display: none;
     position: absolute;
     bottom: 0px;
@@ -26,7 +25,7 @@
     z-index: 10000;
 }
 
-.add-button {
+.sketch .add-button {
     width: 60px;
     min-width: 60px;
     max-width: 60px;
@@ -36,46 +35,45 @@
     padding: 6px 12px;
 }
 
-.view-size-small .add-box {
+.view-size-small .sketch .add-box {
     width: calc(100% - 40px);
 }
 
-.view-size-small .add-button {
+.view-size-small .sketch .add-button {
     margin-left: calc(16% - 30px);
     margin-right: calc(16% - 30px);
 }
-.no-attachments-container {
+.sketch .no-attachments-container {
     width: 100%;
     height: calc(50% - 170px);
 }
 
-.no-attachements-logo {
+.sketch .no-attachements-logo {
     margin: 0;
-    position: absolute;              
+    position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-25%, -50%); 
+    transform: translate(-25%, -50%);
     z-index: 4;
-
 }
-.no-attachments-text {
+.sketch .no-attachments-text {
     font-size: 2.5rem;
     margin: 0;
-    position: absolute;               
+    position: absolute;
     top: 65%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
 }
 
-.view-size-small .no-attachments-text {
+.view-size-small .sketch .no-attachments-text {
     top: 70%;
     font-size: 1.2rem;
     margin-top: 20px;
     margin-bottom: 10px;
 }
 
-.view-size-medium .no-attachments-text {
+.view-size-medium .sketch .no-attachments-text {
     top: 70%;
     font-size: 1.8rem;
 }
