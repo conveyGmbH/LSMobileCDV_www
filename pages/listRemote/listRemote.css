@@ -7,8 +7,8 @@
     height: 200px;
 }
 */
-#listRemoteContacts .win-itemcontainer .win-itembox,
-#listRemoteContacts .win-listview .win-itembox {
+.listRemote .win-itemcontainer .win-itembox,
+.listRemote .win-listview .win-itembox {
     background-color: transparent;
 }
 
@@ -27,14 +27,6 @@
 
 .listRemote .master-list-header.list-compact-only {
     padding-top: 48px;
-}
-
-#listRemoteContacts .listview {
-    position: relative;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: calc(100% - 56px);
 }
 
 #listRemoteContacts .list-header {
@@ -69,6 +61,12 @@
     border-color: transparent;
 }
 */
+#listRemoteContacts .list-field-small-relative-10 {
+    width: calc(10% - 28px);
+}
+
+#listRemoteContacts .win-footer,
+#listRemoteContacts .list-header,
 #listRemoteContacts .win-item {
     width: auto;
     padding-left: 26px;
@@ -76,9 +74,12 @@
     padding-top: 2px;
     padding-bottom: 2px;
 }
- #listRemoteContacts .row-bkg{
-     display:inline-block;
- }
+#listRemoteContacts .content-header {
+    margin-top: -2px;
+}
+#listRemoteContacts .row-bkg {
+    display: inline-block;
+}
 
 
 /*
@@ -101,9 +102,14 @@
     margin-bottom: 16px;
 }
 */
+.view-size-bigger #listRemoteContacts .win-footer,
+.view-size-bigger #listRemoteContacts .list-header,
 .view-size-bigger #listRemoteContacts .win-item {
     padding-top: 8px;
     padding-bottom: 8px;
+}
+.view-size-bigger #listRemoteContacts .content-header {
+    margin-top: -8px;
 }
 
 .action-image-right {
@@ -123,11 +129,16 @@
     }
 */
 
+.view-size-medium #listRemoteContacts .win-footer,
+.view-size-medium #listRemoteContacts .list-header,
 .view-size-medium #listRemoteContacts .win-item {
     padding-left: 18px;
     padding-right: 18px;
     padding-top: 8px;
     padding-bottom: 8px;
+}
+.view-size-medium #listRemoteContacts .content-header {
+    margin-top: -8px;
 }
 
 
@@ -143,11 +154,16 @@
     }
 */
 
+.view-size-small #listRemoteContacts .win-footer,
+.view-size-small #listRemoteContacts .list-header,
 .view-size-small #listRemoteContacts .win-item {
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 4px;
     padding-bottom: 4px;
+}
+.view-size-small #listRemoteContacts .content-header {
+    margin-top: -4px;
 }
 
 

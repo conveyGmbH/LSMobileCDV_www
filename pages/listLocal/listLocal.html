@@ -13,8 +13,8 @@
             <section aria-label="Main content" role="main" class="animationElement">
                 <div class="contentarea win-type-body">
                     <div class="headerFooterPlaceholder">
-                        <div class="list-header">
-                            <div class="content-header">
+                        <div class="list-header contenthost-background">
+                            <div class="list-portrait-only content-header">
                                 <div class="half-circle half-circle-textcolor">&nbsp;</div>
                                 <div class="content-header-line win-type-caption">
                                     <div class="idAndDate win-type-caption">
@@ -33,14 +33,14 @@
                                 </div>
                             </div>
                             <div class="list-landscape-only list-header-columns">
-                                <div class="list-field-small-fixed"
+                                <div class="list-field-small-relative-10"
                                      data-win-res="{textContent: 'listLocal.editedOn'}"></div>
                                 <div class="list-field-small-relative-20"
                                      data-win-res="{textContent: 'listLocal.company'}"></div>
                                 <div class="list-field-small-relative-10"
-                                     data-win-res="{textContent: 'listLocal.name'}"></div>
-                                <div class="list-field-small-relative-10"
                                      data-win-res="{textContent: 'listLocal.firstName'}"></div>
+                                <div class="list-field-small-relative-10"
+                                     data-win-res="{textContent: 'listLocal.name'}"></div>
                                 <div class="list-field-small-relative-20"
                                      data-win-res="{textContent: 'listLocal.address'}"></div>
                                 <div class="list-field-small-fixed"
@@ -52,8 +52,6 @@
                                 <div class="list-field-small-relative-10"
                                      data-win-res="{textContent: 'listLocal.phone'}"></div>
                                 <div class="list-field-small-relative-10"
-                                     data-win-res="{textContent: 'listLocal.mobile'}"></div>
-                                <div class="list-field-small-relative-10"
                                      data-win-res="{textContent: 'listLocal.email'}"></div>
                                 <div class="list-field-small-fixed">ID</div>
                             </div>
@@ -63,30 +61,28 @@
                          data-win-control="WinJS.Binding.Template" style="display: none">
                         <div class="list-landscape-only">
                             <div class="row-bkg-gray"
-                                 data-win-bind="style.display: index Binding.Converter.oddToDisplay"></div>
-                            <div class="list-field-small-fixed win-type-ellipsis"
-                                 data-win-bind="textContent: Erfassungsdatum Binding.Converter.toDateString"></div>
+                                 data-win-bind="style.display: index Binding.Converter.evenToDisplay"></div>
+                            <div class="list-field-small-relative-10"
+                                 data-win-bind="textContent: creationDate"></div>
                             <div class="list-field-small-relative-20 win-type-ellipsis"
                                  data-win-bind="textContent: Firmenname"></div>
                             <div class="list-field-small-relative-10 win-type-ellipsis"
-                                 data-win-bind="textContent: Name"></div>
-                            <div class="list-field-small-relative-10 win-type-ellipsis"
                                  data-win-bind="textContent: Vorname"></div>
+                            <div class="list-field-small-relative-10 win-type-ellipsis"
+                                 data-win-bind="textContent: Name"></div>
                             <div class="list-field-small-relative-20 win-type-ellipsis"
                                  data-win-bind="textContent: Strasse"></div>
-                            <div class="list-field-small-fixed win-type-ellipsis"
+                            <div class="list-field-small-fixed"
                                  data-win-bind="textContent: PLZ"></div>
                             <div class="list-field-small-relative-10 win-type-ellipsis"
                                  data-win-bind="textContent: Stadt"></div>
                             <div class="list-field-small-fixed win-type-ellipsis"
-                                 data-win-bind="textContent: Land"></div>
+                                 data-win-bind="textContent: LandISOCode"></div>
                             <div class="list-field-small-relative-10 win-type-ellipsis"
                                  data-win-bind="textContent: TelefonFestnetz"></div>
                             <div class="list-field-small-relative-10 win-type-ellipsis"
-                                 data-win-bind="textContent: TelefonMobil"></div>
-                            <div class="list-field-small-relative-10 win-type-ellipsis"
                                  data-win-bind="textContent: EMail"></div>
-                            <div class="list-field-small-fixed win-type-ellipsis"
+                            <div class="list-field-small-fixed"
                                  data-win-bind="textContent: globalContactId"></div>
                         </div>
                         <div class="list-portrait-only">
@@ -151,7 +147,7 @@
                         </div>
                     </div>
                     <div id="listLocalContacts"
-                         class="listview"
+                         class="listview win-selectionstylefilled"
                          data-win-control="WinJS.UI.ListView"
                          data-win-options="{
                              layout : { type: WinJS.UI.ListLayout },

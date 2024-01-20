@@ -57,16 +57,8 @@
             }
             this.hasDoc = hasDoc;
 
-            var background = function (index) {
-                if (index % 2 === 0) {
-                    return 1;
-                } else {
-                    return null;
-                }
-            }
-            this.background = background;
-
             var resultConverter = function (item, index) {
+                item.LandISOCode = "";
                 var map = AppData.initLandView.getMap();
                 var results = AppData.initLandView.getResults();
                 if (map && results) {
@@ -75,6 +67,7 @@
                         var curInitLand = results[curIndex];
                         if (curInitLand) {
                             item["Land"] = curInitLand.TITLE;
+                            item["LandISOCode"] = curInitLand.Intca_ISOCode;
                         }
                     }
                 }
@@ -93,6 +86,11 @@
                     //(item.TelefonFestnetz ? (item.TelefonFestnetz + "\r\n") : "") +
                     //(item.EMail ? item.EMail : ""))) +
                     //(item.Freitext1 ? "\r\n" + item.Freitext1 : "");
+                var date = getDateObject(item.Erfassungsdatum);
+                var m = moment(date);
+                m.locale(Application.language);
+                item.creationDate = m.format("DD.MM.YYYY HH:mm");
+
                 item.globalContactId = item.CreatorSiteID + "/" + item.CreatorRecID;
                 item.OvwContentDOCCNT3 = "";
                 if (that.docs && index >= that.firstContactsIndex) {
@@ -374,7 +372,7 @@
                                 // when the response is available
                                 Log.print(Log.l.trace, "ListRemote.contactView: success!");
                                 // startContact returns object already parsed from json file in response
-                                if (json && json.d) {
+                                if (json && json.d && that.contacts) {
                                     that.nextUrl = ListRemote.contactView.getNextUrl(json);
                                     var results = json.d.results;
                                     results.forEach(function(item, index) {
@@ -557,7 +555,7 @@
                         // when the response is available
                         Log.print(Log.l.trace, "listRemoteContact: success!");
                         // startContact returns object already parsed from json file in response
-                        if (json && json.d) {
+                        if (json && json.d && json.d.results && json.d.results.length > 0) {
                             that.binding.count = json.d.results.length;
                             that.nextUrl = ListRemote.contactView.getNextUrl(json);
                             var results = json.d.results;

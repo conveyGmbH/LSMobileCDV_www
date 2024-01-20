@@ -13,8 +13,8 @@
             <section aria-label="Main content" role="main" class="animationElement">
                 <div class="contentarea win-type-body">
                     <div class="headerFooterPlaceholder">
-                        <div class="list-header">
-                            <div class="content-header">
+                        <div class="list-header contenthost-background">
+                            <div class="list-portrait-only content-header">
                                 <div class="half-circle half-circle-textcolor">&nbsp;</div>
                                 <div class="content-header-line win-type-caption">
                                     <div class="idAndDate win-type-caption">
@@ -25,29 +25,27 @@
                                 </div>
                             </div>
                             <div class="list-landscape-only list-header-columns">
-                                <div class="list-field-small-fixed"
+                                <div class="list-field-small-relative-10 win-type-ellipsis"
                                      data-win-res="{textContent: 'listRemote.editedOn'}"></div>
-                                <div class="list-field-small-relative-20"
+                                <div class="list-field-small-relative-20 win-type-ellipsis"
                                      data-win-res="{textContent: 'listRemote.company'}"></div>
-                                <div class="list-field-small-relative-10"
-                                     data-win-res="{textContent: 'listRemote.name'}"></div>
-                                <div class="list-field-small-relative-10"
+                                <div class="list-field-small-relative-10 win-type-ellipsis"
                                      data-win-res="{textContent: 'listRemote.firstName'}"></div>
-                                <div class="list-field-small-relative-20"
+                                <div class="list-field-small-relative-10 win-type-ellipsis"
+                                     data-win-res="{textContent: 'listRemote.name'}"></div>
+                                <div class="list-field-small-relative-20 win-type-ellipsis"
                                      data-win-res="{textContent: 'listRemote.address'}"></div>
-                                <div class="list-field-small-fixed"
+                                <div class="list-field-small-fixed win-type-ellipsis"
                                      data-win-res="{textContent: 'listRemote.zip'}"></div>
-                                <div class="list-field-small-relative-10"
+                                <div class="list-field-small-relative-10 win-type-ellipsis"
                                      data-win-res="{textContent: 'listRemote.city'}"></div>
-                                <div class="list-field-small-fixed"
+                                <div class="list-field-small-fixed win-type-ellipsis"
                                      data-win-res="{textContent: 'listRemote.country'}"></div>
-                                <div class="list-field-small-relative-10"
+                                <div class="list-field-small-relative-10 win-type-ellipsis"
                                      data-win-res="{textContent: 'listRemote.phone'}"></div>
-                                <div class="list-field-small-relative-10"
-                                     data-win-res="{textContent: 'listRemote.mobile'}"></div>
-                                <div class="list-field-small-relative-10"
+                                <div class="list-field-small-relative-10 win-type-ellipsis"
                                      data-win-res="{textContent: 'listRemote.email'}"></div>
-                                <div class="list-field-small-fixed">ID</div>
+                                <div class="list-field-small-fixed win-type-ellipsis">ID</div>
                             </div>
                         </div>
                     </div>
@@ -55,30 +53,28 @@
                          data-win-control="WinJS.Binding.Template" style="display: none">
                         <div class="list-landscape-only">
                             <div class="row-bkg-gray"
-                                 data-win-bind="style.display: index Binding.Converter.oddToDisplay"></div>
-                            <div class="list-field-small-fixed win-type-ellipsis"
-                                 data-win-bind="textContent: Erfassungsdatum Binding.Converter.toRemoteDateString"></div>
+                                 data-win-bind="style.display: index Binding.Converter.evenToDisplay"></div>
+                            <div class="list-field-small-relative-10"
+                                 data-win-bind="textContent: creationDate"></div>
                             <div class="list-field-small-relative-20 win-type-ellipsis"
                                  data-win-bind="textContent: Firmenname"></div>
                             <div class="list-field-small-relative-10 win-type-ellipsis"
-                                 data-win-bind="textContent: Name"></div>
-                            <div class="list-field-small-relative-10 win-type-ellipsis"
                                  data-win-bind="textContent: Vorname"></div>
+                            <div class="list-field-small-relative-10 win-type-ellipsis"
+                                 data-win-bind="textContent: Name"></div>
                             <div class="list-field-small-relative-20 win-type-ellipsis"
                                  data-win-bind="textContent: Strasse"></div>
-                            <div class="list-field-small-fixed win-type-ellipsis"
+                            <div class="list-field-small-fixed"
                                  data-win-bind="textContent: PLZ"></div>
                             <div class="list-field-small-relative-10 win-type-ellipsis"
                                  data-win-bind="textContent: Stadt"></div>
                             <div class="list-field-small-fixed win-type-ellipsis"
-                                 data-win-bind="textContent: Land"></div>
+                                 data-win-bind="textContent: LandISOCode"></div>
                             <div class="list-field-small-relative-10 win-type-ellipsis"
                                  data-win-bind="textContent: TelefonFestnetz"></div>
                             <div class="list-field-small-relative-10 win-type-ellipsis"
-                                 data-win-bind="textContent: TelefonMobil"></div>
-                            <div class="list-field-small-relative-10 win-type-ellipsis"
                                  data-win-bind="textContent: EMail"></div>
-                            <div class="list-field-small-fixed win-type-ellipsis"
+                            <div class="list-field-small-fixed"
                                  data-win-bind="textContent: globalContactId"></div>
                         </div>
                         <div class="list-portrait-only">
@@ -131,7 +127,7 @@
                         </div>
                     </div>
                     <div id="listRemoteContacts"
-                         class="listview"
+                         class="listview win-selectionstylefilled"
                          data-win-control="WinJS.UI.ListView"
                          data-win-options="{
                              layout : { type: WinJS.UI.ListLayout },

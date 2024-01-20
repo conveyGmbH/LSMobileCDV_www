@@ -43,12 +43,12 @@
             var listHeader = pageElement.querySelector("#listLocalContacts .list-header");
 
             this.dispose = function () {
-                /*if (listView && listView.winControl) {
+                if (listView && listView.winControl) {
                     listView.winControl.itemDataSource = null;
                 }
                 if (that.contacts) {
                     that.contacts = null;
-                }*/
+                }
             }
 
             var progress = null;
@@ -70,15 +70,16 @@
             this.background = background;
 
             var resultConverter = function (item, index) {
+                item.LandISOCode = "";
                 var map = AppData.initLandView.getMap();
                 var results = AppData.initLandView.getResults();
-
                 if (map && results) {
                     var curIndex = map[item.INITLandID];
                     if (typeof curIndex !== "undefined") {
                         var curInitLand = results[curIndex];
                         if (curInitLand) {
                             item["Land"] = curInitLand.TITLE;
+                            item["LandISOCode"] = curInitLand.Intca_ISOCode;
                         }
                     }
                 }
@@ -97,6 +98,11 @@
                     //(item.TelefonFestnetz ? (item.TelefonFestnetz + "\r\n") : "") +
                     //(item.EMail ? item.EMail : ""))) +
                     //(item.Freitext1 ? "\r\n" + item.Freitext1 : "");
+                var date = getDateObject(item.Erfassungsdatum);
+                var m = moment(date);
+                m.locale(Application.language);
+                item.creationDate = m.format("DD.MM.YYYY HH:mm");
+
                 item.globalContactId = item.CreatorSiteID + "/" + item.CreatorRecID;
 
                 if (typeof item.InTransmission === "undefined") {
@@ -382,7 +388,7 @@
                                 // when the response is available
                                 Log.print(Log.l.trace, "ListLocal.contactView: success!");
                                 // startContact returns object already parsed from json file in response
-                                if (json && json.d) {
+                                if (json && json.d && that.contacts) {
                                     that.nextUrl = ListLocal.contactView.getNextUrl(json);
                                     var results = json.d.results;
                                     results.forEach(function(item, index) {
@@ -560,7 +566,7 @@
                         // when the response is available
                         Log.print(Log.l.trace, "ListLocal.contactView: success!");
                         // startContact returns object already parsed from json file in response
-                        if (json && json.d) {
+                        if (json && json.d && json.d.results && json.d.results.length > 0) {
                             that.binding.count = json.d.results.length;
                             that.nextUrl = ListLocal.contactView.getNextUrl(json);
                             var results = json.d.results;
@@ -584,6 +590,7 @@
                         } else {
                             that.binding.count = 0;
                             that.nextUrl = null;
+                            that.contacts = null;
                             if (listView.winControl) {
                                 // add ListView dataSource
                                 listView.winControl.itemDataSource = null;

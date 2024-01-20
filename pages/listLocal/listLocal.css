@@ -13,8 +13,8 @@
     height: 200px;
 }
 */
-#listLocalContacts .win-itemcontainer .win-itembox,
-#listLocalContacts .win-listview .win-itembox {
+.listLocal .win-itemcontainer .win-itembox,
+.listLocal .win-listview .win-itembox {
     background-color: transparent;
 }
 .listLocal .contentarea {
@@ -32,14 +32,6 @@
 
 .listLocal .master-list-header.list-compact-only {
     padding-top: 48px;
-}
-
-#listLocalContacts .listview {
-    position: relative;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: calc(100% - 56px);
 }
 
 #listLocalContacts .list-header {
@@ -73,6 +65,12 @@
     border-color: transparent;
 }
 */
+#listLocalContacts .list-field-small-relative-10 {
+    width: calc(10% - 28px);
+}
+
+#listLocalContacts .win-footer,
+#listLocalContacts .list-header,
 #listLocalContacts .win-item {
     width: auto;
     padding-left: 26px;
@@ -80,8 +78,12 @@
     padding-top: 2px;
     padding-bottom: 2px;
 }
+#listLocalContacts .content-header {
+    margin-top: -2px;
+}
+
  #listLocalContacts .row-bkg{
-     display:inline-block;
+     display: inline-block;
  }
 
 
@@ -105,9 +107,14 @@
     margin-bottom: 16px;
 }
 */
+.view-size-bigger #listLocalContacts .win-footer,
+.view-size-bigger #listLocalContacts .list-header,
 .view-size-bigger #listLocalContacts .win-item {
     padding-top: 8px;
     padding-bottom: 8px;
+}
+.view-size-bigger #listLocalContacts .content-header {
+    margin-top: -8px;
 }
 
 .action-image-right {
@@ -125,12 +132,16 @@
     }
 */
 
-
+.view-size-medium #listLocalContacts .win-footer,
+.view-size-medium #listLocalContacts .list-header,
 .view-size-medium #listLocalContacts .win-item {
     padding-left: 18px;
     padding-right: 18px;
     padding-top: 8px;
     padding-bottom: 8px;
+}
+.view-size-medium #listLocalContacts .content-header {
+    margin-top: -8px;
 }
 
 
@@ -143,12 +154,16 @@
     @media (max-width:499px) {
     }
 */
-
+.view-size-small #listLocalContacts .win-footer,
+.view-size-small #listLocalContacts .list-header,
 .view-size-small #listLocalContacts .win-item {
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 4px;
     padding-bottom: 4px;
+}
+.view-size-small #listLocalContacts .content-header {
+    margin-top: -4px;
 }
 
 
