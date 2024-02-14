@@ -669,6 +669,8 @@
                     that.binding.enableChangePassword = that.binding.generalData.notAuthorizedUser;
                     that.binding.generalData.logOffOptionActive = false;
                     var errorMessage = getResourceText("general.unauthorizedUser");
+                    AppData._persistentStates.odata.login = null;
+                    AppData._persistentStates.odata.password = null;
                     alert(errorMessage);
                     if (AppBar.scope.binding.generalData.oDataErrorMsg) {
                         AppData.setErrorMsg(that.binding, AppBar.scope.binding.generalData.oDataErrorMsg);

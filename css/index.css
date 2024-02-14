@@ -706,7 +706,7 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     display: block;
     position: relative;
     left: 20px;
-    top: -22px;
+    top: 0;
     z-index: 10000;
     padding: 0;
     text-align: center;

@@ -233,13 +233,13 @@
                     }
 
                     for (var k = 0; k < radios.length; k++) {
-                        if (radios[k].name === "ImportFilter") {
-                            Search.ImportFilter = radios[k].checked;
-                            //break;
+                        if (radios[k].name === "ImportFilter" && radios[k].checked) {
+                            Search.ImportFilter = parseInt(radios[k].value);
+                            break;
                         }
                     }
-                    if (Search.ImportFilter === true) {
-                        that.binding.restriction.importFilter = 1;
+                    if (Search.ImportFilter === 1) {
+                        that.binding.restriction.importFilter = true;
                     } else {
                         that.binding.restriction.importFilter = false;
                     }
@@ -320,6 +320,7 @@
                     if (!savedRestriction) {
                         savedRestriction = {};
                     } else {
+                        // radio button businesscard, barcodes and default
                         if (savedRestriction.SHOW_Barcode && !that.binding.restriction.SHOW_Visitenkarte) {
                             radios[0].checked = true;
                         } else if (savedRestriction.SHOW_Visitenkarte && !savedRestriction.SHOW_Barcode) {
@@ -327,11 +328,11 @@
                         } else {
                             radios[2].checked = true;
                         }
-
+                        // radio button default and all Contacts
                         if (!savedRestriction.MitarbeiterID) {
-                            radios[3].checked = true;
-                        } else {
                             radios[4].checked = true;
+                        } else {
+                            radios[3].checked = true;
                         }
                         /*if (savedRestriction.Nachbearbeitet === "NULL") {
                             radios[3].checked = true;

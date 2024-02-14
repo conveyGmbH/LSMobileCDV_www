@@ -70,29 +70,29 @@
         _ImportFilter: 0,
         ImportFilter: {
             get: function () {
-                return Search._ImportFilte;
+                return Search._ImportFilter;
             },
             set: function (value) {
-                Search._ImportFilte = value;
+                Search._ImportFilter = value;
             }
         },
         ImportFilter0: {
             get: function () {
-                return this.Erfassungsart === 0;
+                return this.ImportFilter === 0;
             },
             set: function (checked) {
                 if (checked) {
-                    this.Erfassungsart = 0;
+                    this.ImportFilter = 0;
                 }
             }
         },
         ImportFilter1: {
             get: function () {
-                return this.Erfassungsart === 1;
+                return this.ImportFilter === 1;
             },
             set: function (checked) {
                 if (checked) {
-                    this.Erfassungsart = 1;
+                    this.ImportFilter = 1;
                 }
             }
         }

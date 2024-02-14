@@ -812,6 +812,7 @@
                         AppData._curGetUserRemoteDataId = 0;
                         AppData.getUserRemoteData();
                         AppData.getCRVeranstOption();
+                        AppData.getMobileVersion();
                     });
                 }
                 if (device &&

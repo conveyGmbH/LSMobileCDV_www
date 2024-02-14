@@ -366,6 +366,60 @@
             return ret;
         },
         _inGetCRVeranstOption: false,
+        getMobileVersion: function () {
+            var versionNo;
+            var versionNoPos = (typeof Application.version === "string") && Application.version.lastIndexOf(" ");
+            if (versionNoPos >= 0) {
+                versionNo = Application.version.substr(versionNoPos + 1);
+            } else {
+                versionNo = Application.version;
+            }
+            return AppData.call("PRC_CheckMobileVersion", {
+                pCreatorSiteID: AppData._persistentStates.odata.dbSiteId,
+                pDBVersion: AppData._persistentStates.dbVersion || null,
+                pAppVersion: versionNo,
+                pUser: AppData.appSettings.odata.login,
+                pLanguageID: AppData.getLanguageId()
+            }, function (json) {
+                Log.print(Log.l.info, "PRC_CheckMobileVersion call success!");
+                if (json && json.d && json.d.results &&
+                    json.d.results[0] && json.d.results[0].NewDBRequired) {
+                    //updateMessage = json.d.results[0].UpdateMessage || "Database update required!";
+                    //newDBRequired = json.d.results[0].NewDBRequired;
+                    return confirm(getResourceText("general.userChanging"), function (changeConfirmed) {
+                        Log.print(Log.l.info, "updateMessage returned=" + changeConfirmed);
+                        if (changeConfirmed) {
+                            /*if (typeof error === "function") {
+                                error({});
+                            }*/
+                            WinJS.Promise.timeout(500).then(function () {
+                                Application.navigateById("dbinit");
+                                return WinJS.Promise.timeout(100);
+                            })/*.then(function () {
+                                Application.navigateById(getStartPage(), null, true);
+                            })*/;
+                        } else {
+                            Log.print(Log.l.trace, "User changed: user choice CANCEL");
+                            return WinJS.Promise.as();
+                        }
+                    });
+                }
+            }, function (err) {
+                Log.print(Log.l.error, "PRC_CheckMobileVersion call error - ignore that!");
+                if (err.status === 401) {
+                    // user is not authorized to access this service
+                    AppBar.scope.binding.generalData.notAuthorizedUser = true;
+                    AppBar.scope.binding.generalData.oDataErrorMsg = err;
+                    //var errorMessage = getResourceText("general.unauthorizedUser");
+                    //alert(errorMessage);
+                    //AppData.setErrorMsg(AppBar.scope.binding, err);
+                    // user is not authorized to access this service
+                    WinJS.Promise.timeout(1000).then(function () {
+                        Application.navigateById("account");
+                    });
+                }
+            });
+        },
         getCRVeranstOption: function () {
             Log.call(Log.l.trace, "AppData.");
             var ret = WinJS.Promise.as();
@@ -539,6 +593,7 @@
                                     Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");
                                     AppData.getUserRemoteData();
                                     AppData.getCRVeranstOption();
+                                    AppData.getMobileVersion();
                                 });
                             }, function (errorResponse) {
                                 Log.print(Log.l.error, "call error=" + JSON.stringify(errorResponse));
