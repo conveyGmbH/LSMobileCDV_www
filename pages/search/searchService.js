@@ -67,7 +67,7 @@
                 }
             }
         },
-        _ImportFilter: 0,
+        _ImportFilter: 1, // #7901 default show all contacts -> app user and import user
         ImportFilter: {
             get: function () {
                 return Search._ImportFilter;
