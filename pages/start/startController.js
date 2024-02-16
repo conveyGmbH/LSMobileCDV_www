@@ -609,6 +609,7 @@
                         Log.print(Log.l.trace, "clickButton event command.name=" + command.name);
                         if (command.name === "listRemote") {
                             // delete restriction on listRemote here!
+                            // #7901 default show all contacts -> app user and import user
                             var restriction = {
                                 KontaktVIEWID: "",
                                 Firmenname: "",
@@ -619,7 +620,8 @@
                                 PLZ: "",
                                 Stadt: "",
                                 useErfassungsdatum: false,
-                                usemodifiedTS: false
+                                usemodifiedTS: false, 
+                                importFilter: true
                             };
                             AppData.setRestriction('Kontakt', restriction);
                         }
@@ -812,7 +814,7 @@
                         AppData._curGetUserRemoteDataId = 0;
                         AppData.getUserRemoteData();
                         AppData.getCRVeranstOption();
-                        AppData.getMobileVersion();
+                        //AppData.getMobileVersion();
                     });
                 }
                 if (device &&

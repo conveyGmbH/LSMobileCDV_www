@@ -506,7 +506,9 @@
             Log.print(Log.l.trace, "calling select ListRemote.contactView...");
             var restriction = AppData.generalData.getRestriction("Kontakt");
             if (!restriction) {
-                restriction = {};
+                restriction = {
+                    importFilter: true
+                };
             }
             // predefined restriction that.binding.restriction.importFilter
             if (!restriction.importFilter) {

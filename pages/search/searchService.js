@@ -26,7 +26,7 @@
             usemodifiedTS: false,
             Erfassungsart: 0,
             Bearbeitet: 0,
-            ImportFilter: 0
+            ImportFilter: 1 // #7901 default show all contacts -> app user and import user
         },
         _Erfassungsart: 0,
         Erfassungsart: {

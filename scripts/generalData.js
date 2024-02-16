@@ -593,7 +593,7 @@
                                     Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");
                                     AppData.getUserRemoteData();
                                     AppData.getCRVeranstOption();
-                                    AppData.getMobileVersion();
+                                    //AppData.getMobileVersion();
                                 });
                             }, function (errorResponse) {
                                 Log.print(Log.l.error, "call error=" + JSON.stringify(errorResponse));
