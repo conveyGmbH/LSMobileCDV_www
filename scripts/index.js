@@ -144,7 +144,16 @@
                     }
                 }
             }
-        } else if (id === "sketch") {
+        } else if (id === "questionnaireRemote") {
+            for (var i = 0; i < Application.navigationBarPages.length; i++) {
+                if (Application.navigationBarPages[i].id === id) {
+                    if (Application.navigationBarPages[i].disabled === true) {
+                        id = "sketchRemote";
+                        return Application.navigateByIdOverride(id);
+                    }
+                }
+            }
+        } else if (id === "sketch" || id === "sketchRemote") {
             if (AppData._persistentStates.showvisitorFlow === 1 || (AppData._persistentStates.showvisitorFlow === 2 && AppData.generalData.area && AppData.generalData.inOut)) {
                 id = "barcode";
             } else {
