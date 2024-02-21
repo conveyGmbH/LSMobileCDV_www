@@ -805,18 +805,6 @@
             }).then(function () {
                 Log.print(Log.l.trace, "Data loaded");
                 AppBar.notifyModified = true;
-                WinJS.Promise.timeout(150).then(function () {
-                    that.showPhoto();
-                });
-            }).then(function () {
-                if (!AppData._userRemoteDataPromise) {
-                    AppData._userRemoteDataPromise = WinJS.Promise.timeout(0).then(function () {
-                        AppData._curGetUserRemoteDataId = 0;
-                        AppData.getUserRemoteData();
-                        AppData.getCRVeranstOption();
-                        //AppData.getMobileVersion();
-                    });
-                }
                 if (device &&
                     (device.platform === "Android" || device.platform === "windows") &&
                     AppData.generalData.useBarcodeActivity &&
@@ -830,11 +818,16 @@
                     !CameraGlobals.listening) {
                     CameraGlobals.startListenDelayed(1000);
                 }
-            })/*.then(function () {
-                if (AppData._userData && AppData._userData.Message) {
-                    alert(AppData._userData.Message);
-                } 
-            })*/;
+                return WinJS.Promise.timeout(150);
+            }).then(function () {
+                that.showPhoto();
+                if (!AppData._userRemoteDataPromise) {
+                    AppData._curGetUserRemoteDataId = 0;
+                    AppData.getUserRemoteData();
+                    AppData.getCRVeranstOption();
+                    AppData.getMobileVersion();
+                }
+            });
             Log.ret(Log.l.trace);
         })
     });

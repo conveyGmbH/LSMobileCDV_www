@@ -50,7 +50,6 @@
                     !that.binding.appSettings.odata.dbSiteId) {
                     startPage = "login";
                 } else {
-                    //AppData._userRemoteDataPromise &&
                     if ((AppData._persistentStates.showvisitorFlow === 1 ||
                         (AppData._persistentStates.showvisitorFlow === 2 &&
                             AppData.generalData.area &&
@@ -164,9 +163,30 @@
                         return that.openDb(complete, error, doReloadDb);
                     });
                 } else {
+                    if (AppData._userRemoteDataPromise) {
+                        Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                        AppData._userRemoteDataPromise.cancel();
+                        AppData._userRemoteDataPromise = null;
+                    }
                     if (doReloadDb) {
                         if (!AppData._persistentStates.odata.dbinitIncomplete) {
                             AppData._persistentStates.odata.dbinitIncomplete = true;
+                            var employeeId = AppData.getRecordId("Mitarbeiter");
+                            AppData._persistentStates.allRestrictions = {};
+                            AppData._persistentStates.allRecIds = {};
+                            AppData._userData = {};
+                            AppData._persistentStates.veranstoption = {};
+                            AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
+                            var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
+                            AppData._persistentStates.individualColors = false;
+                            AppData._persistentStates.isDarkTheme = false;
+                            Colors.updateColors();
+                            AppData._userRemoteData = {};
+                            AppData._contactData = {};
+                            AppData._photoData = null;
+                            AppData._barcodeType = null;
+                            AppData._barcodeRequest = null;
+                            AppData.setRecordId("Mitarbeiter", employeeId);
                             Application.pageframe.savePersistentStates();
                         }
                         //NavigationBar.disablePage("start");
@@ -190,22 +210,24 @@
                             }
                             //AppData._curGetUserDataId = 0;
                             //AppData.getUserData();
-                            function resultConverter(item, index) {
-                                var property = AppData.getPropertyFromInitoptionTypeID(item);
-                                if (property && property !== "individualColors" && (!item.pageProperty) && item.LocalValue) {
-                                    item.colorValue = "#" + item.LocalValue;
-                                    AppData.applyColorSetting(property, item.colorValue);
+                            if (!doReloadDb) {
+                                function resultConverter(item, index) {
+                                    var property = AppData.getPropertyFromInitoptionTypeID(item);
+                                    if (property && property !== "individualColors" && (!item.pageProperty) && item.LocalValue) {
+                                        item.colorValue = "#" + item.LocalValue;
+                                        AppData.applyColorSetting(property, item.colorValue);
+                                    }
                                 }
+                                var results = AppData._persistentStates.veranstoption;
+                                if (results && results.length > 0) {
+                                    AppData._persistentStates.serverColors = false;
+                                    results.forEach(function (item, index) {
+                                        resultConverter(item, index);
+                                    });
+                                    Application.pageframe.savePersistentStates();
+                                }
+                                Colors.updateColors();
                             }
-                            var results = AppData._persistentStates.veranstoption;
-                            if (results && results.length > 0) {
-                                AppData._persistentStates.serverColors = false;
-                                results.forEach(function (item, index) {
-                                    resultConverter(item, index);
-                                });
-                                Application.pageframe.savePersistentStates();
-                            }
-                            Colors.updateColors();
                             // important to call complete here in case of db version upgrade
                             if (doReloadDb && typeof complete === "function") {
                                 complete({});
