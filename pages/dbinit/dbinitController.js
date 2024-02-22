@@ -155,7 +155,7 @@
 
             var openDb = function (complete, error, doReloadDb) {
                 AppBar.busy = true;
-                var ret, loginIsEmpty = false, failed = false, updateMessage = null, moveMitarbeiterMessage = null, newDBRequired = null;
+                var ret, loginIsEmpty = false, failed = false, confirmed = false, updateMessage = null, moveMitarbeiterMessage = null, newDBRequired = null;
                 Log.call(Log.l.info, "DBInit.Controller.");
                 if (AppRepl.replicator && AppRepl.replicator.state === "running") {
                     Log.print(Log.l.info, "replicator still running - try later!");
@@ -308,11 +308,41 @@
                             return WinJS.Promise.as();
                         }
                     }).then(function () {
+                        if (updateMessage) {
+                            return checkForNumberReplication();
+                        } else {
+                            return WinJS.Promise.as();
+                        }
+                    }).then(function () {
+                        if (updateMessage) {
+                            if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
+                                AppData._persistentStates.odata.replActive = true;
+                                var numFastReqs = 1;
+                                AppRepl.replicator.run(numFastReqs);
+                                Application.pageframe.hideSplashScreen();
+                                return alert(updateMessage, function (updateConfirmed) {
+                                    Log.print(Log.l.info, "updateMessage returned=" + updateConfirmed);
+                                    if (updateConfirmed) {
+                                        confirmed = true;
+                                    } else {
+                                        /*WinJS.Promise.timeout(500).then(function () {
+                                            return that.openDb(complete, error, doReloadDb);
+                                        });*/
+                                        confirmed = true;
+                                    }
+                                });
+                            } else {
+                                return WinJS.Promise.as();
+                            }
+                        } else {
+                            return WinJS.Promise.as();
+                        }
+                    }).then(function () {
                         if (loginIsEmpty || failed || doReloadDb) {
                             return WinJS.Promise.as();
                         } else if (AppRepl.replicator &&
                             AppRepl.replicator.networkState !== "Offline" &&
-                            AppRepl.replicator.networkState !== "Unknown" && newDBRequired === 2) {
+                            AppRepl.replicator.networkState !== "Unknown" && newDBRequired === 2 && confirmed) {
                             return AppData.call("PRC_MoveAppMitarbeiter", {
                                 pMitarbeiterID: AppData.generalData.getRecordId("Mitarbeiter")
                             }, function (json) {
@@ -340,39 +370,6 @@
                         } else {
                             Log.print(Log.l.info, "network state=" +
                                 (AppRepl.replicator && AppRepl.replicator.networkState));
-                            return WinJS.Promise.as();
-                        }
-                    }).then(function () {
-                        if (updateMessage || moveMitarbeiterMessage) {
-                            return checkForNumberReplication();
-                        } else {
-                            return WinJS.Promise.as();
-                        }
-                    }).then(function () {
-                        if (updateMessage || moveMitarbeiterMessage) {
-                            if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
-                                AppData._persistentStates.odata.replActive = true;
-                                var numFastReqs = 1;
-                                AppRepl.replicator.run(numFastReqs);
-                                Application.pageframe.hideSplashScreen();
-                                return alert(updateMessage, function (updateConfirmed) {
-                                    Log.print(Log.l.info, "updateMessage returned=" + updateConfirmed);
-                                    if (!updateConfirmed) {
-                                        if (typeof error === "function") {
-                                            error({});
-                                        }
-                                        WinJS.Promise.timeout(500).then(function () {
-                                            Application.navigateById("dbinit");
-                                            return WinJS.Promise.timeout(100);
-                                        }).then(function () {
-                                            Application.navigateById(getStartPage(), null, true);
-                                        });
-                                    }
-                                });
-                            } else {
-                                return WinJS.Promise.as();
-                            }
-                        } else {
                             return WinJS.Promise.as();
                         }
                     }).then(function () {

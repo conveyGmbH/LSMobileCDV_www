@@ -286,9 +286,9 @@
                                     }
                                 }
                                 if ((AppData._persistentStates.showvisitorFlow === 1 ||
-                                (AppData._persistentStates.showvisitorFlow === 2 &&
-                                    AppData.generalData.area &&
-                                    AppData.generalData.inOut))) {
+                                    (AppData._persistentStates.showvisitorFlow === 2 &&
+                                        AppData.generalData.area &&
+                                        AppData.generalData.inOut))) {
                                     Application.navigationBarGroups = [
                                         { id: "barcode", group: 1, svg: "lsvFlow", disabled: false },
                                         //{ id: "search", group: 2, svg: "magnifying_glass", disabled: false },
@@ -366,58 +366,70 @@
         },
         _inGetCRVeranstOption: false,
         getMobileVersion: function () {
-            var versionNo;
-            var versionNoPos = (typeof Application.version === "string") && Application.version.lastIndexOf(" ");
-            if (versionNoPos >= 0) {
-                versionNo = Application.version.substr(versionNoPos + 1);
-            } else {
-                versionNo = Application.version;
-            }
-            return AppData.call("PRC_CheckMobileVersion", {
-                pCreatorSiteID: AppData._persistentStates.odata.dbSiteId,
-                pDBVersion: AppData._persistentStates.dbVersion || null,
-                pAppVersion: versionNo,
-                pUser: AppData.appSettings.odata.login,
-                pLanguageID: AppData.getLanguageId()
-            }, function (json) {
-                Log.print(Log.l.info, "PRC_CheckMobileVersion call success!");
-                if (json && json.d && json.d.results &&
-                    json.d.results[0] && json.d.results[0].NewDBRequired) {
-                    //updateMessage = json.d.results[0].UpdateMessage || "Database update required!";
-                    //newDBRequired = json.d.results[0].NewDBRequired;
-                    return confirm(getResourceText("general.userChanging"), function (changeConfirmed) {
-                        Log.print(Log.l.info, "updateMessage returned=" + changeConfirmed);
-                        if (changeConfirmed) {
-                            /*if (typeof error === "function") {
-                                error({});
-                            }*/
-                            WinJS.Promise.timeout(500).then(function () {
-                                Application.navigateById("dbinit");
-                                return WinJS.Promise.timeout(100);
-                            })/*.then(function () {
-                                Application.navigateById(getStartPage(), null, true);
-                            })*/;
-                        } else {
-                            Log.print(Log.l.trace, "User changed: user choice CANCEL");
-                            return WinJS.Promise.as();
+            Log.call(Log.l.trace, "AppData.");
+            var ret = new WinJS.Promise.as().then(function () {
+                return DBInit.versionView.select(function (json) {
+                    AppData._persistentStates.dbVersion = json && json.d && json.d.results && json.d.results[0] && json.d.results[0].Version;
+                    Log.print(Log.l.info, "versionView select success! dbVersion=" + AppData._persistentStates.dbVersion);
+                    Application.pageframe.savePersistentStates();
+                }, function (err) {
+                    Log.print(Log.l.error, "versionView select error - ignore that!");
+                });
+            }).then(function () {
+                var versionNo;
+                var versionNoPos = (typeof Application.version === "string") && Application.version.lastIndexOf(" ");
+                if (versionNoPos >= 0) {
+                    versionNo = Application.version.substr(versionNoPos + 1);
+                } else {
+                    versionNo = Application.version;
+                }
+                return AppData.call("PRC_CheckMobileVersion", {
+                    pCreatorSiteID: AppData._persistentStates.odata.dbSiteId,
+                    pDBVersion: AppData._persistentStates.dbVersion || null,
+                    pAppVersion: versionNo,
+                    pUser: AppData.appSettings.odata.login,
+                    pLanguageID: AppData.getLanguageId()
+                }, function (json) {
+                    Log.print(Log.l.info, "PRC_CheckMobileVersion call success!");
+                    if (json && json.d && json.d.results && json.d.results[0] && json.d.results[0].NewDBRequired) {
+                        var messageText = "";
+                        if (json.d.results[0].NewDBRequired === 1) {
+                            messageText = getResourceText("general.newDB");
                         }
-                    });
-                }
-            }, function (err) {
-                Log.print(Log.l.error, "PRC_CheckMobileVersion call error - ignore that!");
-                if (err.status === 401) {
-                    // user is not authorized to access this service
-                    AppBar.scope.binding.generalData.notAuthorizedUser = true;
-                    AppBar.scope.binding.generalData.oDataErrorMsg = err;
-                    //var errorMessage = getResourceText("general.unauthorizedUser");
-                    //alert(errorMessage);
-                    //AppData.setErrorMsg(AppBar.scope.binding, err);
-                    // user is not authorized to access this service
-                    WinJS.Promise.timeout(1000).then(function () {
-                        Application.navigateById("account");
-                    });
-                }
+                        if (json.d.results[0].NewDBRequired === 2) {
+                            messageText = getResourceText("general.userChanging");
+                        }
+                        return confirm(messageText, function (changeConfirmed) {
+                            Log.print(Log.l.info, "updateMessage returned=" + changeConfirmed);
+                            if (changeConfirmed) {
+                                WinJS.Promise.timeout(500).then(function () {
+                                    Application.navigateById("dbinit");
+                                    return WinJS.Promise.timeout(100);
+                                });
+                            } else {
+                                Log.print(Log.l.trace, "User changed: user choice CANCEL");
+                                return WinJS.Promise.as();
+                            }
+                        });
+                    }
+                }, function (err) {
+                    Log.print(Log.l.error, "PRC_CheckMobileVersion call error - ignore that!");
+                    if (err.status === 401) {
+                        // user is not authorized to access this service
+                        AppBar.scope.binding.generalData.notAuthorizedUser = true;
+                        AppBar.scope.binding.generalData.oDataErrorMsg = err;
+                        //var errorMessage = getResourceText("general.unauthorizedUser");
+                        //alert(errorMessage);
+                        //AppData.setErrorMsg(AppBar.scope.binding, err);
+                        // user is not authorized to access this service
+                        WinJS.Promise.timeout(1000).then(function () {
+                            Application.navigateById("account");
+                        });
+                    }
+                });
             });
+            Log.ret(Log.l.trace);
+            return ret;
         },
         getCRVeranstOption: function () {
             Log.call(Log.l.trace, "AppData.");
@@ -440,7 +452,7 @@
                             AppData.applyColorSetting(property, item.colorValue);
                         }
                     }
-                    function resultMandatoryConverter (item) {
+                    function resultMandatoryConverter(item) {
                         if (item.INITOptionTypeID === 22) {
                             if (item.LocalValue === "1") {
                                 AppData._persistentStates.showConfirmQuestion = true;
@@ -553,17 +565,17 @@
                                         }
                                     }
                                     Log.print(Log.l.info, "timeZoneRemoteAdjustment=" + AppData.appSettings.odata.timeZoneRemoteAdjustment +
-                                    " timeZoneRemoteDiffMs=" + AppData.appSettings.odata.timeZoneRemoteDiffMs +
-                                    " replPrevSelectMs=" + AppData.appSettings.odata.replPrevSelectMs);
+                                        " timeZoneRemoteDiffMs=" + AppData.appSettings.odata.timeZoneRemoteDiffMs +
+                                        " replPrevSelectMs=" + AppData.appSettings.odata.replPrevSelectMs);
                                     if (AppBar.scope && AppData._userRemoteData.Message) {
                                         Log.print(Log.l.error, "Message=" + AppData._userRemoteData.Message);
                                         AppData.setErrorMsg(AppBar.scope.binding, AppData._userRemoteData.Message);
                                     }
                                     if (AppBar.scope && typeof AppBar.scope.updateActions === "function" &&
                                         (!prevUserRemoteData ||
-                                         prevUserRemoteData.AnzVersendeteKontakte !== AppData._userRemoteData.AnzVersendeteKontakte ||
-                                         prevUserRemoteData.Bereich !== AppData._userRemoteData.Bereich ||
-                                         prevUserRemoteData.EinAusgang !== AppData._userRemoteData.EinAusgang)) { //
+                                            prevUserRemoteData.AnzVersendeteKontakte !== AppData._userRemoteData.AnzVersendeteKontakte ||
+                                            prevUserRemoteData.Bereich !== AppData._userRemoteData.Bereich ||
+                                            prevUserRemoteData.EinAusgang !== AppData._userRemoteData.EinAusgang)) { //
                                         doUpdate = true;
                                     }
                                 }
@@ -616,43 +628,31 @@
                                             var prevRegisterPath = AppData._persistentStates.odata.registerPath;
                                             AppData._persistentStates.odata.registerPath =
                                                 AppData._persistentStatesDefaults.odata.registerPath;
-                                            DBInit.loginRequest.insert(function(json) {
-                                                    // this callback will be called asynchronously
-                                                    // when the response is available
-                                                    Log.print(Log.l.trace, "loginRequest: success!");
-                                                    AppData._persistentStates.odata.registerPath = prevRegisterPath;
-                                                    // loginData returns object already parsed from json file in response
-                                                    if (json && json.d && json.d.ODataLocation) {
-                                                        if (json.d.InactiveFlag) {
-                                                            if (AppBar.scope) {
-                                                                err = {
-                                                                    status: 503,
-                                                                    statusText: getResourceText("login.inactive") +
-                                                                        "\n\n" +
-                                                                        AppData._persistentStates.odata.login
-                                                                };
-                                                                AppData.setErrorMsg(AppBar.scope.binding, err);
-                                                                alert(err.statusText);
-                                                            }
-                                                        } else if (json.d.ODataLocation +
-                                                            AppData._persistentStatesDefaults.odata.onlinePath !==
-                                                            AppData._persistentStates.odata.onlinePath) {
-                                                            if (AppBar.scope) {
-                                                                err = {
-                                                                    status: 404,
-                                                                    statusText: getResourceText("login.modified") +
-                                                                        "\n\n" +
-                                                                        AppData._persistentStates.odata.login
-                                                                };
-                                                                AppData.setErrorMsg(AppBar.scope.binding, err);
-                                                                alert(err.statusText);
-                                                            }
+                                            DBInit.loginRequest.insert(function (json) {
+                                                // this callback will be called asynchronously
+                                                // when the response is available
+                                                Log.print(Log.l.trace, "loginRequest: success!");
+                                                AppData._persistentStates.odata.registerPath = prevRegisterPath;
+                                                // loginData returns object already parsed from json file in response
+                                                if (json && json.d && json.d.ODataLocation) {
+                                                    if (json.d.InactiveFlag) {
+                                                        if (AppBar.scope) {
+                                                            err = {
+                                                                status: 503,
+                                                                statusText: getResourceText("login.inactive") +
+                                                                    "\n\n" +
+                                                                    AppData._persistentStates.odata.login
+                                                            };
+                                                            AppData.setErrorMsg(AppBar.scope.binding, err);
+                                                            alert(err.statusText);
                                                         }
-                                                    } else {
+                                                    } else if (json.d.ODataLocation +
+                                                        AppData._persistentStatesDefaults.odata.onlinePath !==
+                                                        AppData._persistentStates.odata.onlinePath) {
                                                         if (AppBar.scope) {
                                                             err = {
                                                                 status: 404,
-                                                                statusText: getResourceText("login.unknown") +
+                                                                statusText: getResourceText("login.modified") +
                                                                     "\n\n" +
                                                                     AppData._persistentStates.odata.login
                                                             };
@@ -660,8 +660,20 @@
                                                             alert(err.statusText);
                                                         }
                                                     }
-                                                },
-                                                function(errorResponse) {
+                                                } else {
+                                                    if (AppBar.scope) {
+                                                        err = {
+                                                            status: 404,
+                                                            statusText: getResourceText("login.unknown") +
+                                                                "\n\n" +
+                                                                AppData._persistentStates.odata.login
+                                                        };
+                                                        AppData.setErrorMsg(AppBar.scope.binding, err);
+                                                        alert(err.statusText);
+                                                    }
+                                                }
+                                            },
+                                                function (errorResponse) {
                                                     // called asynchronously if an error occurs
                                                     // or server returns response with an error status.
                                                     Log.print(Log.l.error,
@@ -695,7 +707,7 @@
                                     var url = AppData.getBaseURL(AppData.appSettings.odata.onlinePort) + "/" + AppData.getOnlinePath(true) + "/$metadata";
                                     var options = {
                                         type: "GET",
-                                        url: url, 
+                                        url: url,
                                         user: user,
                                         password: password,
                                         customRequestInitializer: function (req) {
@@ -817,7 +829,7 @@
                                 AppBar.scope.binding.generalData.contactId = AppData._contactData.KontaktVIEWID;
                                 if (typeof AppBar.scope.updateActions === "function" &&
                                     (!prevContactData ||
-                                     prevContactData !== AppData._contactData)) {
+                                        prevContactData !== AppData._contactData)) {
                                     AppBar.scope.updateActions(true);
                                 }
                             }
@@ -876,7 +888,7 @@
                 var hours = date.getHours();
                 var minutes = date.getMinutes();
                 ret = ((hours < 10) ? "0" : "") + hours.toString() + ":" +
-                      ((minutes < 10) ? "0" : "") + minutes.toString();
+                    ((minutes < 10) ? "0" : "") + minutes.toString();
             } else {
                 ret = "";
             }
@@ -1185,7 +1197,7 @@
                     }
                     break;
                 default:
-                    // defaultvalues
+                // defaultvalues
             }
             if (item.pageProperty) {
                 if (item.LocalValue === "1") {
@@ -1208,7 +1220,7 @@
             Colors[colorProperty] = color;
             switch (colorProperty) {
                 case "accentColor":
-                    // fall through...
+                // fall through...
                 case "navigationColor":
                     AppBar.loadIcons();
                     NavigationBar.groups = Application.navigationBarGroups;
@@ -1568,9 +1580,9 @@
                         Barcode.connectionStatusChange(error);
                     }
                 }, {
-                    id: id,
-                    onDeviceConnectionStatusChange: Barcode.connectionStatusChange
-                });
+                        id: id,
+                        onDeviceConnectionStatusChange: Barcode.connectionStatusChange
+                    });
             }
             Log.ret(Log.l.trace);
         },
@@ -1597,11 +1609,11 @@
                         Barcode.onBarcodeError(readError.stack);
                     }
                 }, {
-                    id: generalData.barcodeDevice,
-                    onDeviceConnectionStatusChange: Barcode.connectionStatusChange,
-                    prefixBinary: "#LSAD",
-                    prefixLengthAdd: 2
-                });
+                        id: generalData.barcodeDevice,
+                        onDeviceConnectionStatusChange: Barcode.connectionStatusChange,
+                        prefixBinary: "#LSAD",
+                        prefixLengthAdd: 2
+                    });
             }
             Log.ret(Log.l.trace);
         },
@@ -1715,12 +1727,12 @@
                                     fe.remove(function () {
                                         Log.print(Log.l.info, "file deleted!");
                                     },
-                                    function (errorResponse) {
-                                        Log.print(Log.l.error, "file delete: Failed remove file " + fe.name + " error: " + JSON.stringify(errorResponse));
-                                    },
-                                    function () {
-                                        Log.print(Log.l.trace, "file delete: extra ignored!");
-                                    });
+                                        function (errorResponse) {
+                                            Log.print(Log.l.error, "file delete: Failed remove file " + fe.name + " error: " + JSON.stringify(errorResponse));
+                                        },
+                                        function () {
+                                            Log.print(Log.l.trace, "file delete: extra ignored!");
+                                        });
                                 }
                                 fileEntry.file(function (file) {
                                     var fileReader = new FileReader("*.jpg");
