@@ -616,6 +616,8 @@
 
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Annulla",
+    "flyout.okChange"       : "Sì, cambia",
+    "flyout.cancelToLater"  : "No, ricorda tra 5 minuti",
 
     "error.delete"          : "Errore: impossibile cancellare",
   

@@ -616,6 +616,8 @@
     
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Annuler",
+    "flyout.okChange"       : "Oui, changer",
+    "flyout.cancelToLater"  : "Non, rappeler dans 5 minutes",
 
     "error.delete"          : "Erreur pendant la suppression",
 

@@ -126,6 +126,7 @@
         _photoData: null,
         _barcodeType: null,
         _barcodeRequest: null,
+        _alternativeTimeout: null,
         getRecordId: function (relationName) {
             Log.call(Log.l.trace, "AppData.", "relationName=" + relationName);
             // check for initial values
@@ -383,6 +384,9 @@
                 } else {
                     versionNo = Application.version;
                 }
+                var alertFlyoutOk = document.querySelector("#okButton");
+                var alertFlyoutCancel = document.querySelector("#cancelButton");
+
                 return AppData.call("PRC_CheckMobileVersion", {
                     pCreatorSiteID: AppData._persistentStates.odata.dbSiteId,
                     pDBVersion: AppData._persistentStates.dbVersion || null,
@@ -397,10 +401,14 @@
                             messageText = getResourceText("general.newDB");
                         }
                         if (json.d.results[0].NewDBRequired === 2) {
+                            alertFlyoutOk.textContent = getResourceText("flyout.okChange");
+                            alertFlyoutCancel.textContent = getResourceText("flyout.cancelToLater");
                             messageText = getResourceText("general.userChanging");
                         }
                         return confirm(messageText, function (changeConfirmed) {
                             Log.print(Log.l.info, "updateMessage returned=" + changeConfirmed);
+                            alertFlyoutOk.textContent = getResourceText("flyout.ok");
+                            alertFlyoutCancel.textContent = getResourceText("flyout.cancel");
                             if (changeConfirmed) {
                                 WinJS.Promise.timeout(500).then(function () {
                                     Application.navigateById("dbinit");
@@ -408,6 +416,10 @@
                                 });
                             } else {
                                 Log.print(Log.l.trace, "User changed: user choice CANCEL");
+                                if (json.d.results[0].NewDBRequired === 2) {
+                                    AppData._alternativeTimeout = 150;
+                                    AppData.getUserRemoteData();
+                                }
                                 return WinJS.Promise.as();
                             }
                         });
@@ -588,10 +600,13 @@
                                     Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
                                     AppData._userRemoteDataPromise.cancel();
                                 }
-                                timeout = (AppData._persistentStates.odata.replInterval || 30) * 2;
+                                timeout = (AppData._alternativeTimeout || AppData._persistentStates.odata.replInterval || 30) * 2;
                                 Log.print(Log.l.info, "getUserRemoteData: Now, wait for timeout=" + timeout + "s - regulary case!");
                                 AppData._userRemoteDataPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
                                     Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");
+                                    if (AppData._alternativeTimeout) {
+                                        AppData._alternativeTimeout = null;
+                                    }
                                     AppData.getUserRemoteData();
                                     AppData.getCRVeranstOption();
                                     AppData.getMobileVersion();

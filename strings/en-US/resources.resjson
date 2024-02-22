@@ -614,6 +614,8 @@
 
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Cancel",
+    "flyout.okChange"       : "Yes, change",
+    "flyout.cancelToLater"  : "No, remember in 5 minutes",
 
     "error.delete"          : "Error on delete",
 

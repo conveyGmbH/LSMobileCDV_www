@@ -616,6 +616,8 @@
 
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Abbrechen",
+    "flyout.okChange"       : "Ja, wechseln",
+    "flyout.cancelToLater"  : "Nein, in 5 Minuten erinnern",
 
     "error.delete"          : "Fehler beim Löschen",
 
