@@ -216,20 +216,21 @@
                             }
                                 break;
                             case "barcode": {
-                                disableButton(button,
+                                disableButton(button, AppData._persistentStates.disableCaptureContactsButton || 
                                     AppData._persistentStates.hideBarcodeScan ||
                                     (!AppData._persistentStates.cameraFeatureSupported &&
                                         !AppData._persistentStates.useBarcodeActivity));
                             }
                                 break;
                             case "camera": {
-                                disableButton(button,
+                                disableButton(button, AppData._persistentStates.disableCaptureContactsButton || 
                                     AppData._persistentStates.hideCameraScan ||
                                     !AppData._persistentStates.cameraFeatureSupported);
                             }
                                 break;
                             case "newContact": {
-                                disableButton(button, AppData._persistentStates.hideManually);
+                                disableButton(button, AppData._persistentStates.disableCaptureContactsButton || 
+                                    AppData._persistentStates.hideManually);
                                 }
                         }
                         if (buttonElement) {

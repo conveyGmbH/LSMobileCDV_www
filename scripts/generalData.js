@@ -274,16 +274,27 @@
                                     var endDate = new Date(milliseconds);
                                     var diffTime = actualDate.getTime() - endDate.getTime();
                                     var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                                    //AppData._persistentStates.disableCaptureContactsButton = false;
                                     if (diffDays > 23) {
                                         AppData.setErrorMsg(AppBar.scope.binding, getResourceText("general.eventFinishedMsg1"));
                                     }
                                     if (diffDays > 30) {
+                                        if (!AppData._persistentStates.disableCaptureContactsButton) {
+                                            doUpdate = true;
+                                        }
+                                        AppData._persistentStates.disableCaptureContactsButton = true;
                                         var message = getResourceText("general.eventFinishedMsg2");
                                         if (AppData._userData.VeranstaltungName) {
                                             message = getResourceText("general.eventFinishedMsg2")
                                                 .replace("XXXX", AppData._userData.VeranstaltungName);
                                         }
                                         AppData.setErrorMsg(AppBar.scope.binding, message);
+                                    }          
+                                    if (diffDays <= 30) {
+                                        if (AppData._persistentStates.disableCaptureContactsButton) {
+                                            doUpdate = true;
+                                        }
+                                        AppData._persistentStates.disableCaptureContactsButton = false;
                                     }
                                 }
                                 if ((AppData._persistentStates.showvisitorFlow === 1 ||
@@ -323,7 +334,8 @@
                                 //NavigationBar.disablePage("search");
                                 AppData.appSettings.odata.timeZoneAdjustment = AppData._userData.TimeZoneAdjustment;
                                 Log.print(Log.l.info, "timeZoneAdjustment=" + AppData.appSettings.odata.timeZoneAdjustment);
-                                if ((prevUsereData && (prevUsereData.NotUploaded !== AppData._userRemoteData.NotUploaded))) { //
+
+                                if (prevUsereData && ((prevUsereData.NotUploaded || 0) !== (AppData._userRemoteData.NotUploaded || 0))) { //
                                     doUpdate = true;
                                 }
                                 if (AppBar.scope && typeof AppBar.scope.updateActions === "function" && doUpdate) {
@@ -687,17 +699,15 @@
                                                         alert(err.statusText);
                                                     }
                                                 }
-                                            },
-                                                function (errorResponse) {
-                                                    // called asynchronously if an error occurs
-                                                    // or server returns response with an error status.
-                                                    Log.print(Log.l.error,
-                                                        "loginRequest error: " +
-                                                        AppData.getErrorMsgFromResponse(errorResponse));
-                                                    AppData._persistentStates.odata.registerPath = prevRegisterPath;
-                                                    // ignore this error here for compatibility!
-                                                },
-                                                {
+                                            }, function (errorResponse) {
+                                                // called asynchronously if an error occurs
+                                                // or server returns response with an error status.
+                                                Log.print(Log.l.error,
+                                                    "loginRequest error: " +
+                                                    AppData.getErrorMsgFromResponse(errorResponse));
+                                                AppData._persistentStates.odata.registerPath = prevRegisterPath;
+                                                // ignore this error here for compatibility!
+                                            }, {
                                                     LoginName: AppData._persistentStates.odata.login
                                                 });
                                         }
@@ -844,7 +854,7 @@
                                 AppBar.scope.binding.generalData.contactId = AppData._contactData.KontaktVIEWID;
                                 if (typeof AppBar.scope.updateActions === "function" &&
                                     (!prevContactData ||
-                                        prevContactData !== AppData._contactData)) {
+                                        !equals(prevContactData, AppData._contactData))) {
                                     AppBar.scope.updateActions(true);
                                 }
                             }
