@@ -367,7 +367,8 @@
                     Log.call(Log.l.trace, "working on barcode data...");
                     var isVcard;
                     var finalBarcode;
-                    if (result.text.substr(0, tagVcard.length) === tagVcard) {
+                    if (result.text.substr(0, tagVcard.length) === tagVcard ||
+                        result.text.substr(1, tagVcard.length) === tagVcard) { // ignore BOM as first code
                         Log.print(Log.l.trace, "plain VCARD, save already utf-8 string data as VCARD");
                         isVcard = true;
                         finalBarcode = result.text;
