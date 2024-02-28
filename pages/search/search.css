@@ -6,4 +6,6 @@
     width: 22px;
     font-size: x-large;
 }
-
+#searchController .label.group {
+    white-space: normal;
+}

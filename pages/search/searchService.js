@@ -17,6 +17,7 @@
             Branche: "",
             Vorname: "",
             Name: "",
+            AbteilungText: "",
             EMail: "",
             Strasse: "",
             PLZ: "",
