@@ -509,6 +509,9 @@
                         return false;
                     }
                     return !that.binding.generalData.logOffOptionActive;
+                },
+                clickNew: function() {
+                    return AppData._persistentStates.disableCaptureContactsButton;
                 }
             };
 
