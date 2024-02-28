@@ -1606,10 +1606,14 @@
                 },
                 clickNew: function () {
                     var contactId = AppData.getRecordId("Kontakt");
-                    if (contactId) {
-                        return false;
-                    } else {
+                    if (AppData._persistentStates.disableCaptureContactsButton) {
                         return true;
+                    } else {
+                        if (contactId) {
+                            return false;
+                        } else {
+                            return true;
+                        }
                     }
                 },
                 clickForward: function () {

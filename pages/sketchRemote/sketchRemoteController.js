@@ -362,10 +362,14 @@
                     }
                 },
                 clickNew: function () {
-                    if (that.binding.contactId) {
-                        return false;
-                    } else {
+                    if (AppData._persistentStates.disableCaptureContactsButton) {
                         return true;
+                    } else {
+                        if (that.binding.contactId) {
+                            return false;
+                        } else {
+                            return true;
+                        }
                     }
                 },
                 clickForward: function () {
@@ -392,7 +396,7 @@
             }
 
             // finally, load the data
-            that.processAll().then(function() {
+            that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 return that.loadData();
             }).then(function () {

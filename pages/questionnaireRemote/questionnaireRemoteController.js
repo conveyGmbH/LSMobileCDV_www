@@ -1284,10 +1284,14 @@
                     }
                 },
                 clickNew: function () {
-                    if (that.binding.generalData.contactId) {
-                        return false;
-                    } else {
+                    if (AppData._persistentStates.disableCaptureContactsButton) {
                         return true;
+                    } else {
+                        if (that.binding.generalData.contactId) {
+                            return false;
+                        } else {
+                            return true;
+                        }
                     }
                 },
                 clickForward: function () {
@@ -1491,8 +1495,8 @@
                             // or server returns response with an error status.
                             AppData.setErrorMsg(that.binding, errorResponse);
                         }, {
-                            KontaktID: contactId
-                        });
+                                KontaktID: contactId
+                            });
                         return that.addDisposablePromise(questionnaireSelectPromise);
                     }
                 }).then(function () {
@@ -1513,28 +1517,28 @@
             });
             Log.ret(Log.l.trace);
         }, {
-            _docCount: 0,
-            prevRecId: 0,
-            curRecId: 0,
-            cursorPos: { x: 0, y: 0 },
-            docCount: {
-                get: function () {
-                    return this._docCount;
-                },
-                set: function (value) {
-                    if (this._docCount !== value) {
-                        this._docCount = value;
-                        if (this.images) {
-                            for (var i = 0; i < this.images.length; i++) {
-                                var item = this.images.getAt(i);
-                                item.title = (i + 1).toString() + " / " + this._docCount;
-                                this.images.setAt(i, item);
+                _docCount: 0,
+                prevRecId: 0,
+                curRecId: 0,
+                cursorPos: { x: 0, y: 0 },
+                docCount: {
+                    get: function () {
+                        return this._docCount;
+                    },
+                    set: function (value) {
+                        if (this._docCount !== value) {
+                            this._docCount = value;
+                            if (this.images) {
+                                for (var i = 0; i < this.images.length; i++) {
+                                    var item = this.images.getAt(i);
+                                    item.title = (i + 1).toString() + " / " + this._docCount;
+                                    this.images.setAt(i, item);
+                                }
                             }
                         }
                     }
                 }
-            }
-        })
+            })
     });
 })();
 
