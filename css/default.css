@@ -606,28 +606,28 @@ select {
     display: block;
     position: relative;
     left: 25%;
-    top: -16px;
+    top: -22px;
     height: 0;
 }
 .portrait_only_half {
     display: block;
     position: relative;
     left: 50%;
-    top: -16px;
+    top: -22px;
     height: 4px;
 }
 .portrait_only_threeQuarter {
     display: block;
     position: relative;
     left: 50%;
-    top: -16px;
+    top: -22px;
     height: 4px;
 }
 .portrait_only_right {
     display: block;
     position: relative;
     left: 108px;
-    top: -16px;
+    top: -22px;
     height: 4px;
     width: 110px;
 }

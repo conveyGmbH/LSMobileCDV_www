@@ -2,14 +2,14 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <link href="contactRemote.css" rel="stylesheet"/>
+    <link href="contactRemote.css" rel="stylesheet" />
     <script type="text/javascript" src="contactRemoteService.js"></script>
     <script type="text/javascript" src="contactRemoteController.js"></script>
     <script type="text/javascript" src="contactRemote.js"></script>
 </head>
 <body class="win-type-body">
     <div class="contact fragment">
-        <div id="contactController" class="data-container">
+        <div id="contactRemoteController" class="data-container">
             <section aria-label="Main content" role="main" class="animationElement">
                 <div class="contentarea win-type-body">
                     <div class="header-separator"></div>
@@ -32,9 +32,9 @@
                     <div class="content-record"
                          data-win-bind="style.display: dataContact.KontaktVIEWID Binding.Converter.toDisplay">
                         <div class="line-separator"
-                                data-win-bind="style.display: showModified Binding.Converter.toDisplay"></div>
+                             data-win-bind="style.display: showModified Binding.Converter.toDisplay"></div>
                         <div class="field_line field_line_odd"
-                                data-win-bind="style.display: showModified Binding.Converter.toDisplay">
+                             data-win-bind="style.display: showModified Binding.Converter.toDisplay">
                             <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contactRemote.modifiedOn'}"></span>
                             <span class="label landscape_only" data-win-res="{textContent: 'contactRemote.modifiedOn'}"></span>
                             <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.ModifiedTS Binding.Converter.toDateString"></span>
@@ -55,7 +55,7 @@
                         <div class="field_line field_line_even">
                             <span class="label win-type-caption portrait_only_left" data-win-res="{textContent: 'contactRemote.formOf'}"></span>
                             <span class="label win-type-caption portrait_only_right" data-win-res="{textContent: 'contactRemote.academicTitle'}"></span>
-                            <div class="label landscape_only">
+                            <div class="label group landscape_only">
                                 <span data-win-res="{textContent: 'contactRemote.formOf'}"></span> / <span data-win-res="{textContent: 'contactRemote.academicTitle'}"></span>
                             </div>
                             <div class="input_group">
@@ -74,7 +74,7 @@
                         <div class="field_line field_line_odd" style="overflow-y: hidden">
                             <span class="label win-type-caption portrait_only_left" data-win-res="{textContent: 'contactRemote.firstName'}"></span>
                             <span class="label win-type-caption portrait_only_half" data-win-res="{textContent: 'contactRemote.middleName'}"></span>
-                            <div class="label landscape_only"><span data-win-res="{textContent: 'contactRemote.firstName'}"></span> / <span data-win-res="{textContent: 'contactRemote.middleName'}"></span></div>
+                            <div class="label group landscape_only"><span data-win-res="{textContent: 'contactRemote.firstName'}"></span> / <span data-win-res="{textContent: 'contactRemote.middleName'}"></span></div>
                             <div class="input_group">
                                 <input name="Vorname" class="input_half_left win-textbox" type="text" data-win-bind="value: dataContact.Vorname Binding.Mode.twoway; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplayNone" />
                                 <span class="input_small_left win-type-subtitle" data-win-bind="textContent: dataContact.Vorname; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplay"></span>
@@ -90,22 +90,29 @@
                         </div>
                         <div class="line-separator"></div>
                         <div class="field_line field_line_odd">
-                            <span class="label win-type-caption portrait_only_left" data-win-res="{textContent: 'contact.position'}"></span>
-                            <span class="label win-type-caption portrait_only_half" data-win-res="{textContent: 'contact.industry'}"></span>
-                            <!--<span class="label landscape_only" data-win-res="{textContent: 'contact.position'}"></span>-->
-                            <div class="label landscape_only"><span data-win-res="{textContent: 'contact.position'}"></span> / <span data-win-res="{textContent: 'contact.industry'}"></span></div>
-                            <div class="input_group">
-                                <input class="input_half_left win-textbox" type="text" data-win-bind="value: dataContact.Position Binding.Mode.twoway; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplayNone" />
-                                <span class="input_small_left" data-win-bind="textContent: dataContact.Position; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplay"></span>
-                                <input class="input_half_right win-textbox" type="text" data-win-bind="value: dataContact.Branche Binding.Mode.twoway; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplayNone" />
-                                <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.Branche; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplay"></span>
-                            </div>
-                        </div>
-                        <div class="field_line field_line_even">
                             <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contactRemote.email'}"></span>
                             <span class="label landscape_only" data-win-res="{textContent: 'contactRemote.email'}"></span>
                             <input name="EMail" class="input_field win-textbox" type="text" data-win-bind="value: dataContact.EMail Binding.Mode.twoway; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplayNone" />
                             <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.EMail; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplay"></span>
+                        </div>
+                        <div class="field_line field_line_even">
+                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contactRemote.position'}"></span>
+                            <span class="label landscape_only" data-win-res="{textContent: 'contactRemote.position'}"></span>
+                            <input name="Position" class="input_field win-textbox" type="text" data-win-bind="value: dataContact.Position Binding.Mode.twoway; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplayNone" />
+                            <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.Position; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplay"></span>
+                        </div>
+                        <div class="line-separator"></div>
+                        <div class="field_line field_line_odd">
+                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contactRemote.department'}"></span>
+                            <span class="label landscape_only" data-win-res="{textContent: 'contactRemote.department'}"></span>
+                            <input name="Abteilung" class="input_field win-textbox" type="text" data-win-bind="value: dataContact.AbteilungText Binding.Mode.twoway; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplayNone" />
+                            <span class="input_field" data-win-bind="textContent: dataContact.AbteilungText; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplay"></span>
+                        </div>
+                        <div class="field_line field_line_even">
+                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contactRemote.industry'}"></span>
+                            <span class="label landscape_only" data-win-res="{textContent: 'contactRemote.position'}"></span>
+                            <input name="Branche" class="input_field win-textbox" type="text" data-win-bind="value: dataContact.Branche Binding.Mode.twoway; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplayNone" />
+                            <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.Branche; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplay"></span>
                         </div>
                         <div class="line-separator"></div>
                         <div class="field_line field_line_odd">
@@ -137,8 +144,8 @@
                         <div class="field_line field_line_odd">
                             <span class="label win-type-caption portrait_only_left" data-win-res="{textContent: 'contactRemote.zip'}"></span>
                             <span class="label win-type-caption portrait_only_right" data-win-res="{textContent: 'contactRemote.city'}"></span>
-                            <div class="label landscape_only">
-                                <span data-win-res="{textContent: 'contactRemote.zip'}"></span> / <span data-win-res="{textContent: 'contactRemote.city'}"></span>
+                            <div class="label group landscape_only">
+        <span data-win-res="{textContent: 'contactRemote.zip'}"></span> / <span data-win-res="{textContent: 'contactRemote.city'}"></span>
                             </div>
                             <div class="input_group">
                                 <input name="PLZ" class="input_small_left win-textbox" type="text" data-win-bind="value: dataContact.PLZ Binding.Mode.twoway; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplayNone" />
@@ -187,7 +194,7 @@
                         <div class="field_line field_line_odd">
                             <label class="checkbox input_field">
                                 <input type="checkbox" class="win-checkbox checkbox" value="1"
-                                        data-win-bind="checked: dataContact.Nachbearbeitet Binding.Mode.twoway" />
+                                       data-win-bind="checked: dataContact.Nachbearbeitet Binding.Mode.twoway" />
                                 <span class="checkbox" data-win-res="{textContent: 'contactRemote.incomplete'}"></span>
                             </label>
                         </div>

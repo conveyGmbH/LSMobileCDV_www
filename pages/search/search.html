@@ -26,7 +26,7 @@
                         <span class="label win-type-caption portrait_only_left" data-win-res="{textContent: 'search.deviceID'}"></span>
                         <span class="label win-type-caption portrait_only_half" data-win-res="{textContent: 'search.ID'}"></span>
                         <!--<span class="label win-type-caption portrait_only_half" data-win-res="{textContent: 'reporting.employee'}"></span>-->
-                        <span class="label landscape_only">
+                        <span class="label group landscape_only">
                             <span data-win-res="{textContent: 'search.deviceID'}"></span> / <span data-win-res="{textContent: 'search.ID'}"></span>
                         </span>
                         <div class="input_group">
@@ -62,19 +62,25 @@
                     </div>
                     <div class="line-separator"></div>
                     <div class="field_line field_line_odd">
-                        <span class="label win-type-caption portrait_only_left" data-win-res="{textContent: 'contact.position'}"></span>
-                        <span class="label win-type-caption portrait_only_half" data-win-res="{textContent: 'contact.industry'}"></span>
-                        <!--<span class="label landscape_only" data-win-res="{textContent: 'contact.position'}"></span>-->
-                        <div class="label landscape_only"><span data-win-res="{textContent: 'contact.position'}"></span> / <span data-win-res="{textContent: 'contact.industry'}"></span></div>
-                        <div class="input_group">
-                            <input class="input_half_left win-textbox" type="text" data-win-bind="value: restriction.Position Binding.Mode.twoway; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplayNone" />
-                            <input class="input_half_right win-textbox" type="text" data-win-bind="value: restriction.Branche Binding.Mode.twoway; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplayNone" />
-                        </div>
-                    </div>
-                    <div class="field_line field_line_even">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'search.email'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'search.email'}"></span>
                         <input type="text" class="input_field win-textbox" data-win-bind="value: restriction.EMail Binding.Mode.twoway" />
+                    </div>
+                    <div class="field_line field_line_even">
+                        <span class="label win-type-caption portrait_only_left" data-win-res="{textContent: 'search.position'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'contact.position'}"></span>
+                        <input class="input_field win-textbox" type="text" data-win-bind="value: restriction.Position Binding.Mode.twoway; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplayNone" />
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="field_line field_line_odd">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'search.department'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'search.department'}"></span>
+                        <input type="text" class="input_field win-textbox" data-win-bind="value: restriction.AbteilungText Binding.Mode.twoway" />
+                    </div>
+                    <div class="field_line field_line_even">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'search.industry'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'search.industry'}"></span>
+                        <input class="input_field win-textbox" type="text" data-win-bind="value: restriction.Branche Binding.Mode.twoway; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplayNone" />
                     </div>
                     <div class="line-separator"></div>
                     <div class="field_line field_line_odd">
@@ -85,7 +91,7 @@
                     <div class="field_line field_line_even">
                         <span class="label win-type-caption portrait_only_left" data-win-res="{textContent: 'search.zip'}"></span>
                         <span class="label win-type-caption portrait_only_right" data-win-res="{textContent: 'search.city'}"></span>
-                        <span class="label landscape_only">
+                        <span class="label group landscape_only">
                             <span data-win-res="{textContent: 'search.zip'}"></span> / <span data-win-res="{textContent: 'search.city'}"></span>
                         </span>
                         <div class="input_group">

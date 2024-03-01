@@ -279,11 +279,15 @@
                         return true;
                     }
                 },
-                clickNew: function() {
-                    if (that.binding.dataContact && that.binding.dataContact.KontaktVIEWID) {
-                        return false;
-                    } else {
+                clickNew: function () {
+                    if (AppData._persistentStates.disableCaptureContactsButton) {
                         return true;
+                    } else {
+                        if (that.binding.dataContact && that.binding.dataContact.KontaktVIEWID) {
+                            return false;
+                        } else {
+                            return true;
+                        }
                     }
                 },
                 clickDelete: function() {

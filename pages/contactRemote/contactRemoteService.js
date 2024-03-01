@@ -51,6 +51,7 @@
                 Position: "",
                 Branche: "",
                 Firmenname: "",
+                AbteilungText: "",
                 Strasse: "",
                 PLZ: "",
                 Stadt: "",

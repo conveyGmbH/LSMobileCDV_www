@@ -290,10 +290,14 @@
                     }
                 },
                 clickNew: function () {
-                    if (that.binding.contactId) {
-                        return AppBar.busy;
-                    } else {
+                    if (AppData._persistentStates.disableCaptureContactsButton) {
                         return true;
+                    } else {
+                        if (that.binding.contactId) {
+                            return AppBar.busy;
+                        } else {
+                            return true;
+                        }
                     }
                 },
                 clickForward: function () {
