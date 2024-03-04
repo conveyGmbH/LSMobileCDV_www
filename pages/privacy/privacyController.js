@@ -327,7 +327,7 @@
 
             var contentarea = pageElement.querySelector(".contentarea");
             that._getHammerExcludeRect = function () {
-                var parentElement = pageElement.querySelector("#svghost");
+                var parentElement = pageElement.querySelector("#signaturehost");
                 if (parentElement) {
                     var extraOffsetTop = 0;
                     var extraOffsetLeft = 0;
@@ -368,9 +368,9 @@
                     that._hammerExcludeRect = { left: 0, top: 0, right: 0, bottom: 0 };
                     var scrollTopContent = contentarea.scrollTop;
                     that._hammerExcludeRect = {
-                        left: -20000,
+                        left: parentElement.offsetLeft,
                         top: parentElement.offsetTop + extraOffsetTop - scrollTopContent - 20 - 10,
-                        right: 20000,
+                        right: parentElement.offsetLeft + parentElement.clientWidth,
                         bottom: parentElement.offsetTop + extraOffsetTop + parentElement.clientHeight + scrollTopContent + 20 + 10
                     };
                 }
