@@ -371,7 +371,7 @@
                         left: -20000,
                         top: parentElement.offsetTop + extraOffsetTop - scrollTopContent - 20 - 10,
                         right: 20000,
-                        bottom: parentElement.offsetTop + extraOffsetTop + parentElement.clientHeight - scrollTopContent + 20 + 10
+                        bottom: parentElement.offsetTop + extraOffsetTop + parentElement.clientHeight + scrollTopContent + 20 + 10
                     };
                 }
                 return that._hammerExcludeRect;
