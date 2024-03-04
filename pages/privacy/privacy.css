@@ -8,3 +8,7 @@
 #privacyController .input_field {
     overflow-y: hidden;
 }
+
+#privacyController #svghost {
+    touch-action: none;
+}
