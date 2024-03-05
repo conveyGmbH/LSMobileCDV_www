@@ -405,7 +405,7 @@
                             width = $('#svgsketch').parent().width();
                             height = $('#svgsketch').parent().height();
                             if (this.sketchpad.height() + 25 > height) {
-                                this._origin.y = height - (this.sketchpad.height() + 25);
+                                this._origin.y = height - (this.sketchpad.height() + 10); /*Urspr. + 25*/
                                 $('#svgsketch').css("top", this._origin.y + "px");
                             }
                         } else if (width && height) {
