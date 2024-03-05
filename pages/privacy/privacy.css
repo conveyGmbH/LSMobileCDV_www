@@ -10,5 +10,6 @@
 }
 
 #privacyController #signaturehost {
+    margin-top: 16px;
     touch-action: none;
 }
