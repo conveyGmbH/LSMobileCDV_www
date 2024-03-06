@@ -19,7 +19,7 @@
     "general.unauthorizedUser" : "Invalid username/password!\nlogon denied!\nPassword may have been changed, please enter the new password",
     "general.eventFinishedMsg1" : "La fiera è terminata, si prega di registrare i contatti in attesa entro 7 giorni, dopodiché non sarà più possibile registrare i contatti per questo evento.",
     "general.eventFinishedMsg2" : "Si prega di notare che il vostro account è assegnato alla fiera XXXX che è finita da almeno 30 giorni. Non è possibile aggiungere altri contatti, ma solo modificare quelli già aggiunti. Se si desidera aggiungere altri contatti, contattare l'amministratore o il fornitore.",
-    "general.userChanging" : "Attenzione! L'utente è stato cambiato! Inserire gli ultimi contatti", 
+    "general.userChanging" : "Attenzione: l'amministratore ha cambiato l'evento a cui il vostro utente è assegnato. Dopo aver fatto clic su \"Sì, cambia\", il suo utente verrà trasferito al nuovo evento. Se si desidera raccogliere altri contatti per l'evento corrente, fare clic su \"No, ricordamelo tra 5 minuti\".", 
     "general.newDB" : "Attenzione! C'è una nuova versione del database!",
 
     "command.backward"      : "Indietro",

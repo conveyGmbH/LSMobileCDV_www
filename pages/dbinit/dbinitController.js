@@ -31,6 +31,22 @@
                 }
             }, commandList]);
 
+            var checkIPhoneBug = function () {
+                if (navigator.appVersion) {
+                    var testDevice = ["iPhone OS", "iPod OS"];
+                    for (var i = 0; i < testDevice.length; i++) {
+                        var iPhonePod = navigator.appVersion.indexOf(testDevice[i]);
+                        if (iPhonePod >= 0) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            };
+            var isAppleDevice = checkIPhoneBug();
+            var isWindowsDevice = device && (device.platform === "windows");
+            var isAndroidDevice = device && (device.platform === "android");
+
             var that = this;
 
             var userId = null;
@@ -283,7 +299,7 @@
                             }, function (json) {
                                 Log.print(Log.l.info, "PRC_CheckMobileVersion call success!");
                                 if (json && json.d && json.d.results &&
-                                    json.d.results[0] && json.d.results[0].NewDBRequired) {
+                                    json.d.results[0] && json.d.results[0].UpdateMessage) {
                                     updateMessage = json.d.results[0].UpdateMessage || "Database update required!";
                                     newDBRequired = json.d.results[0].NewDBRequired;
                                 }
@@ -320,16 +336,59 @@
                                 var numFastReqs = 1;
                                 AppRepl.replicator.run(numFastReqs);
                                 Application.pageframe.hideSplashScreen();
-                                return alert(updateMessage, function (updateConfirmed) {
+                                var confirmFirst = getResourceText("flyout.ok");
+                                var confirmSecond = null;
+                                // Abfrage ob ich user umhängen möchte oder abwarten 5 min
+                                if (!AppData._fromStartPage && newDBRequired === 2) {
+                                    confirmFirst = getResourceText("flyout.okChange");
+                                    confirmSecond = getResourceText("flyout.cancelToLater");
+                                    updateMessage = getResourceText("general.userChanging");
+                                }
+                                //return alert(updateMessage, function (updateConfirmed) {
+                                return confirmModal(null, updateMessage, confirmFirst, confirmSecond, function (updateConfirmed) {
                                     Log.print(Log.l.info, "updateMessage returned=" + updateConfirmed);
                                     if (updateConfirmed) {
-                                        confirmed = true;
+                                        if (newDBRequired === 2) {
+                                            confirmed = true;
+                                        }
+                                        // neue App Version
+                                        if (newDBRequired === 0) {
+                                            updateMessage = null;
+                                            AppData._ignore = true;
+                                            var appleStore = getResourceText("general.appleStore");
+                                            var playStore = getResourceText("general.playStore");
+                                            var microsoftStore = getResourceText("general.microsoftStore");
+                                            if (isAppleDevice && cordova.InAppBrowser) {
+                                                cordova.InAppBrowser.open(appleStore, '_system');
+                                                WinJS.Navigation.back(1).done();
+                                            }
+                                            if (isWindowsDevice && cordova.InAppBrowser) {
+                                                cordova.InAppBrowser.open(microsoftStore, '_system');
+                                                WinJS.Navigation.back(1).done();
+                                            }
+                                            if (isAndroidDevice) {
+                                                window.open(playStore, '_system');
+                                                WinJS.Navigation.back(1).done();
+                                            }
+                                        }
                                     } else {
-                                        /*WinJS.Promise.timeout(500).then(function () {
-                                            return that.openDb(complete, error, doReloadDb);
-                                        });*/
-                                        confirmed = true;
+                                        Log.print(Log.l.trace, "User changed: user choice CANCEL");
+                                        if (newDBRequired === 2) {
+                                            AppData._ignore = true;
+                                            AppData._alternativeTimeout = 150;
+                                            updateMessage = null;
+                                            moveMitarbeiterMessage = null;
+                                            if (!doReloadDb && !failed && typeof complete === "function") {
+                                                complete({});
+                                            }
+                                            return WinJS.Promise.as();
+                                            //AppData.getUserRemoteData();
+                                        }
+                                        //confirmed = true;
+                                        Log.print(Log.l.info, "network state=" + (AppRepl.replicator && AppRepl.replicator.networkState));
+                                        return WinJS.Promise.as();
                                     }
+
                                 });
                             } else {
                                 return WinJS.Promise.as();

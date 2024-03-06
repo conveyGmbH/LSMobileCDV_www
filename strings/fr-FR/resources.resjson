@@ -19,7 +19,7 @@
     "general.unauthorizedUser" : "Invalid username/password!\nlogon denied!\nPassword may have been changed, please enter the new password",
     "general.eventFinishedMsg1" : "Le salon est terminé, veuillez saisir vos contacts en attente dans les 7 jours, après quoi il ne sera plus possible de saisir des contacts pour cet événement.",
     "general.eventFinishedMsg2" : "Veuillez noter que votre compte est associé au salon XXXX qui est terminé depuis au moins 30 jours. Vous ne pouvez pas saisir d'autres contacts, seulement modifier les contacts déjà saisis. Veuillez contacter votre administrateur ou convey si vous souhaitez saisir d'autres contacts.",
-    "general.userChanging" : "Attention ! L'utilisateur a été déplacé ! Veuillez saisir vos derniers contacts", 
+    "general.userChanging" : "Veuillez noter que l'événement auquel l'utilisateur a été assigné a été modifié par l'administrateur. Après avoir cliqué sur \"Oui, changer\", vous serez transféré vers le nouvel événement. Si vous souhaitez toujours collecter des contacts pour l'événement en cours, cliquez sur \"Non, rappelez-moi dans 5 minutes\".", 
     "general.newDB" : "Attention ! Il y a une nouvelle version de la base de données !",
 
     "command.backward"      : "Présédent",

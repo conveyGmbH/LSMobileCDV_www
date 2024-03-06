@@ -443,6 +443,9 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     margin-top: 48px;
     box-shadow: rgba(0, 0, 0, 0.133) 1.0px 1.6px 3.6px 0.6px, rgba(0, 0, 0, 0.11) 0.4px 0.6px 0.9px 0px;
 }
+.win-contentdialog .win-contentdialog-commands > button {
+    white-space: normal;
+}
 #confirmText {
     margin-top: 16px;
     white-space: pre-wrap;
@@ -586,9 +589,9 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     width: 100%;
 }
 
-.appHeader .win-button {
+/*.appHeader .win-button {
     z-index: 9900;
-}
+}*/
 .publish-button {
     display: block;
     background-color: #f2f2f2;

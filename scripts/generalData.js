@@ -127,6 +127,7 @@
         _barcodeType: null,
         _barcodeRequest: null,
         _alternativeTimeout: null,
+        _fromStartPage: false,
         getRecordId: function (relationName) {
             Log.call(Log.l.trace, "AppData.", "relationName=" + relationName);
             // check for initial values
@@ -335,7 +336,7 @@
                                 AppData.appSettings.odata.timeZoneAdjustment = AppData._userData.TimeZoneAdjustment;
                                 Log.print(Log.l.info, "timeZoneAdjustment=" + AppData.appSettings.odata.timeZoneAdjustment);
 
-                                if (prevUsereData && ((prevUsereData.NotUploaded || 0) !== (AppData._userRemoteData.NotUploaded || 0))) { //
+                                if (prevUsereData && (prevUsereData.NotUploaded !== AppData._userRemoteData.NotUploaded)) { //
                                     doUpdate = true;
                                 }
                                 if (AppBar.scope && typeof AppBar.scope.updateActions === "function" && doUpdate) {
@@ -407,34 +408,66 @@
                     pLanguageID: AppData.getLanguageId()
                 }, function (json) {
                     Log.print(Log.l.info, "PRC_CheckMobileVersion call success!");
-                    if (json && json.d && json.d.results && json.d.results[0] && json.d.results[0].NewDBRequired) {
-                        var messageText = "";
+                    if (json && json.d && json.d.results && json.d.results[0] && json.d.results[0].UpdateMessage) {
+                        var messageText = null;
+                        var confirmFirst = null;
+                        var confirmSecond = null;
+                        if (json.d.results[0].NewDBRequired === 0) {
+                            messageText = getResourceText("general.newApp");
+                        }
                         if (json.d.results[0].NewDBRequired === 1) {
                             messageText = getResourceText("general.newDB");
                         }
                         if (json.d.results[0].NewDBRequired === 2) {
-                            alertFlyoutOk.textContent = getResourceText("flyout.okChange");
-                            alertFlyoutCancel.textContent = getResourceText("flyout.cancelToLater");
+                            confirmFirst = getResourceText("flyout.okChange");
+                            confirmSecond = getResourceText("flyout.cancelToLater");
                             messageText = getResourceText("general.userChanging");
                         }
-                        return confirm(messageText, function (changeConfirmed) {
+                        //return confirm(messageText, function (changeConfirmed) {
+                        if (AppData._ignore) {
+                            // ignore
+                        } else {
+                            return confirmModal(null, messageText, confirmFirst, confirmSecond, function (changeConfirmed) {
                             Log.print(Log.l.info, "updateMessage returned=" + changeConfirmed);
-                            alertFlyoutOk.textContent = getResourceText("flyout.ok");
-                            alertFlyoutCancel.textContent = getResourceText("flyout.cancel");
                             if (changeConfirmed) {
+                                    // neue App Version
+                                    if (json.d.results[0].NewDBRequired === 0) {
+                                        messageText = null;
+                                        var appleStore = getResourceText("general.appleStore");
+                                        var playStore = getResourceText("general.playStore");
+                                        var microsoftStore = getResourceText("general.microsoftStore");
+                                        if (isAppleDevice && cordova.InAppBrowser) {
+                                            cordova.InAppBrowser.open(appleStore, '_system');
+                                            WinJS.Navigation.back(1).done();
+                                        }
+                                        if (isWindowsDevice && cordova.InAppBrowser) {
+                                            cordova.InAppBrowser.open(microsoftStore, '_system');
+                                            WinJS.Navigation.back(1).done();
+                                        }
+                                        if (isAndroidDevice) {
+                                            window.open(playStore, '_system');
+                                            WinJS.Navigation.back(1).done();
+                                        }
+                                    } else {
                                 WinJS.Promise.timeout(500).then(function () {
+                                            if (json.d.results[0].NewDBRequired === 2) {
+                                                AppData._fromStartPage = true;
+                                            }
                                     Application.navigateById("dbinit");
                                     return WinJS.Promise.timeout(100);
                                 });
+                                    }
                             } else {
                                 Log.print(Log.l.trace, "User changed: user choice CANCEL");
                                 if (json.d.results[0].NewDBRequired === 2) {
+                                        //AppData._fromStartPage = true;
                                     AppData._alternativeTimeout = 150;
                                     AppData.getUserRemoteData();
                                 }
-                                return WinJS.Promise.as();
+                                    //return WinJS.Promise.as();
                             }
                         });
+                    }
                     }
                 }, function (err) {
                     Log.print(Log.l.error, "PRC_CheckMobileVersion call error - ignore that!");
@@ -602,6 +635,9 @@
                                             prevUserRemoteData.EinAusgang !== AppData._userRemoteData.EinAusgang)) { //
                                         doUpdate = true;
                                     }
+                                    if (prevUserRemoteData && ((prevUserRemoteData.NotUploaded || 0) !== (AppData._userRemoteData.NotUploaded || 0))) {
+                                        doUpdate = true;
+                                    }
                                 }
                                 if (AppBar.scope && typeof AppBar.scope.updateActions === "function" && doUpdate) {
                                     AppBar.scope.updateActions();
@@ -618,6 +654,9 @@
                                     Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");
                                     if (AppData._alternativeTimeout) {
                                         AppData._alternativeTimeout = null;
+                                    }
+                                    if (AppData._ignore) {
+                                        AppData._ignore = false;
                                     }
                                     AppData.getUserRemoteData();
                                     AppData.getCRVeranstOption();
