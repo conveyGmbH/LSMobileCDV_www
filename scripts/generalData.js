@@ -127,6 +127,7 @@
         _barcodeType: null,
         _barcodeRequest: null,
         _alternativeTimeout: null,
+        _ignore: false,
         _fromStartPage: false,
         getRecordId: function (relationName) {
             Log.call(Log.l.trace, "AppData.", "relationName=" + relationName);
@@ -399,7 +400,6 @@
                 }
                 var alertFlyoutOk = document.querySelector("#okButton");
                 var alertFlyoutCancel = document.querySelector("#cancelButton");
-
                 return AppData.call("PRC_CheckMobileVersion", {
                     pCreatorSiteID: AppData._persistentStates.odata.dbSiteId,
                     pDBVersion: AppData._persistentStates.dbVersion || null,
@@ -458,13 +458,11 @@
                                 });
                                     }
                             } else {
-                                Log.print(Log.l.trace, "User changed: user choice CANCEL");
+                                    Log.print(Log.l.trace, "User changed: user choice wait - cancel");
                                 if (json.d.results[0].NewDBRequired === 2) {
-                                        //AppData._fromStartPage = true;
-                                    AppData._alternativeTimeout = 150;
+                                        AppData._alternativeTimeout = 150; //150
                                     AppData.getUserRemoteData();
                                 }
-                                    //return WinJS.Promise.as();
                             }
                         });
                     }

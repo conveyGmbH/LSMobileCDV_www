@@ -345,53 +345,59 @@
                                     updateMessage = getResourceText("general.userChanging");
                                 }
                                 //return alert(updateMessage, function (updateConfirmed) {
-                                return confirmModal(null, updateMessage, confirmFirst, confirmSecond, function (updateConfirmed) {
-                                    Log.print(Log.l.info, "updateMessage returned=" + updateConfirmed);
-                                    if (updateConfirmed) {
-                                        if (newDBRequired === 2) {
-                                            confirmed = true;
-                                        }
-                                        // neue App Version
-                                        if (newDBRequired === 0) {
-                                            updateMessage = null;
-                                            AppData._ignore = true;
-                                            var appleStore = getResourceText("general.appleStore");
-                                            var playStore = getResourceText("general.playStore");
-                                            var microsoftStore = getResourceText("general.microsoftStore");
-                                            if (isAppleDevice && cordova.InAppBrowser) {
-                                                cordova.InAppBrowser.open(appleStore, '_system');
-                                                WinJS.Navigation.back(1).done();
+                                if (AppData._fromStartPage && newDBRequired === 2) {
+                                    confirmed = true;
+                                } else {
+                                    return confirmModal(null,
+                                        updateMessage,
+                                        confirmFirst,
+                                        confirmSecond,
+                                        function (updateConfirmed) {
+                                            Log.print(Log.l.info, "updateMessage returned=" + updateConfirmed);
+                                            if (updateConfirmed) {
+                                                if (newDBRequired === 2) {
+                                                    confirmed = true;
+                                                }
+                                                // neue App Version
+                                                if (newDBRequired === 0) {
+                                                    updateMessage = null;
+                                                    AppData._ignore = true;
+                                                    var appleStore = getResourceText("general.appleStore");
+                                                    var playStore = getResourceText("general.playStore");
+                                                    var microsoftStore = getResourceText("general.microsoftStore");
+                                                    if (isAppleDevice && cordova.InAppBrowser) {
+                                                        cordova.InAppBrowser.open(appleStore, '_system');
+                                                        WinJS.Navigation.back(1).done();
+                                                    }
+                                                    if (isWindowsDevice && cordova.InAppBrowser) {
+                                                        cordova.InAppBrowser.open(microsoftStore, '_system');
+                                                        WinJS.Navigation.back(1).done();
+                                                    }
+                                                    if (isAndroidDevice) {
+                                                        window.open(playStore, '_system');
+                                                        WinJS.Navigation.back(1).done();
+                                                    }
+                                                }
+                                            } else {
+                                                Log.print(Log.l.trace, "User changed: user choice CANCEL");
+                                                if (newDBRequired === 2) {
+                                                    AppData._ignore = true;
+                                                    AppData._alternativeTimeout = 150; //150
+                                                    updateMessage = null;
+                                                    moveMitarbeiterMessage = null;
+                                                    if (!doReloadDb && !failed && typeof complete === "function") {
+                                                        complete({});
+                                                    }
+                                                    //return WinJS.Promise.as();
+                                                    //AppData.getUserRemoteData();
+                                                }
+                                                //confirmed = true;
+                                                //Log.print(Log.l.info, "network state=" + (AppRepl.replicator && AppRepl.replicator.networkState));
+                                                //return WinJS.Promise.as();
                                             }
-                                            if (isWindowsDevice && cordova.InAppBrowser) {
-                                                cordova.InAppBrowser.open(microsoftStore, '_system');
-                                                WinJS.Navigation.back(1).done();
-                                            }
-                                            if (isAndroidDevice) {
-                                                window.open(playStore, '_system');
-                                                WinJS.Navigation.back(1).done();
-                                            }
-                                        }
-                                    } else {
-                                        Log.print(Log.l.trace, "User changed: user choice CANCEL");
-                                        if (newDBRequired === 2) {
-                                            AppData._ignore = true;
-                                            AppData._alternativeTimeout = 150;
-                                            updateMessage = null;
-                                            moveMitarbeiterMessage = null;
-                                            if (!doReloadDb && !failed && typeof complete === "function") {
-                                                complete({});
-                                            }
-                                            return WinJS.Promise.as();
-                                            //AppData.getUserRemoteData();
-                                        }
-                                        //confirmed = true;
-                                        Log.print(Log.l.info, "network state=" + (AppRepl.replicator && AppRepl.replicator.networkState));
-                                        return WinJS.Promise.as();
-                                    }
 
-                                });
-                            } else {
-                                return WinJS.Promise.as();
+                                        });
+                                }
                             }
                         } else {
                             return WinJS.Promise.as();
@@ -406,8 +412,12 @@
                                 pMitarbeiterID: AppData.generalData.getRecordId("Mitarbeiter")
                             }, function (json) {
                                 Log.print(Log.l.info, "PRC_MoveAppMitarbeiter call success!");
-                                if (json && json.d && json.d.results &&
-                                    json.d.results[0] && json.d.results[0].ResultCode === 0) {
+                                if (json &&
+                                    json.d &&
+                                    json.d.results &&
+                                    json.d.results[0] &&
+                                    json.d.results[0].ResultCode === 0) {
+                                    AppData._movedSuccess = json.d.results[0].ResultCode;
                                     moveMitarbeiterMessage = json.d.results[0].ResultMessage || "User moved to new Event!";
                                 }
                             }, function (err) {
@@ -425,7 +435,6 @@
                                     });
                                 }
                             });
-
                         } else {
                             Log.print(Log.l.info, "network state=" +
                                 (AppRepl.replicator && AppRepl.replicator.networkState));

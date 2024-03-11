@@ -22,6 +22,7 @@
 	"general.userChanging" : "Bitte beachten Sie: Der Administrator hat Ihre User-Veranstaltung geändert. Nachdem Sie auf \"Ja, wechseln\" geklickt haben, werden Sie auf die neue Veranstaltung umgestellt. Wenn Sie noch weitere Kontakte für die aktuelle Veranstaltung erfassen möchten, klicken Sie auf \"Nein, in 5 Minuten erinnern\"",
 	"general.newDB"			: "Achtung! Es gibt eine neue Datenbank Version!",
 	"general.newApp"		: "Achtung! Es gibt eine neue App Version, Bitte Update!",
+	"general.userChangedSuccess" : "Das Veranstaltung wurde erfolgreich für Ihren Benutzer geändert. Ihr aktuelles Veranstaltung ist: ",
 	"general.appleStore"    : "https://apps.apple.com/us/app/leadsuccess/id1122019108?l=de&ls=1",
     "general.playStore"    : "https://play.google.com/store/apps/details?id=de.convey.LSMobileCDV",
     "general.microsoftStore"    : "https://apps.microsoft.com/detail/9NBLGGH4WZLM?hl=de-de&gl=DE",

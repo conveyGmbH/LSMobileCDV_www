@@ -231,7 +231,7 @@
                             case "newContact": {
                                 disableButton(button, AppData._persistentStates.disableCaptureContactsButton || 
                                     AppData._persistentStates.hideManually);
-                                }
+                            }
                         }
                         if (buttonElement) {
                             break;
@@ -621,7 +621,7 @@
                                 PLZ: "",
                                 Stadt: "",
                                 useErfassungsdatum: false,
-                                usemodifiedTS: false, 
+                                usemodifiedTS: false,
                                 importFilter: true
                             };
                             AppData.setRestriction('Kontakt', restriction);
@@ -827,6 +827,15 @@
                     AppData.getUserRemoteData();
                     AppData.getCRVeranstOption();
                     AppData.getMobileVersion();
+                }
+                if (AppData._movedSuccess === 0) {
+                    return confirmModal(null, getResourceText("general.userChangedSuccess") + AppData._userData.VeranstaltungName, getResourceText("flyout.ok"), null, function (updateConfirmed) {
+                        Log.print(Log.l.info, "updateMessage returned=" + updateConfirmed);
+                        if (updateConfirmed) {
+                            AppData._movedSuccess = null;
+                            return WinJS.Promise.as();
+                        }
+                    });
                 }
             });
             Log.ret(Log.l.trace);
