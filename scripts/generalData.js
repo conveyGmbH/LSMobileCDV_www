@@ -426,6 +426,7 @@
                         //return confirm(messageText, function (changeConfirmed) {
                         if (AppData._ignore) {
                             // ignore
+                            AppData._ignore = false;
                         } else {
                             return confirmModal(null, messageText, confirmFirst, confirmSecond, function (changeConfirmed) {
                             Log.print(Log.l.info, "updateMessage returned=" + changeConfirmed);
