@@ -442,6 +442,7 @@
                                     Log.print(Log.l.info, "updateMessage returned=" + changeConfirmed);
                                     if (changeConfirmed) {
                                         // neue App Version
+                                        AppData._inGetMobileVersion = false;
                                         if (json.d.results[0].NewDBRequired === 0) {
                                             messageText = null;
                                             var appleStore = getResourceText("general.appleStore");
@@ -468,7 +469,6 @@
                                                 return WinJS.Promise.timeout(100);
                                             });
                                         }
-                                        AppData._inGetMobileVersion = false;
                                     } else {
                                         Log.print(Log.l.trace, "User changed: user choice wait - cancel");
                                         AppData._inGetMobileVersion = false;
