@@ -628,15 +628,15 @@
             }).then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Data loaded");
+                if (that.binding.dataBenutzer.Info2 && that.binding.dataBenutzer.Info2TSRead === null) {
+                    // always set modified for timestamp!
+                    AppBar.modified = true;
+                }
                 if (that.binding.dataBenutzer.Present === 1) {
                     // leave present state 1 
                 } else {
                     // undefined present state becomes 0
                     that.binding.dataBenutzer.Present = 0;
-                }
-                if (!AppBar.modified) {
-                    // always set modified for timestamp!
-                    AppBar.modified = true;
                 }
                 return WinJS.Promise.as();
             });

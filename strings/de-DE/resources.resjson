@@ -506,6 +506,7 @@
     "info.turnThumbsLeft"   : "Vorschaubilder nach links drehen",
 	"info.cameraMegapixel"  : "Kamera Megapixel",
 	"info.useClippingCameraNewMode" : "Geniusscan Plugin",
+	"info.eventName"       : "Aktuelle Veranstaltung: ",
 
 	"backup.title"          : "Backup",
 	"backup.info"			: "Hier kannst du ein Backup erstellen und es an convey information systems GmbH teilen",
@@ -537,9 +538,11 @@
 	"infodeskEmpList.nameAsc"  : "Name ↑",
 
     "userinfo.title"        : "Benutzerinfo",
+    "userinfo.conversation"	: "Unterhaltung",
+	"userinfo.profile"	    : "Mein Profil",
     "userinfo.present"      : "Ich bin jetzt auf dem Gelände",
     "userinfo.absend"       : "Ich verlasse das Gelände",
-    "userinfo.message1"     : "Meine Info",
+    "userinfo.message1"     : "Meine Nachricht",
     "userinfo.message2"     : "Info für mich",
     "userinfo.state"        : "Status",
     "userinfo.presence"     : "Anwesenheit",

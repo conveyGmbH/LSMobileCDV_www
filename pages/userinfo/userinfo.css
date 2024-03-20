@@ -29,3 +29,70 @@
     }
    
 }
+
+/*.view-size-medium #userInfoController .field_line.field_small {
+    margin-left: 35px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#userInfoController .portrait_inline {
+    display: inline;
+}
+
+#userInfoController .input_field {
+    margin-bottom: 0px;
+}
+
+#userInfoController .message-container {
+    margin: 10px;
+}
+
+#userInfoController .label-userInfo {
+    font-size: 14px;
+}
+
+.view-size-medium #userInfoController .input_userInfo {
+    float: right;
+    width: calc(-124px + 100%); 
+    min-width: calc(100% - 12px);
+}*/
+
+#userInfoController .label-right {
+    float: right;
+    opacity: 0.6;
+}
+
+#userInfoController .label-left {
+    float: left;
+    width: 50%;
+    opacity: 0.6;
+}
+
+#userInfoController .input_field {
+    margin-bottom: 0;
+}
+
+.view-size-medium #userInfoController .input_field {
+    float: left;
+    width: 100%;
+    min-width: 100%;
+}
+
+#userInfoController .label-info2 {
+    display: block;
+}
+#userInfoController .label.label-big {
+    font-size: 16px;
+}
+.view-size-medium #userInfoController .label {
+    letter-spacing: normal;
+}
+#userInfoController .content-header {
+    float: left;
+    height: 50px;
+
+}
+#userInfoController .field_line {
+    margin-bottom: 18px;
+}

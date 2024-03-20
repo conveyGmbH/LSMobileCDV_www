@@ -18,7 +18,7 @@
                          <div class="half-circle half-circle-textcolor">&nbsp;</div>
                          <div class="content-header-line win-type-caption">
                              <span class="id-field"></span>
-                             <span class="caption-field" data-win-res="{textContent: 'userinfo.title'}"></span>
+                             <span class="caption-field" data-win-res="{textContent: 'userinfo.conversation'}"></span>
                              <span class="date-field"></span>
                          </div>
                      </div>
@@ -46,64 +46,91 @@
                                  data-win-bind="value: dataBenutzer.INITBenAnwID Binding.Mode.twoway style.display: dataBenutzer.Present Binding.Converter.toDisplayNone">
                              <option data-win-bind="value: INITBenAnwID; textContent: TITLE"></option>
                          </select>
-                    </div>
-                    <div class="field_line field_line_even">
+                     </div>
+                     <div class="line-separator"></div>
 
-                    </div>
-                    <div class="line-separator"></div>
-                    
-                    <!--visitorFlowFeature-->
-                    <div data-win-bind="style.display: visitorFlowFeature  Binding.Converter.toDisplay">
-                    <div class="field_line field_line_odd">
-                         <select id="cr_V_bereich"
-                                 class="input_field win-dropdown"
-                                 data-win-control="WinJS.UI.Repeater"
-                                 data-win-bind="value: dataBenutzer.CR_V_BereichID Binding.Mode.twoway">
-                             <option data-win-bind="value: CR_V_BereichVIEWID; textContent: TITLE"></option>
-                         </select>
+                     <!--visitorFlowFeature-->
+                     <div data-win-bind="style.display: visitorFlowFeature  Binding.Converter.toDisplay">
+                         <div class="field_line field_line_odd">
+                             <select id="cr_V_bereich"
+                                     class="input_field win-dropdown"
+                                     data-win-control="WinJS.UI.Repeater"
+                                     data-win-bind="value: dataBenutzer.CR_V_BereichID Binding.Mode.twoway">
+                                 <option data-win-bind="value: CR_V_BereichVIEWID; textContent: TITLE"></option>
+                             </select>
+                         </div>
+                         <div class="field_line field_line_even">
+                             <div class="input_group">
+                                 <div class="checkbox input_half_left">
+                                     <input type="checkbox" class="win-checkbox" value="1"
+                                            data-win-bind="checked: dataBenutzer.Eingang Binding.Mode.twoway" />
+                                     <span data-win-res="{textContent: 'userinfo.entry'}"></span>
+                                 </div>
+                                 <div class="checkbox input_half_right">
+                                     <input type="checkbox" class="win-checkbox" value="1"
+                                            data-win-bind="checked: dataBenutzer.Ausgang Binding.Mode.twoway" />
+                                     <span data-win-res="{textContent: 'userinfo.exit'}"></span>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="line-separator"></div>
                      </div>
-                    <div class="field_line field_line_even">
-                        <div class="input_group">
-                            <div class="checkbox input_half_left">
-                                <input type="checkbox" class="win-checkbox" value="1"
-                                       data-win-bind="checked: dataBenutzer.Eingang Binding.Mode.twoway" />
-                                <span data-win-res="{textContent: 'userinfo.entry'}"></span>
-                            </div>
-                            <div class="checkbox input_half_right">
-                                <input type="checkbox" class="win-checkbox" value="1"
-                                       data-win-bind="checked: dataBenutzer.Ausgang Binding.Mode.twoway" />
-                                <span data-win-res="{textContent: 'userinfo.exit'}"></span>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="line-separator"></div>
-                    </div>
                      <div class="field_line field_line_odd">
-                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'userinfo.message1'}"></span>
-                         <span class="label landscape_only" data-win-res="{textContent: 'userinfo.message1'}"></span>
-                         <textarea class="input_field win-textarea" data-win-bind="value: dataBenutzer.Info1 Binding.Mode.twoway" onblur="AppBar.handleEvent('blur', 'activateEnterKey', event)" onfocus="AppBar.handleEvent('focus', 'deactivateEnterKey', event)" onkeydown="AppBar.handleEvent('keydown', 'pressEnterKey', event)"></textarea>
-                     </div>
-                     <div class="field_line field_line_even">
-                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'userinfo.message1time'}"></span>
-                         <span class="label landscape_only" data-win-res="{textContent: 'userinfo.message1time'}"></span>
-                         <span class="input_field" data-win-bind="textContent: dataBenutzer.Info1TS Binding.Converter.toDateString"></span>
+                         <span class="label label-big win-type-caption" data-win-res="{textContent: 'userinfo.message1'}"></span>
+                         <textarea class="input_field win-textarea input_text_comment"
+                                   data-win-bind="value: dataBenutzer.Info1 Binding.Mode.twoway" 
+                                   onblur="AppBar.handleEvent('blur', 'activateEnterKey', event)" 
+                                   onfocus="AppBar.handleEvent('focus', 'deactivateEnterKey', event)" 
+                                   onkeydown="AppBar.handleEvent('keydown', 'pressEnterKey', event)"></textarea>
+                         <div class="label-left" data-win-bind="style.display: dataBenutzer.Info1TS Binding.Converter.toDisplay">
+                             <span class="label win-type-caption" data-win-res="{textContent: 'userinfo.message1time'}"></span>
+                             <span class="label win-type-caption" data-win-bind="textContent: dataBenutzer.Info1TS Binding.Converter.toDateString"></span>
+                         </div>
                      </div>
                      <div class="line-separator"></div>
-                     <div class="field_line field_line_odd" data-win-bind="style.display: dataBenutzer.Info2 Binding.Converter.toDisplay">
-                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'userinfo.message2'}"></span>
-                         <span class="label landscape_only" data-win-res="{textContent: 'userinfo.message2'}"></span>
-                         <span class="input_field" data-win-bind="textContent: dataBenutzer.Info2; style.fontWeight: newInfo2Flag Binding.Converter.toBold"></span>
+                     <div class="field_line field_line_odd">
+                         <span class="label label-big win-type-caption" data-win-res="{textContent: 'userinfo.message2'}"></span>
+                         <span class="label-info2" data-win-bind="textContent: dataBenutzer.Info2; style.fontWeight: newInfo2Flag Binding.Converter.toBold"></span>
+                         <div class="label-left" data-win-bind="style.display: dataBenutzer.Info2TS Binding.Converter.toDisplay">
+                             <span class="label win-type-caption" data-win-res="{textContent: 'userinfo.message2time'}"></span>
+                             <span class="label win-type-caption" data-win-bind="textContent: dataBenutzer.Info2TS Binding.Converter.toDateString"></span>
+                         </div>
                      </div>
-                     <div class="field_line field_line_even" data-win-bind="style.display: dataBenutzer.Info2 Binding.Converter.toDisplay">
-                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'userinfo.message2time'}"></span>
-                         <span class="label landscape_only" data-win-res="{textContent: 'userinfo.message2time'}"></span>
-                         <span class="input_field" data-win-bind="textContent: dataBenutzer.Info2TS Binding.Converter.toDateString"></span>
-                     </div>
+                     <div class="line-separator"></div>
+                     <!--<div class="field_line field_line_odd">
+        <span class="label landscape_only" data-win-res="{textContent: 'userinfo.message1'}"></span>
+        <textarea class="input_field win-textarea" data-win-bind="value: dataBenutzer.Info1 Binding.Mode.twoway" onblur="AppBar.handleEvent('blur', 'activateEnterKey', event)" onfocus="AppBar.handleEvent('focus', 'deactivateEnterKey', event)" onkeydown="AppBar.handleEvent('keydown', 'pressEnterKey', event)"></textarea>
+    </div>
+    <div class="field_line field_line_even field_small">
+        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'userinfo.message1time'}"></span>
+        <span class="label landscape_only" data-win-res="{textContent: 'userinfo.message1time'}"></span>
+        <span class="input_field" data-win-bind="textContent: dataBenutzer.Info1TS Binding.Converter.toDateString"></span>
+    </div>
+    <div class="line-separator"></div>
+    <div class="field_line field_line_odd" data-win-bind="style.display: dataBenutzer.Info2 Binding.Converter.toDisplay">
+        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'userinfo.message2'}"></span>
+        <span class="label landscape_only" data-win-res="{textContent: 'userinfo.message2'}"></span>
+        <span class="input_field" data-win-bind="textContent: dataBenutzer.Info2; style.fontWeight: newInfo2Flag Binding.Converter.toBold"></span>
+    </div>
+    <div class="field_line field_line_even field_small" data-win-bind="style.display: dataBenutzer.Info2 Binding.Converter.toDisplay">
+        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'userinfo.message2time'}"></span>
+        <span class="label landscape_only" data-win-res="{textContent: 'userinfo.message2time'}"></span>
+        <span class="input_field" data-win-bind="textContent: dataBenutzer.Info2TS Binding.Converter.toDateString"></span>
+    </div>-->
                      <div class="line-separator"></div>
                      <div class="field_line field_line_odd photo-container"
                           data-win-bind="style.display: photoData Binding.Converter.toDisplay"></div>
                      <div class="line-separator"
                           data-win-bind="style.display: photoData Binding.Converter.toDisplay"></div>
+                     <div class="header-separator float-left"></div>
+                     <div class="content-header float-left">
+                         <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                         <div class="content-header-line win-type-caption">
+                             <span class="id-field"></span>
+                             <span class="caption-field" data-win-res="{textContent: 'userinfo.profile'}"></span>
+                             <span class="date-field"></span>
+                         </div>
+                     </div>
                      <div class="line-separator"></div>
                      <div class="field_line field_line_odd">
                          <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'userinfo.academicTitle'}"></span>

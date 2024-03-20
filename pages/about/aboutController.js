@@ -27,7 +27,7 @@
                 isDarkTheme: Colors.isDarkTheme,
                 version: Application.version,
                 environment: "Platform: " + navigator.appVersion,
-                eventName: AppData._userData.VeranstaltungName,
+                eventName: getResourceText("info.eventName") + AppData._userData.VeranstaltungName,
                 lastError: lastError,
                 siteId: AppData._persistentStates.odata.dbSiteId ? "DBSiteId " + AppData._persistentStates.odata.dbSiteId : ""
             }, commandList]);
