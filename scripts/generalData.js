@@ -473,7 +473,7 @@
                                         Log.print(Log.l.trace, "User changed: user choice wait - cancel");
                                         AppData._inGetMobileVersion = false;
                                         if (json.d.results[0].NewDBRequired === 2) {
-                                            AppData._alternativeTimeout = 150; //150
+                                            AppData._alternativeTimeout = 300; //150
                                             AppData.getUserRemoteData();
                                         }
                                     }
@@ -662,7 +662,7 @@
                                     Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
                                     AppData._userRemoteDataPromise.cancel();
                                 }
-                                timeout = (AppData._alternativeTimeout || AppData._persistentStates.odata.replInterval || 30) * 2;
+                                timeout = (AppData._alternativeTimeout || AppData._persistentStates.odata.replInterval || 30);
                                 Log.print(Log.l.info, "getUserRemoteData: Now, wait for timeout=" + timeout + "s - regulary case!");
                                 AppData._userRemoteDataPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
                                     Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");
@@ -674,7 +674,7 @@
                                     }
                                     AppData.getUserRemoteData();
                                     AppData.getCRVeranstOption();
-                                    AppData.getMobileVersion();
+                                    //AppData.getMobileVersion();
                                 });
                             }, function (errorResponse) {
                                 Log.print(Log.l.error, "call error=" + JSON.stringify(errorResponse));
@@ -831,7 +831,7 @@
                                     Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
                                     AppData._userRemoteDataPromise.cancel();
                                 }
-                                timeout = (AppData._persistentStates.odata.replInterval || 30) * 2;
+                                timeout = (AppData._persistentStates.odata.replInterval || 30);
                                 Log.print(Log.l.info, "getUserRemoteData: Now, wait for timeout=" + timeout + "s - in error case!");
                                 AppData._userRemoteDataPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
                                     Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");

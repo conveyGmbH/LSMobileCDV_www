@@ -45,7 +45,7 @@
             };
             var isAppleDevice = checkIPhoneBug();
             var isWindowsDevice = device && (device.platform === "windows");
-            var isAndroidDevice = device && (device.platform === "android");
+            var isAndroidDevice = device && (device.platform === "Android");
 
             var that = this;
 
@@ -382,7 +382,7 @@
                                                 Log.print(Log.l.trace, "User changed: user choice CANCEL");
                                                 if (newDBRequired === 2) {
                                                     AppData._ignore = true;
-                                                    AppData._alternativeTimeout = 150; //150
+                                                    AppData._alternativeTimeout = 300; //150
                                                     updateMessage = null;
                                                     moveMitarbeiterMessage = null;
                                                     if (!doReloadDb && !failed && typeof complete === "function") {

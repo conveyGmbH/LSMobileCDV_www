@@ -826,7 +826,7 @@
                     AppData._curGetUserRemoteDataId = 0;
                     AppData.getUserRemoteData();
                     AppData.getCRVeranstOption();
-                    AppData.getMobileVersion();
+                    // AppData.getMobileVersion();
                 }
                 if (AppData._movedSuccess === 0) {
                     return confirmModal(null, getResourceText("general.userChangedSuccess") + AppData._userData.VeranstaltungName, getResourceText("flyout.ok"), null, function (updateConfirmed) {
