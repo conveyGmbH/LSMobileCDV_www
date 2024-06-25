@@ -126,6 +126,11 @@
                 } else {
                     that.binding.showModified = true;
                 }
+                if (that.binding.dataContact.Nachbearbeitet) {
+                    that.binding.dataContact.complete = null;
+                } else {
+                    that.binding.dataContact.complete = 1;
+                }
                 if (AppData.getRecordId("Mitarbeiter") !== newDataContact.MitarbeiterID) {
                     that.binding.importUser = true;
                 }
@@ -557,7 +562,7 @@
                 var ret;
                 var dataContact = that.binding.dataContact;
                 // set Nachbearbeitet empty!
-                if (!dataContact.Nachbearbeitet) {
+                if (dataContact.complete) {
                     dataContact.Nachbearbeitet = null;
                 } else {
                     dataContact.Nachbearbeitet = 1;

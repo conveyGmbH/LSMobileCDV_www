@@ -158,6 +158,7 @@
     "contact.count"         : "Totale",
     "contact.barcode"       : "Barcode",
     "contact.incomplete"    : "Elaborazione incompleta",
+    "contact.complete"		  : "Modificato/revisionato manualmente dopo l'acquisizione",
     "contact.notice"        : "Commenti",
     "contact.url"           : "Pagina Web",
     "contact.barcodeState"  : "Barcode status",
@@ -169,6 +170,7 @@
     "contact.mr"            : "Sig.",
     "contact.mrs"           : "Sig.ra",
     "contact.useRestriction": "Utilizza",
+    "contact.comment2" : "Freitext",
 
     "contactRemote.title"   : "Contatto già caricato",
     "contactRemote.comment"       : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
@@ -195,6 +197,7 @@
     "contactRemote.count"         : "Totale",
     "contactRemote.barcode"       : "Barcode",
     "contactRemote.incomplete"    : "Elaborazione incompleta",
+    "contactRemote.complete"	  : "Modificato/revisionato manualmente dopo l'acquisizione",
     "contactRemote.notice"        : "Commenti",
     "contactRemote.url"           : "Pagina Web",
     "contactRemote.barcodeState"  : "Barcode status",

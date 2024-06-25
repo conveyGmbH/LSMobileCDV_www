@@ -28,7 +28,7 @@
             this.img = null;
             this.initAnredeList = null;
             this.initLandList = null;
-
+            this.contactReloadPromise = null;
             var that = this;
 
             // select combo
@@ -128,6 +128,11 @@
                     that.binding.showModified = false;
                 } else {
                     that.binding.showModified = true;
+                }
+                if (that.binding.dataContact.Nachbearbeitet) {
+                    that.binding.dataContact.complete = null;
+                } else {
+                    that.binding.dataContact.complete = 1;
                 }
                 AppBar.modified = false;
                 AppBar.notifyModified = prevNotifyModified;
@@ -451,14 +456,17 @@
 
             var reloadData = function (prevModifiedTS) {
                 Log.call(Log.l.trace, "Contact.Controller.");
+                if (that.contactReloadPromise) {
+                    that.contactReloadPromise.cancel();
+                }
                 AppData.setErrorMsg(that.binding);
                 var ret = new WinJS.Promise.as().then(function () {
                     var recordId = getRecordId();
                     if (recordId) {
                         //load of format relation record data
                         Log.print(Log.l.trace, "calling select contactView...");
-                        var contactSelectPromise = Contact.contactView.select(function (json) {
-                            that.removeDisposablePromise(contactSelectPromise);
+                        that.contactReloadPromise = Contact.contactView.select(function (json) {
+                            that.removeDisposablePromise(that.contactReloadPromise);
                             AppData.setErrorMsg(that.binding);
                             Log.print(Log.l.trace, "contactView: success!");
                             var modifiedTS = null;
@@ -491,7 +499,7 @@
                                 }));
                             }
                         }, function (errorResponse) {
-                            that.removeDisposablePromise(contactSelectPromise);
+                            that.removeDisposablePromise(that.contactReloadPromise);
                             AppData.setErrorMsg(that.binding, errorResponse);
                         }, recordId);
 
@@ -691,7 +699,7 @@
                 var ret;
                 var dataContact = that.binding.dataContact;
                 // set Nachbearbeitet empty!
-                if (!dataContact.Nachbearbeitet) {
+                if (dataContact.complete) {
                     dataContact.Nachbearbeitet = null;
                 } else {
                     dataContact.Nachbearbeitet = 1;

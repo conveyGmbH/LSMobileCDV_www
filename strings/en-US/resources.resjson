@@ -158,6 +158,7 @@
     "contact.count"         : "Count",
     "contact.barcode"       : "Barcode",
     "contact.incomplete"    : "Editing incomplete",
+    "contact.complete"		: "Manually editied/reviewed after acquisition",
     "contact.notice"        : "Comment",
     "contact.url"           : "Website",
     "contact.barcodeState"  : "Barcode State",
@@ -169,6 +170,7 @@
     "contact.mr"            : "Mr",
     "contact.mrs"           : "Mrs",
     "contact.useRestriction": "use",
+    "contact.comment2" : "Freitext",
 
     "contactRemote.title"   : "Already uploaded Contact",
 	"contactRemote.comment"       : "On this page, use the Back button to go back!",
@@ -195,6 +197,7 @@
     "contactRemote.count"         : "Count",
     "contactRemote.barcode"       : "Barcode",
     "contactRemote.incomplete"    : "Editing incomplete",
+    "contactRemote.complete"		: "Manually editied/reviewed after acquisition",
     "contactRemote.notice"        : "Comment",
     "contactRemote.url"           : "Website",
     "contactRemote.barcodeState"  : "Barcode State",

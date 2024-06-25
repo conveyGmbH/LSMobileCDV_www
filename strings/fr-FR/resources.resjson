@@ -158,6 +158,7 @@
     "contact.count"         : "Nombre",
     "contact.barcode"       : "Barcode",
     "contact.incomplete"    : "Édition incomplète",
+    "contact.complete"		: "Édition/révision manuelle après l'acquisition",
     "contact.notice"        : "Préavis",
     "contact.url"           : "Page Web",
     "contact.barcodeState"  : "Barcode état",
@@ -169,6 +170,7 @@
     "contact.mr"            : "Monsieur",
     "contact.mrs"           : "Madame",
     "contact.useRestriction": "utiliser",
+    "contact.comment2" : "Freitext",
 
     "contactRemote.title"   : "Contact déjà téléchargé",
 	"contactRemote.comment"       : "Utilisez le bouton Retour sur cette page pour y retourner!",
@@ -195,6 +197,7 @@
     "contactRemote.count"         : "Nombre",
     "contactRemote.barcode"       : "Barcode",
     "contactRemote.incomplete"    : "Édition incomplète",
+    "contactRemote.complete"		: "Édition/révision manuelle après l'acquisition",
     "contactRemote.notice"        : "Préavis",
     "contactRemote.url"           : "Page Web",
     "contactRemote.barcodeState"  : "Barcode état",

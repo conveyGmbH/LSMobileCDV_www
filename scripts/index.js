@@ -180,6 +180,9 @@
 
     Application.refreshAfterFetchOverride = function() {
         Log.call(Log.l.trace, "Application.");
+        if (typeof AppBar.scope.reloadData === "function" && !AppBar.modified) {
+            AppBar.scope.reloadData(AppBar.scope.binding.dataContact && AppBar.scope.binding.dataContact.ModifiedTS);
+        }
         AppData.getUserData();
         AppData.getContactData();
         Log.ret(Log.l.trace);
