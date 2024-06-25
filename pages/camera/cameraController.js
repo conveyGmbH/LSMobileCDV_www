@@ -702,11 +702,11 @@
                     //copy(cordova.file.applicationDirectory + "www/ocrlanguage/eng.traineddata", appFolder, "eng.traineddata", function () {
                     //    copy(cordova.file.applicationDirectory + "www/ocrlanguage/deu.traineddata", appFolder, "deu.traineddata", function () {
                     var configuration = {
-                        source: "camera",
+                        source: "camera"/*,
                         ocrConfiguration: {
                             languages: ["eng", "deu"],
                             languagesDirectoryUrl: appFolder
-                        }
+                        }*/
                     };
                     cordova.plugins.GeniusScan.scanWithConfiguration(configuration, onPhotoDataSuccess, onPhotoDataFail);
                     //});
