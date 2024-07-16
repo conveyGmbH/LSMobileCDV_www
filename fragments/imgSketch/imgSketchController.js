@@ -14,6 +14,8 @@
 (function () {
     "use strict";
 
+    var b64 = window.base64js;
+
     WinJS.Namespace.define("ImgSketch", {
         Controller: WinJS.Class.derive(Fragments.Controller, function Controller(fragmentElement, options, commandList) {
             Log.call(Log.l.trace, "ImgSketch.Controller.", "noteId=" + (options && options.noteId));
@@ -35,6 +37,14 @@
             this.img = null;
 
             var that = this;
+
+            // Get the drawing context
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+            canvas.width = 0;
+            canvas.height = 0;
+            //var imagesObjects = [];
+            //var isLicenceKeyValid = true;
 
             var getDocData = function () {
                 return that.binding.dataSketch && that.binding.dataSketch.photoData;
@@ -527,7 +537,7 @@
             };
             this.insertCameradata = insertCameradata;
 
-            var onPhotoDataSuccess = function (imageData) {
+            /*var onPhotoDataSuccess = function (imageData) {
                 Log.call(Log.l.trace, "Questionnaire.Controller.");
                 // Get image handle
                 //
@@ -544,7 +554,145 @@
                 // todo: create preview from imageData
                 that.insertCameradata(imageData, width, height);
                 Log.ret(Log.l.trace);
+            };*/
+
+            var onPhotoDataSuccess = function(imageData, retryCount) {
+                retryCount = retryCount || 0;
+                Log.call(Log.l.trace, "Camera.Controller.", "retryCount=" + retryCount);
+                if (imageData && imageData.length > 0) {
+                    // Get image handle
+                    //
+                    var cameraImage = new Image();
+                    // Show the captured photo
+                    // The inline CSS rules are used to resize the image
+                    //
+                    cameraImage.src = "data:image/jpeg;base64," + imageData;
+                    var width = cameraImage.width;
+                    var height = cameraImage.height;
+                    Log.print(Log.l.trace, "width=" + width + " height=" + height);
+                    if (width > 0 && height > 0) {
+                        Log.print(Log.l.trace, "width=" + width + " height=" + height);
+                        that.insertCameradata(imageData, width, height);
+                    } else if (retryCount < 0) {
+                        Log.print(Log.l.trace, "Invalid data ignored");
+                    } else if (retryCount < 5) {
+                        Log.print(Log.l.info, "Invalid data retry");
+                        WinJS.Promise.timeout(100).then(function() {
+                            onPhotoDataSuccess(imageData, retryCount + 1);
+                        });
+                    } else {
+                        Log.print(Log.l.error, "Invalid data error");
+                        return onPhotoDataFail("Invalid data received!");
+                    }
+                } else if (imageData && imageData.scans && imageData.scans.length > 0) {
+                    //WinJS.Promise.timeout(100).then(function () {
+                    var mediaFiles = imageData.scans;
+                    var filePromises = [];
+                    var fileData = [];
+                    if (mediaFiles) {
+                        var i, len;
+                        for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+                            var bUseRootDir = false;
+                            var rootDirectory = cordova.file.externalRootDirectory;;
+                            var dataDirectory = "";
+                            var fullPath = mediaFiles[i].enhancedUrl;
+                            //var ocrResult = null;
+                            if (mediaFiles[i].ocrResult && mediaFiles[i].ocrResult.text) {
+                                that.binding.ocrResult = mediaFiles[i].ocrResult.text;
+                            } else {
+                                that.binding.ocrResult = mediaFiles[i].ocrResult;
+                            }
+                            var pos = fullPath.lastIndexOf("/");
+                            if (pos < 0) {
+                                pos = fullPath.lastIndexOf("\\");
+                            }
+                            var fileName;
+                            if (pos >= 0) {
+                                fileName = fullPath.substr(pos + 1);
+                            } else {
+                                fileName = fullPath;
+                            }
+                            if (typeof device === "object") {
+                                Log.print(Log.l.trace, "platform=" + device.platform);
+                                switch (device.platform) {
+                                case "Android":
+                                    if (pos >= 0) {
+                                        dataDirectory = fullPath.substr(0, pos);
+                                        if (dataDirectory.indexOf(rootDirectory) >= 0) {
+                                            dataDirectory = dataDirectory.replace(rootDirectory, "");
+                                            bUseRootDir = true;
+                                        }
+                                    }
+                                    break;
+                                case "iOS":
+                                    dataDirectory = cordova.file.tempDirectory;
+                                    break;
+                                default:
+                                    dataDirectory = cordova.file.dataDirectory;
+                                }
+                            } else {
+                                dataDirectory = cordova.file.dataDirectory;
+                            }
+                            //loadFile
+                            filePromises.push(FileP.load(dataDirectory, fileName, bUseRootDir).then(function(result) {
+                                //FileP.deleteFile(dataDirectory, fileName, bUseRootDir);
+                                var data = new Uint8Array(result);
+                                var encoded = b64.fromByteArray(data);
+                                if (encoded && encoded.length > 0) {
+                                    fileData.push(encoded);
+                                } else {
+                                    var err = "file read error NO data!";
+                                    Log.print(Log.l.error, err);
+                                    AppData.setErrorMsg(that.binding, err);
+                                }
+                            }));
+                        }
+                        var cameraImages = [];
+
+                        WinJS.Promise.join(filePromises).then(function() {
+                            var imagePromises = [];
+                            var loadImage = function(encoded) {
+                                var cameraImage = new Image();
+                                imagePromises.push(new WinJS.Promise(function makeImage(complete, error, progress) {
+                                    cameraImage.onload = function() {
+                                        cameraImages.push(cameraImage);
+                                        complete(cameraImage);
+                                    }
+                                    cameraImage.onerror = function() {
+                                        Log.print(Log.l.error, "Invalid data error");
+                                        return error("Error loading image");
+                                    }
+                                    cameraImage.src = "data:image/jpeg;base64," + encoded;
+                                }));
+                            }
+                            for (var i = 0; i < fileData.length; i++) {
+                                loadImage(fileData[i]);
+                            }
+                            return WinJS.Promise.join(imagePromises);
+                            // Show the captured photo
+                            // The inline CSS rules are used to resize the image
+
+                        }).then(function() {
+                            canvas.width = canvas.width + cameraImages[0].width;
+                            for (var i = 0; i < cameraImages.length; i++) {
+                                canvas.height = canvas.height + cameraImages[i].height;
+                            }
+                            var x = 0;
+                            var y = 0;
+                            for (var i = 0; i < cameraImages.length; i++) {
+                                ctx.drawImage(cameraImages[i], x, y);
+                                y = y + cameraImages[i].height;
+                            }
+                            var base64Canvas = canvas.toDataURL("image/jpeg").split(';base64,')[1];
+                            that.insertCameradata(base64Canvas, canvas.width, canvas.height);
+                        });
+                    }
+                } else {
+                    return onPhotoDataFail("No data received!");
+                }
+                Log.ret(Log.l.trace);
             };
+            //this.onPhotoDataSuccess = onPhotoDataSuccess;
 
             var onPhotoDataFail = function (errorMessage) {
                 Log.call(Log.l.error, "Questionnaire.Controller.");
@@ -611,6 +759,56 @@
             }
             this.takePhoto = takePhoto;
 
+            var takePhotoWithGeniusScan = function () {
+                Log.call(Log.l.trace, "Camera.Controller.");
+                function onError(error) {
+                    Log.print(Log.l.error, "camera.cordova.plugins.GeniusScan.scanWithConfiguration not supported..." + JSON.stringify(error));
+                }
+
+                function copy(filepath, toDirectory, filename, callback) {
+                    Log.call(Log.l.trace, "Camera.Controller.");
+                    window.resolveLocalFileSystemURL(filepath, function (fileEntry) {
+                        window.resolveLocalFileSystemURL(toDirectory, function (dirEntry) {
+                            dirEntry.getFile(filename, { create: true, exclusive: false }, function (targetFileEntry) {
+                                fileEntry.file(function (file) {
+                                    targetFileEntry.createWriter(function (fileWriter) {
+                                        fileWriter.onwriteend = function () {
+                                            callback();
+                                        };
+                                        fileWriter.write(file);
+                                    });
+                                });
+                            }, onError);
+                        }, onError);
+                    }, onError);
+                    Log.ret(Log.l.trace);
+                }
+
+                if (that.binding.generalData.useClippingCamera &&
+                    cordova.plugins.GeniusScan &&
+                    typeof cordova.plugins.GeniusScan.scanWithConfiguration === "function") {
+                    //Log.print(Log.l.trace, "Copy Directory - cordova.file.externalDataDirectory: " + cordova.file.externalDataDirectory + " or cordova.file.dataDirectory: " + cordova.file.dataDirectory + " for platform" + device.platform);
+                    var appFolder = device.platform === "Android" ? cordova.file.externalDataDirectory : cordova.file.applicationDirectory + "www/ocrlanguage";
+                    //copy(cordova.file.applicationDirectory + "www/ocrlanguage/eng.traineddata", appFolder, "eng.traineddata", function () {
+                    //    copy(cordova.file.applicationDirectory + "www/ocrlanguage/deu.traineddata", appFolder, "deu.traineddata", function () {
+                    var configuration = {
+                        source: "camera"/*,
+                        ocrConfiguration: {
+                            languages: ["eng", "deu"],
+                            languagesDirectoryUrl: appFolder
+                        }*/
+                    };
+                    cordova.plugins.GeniusScan.scanWithConfiguration(configuration, onPhotoDataSuccess, onPhotoDataFail);
+                    //});
+                    //});
+                } else {
+                    Log.print(Log.l.error, "camera.cordova.plugins.GeniusScan.scanWithConfiguration not supported...");
+                    that.updateStates({ errorMessage: "cordova.plugins.GeniusScan.scanWithConfiguration not supported" });
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.takePhotoWithGeniusScan = takePhotoWithGeniusScan;
+
             var loadData = function (noteId) {
                 var ret;
                 Log.call(Log.l.trace, "ImgSketch.Controller.", "noteId=" + noteId);
@@ -644,7 +842,12 @@
                 } else {
                     if (that.binding.isLocal) {
                         // take photo first - but only if isLocal!
-                        that.takePhoto();
+                        if (that.binding.generalData.useClippingCamera &&
+                            cordova.plugins.GeniusScan) {
+                            that.takePhotoWithGeniusScan();
+                        } else {
+                            that.takePhoto();
+                        }
                     }
                     ret = WinJS.Promise.as();
                 }
@@ -832,6 +1035,30 @@
             }
 
             that.processAll().then(function () {
+                // useClippingCamera useClippingCameraNewMode
+                if (that.binding.generalData.useClippingCamera &&
+                    cordova.plugins.GeniusScan &&
+                    typeof cordova.plugins.GeniusScan.setLicenseKey === "function") {
+                    cordova.plugins.GeniusScan.setLicenseKey(
+                        //"533c500653550608095401503955504d070c5c12514f1c75317b5b045e54557326623b530e020500550b040554",
+                        "533c500750550707025307543955504d070c5c12514f1c75317b5b045e54557326623b530f0105005204030a56",
+                        function (success) {
+                            Log.print(Log.l.trace, "LicenceKey valid" + success);
+                            return WinJS.Promise.as();
+                        },
+                        function (error) {
+                            Log.print(Log.l.error, "LicenceKey not valid" + error);
+                            isLicenceKeyValid = false;
+                            return WinJS.Promise.as();
+                        });
+                } else {
+                    Log.print(Log.l.trace, "Not Using Genius Scan");
+                    return WinJS.Promise.as();
+                }
+            }).then(function () {
+                Log.print(Log.l.trace, "Binding wireup page complete");
+                return WinJS.Promise.timeout(0);
+            }).then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 return that.loadData(options && options.noteId);
             }).then(function () {

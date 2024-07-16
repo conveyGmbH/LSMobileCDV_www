@@ -79,7 +79,7 @@
                         if (Application.navigator.masterElement && Application.navigator._nextMaster) {
                             widthMaster = Application.navigator.masterElement.clientWidth;
                         }
-                        if (widthMaster + widthAdd> widthLogo) {
+                        if (widthMaster + widthAdd > widthLogo) {
                             widthLogo = widthMaster + widthAdd;
                         }
                         if (NavigationBar.orientation === "vertical" &&
@@ -89,11 +89,39 @@
                         strStyleWidth = "calc(100% - " + widthLogo.toString() + "px)";
                         strStyleFloat = "right";
                     }
+                    var eventLine = document.querySelector(".event-line");
+                    var menuButton = document.querySelector("#menuButton");
                     var eventField = document.querySelector(".event-field");
+                    eventLine.style.width = "calc(100% - " + (menuButton.getBoundingClientRect().width + 48).toString() + "px)";
+
                     if (eventField && eventField.style) {
                         eventField.style.width = strStyleWidth;
                         eventField.style.float = strStyleFloat;
                     }
+
+                    function resize2fit(container) {
+                        var child = container.children[0];
+                        if (!container.parentElement || child.offsetWidth === 0) return;
+                        child.style.fontSize = "1em";
+                        var containerRect = {
+                            max_width: container.getBoundingClientRect().width + 48,
+                            max_height: container.getBoundingClientRect().height +4
+                        };
+                        var childRect = {
+                            width: child.getBoundingClientRect().width,
+                            height: child.getBoundingClientRect().height
+                        }
+                        child.style.fontSize = Math.min(Math.min(containerRect.max_width / childRect.width, containerRect.max_height / childRect.height), 1.32) + "em";
+                        if ((child.getBoundingClientRect().height / (1.5 * 14)) >= 2) {
+                            container.style.marginTop = "0px";
+                            container.style.lineHeight = "normal";
+                        } else {
+                            container.style.marginTop = "8px";
+                            container.style.lineHeight = "1.5";
+                        }
+                    }
+
+                    resize2fit(eventField);
                     that.inResize = 0;
                 });
             }

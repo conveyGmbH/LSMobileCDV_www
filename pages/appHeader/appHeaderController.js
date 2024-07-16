@@ -121,7 +121,29 @@
                     } else {
                         return WinJS.Promise.as();
                     }
-                });
+                })/*.then(function() {
+                    function checkOverflow(container) {
+                        Log.print(Log.l.info, "calling checkOverflow...");
+                        var child = container.children[0];
+                        var actualFontSize = parseInt(window.getComputedStyle(child).fontSize, 10);
+                        if (child.offsetWidth === 0 || (Math.abs(child.offsetWidth - container.offsetWidth) > 0 &&
+                            Math.abs(child.offsetWidth - container.offsetWidth) <= 5 && (actualFontSize <= 15 || actualFontSize >= 10))) {
+
+                        } else if (child.offsetWidth > container.offsetWidth) {
+                            // Does only work with px size, for other units, you'll have to modify this
+                            child.style.fontSize = parseInt(window.getComputedStyle(child).fontSize) - 1 + 'px';
+                            checkOverflow(container);
+                        } else if (child.offsetWidth < container.offsetWidth) {
+                            // Does only work with px size, for other units, you'll have to modify this
+                            child.style.fontSize = parseInt(window.getComputedStyle(child).fontSize) + 1 + 'px';
+                            checkOverflow(container);
+                        }
+
+
+                    }
+                    var eventField = document.querySelector(".event-field");
+                    checkOverflow(eventField);
+                })*/;
                 Log.ret(Log.l.trace);
                 return ret;
             }
