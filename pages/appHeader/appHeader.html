@@ -16,10 +16,13 @@
                         <div class="app-logo-container">
                             <div class="app-logo" id="leadsuccess_white"></div>
                         </div>
-                        <div class="event-field win-type-ellipsis">
-                            <span class="win-type-subtitle event-name"
-                                  data-win-bind="textContent: userData.VeranstaltungName"></span>
+                        <div class="event-field">
+                            <span data-win-bind="textContent: userData.VeranstaltungName"></span>
                         </div>
+                        <!--<div class="user-name-field">
+                            <span data-win-bind="textContent: userData.Login; style.display: showNameInHeader Binding.Converter.toDisplayNone"></span>
+                            <span data-win-bind="textContent: userData.Name; style.display: showNameInHeader Binding.Converter.toDisplay"></span>
+                        </div>-->
                     </div>
 
                     <div id="menu1" data-win-control="WinJS.UI.Menu">

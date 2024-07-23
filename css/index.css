@@ -560,10 +560,11 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     event name
 */
 .event-line {
-    width: calc(100% - 284px);
+    width: calc(100% - 236px);
     margin-left: 40px;
     margin-top: 0;
     padding-top: 4px;
+    padding-right: 1px;
     float: left;
 }
 
@@ -581,6 +582,7 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 
 .event-field {
     width: calc(100% - 278px);
+    /*height: 32px;*/
     float: right;
     margin-top: 8px;
 }
@@ -612,7 +614,7 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     padding-top: 2px;
     padding-right: 4px;
     padding-bottom: 2px;
-    padding-left: 2px;
+    padding-left: 0px;
     min-width: 60px;
     max-width: 236px;
     height: 48px;
@@ -760,7 +762,7 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     */
     .event-line {
         margin-left: 52px;
-        width: calc(100% - 230px);
+        /*width: calc(100% - 230px);*/
     }
 
     .event-field {
@@ -779,7 +781,7 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 
 @media (max-width:499px) {
     .status-on-off {
-        max-width: 200px;
+        max-width: 140px;
     }
 
     .user-name-container {
@@ -808,6 +810,16 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
         line-height: 1.167;
     }
 }
+/*Zebra Device TC20*/
+/*@media (max-width:320px) {
+    .event-line {
+        width: calc(100% - 180px);
+        display: inline-block;
+        position: absolute;
+        top: 13px;
+        left: 0;
+    }
+}*/
 
 .win-commandingsurface .win-commandingsurface-actionarea {
     border-top-color: gray;
