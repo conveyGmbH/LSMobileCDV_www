@@ -470,9 +470,10 @@
                             AppData.setErrorMsg(that.binding);
                             Log.print(Log.l.trace, "contactView: success!");
                             var modifiedTS = null;
+                            var flagNoEdit = json.d.Flag_NoEdit;
                             if (json && json.d) {
-                                modifiedTS = json.d.ModifiedTS;
-                                if (prevModifiedTS !== modifiedTS) {
+                                modifiedTS = json.d.ModifiedTS
+                                if (!flagNoEdit) {
                                     that.setDataContact(json.d);
                                     if (that.binding.dataContact.Request_Barcode) {
                                         AppData._barcodeRequest = that.binding.dataContact.Request_Barcode;
@@ -483,8 +484,8 @@
                                         json.d.DOC1Import_CardscanID);
                                     loadInitSelection();
                                 }
-                                that.addDisposablePromise(WinJS.Promise.timeout(2000).then(function () {
-                                    if (prevModifiedTS === modifiedTS) {
+                                that.addDisposablePromise(WinJS.Promise.timeout(100).then(function () {
+                                    if (prevModifiedTS === modifiedTS && that.binding.dataContact && that.binding.dataContact.Flag_NoEdit) {
                                         that.reloadData(prevModifiedTS);
                                     } else {
                                         var addresscontainer = pageElement.querySelector(".address-container");
@@ -494,7 +495,7 @@
                                     }
                                 }));
                             } else {
-                                that.addDisposablePromise(WinJS.Promise.timeout(2000).then(function () {
+                                that.addDisposablePromise(WinJS.Promise.timeout(100).then(function () {
                                     that.reloadData(prevModifiedTS);
                                 }));
                             }

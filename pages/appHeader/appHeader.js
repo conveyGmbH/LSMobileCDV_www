@@ -98,6 +98,7 @@
                         eventField.style.width = strStyleWidth;
                         eventField.style.float = strStyleFloat;
                     }
+                    var eventField = document.querySelector(".event-field");
 
                     function resize2fit(container) {
                         var child = container.children[0];
@@ -105,23 +106,32 @@
                         child.style.fontSize = "1em";
                         var containerRect = {
                             max_width: container.getBoundingClientRect().width + 48,
-                            max_height: container.getBoundingClientRect().height +4
+                            max_height: container.getBoundingClientRect().height + 4
                         };
                         var childRect = {
                             width: child.getBoundingClientRect().width,
                             height: child.getBoundingClientRect().height
                         }
-                        child.style.fontSize = Math.min(Math.min(containerRect.max_width / childRect.width, containerRect.max_height / childRect.height), 1.32) + "em";
-                        if ((child.getBoundingClientRect().height / (1.5 * 14)) >= 2) {
-                            container.style.marginTop = "0px";
-                            container.style.lineHeight = "normal";
-                        } else {
-                            container.style.marginTop = "8px";
-                            container.style.lineHeight = "1.5";
+                        if (child && child.style) {
+                            child.style.fontSize = Math.min(Math.min(containerRect.max_width / childRect.width, containerRect.max_height / childRect.height), 1.32) + "em";
+                            while (container.getBoundingClientRect().height / (1.5 * 14) >= 3) {
+                                //binding ändern und das überschreiben nicht erlauben aus generaldata
+                                if (that.controller.binding && that.controller.binding.userData && that.controller.binding.userData.VeranstaltungName) {
+                                    child.innerText = child.innerText.replace(/\W*\s(\S)*$/, '...');
+                                }
+                            }
+                            if ((child.getBoundingClientRect().height / (1.5 * 14)) >= 2) {
+                                container.style.marginTop = "-2px";
+                                container.style.lineHeight = "normal";
+                            } else {
+                                container.style.marginTop = "8px";
+                                container.style.lineHeight = "1.5";
+                            }
                         }
                     }
-
-                    resize2fit(eventField);
+                    if (eventField) {
+                        resize2fit(eventField);
+                    }
                     that.inResize = 0;
                 });
             }

@@ -51,7 +51,7 @@
                                 oldElement.innerHTML = "";
                             }
                         }
-                        WinJS.Promise.timeout(50).then(function() {
+                        WinJS.Promise.timeout(50).then(function () {
                             if (userImg && userImg.style && userImg.naturalWidth && userImg.naturalHeight) {
                                 var width = userImg.naturalWidth;
                                 var height = userImg.naturalHeight;
@@ -83,12 +83,12 @@
 
             var loadData = function () {
                 Log.call(Log.l.trace, "AppHeader.Controller.");
-                var ret = new WinJS.Promise.as().then(function() {
+                var ret = new WinJS.Promise.as().then(function () {
                     var employeeId = AppData.getRecordId("Mitarbeiter");
                     if (employeeId) {
                         // todo: load image data and set src of img-element
                         Log.print(Log.l.trace, "calling select contactView...");
-                        return AppHeader.userPhotoView.select(function(json) {
+                        return AppHeader.userPhotoView.select(function (json) {
                             Log.print(Log.l.trace, "userPhotoView: success!");
                             if (json && json.d) {
                                 var docContent = json.d.OvwContentDOCCNT3
@@ -113,7 +113,7 @@
                                 showPhoto();
                             }
 
-                        }, function(errorResponse) {
+                        }, function (errorResponse) {
                             that.binding.photoData = "";
                             showPhoto();
                             // ignore that
@@ -121,8 +121,8 @@
                     } else {
                         return WinJS.Promise.as();
                     }
-                })/*.then(function() {
-                    function checkOverflow(container) {
+                }).then(function () {
+                    /*function checkOverflow(container) {
                         Log.print(Log.l.info, "calling checkOverflow...");
                         var child = container.children[0];
                         var actualFontSize = parseInt(window.getComputedStyle(child).fontSize, 10);
@@ -142,8 +142,9 @@
 
                     }
                     var eventField = document.querySelector(".event-field");
-                    checkOverflow(eventField);
-                })*/;
+                    checkOverflow(eventField);*/
+
+                });
                 Log.ret(Log.l.trace);
                 return ret;
             }
@@ -153,15 +154,50 @@
             WinJS.Resources.processAll(that.element).then(function () {
                 return WinJS.Binding.processAll(that.element, that.binding);
             }).then(function () {
+                var eventField = document.querySelector(".event-field");
+
+                function resize2fit(container) {
+                    var child = container.children[0];
+                    if (!container.parentElement || child.offsetWidth === 0) return;
+                    child.style.fontSize = "1em";
+                    var containerRect = {
+                        max_width: container.getBoundingClientRect().width + 48,
+                        max_height: container.getBoundingClientRect().height + 4
+                    };
+                    var childRect = {
+                        width: child.getBoundingClientRect().width,
+                        height: child.getBoundingClientRect().height
+                    }
+                    if (child && child.style) {
+                        child.style.fontSize = Math.min(Math.min(containerRect.max_width / childRect.width, containerRect.max_height / childRect.height), 1.32) + "em";
+                        while (container.getBoundingClientRect().height / (1.5 * 14) >= 3) {
+                            //binding ändern und das überschreiben nicht erlauben aus generaldata
+                            if (that.binding && that.binding.userData && that.binding.userData.VeranstaltungName) {
+                                that.binding.userData.VeranstaltungName = that.binding.userData.VeranstaltungName.replace(/\W*\s(\S)*$/, '...');
+                            }
+                        }
+                        if ((child.getBoundingClientRect().height / (1.5 * 14)) >= 2) {
+                            container.style.marginTop = "-2px";
+                            container.style.lineHeight = "normal";
+                        } else {
+                            container.style.marginTop = "8px";
+                            container.style.lineHeight = "1.5";
+                        }
+                    }
+                }
+                if (eventField) {
+                    resize2fit(eventField);
+                }
+            }).then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
             });
             Log.ret(Log.l.trace);
         }, {
-            pageData: {
-                generalData: AppData.generalData,
-                appSettings: AppData.appSettings
-            }
-        })
+                pageData: {
+                    generalData: AppData.generalData,
+                    appSettings: AppData.appSettings
+                }
+            })
     });
 })();
 
