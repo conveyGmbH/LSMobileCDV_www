@@ -470,9 +470,10 @@
                             AppData.setErrorMsg(that.binding);
                             Log.print(Log.l.trace, "contactView: success!");
                             var modifiedTS = null;
-                            var flagNoEdit = json.d.Flag_NoEdit;
+                            var flagNoEdit = null;
                             if (json && json.d) {
-                                modifiedTS = json.d.ModifiedTS
+                                modifiedTS = json.d.ModifiedTS;
+                                flagNoEdit = json.d.Flag_NoEdit;
                                 if (!flagNoEdit) {
                                     that.setDataContact(json.d);
                                     if (that.binding.dataContact.Request_Barcode) {
