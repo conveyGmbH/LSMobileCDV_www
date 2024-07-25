@@ -458,6 +458,7 @@
                 Log.call(Log.l.trace, "Contact.Controller.");
                 if (that.contactReloadPromise) {
                     that.contactReloadPromise.cancel();
+                    that.removeDisposablePromise(that.contactReloadPromise);
                 }
                 AppData.setErrorMsg(that.binding);
                 var ret = new WinJS.Promise.as().then(function () {
@@ -485,26 +486,21 @@
                                         json.d.DOC1Import_CardscanID);
                                     loadInitSelection();
                                 }
-                                that.addDisposablePromise(WinJS.Promise.timeout(100).then(function () {
-                                    if (prevModifiedTS === modifiedTS && that.binding.dataContact && that.binding.dataContact.Flag_NoEdit) {
+                                if (prevModifiedTS === modifiedTS && that.binding.dataContact && that.binding.dataContact.Flag_NoEdit) {
+                                    that.addDisposablePromise(WinJS.Promise.timeout(2000).then(function () {
                                         that.reloadData(prevModifiedTS);
-                                    } else {
-                                        var addresscontainer = pageElement.querySelector(".address-container");
-                                        if (addresscontainer && WinJS.Utilities.hasClass(addresscontainer, "blur")) {
-                                            addresscontainer.classList.remove("blur");
-                                        }
+                                    }));
+                                } else {
+                                    var addresscontainer = pageElement.querySelector(".address-container");
+                                    if (addresscontainer && WinJS.Utilities.hasClass(addresscontainer, "blur")) {
+                                        addresscontainer.classList.remove("blur");
                                     }
-                                }));
-                            } else {
-                                that.addDisposablePromise(WinJS.Promise.timeout(100).then(function () {
-                                    that.reloadData(prevModifiedTS);
-                                }));
+                                }
                             }
                         }, function (errorResponse) {
                             that.removeDisposablePromise(that.contactReloadPromise);
                             AppData.setErrorMsg(that.binding, errorResponse);
                         }, recordId);
-
                     } else {
                         return WinJS.Promise.as();
                     }
