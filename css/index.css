@@ -786,6 +786,7 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 
     .user-name-container {
         padding-top: 4px;
+        max-width: 90px;
     }
     /*
     .event-line {
