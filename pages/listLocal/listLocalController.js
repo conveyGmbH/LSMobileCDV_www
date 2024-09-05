@@ -60,6 +60,18 @@
 
             var imgSrcDataType = "data:image/jpeg;base64,";
 
+            var getContactId = function () {
+                Log.print(Log.l.trace, "getContactId ListLocal._contactId=" + ListLocal._contactId);
+                return ListLocal._contactId;
+            }
+            this.getContactId = getContactId;
+
+            var setContactId = function (value) {
+                Log.print(Log.l.trace, "setContactId ListLocal._contactId=" + value);
+                ListLocal._contactId = value;
+            }
+            this.setContactId = setContactId;
+
             var background = function (index) {
                 if (index % 2 === 0) {
                     return 1;
@@ -280,8 +292,9 @@
                                 // Only one item is selected, show the page
                                 listControl.selection.getItems().done(function (items) {
                                     var item = items[0];
-                                    if (item.data && item.data.KontaktVIEWID && AppData.generalData.getRecordId("Kontakt") && item.data.KontaktVIEWID !== AppData.generalData.getRecordId("Kontakt")) {
+                                    if (item.data && item.data.KontaktVIEWID && that.getContactId() && item.data.KontaktVIEWID !== that.getContactId()) {
                                         AppData.generalData.setRecordId("Kontakt", item.data.KontaktVIEWID);
+                                        that.setContactId(item.data.KontaktVIEWID);
                                         WinJS.Promise.timeout(0).then(function () {
                                             Application.navigateById("contact", eventInfo);
                                         });
@@ -598,9 +611,10 @@
                                 // add ListView dataSource
                                 listView.winControl.itemDataSource = that.contacts.dataSource;
                             }
-                            AppData.generalData.setRecordId("Kontakt", AppData.generalData.getRecordId("Kontakt") || results[0].KontaktVIEWID);
-                            that.selectRecordId(AppData.generalData.getRecordId("Kontakt") || results[0].KontaktVIEWID);
-                            //that.scrollToRecordId(AppData.generalData.getRecordId("Kontakt") || results[0].KontaktVIEWID);
+                            if (!that.getContactId()) {
+                                that.setContactId(results[0].KontaktVIEWID);
+                            }
+                            that.selectRecordId(that.getContactId());
                         } else {
                             that.binding.count = 0;
                             that.nextUrl = null;

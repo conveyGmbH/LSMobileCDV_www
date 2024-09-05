@@ -8,6 +8,7 @@
     "use strict";
 
     WinJS.Namespace.define("ListLocal", {
+        _contactId: 0,
         _contactView: {
             get: function () {
                 var ret = AppData.getFormatView("Kontakt", 20429);
