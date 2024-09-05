@@ -510,6 +510,10 @@
 	"info.cameraMegapixel"  : "Kamera Megapixel",
 	"info.useClippingCameraNewMode" : "Geniusscan Plugin",
     "info.eventName"       : "Aktuelle Veranstaltung: ",
+    "info.useBarcodeActivityOn" : "Achtung! Diese Funktion funktioniert nur, wenn das Gerät neben der Kamera auch einen 1D- oder 2D-Laserscanner unterstützt. \nBitte beachten Sie: Wenn Sie diese Funktion auf Ihrem Smartphone oder Tablet aktivieren, können Sie die Tickets des Besuchers nicht mehr scannen! ", 
+    "info.useBarcodeActivityOff" : "Achtung: Sie deaktivieren das Feature zum Scannen über den integrierten Laserscanner. Es wird die Kamera zum Scannen genutzt. ", 
+    "info.confirm"			: "Ok",
+    "info.cancel"           : "Abbrechen",
     
     "backup.title"          : "Backup",
     "backup.info"			: "Hier kannst du ein Backup erstellen und es an convey information systems GmbH teilen",

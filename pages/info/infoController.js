@@ -242,24 +242,66 @@
                     Log.call(Log.l.trace, "info.Controller.");
                     if (event.currentTarget && AppBar.notifyModified) {
                         var toggle = event.currentTarget.winControl;
-                        if (toggle) {
-                            that.binding.generalData.useBarcodeActivity = toggle.checked;
-                            that.binding.hasSerialDevice = (isWindows10 && AppData.generalData.useBarcodeActivity) ? true : false;
-                            if (that.binding.hasSerialDevice) {
-                                WinJS.Promise.timeout(0).then(function () {
-                                    that.loadData();
-                                });
-                            }
-                            if (device &&
-                                (device.platform === "Android" ||
-                                 device.platform === "windows" &&
-                                 AppData.generalData.barcodeDevice) &&
-                                AppData.generalData.useBarcodeActivity) {
-                                Barcode.startListenDelayed(250);
-                            }
-                        } else if (Barcode.listening) {
-                            Barcode.stopListen();
+                        var messageText = null;
+                        if (toggle && toggle.checked) {
+                            messageText = getResourceText("info.useBarcodeActivityOn");
+                        } else {
+                            messageText = getResourceText("info.useBarcodeActivityOff");
                         }
+                        if (device && device.model === "TC20" || device.model === "TC22") {
+                            messageText = null;
+                        }
+                        if (!messageText) {
+                            if (toggle) {
+                                that.binding.generalData.useBarcodeActivity = toggle.checked;
+                                that.binding.hasSerialDevice = (isWindows10 && AppData.generalData.useBarcodeActivity) ? true : false;
+                                if (that.binding.hasSerialDevice) {
+                                    WinJS.Promise.timeout(0).then(function () {
+                                        that.loadData();
+                                    });
+                                }
+                                if (device &&
+                                    (device.platform === "Android" ||
+                                        device.platform === "windows" &&
+                                        AppData.generalData.barcodeDevice) &&
+                                    AppData.generalData.useBarcodeActivity) {
+                                    Barcode.startListenDelayed(250);
+                                }
+                            } else if (Barcode.listening) {
+                                Barcode.stopListen();
+                            }
+                        }
+                        confirmModal(null,
+                            messageText,
+                            getResourceText("info.confirm"),
+                            getResourceText("info.cancel"),
+                            function (updateConfirmed) {
+                                Log.print(Log.l.info, "updateMessage returned=" + updateConfirmed);
+                                if (updateConfirmed) {
+                                    if (toggle) {
+                                        that.binding.generalData.useBarcodeActivity = toggle.checked;
+                                        that.binding.hasSerialDevice = (isWindows10 && AppData.generalData.useBarcodeActivity) ? true : false;
+                                        if (that.binding.hasSerialDevice) {
+                                            WinJS.Promise.timeout(0).then(function () {
+                                                that.loadData();
+                                            });
+                                        }
+                                        if (device &&
+                                            (device.platform === "Android" ||
+                                                device.platform === "windows" &&
+                                                AppData.generalData.barcodeDevice) &&
+                                            AppData.generalData.useBarcodeActivity) {
+                                            Barcode.startListenDelayed(250);
+                                        }
+                                    } else if (Barcode.listening) {
+                                        Barcode.stopListen();
+                                    }
+                                } else {
+                                    Log.print(Log.l.trace, "User changed: user choice CANCEL");
+                                    that.binding.generalData.useBarcodeActivity = !toggle.checked;
+                                    toggle.checked = !toggle.checked;
+                                }
+                            });
                     }
                     Log.ret(Log.l.trace);
                 },

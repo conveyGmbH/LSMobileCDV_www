@@ -173,6 +173,9 @@
                     }
                 }
             }
+        } else if (id === "start") {
+            AppData.generalData.setRecordId("Kontakt", 0);
+            AppData.generalData.setRecordId("Kontakt_Remote", 0);
         }
         Log.ret(Log.l.trace);
         return id;

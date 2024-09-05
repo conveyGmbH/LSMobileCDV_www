@@ -75,17 +75,17 @@
                 item.company = ((item.Firmenname ? (item.Firmenname + " ") : ""));
                 item.fullName =
                     ((item.Title ? (item.Title + " ") : "") +
-                    (item.Vorname ? (item.Vorname + " ") : "") +
-                    (item.Name ? item.Name : ""));
+                        (item.Vorname ? (item.Vorname + " ") : "") +
+                        (item.Name ? item.Name : ""));
                 item.address = item.EMail ? item.EMail : "";
-                    //((item.Strasse ? (item.Strasse + "\r\n") : "") +
-                    //((item.PLZ || item.Stadt) ? ((item.PLZ ? (item.PLZ + " ") : "") + (item.Stadt ? item.Stadt : "") + "\r\n") : "") +
-                    //(item.Land ? (item.Land + "\r\n") : "") +
-                    //((item.TelefonMobil) ?
-                    //(item.TelefonMobil + "\r\n") :
-                    //(item.TelefonFestnetz ? (item.TelefonFestnetz + "\r\n") : "") +
-                    //(item.EMail ? item.EMail : ""))) +
-                    //(item.Freitext1 ? "\r\n" + item.Freitext1 : "");
+                //((item.Strasse ? (item.Strasse + "\r\n") : "") +
+                //((item.PLZ || item.Stadt) ? ((item.PLZ ? (item.PLZ + " ") : "") + (item.Stadt ? item.Stadt : "") + "\r\n") : "") +
+                //(item.Land ? (item.Land + "\r\n") : "") +
+                //((item.TelefonMobil) ?
+                //(item.TelefonMobil + "\r\n") :
+                //(item.TelefonFestnetz ? (item.TelefonFestnetz + "\r\n") : "") +
+                //(item.EMail ? item.EMail : ""))) +
+                //(item.Freitext1 ? "\r\n" + item.Freitext1 : "");
                 var date = getDateObject(item.Erfassungsdatum);
                 var m = moment(date);
                 m.locale(Application.language);
@@ -182,7 +182,7 @@
             }
             this.resultDocConverter = resultDocConverter;
 
-            var imageRotate = function(element) {
+            var imageRotate = function (element) {
                 Log.call(Log.l.trace, "ContactList.Controller.");
                 if (element && typeof element.querySelector === "function") {
                     var img = element.querySelector(".list-compressed-doc");
@@ -208,7 +208,7 @@
                                 img.style.width = "auto";
                             }
                         } else {
-                            WinJS.Promise.timeout(0).then(function() {
+                            WinJS.Promise.timeout(0).then(function () {
                                 that.imageRotate(element);
                             });
                         }
@@ -237,12 +237,12 @@
                     Application.navigateById("userinfo", event);
                     Log.ret(Log.l.trace);
                 },
-                clickForward: function(event) {
+                clickForward: function (event) {
                     Log.call(Log.l.trace, "ListRemote.Controller.");
                     Application.navigateById("search", event);
                     Log.ret(Log.l.trace);
                 },
-                onSelectionChanged: function(eventInfo) {
+                onItemInvoked: function (eventInfo) {
                     Log.call(Log.l.trace, "ListRemote.Controller.");
                     if (listView && listView.winControl) {
                         var listControl = listView.winControl;
@@ -250,12 +250,13 @@
                             var selectionCount = listControl.selection.count();
                             if (selectionCount === 1) {
                                 // Only one item is selected, show the page
-                                listControl.selection.getItems().done(function(items) {
+                                listControl.selection.getItems().done(function (items) {
                                     var item = items[0];
-                                    if (item.data && item.data.KontaktVIEWID) {
+                                    if (item.data && item.data.KontaktVIEWID && AppData.generalData.getRecordId("Kontakt_Remote") && item.data.KontaktVIEWID === AppData.generalData.getRecordId("Kontakt_Remote")) {
                                         var contactPage;
                                         if (item.data.CreatorSiteID === AppData._persistentStates.odata.dbSiteId) {
                                             AppData.generalData.setRecordId("Kontakt", item.data.CreatorRecID);
+                                            AppData.generalData.setRecordId("Kontakt_Remote", item.data.KontaktVIEWID);
                                             contactPage = "contact";
                                         } else {
                                             AppData.generalData.setRecordId("Kontakt_Remote", item.data.KontaktVIEWID);
@@ -264,6 +265,7 @@
                                         WinJS.Promise.timeout(0).then(function () {
                                             Application.navigateById(contactPage, eventInfo);
                                         });
+
                                     }
                                 });
                             }
@@ -271,7 +273,38 @@
                     }
                     Log.ret(Log.l.trace);
                 },
-                onLoadingStateChanged: function(eventInfo) {
+                onSelectionChanged: function (eventInfo) {
+                    Log.call(Log.l.trace, "ListRemote.Controller.");
+                    if (listView && listView.winControl) {
+                        var listControl = listView.winControl;
+                        if (listControl.selection) {
+                            var selectionCount = listControl.selection.count();
+                            if (selectionCount === 1) {
+                                // Only one item is selected, show the page
+                                listControl.selection.getItems().done(function (items) {
+                                    var item = items[0];
+                                    if (item.data && item.data.KontaktVIEWID && AppData.generalData.getRecordId("Kontakt_Remote") && item.data.KontaktVIEWID !== AppData.generalData.getRecordId("Kontakt_Remote")) {
+                                        var contactPage;
+                                        if (item.data.CreatorSiteID === AppData._persistentStates.odata.dbSiteId) {
+                                            AppData.generalData.setRecordId("Kontakt", item.data.CreatorRecID);
+                                            AppData.generalData.setRecordId("Kontakt_Remote", item.data.KontaktVIEWID);
+                                            contactPage = "contact";
+                                        } else {
+                                            AppData.generalData.setRecordId("Kontakt_Remote", item.data.KontaktVIEWID);
+                                            contactPage = "contactRemote";
+                                        }
+                                        WinJS.Promise.timeout(0).then(function () {
+                                            Application.navigateById(contactPage, eventInfo);
+                                        });
+
+                                    }
+                                });
+                            }
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                onLoadingStateChanged: function (eventInfo) {
                     Log.call(Log.l.trace, "ListRemote.Controller.");
                     if (listView && listView.winControl) {
                         Log.print(Log.l.trace, "loadingState=" + listView.winControl.loadingState);
@@ -348,7 +381,7 @@
                     }
                     Log.ret(Log.l.trace);
                 },
-                onFooterVisibilityChanged: function(eventInfo) {
+                onFooterVisibilityChanged: function (eventInfo) {
                     Log.call(Log.l.trace, "ListRemote.Controller.");
                     if (eventInfo && eventInfo.detail) {
                         progress = listView.querySelector(".list-footer .progress");
@@ -375,7 +408,7 @@
                                 if (json && json.d && that.contacts) {
                                     that.nextUrl = ListRemote.contactView.getNextUrl(json);
                                     var results = json.d.results;
-                                    results.forEach(function(item, index) {
+                                    results.forEach(function (item, index) {
                                         that.resultConverter(item, that.binding.count);
                                         that.binding.count = that.contacts.push(item);
                                     });
@@ -501,6 +534,7 @@
 
             // register ListView event handler
             if (listView) {
+                this.addRemovableEventListener(listView, "iteminvoked", this.eventHandlers.onItemInvoked.bind(this));
                 this.addRemovableEventListener(listView, "selectionchanged", this.eventHandlers.onSelectionChanged.bind(this));
                 this.addRemovableEventListener(listView, "loadingstatechanged", this.eventHandlers.onLoadingStateChanged.bind(this));
                 this.addRemovableEventListener(listView, "footervisibilitychanged", this.eventHandlers.onFooterVisibilityChanged.bind(this));
@@ -581,6 +615,8 @@
                                 // add ListView dataSource
                                 listView.winControl.itemDataSource = that.contacts.dataSource;
                             }
+                            AppData.generalData.setRecordId("Kontakt_Remote", AppData.generalData.getRecordId("Kontakt_Remote") || results[0].KontaktVIEWID);
+                            that.selectRecordId(AppData.generalData.getRecordId("Kontakt_Remote") || results[0].KontaktVIEWID);
                         } else {
                             that.binding.count = 0;
                             that.nextUrl = null;
@@ -613,7 +649,7 @@
                         }
                         that.loading = false;
                     },
-                    restriction);
+                        restriction);
                     return that.addDisposablePromise(contactSelectPromise);
                 }).then(function () {
                     var contactDocSelectPromise = WinJS.Promise.timeout(250).then(function () {
@@ -642,7 +678,7 @@
                             Log.print(Log.l.error, "ContactList.contactDocView: error!");
                             AppData.setErrorMsg(that.binding, errorResponse);
                         },
-                        restriction);
+                            restriction);
                         that.addDisposablePromise(contactDocSelectPromise);
                     });
                     that.addDisposablePromise(contactDocSelectPromise);
@@ -652,7 +688,49 @@
             };
             this.loadData = loadData;
 
-            that.processAll().then(function() {
+            var scrollToRecordId = function (recordId) {
+                Log.call(Log.l.trace, "GenDataEmpList.Controller.", "recordId=" + recordId);
+                if (that.loading) {
+                    WinJS.Promise.timeout(50).then(function () {
+                        that.scrollToRecordId(recordId);
+                    });
+                } else {
+                    if (recordId && listView && listView.winControl && that.contacts) {
+                        for (var i = 0; i < that.contacts.length; i++) {
+                            var contact = that.contacts.getAt(i);
+                            if (contact && typeof contact === "object" &&
+                                contact.KontaktVIEWID === recordId) {
+                                listView.winControl.indexOfFirstVisible = i;
+                                break;
+                            }
+                        }
+                    }
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.scrollToRecordId = scrollToRecordId;
+
+            var selectRecordId = function (recordId) {
+                Log.call(Log.l.trace, "GenDataEmpList.Controller.", "recordId=" + recordId);
+                if (recordId && listView && listView.winControl && listView.winControl.selection && that.contacts) {
+                    for (var i = 0; i < that.contacts.length; i++) {
+                        var contact = that.contacts.getAt(i);
+                        if (contact && typeof contact === "object" &&
+                            contact.KontaktVIEWID === recordId) {
+                            listView.winControl.selection.set(i).done(function () {
+                                WinJS.Promise.timeout(50).then(function () {
+                                    that.scrollToRecordId(recordId);
+                                });
+                            });
+                            break;
+                        }
+                    }
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.selectRecordId = selectRecordId;
+
+            that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 return that.loadData();
             }).then(function () {

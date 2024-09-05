@@ -263,6 +263,13 @@
                     Application.navigateById("userinfo", event);
                     Log.ret(Log.l.trace);
                 },
+                onItemInvoked: function (eventInfo) {
+                    Log.call(Log.l.trace, "ListLocal.Controller.");
+                    WinJS.Promise.timeout(0).then(function () {
+                        Application.navigateById("contact", eventInfo);
+                    });
+                    Log.ret(Log.l.trace);
+                },
                 onSelectionChanged: function (eventInfo) {
                     Log.call(Log.l.trace, "ListLocal.Controller.");
                     if (listView && listView.winControl) {
@@ -273,7 +280,7 @@
                                 // Only one item is selected, show the page
                                 listControl.selection.getItems().done(function (items) {
                                     var item = items[0];
-                                    if (item.data && item.data.KontaktVIEWID) {
+                                    if (item.data && item.data.KontaktVIEWID && AppData.generalData.getRecordId("Kontakt") && item.data.KontaktVIEWID !== AppData.generalData.getRecordId("Kontakt")) {
                                         AppData.generalData.setRecordId("Kontakt", item.data.KontaktVIEWID);
                                         WinJS.Promise.timeout(0).then(function () {
                                             Application.navigateById("contact", eventInfo);
@@ -517,6 +524,7 @@
 
             // register ListView event handler
             if (listView) {
+                this.addRemovableEventListener(listView, "iteminvoked", this.eventHandlers.onItemInvoked.bind(this));
                 this.addRemovableEventListener(listView, "selectionchanged", this.eventHandlers.onSelectionChanged.bind(this));
                 this.addRemovableEventListener(listView, "loadingstatechanged", this.eventHandlers.onLoadingStateChanged.bind(this));
                 this.addRemovableEventListener(listView, "headervisibilitychanged", this.eventHandlers.onHeaderVisibilityChanged.bind(this));
@@ -590,6 +598,9 @@
                                 // add ListView dataSource
                                 listView.winControl.itemDataSource = that.contacts.dataSource;
                             }
+                            AppData.generalData.setRecordId("Kontakt", AppData.generalData.getRecordId("Kontakt") || results[0].KontaktVIEWID);
+                            that.selectRecordId(AppData.generalData.getRecordId("Kontakt") || results[0].KontaktVIEWID);
+                            //that.scrollToRecordId(AppData.generalData.getRecordId("Kontakt") || results[0].KontaktVIEWID);
                         } else {
                             that.binding.count = 0;
                             that.nextUrl = null;
@@ -699,6 +710,52 @@
                 return ret;
             };
             this.loadData = loadData;
+
+            var scrollToRecordId = function (recordId) {
+                Log.call(Log.l.trace, "GenDataEmpList.Controller.", "recordId=" + recordId);
+                if (that.loading) {
+                    WinJS.Promise.timeout(50).then(function () {
+                        that.scrollToRecordId(recordId);
+                    });
+                } else {
+                    if (recordId && listView && listView.winControl && that.contacts) {
+                        for (var i = 0; i < that.contacts.length; i++) {
+                            var contact = that.contacts.getAt(i);
+                            if (contact && typeof contact === "object" &&
+                                contact.KontaktVIEWID === recordId) {
+                                //listView.winControl.selection.set(i).done(function () {
+                                //    WinJS.Promise.timeout(50).then(function () {
+                                        listView.winControl.indexOfFirstVisible = i;
+                                //    });
+                                //});
+                                break;
+                            }
+                        }
+                    }
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.scrollToRecordId = scrollToRecordId;
+
+            var selectRecordId = function (recordId) {
+                Log.call(Log.l.trace, "GenDataEmpList.Controller.", "recordId=" + recordId);
+                if (recordId && listView && listView.winControl && listView.winControl.selection && that.contacts) {
+                    for (var i = 0; i < that.contacts.length; i++) {
+                        var contact = that.contacts.getAt(i);
+                        if (contact && typeof contact === "object" &&
+                            contact.KontaktVIEWID === recordId) {
+                            listView.winControl.selection.set(i).done(function () {
+                                WinJS.Promise.timeout(50).then(function () {
+                                    that.scrollToRecordId(recordId);
+                                });
+                            });
+                            break;
+                        }
+                    }
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.selectRecordId = selectRecordId;
 
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
