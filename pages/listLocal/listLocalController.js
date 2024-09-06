@@ -631,6 +631,7 @@
                             }
                             if (!AppData.generalData.getRecordId("Kontakt_Remote")) {
                                 that.setContactId(results[0].KontaktVIEWID);
+                                AppData.generalData.setRecordId("Kontakt", results[0].KontaktVIEWID);
                                 AppData.generalData.setRecordId("Kontakt_Remote", results[0].KontaktVIEWID);
                             }
                             that.selectRecordId(AppData.generalData.getRecordId("Kontakt_Remote"));
