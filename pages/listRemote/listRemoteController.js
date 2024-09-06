@@ -688,21 +688,124 @@
             };
             this.loadData = loadData;
 
+            var loadNextUrl = function (recordId) {
+                Log.call(Log.l.trace, "ListRemote.Controller.", "recordId=" + recordId);
+                if (that.contacts && that.nextUrl && listView) {
+                    AppBar.busy = true;
+                    that.binding.loading = true;
+                    AppData.setErrorMsg(that.binding);
+                    Log.print(Log.l.trace, "calling select ListRemote.contactView...");
+                    var nextUrl = that.nextUrl;
+                    that.nextUrl = null;
+                    that.refreshNextPromise = ListRemote.contactView.selectNext(function (json) { //json is undefined
+                        // this callback will be called asynchronously
+                        // when the response is available
+                        Log.print(Log.l.trace, "ListRemote.contactView: success!");
+                        // startContact returns object already parsed from json file in response
+                        if (json && json.d && json.d.results && json.d.results.length > 0 && that.contacts) {
+                            that.nextUrl = ListRemote.contactView.getNextUrl(json);
+                            var results = json.d.results;
+                            results.forEach(function (item, index) {
+                                that.resultConverter(item, that.binding.count);
+                                that.binding.count = that.contacts.push(item);
+                            });
+                        } else {
+                            that.binding.loading = false;
+                        }
+                        AppBar.busy = false;
+                        if (that.nextDocUrl) {
+                            that.refreshNextDocPromise = WinJS.Promise.timeout(250).then(function () {
+                                Log.print(Log.l.trace, "calling select ListRemote.contactDocView...");
+                                var nextDocUrl = that.nextDocUrl;
+                                that.nextDocUrl = null;
+                                ListRemote.contactDocView.selectNext(function (jsonDoc) {
+                                    // this callback will be called asynchronously
+                                    // when the response is available
+                                    Log.print(Log.l.trace, "ListRemote.contactDocView: success!");
+                                    // startContact returns object already parsed from json file in response
+                                    if (jsonDoc && jsonDoc.d) {
+                                        that.nextDocUrl = ListRemote.contactDocView.getNextUrl(jsonDoc);
+                                        var resultsDoc = jsonDoc.d.results;
+                                        resultsDoc.forEach(function (item, index) {
+                                            that.resultDocConverter(item, that.binding.doccount);
+                                            that.binding.doccount = that.docs.push(item);
+                                        });
+                                    }
+                                }, function (errorResponse) {
+                                    // called asynchronously if an error occurs
+                                    // or server returns response with an error status.
+                                    Log.print(Log.l.error, "ListRemote.contactDocView: error!");
+                                    AppData.setErrorMsg(that.binding, errorResponse);
+                                }, null, nextDocUrl);
+                            });
+                        }
+                        if (recordId) {
+                            that.selectRecordId(recordId);
+                        }
+                    }, function (errorResponse) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        Log.print(Log.l.error, "ListRemote.contactView: error!");
+                        AppData.setErrorMsg(that.binding, errorResponse);
+                        AppBar.busy = false;
+                        that.binding.loading = false;
+                    }, null, nextUrl);
+                }
+                Log.ret(Log.l.trace);
+                return that.refreshNextPromise;
+            }
+            this.loadNextUrl = loadNextUrl;
+
+            var scopeFromRecordId = function (recordId) {
+                var i;
+                Log.call(Log.l.trace, ".Controller.", "recordId=" + recordId);
+                var item = null;
+                if (that.contacts) {
+                    for (i = 0; i < that.contacts.length; i++) {
+                        var contact = that.contacts.getAt(i);
+                        if (contact && typeof contact === "object" &&
+                            contact.KontaktVIEWID === recordId) {
+                            item = contact;
+                            break;
+                        }
+                    }
+                }
+                if (item) {
+                    Log.ret(Log.l.trace, "i=" + i);
+                    return { index: i, item: item };
+                } else {
+                    Log.ret(Log.l.trace, "not found");
+                    return null;
+                }
+            };
+            this.scopeFromRecordId = scopeFromRecordId;
+
             var scrollToRecordId = function (recordId) {
-                Log.call(Log.l.trace, "GenDataEmpList.Controller.", "recordId=" + recordId);
-                if (that.loading) {
+                Log.call(Log.l.trace, "ListRemote.Controller.", "recordId=" + recordId);
+                if (that.binding.loading ||
+                    listView && listView.winControl && listView.winControl.loadingState !== "complete") {
                     WinJS.Promise.timeout(50).then(function () {
                         that.scrollToRecordId(recordId);
                     });
                 } else {
-                    if (recordId && listView && listView.winControl && that.contacts) {
-                        for (var i = 0; i < that.contacts.length; i++) {
-                            var contact = that.contacts.getAt(i);
-                            if (contact && typeof contact === "object" &&
-                                contact.KontaktVIEWID === recordId) {
-                                listView.winControl.indexOfFirstVisible = i;
-                                break;
-                            }
+                    if (listView && listView.winControl) {
+                        var scope = that.scopeFromRecordId(recordId);
+                        if (scope && scope.index >= 0) {
+                            listView && listView.winControl.ensureVisible(scope.index);
+                            WinJS.Promise.timeout(50).then(function () {
+                                var indexOfFirstVisible = listView.winControl.indexOfFirstVisible;
+                                var elementOfFirstVisible = listView.winControl.elementFromIndex(indexOfFirstVisible);
+                                var element = listView.winControl.elementFromIndex(scope.index);
+                                var height = listView.clientHeight;
+                                if (element && elementOfFirstVisible) {
+                                    var offsetDiff = element.offsetTop - elementOfFirstVisible.offsetTop;
+                                    if (offsetDiff > height - element.clientHeight) {
+                                        listView.winControl.scrollPosition += offsetDiff - (height - element.clientHeight);
+                                    } else if (offsetDiff < 0) {
+                                        listView.winControl.indexOfFirstVisible = scope.index;
+                                    }
+                                }
+                            });
                         }
                     }
                 }
@@ -711,6 +814,26 @@
             this.scrollToRecordId = scrollToRecordId;
 
             var selectRecordId = function (recordId) {
+                var contact;
+                Log.call(Log.l.trace, "ListRemote.Controller.", "recordId=" + recordId);
+                var recordIdNotFound = true;
+                if (recordId && listView && listView.winControl && listView.winControl.selection && that.contacts) {
+                    for (var i = 0; i < that.contacts.length; i++) {
+                        contact = that.contacts.getAt(i);
+                        if (contact && typeof contact === "object" && contact.KontaktVIEWID === recordId) {
+                            //AppData.setRecordId("Kontakt", recordId);
+                            listView.winControl.selection.set(i);
+                            that.scrollToRecordId(recordId);
+                            recordIdNotFound = false;
+                            //handlePageEnable(contact);
+                            break;
+                        }
+                    }
+                    if (recordIdNotFound && that.nextUrl) {
+                        that.loadNextUrl(recordId);
+                    }
+                }
+                Log.ret(Log.l.trace);
                 Log.call(Log.l.trace, "GenDataEmpList.Controller.", "recordId=" + recordId);
                 if (recordId && listView && listView.winControl && listView.winControl.selection && that.contacts) {
                     for (var i = 0; i < that.contacts.length; i++) {

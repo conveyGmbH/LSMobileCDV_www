@@ -174,11 +174,6 @@
                 }
             }
         } else if (id === "start") {
-            if (typeof AppBar.scope.getContactId === "function" &&
-                typeof AppBar.scope.setContactId === "function" &&
-                AppBar.scope.getContactId()) {
-                AppBar.scope.setContactId(0);
-            }
             AppData.generalData.setRecordId("Kontakt_Remote", 0);
         }
         Log.ret(Log.l.trace);
