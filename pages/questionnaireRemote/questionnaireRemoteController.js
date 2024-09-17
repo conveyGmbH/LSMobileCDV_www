@@ -1284,7 +1284,7 @@
                     }
                 },
                 clickNew: function () {
-                    if (AppData._persistentStates.disableCaptureContactsButton) {
+                    if (AppData._persistentStates.disableCaptureContactsButton || AppData._persistentStates.inActiveUser) {
                         return true;
                     } else {
                         if (that.binding.generalData.contactId) {

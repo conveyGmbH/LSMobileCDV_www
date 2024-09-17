@@ -216,7 +216,8 @@
                             }
                                 break;
                             case "barcode": {
-                                disableButton(button, AppData._persistentStates.disableCaptureContactsButton || 
+                                disableButton(button, AppData._persistentStates.disableCaptureContactsButton ||
+                                    AppData._persistentStates.inActiveUser ||
                                     AppData._persistentStates.hideBarcodeScan ||
                                     (!AppData._persistentStates.cameraFeatureSupported &&
                                         !AppData._persistentStates.useBarcodeActivity));
@@ -224,12 +225,14 @@
                                 break;
                             case "camera": {
                                 disableButton(button, AppData._persistentStates.disableCaptureContactsButton || 
+                                    AppData._persistentStates.inActiveUser ||
                                     AppData._persistentStates.hideCameraScan ||
                                     !AppData._persistentStates.cameraFeatureSupported);
                             }
                                 break;
                             case "newContact": {
                                 disableButton(button, AppData._persistentStates.disableCaptureContactsButton || 
+                                    AppData._persistentStates.inActiveUser ||
                                     AppData._persistentStates.hideManually);
                             }
                         }
@@ -826,7 +829,7 @@
                     AppData._curGetUserRemoteDataId = 0;
                     AppData.getUserRemoteData();
                     AppData.getCRVeranstOption();
-                    // AppData.getMobileVersion();
+                    AppData.getMobileVersion();
                 }
                 if (AppData._movedSuccess === 0) {
                     return confirmModal(null, getResourceText("general.userChangedSuccess") + AppData._userData.VeranstaltungName, getResourceText("flyout.ok"), null, function (updateConfirmed) {

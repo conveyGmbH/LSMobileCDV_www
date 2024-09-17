@@ -276,7 +276,7 @@
                                     var endDate = new Date(milliseconds);
                                     var diffTime = actualDate.getTime() - endDate.getTime();
                                     var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                                    //AppData._persistentStates.disableCaptureContactsButton = false;
+
                                     if (diffDays > 23) {
                                         AppData.setErrorMsg(AppBar.scope.binding, getResourceText("general.eventFinishedMsg1"));
                                     }
@@ -652,6 +652,17 @@
                                     if (prevUserRemoteData && ((prevUserRemoteData.NotUploaded || 0) !== (AppData._userRemoteData.NotUploaded || 0))) {
                                         doUpdate = true;
                                     }
+                                    if (AppData._userRemoteData.MessageID && (AppData._userRemoteData.MessageID === 22183 || AppData._userRemoteData.MessageID === 21359)) {
+                                        if (!AppData._persistentStates.inActiveUser) {
+                                            doUpdate = true;
+                                        }
+                                        AppData._persistentStates.inActiveUser = true;
+                                    } else {
+                                        if (AppData._persistentStates.inActiveUser) {
+                                            doUpdate = true;
+                                        }
+                                        AppData._persistentStates.inActiveUser = false;
+                                    }
                                 }
                                 if (AppBar.scope && typeof AppBar.scope.updateActions === "function" && doUpdate) {
                                     AppBar.scope.updateActions();
@@ -674,7 +685,7 @@
                                     }
                                     AppData.getUserRemoteData();
                                     AppData.getCRVeranstOption();
-                                    //AppData.getMobileVersion();
+                                    AppData.getMobileVersion();
                                 });
                             }, function (errorResponse) {
                                 Log.print(Log.l.error, "call error=" + JSON.stringify(errorResponse));

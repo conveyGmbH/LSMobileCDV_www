@@ -289,9 +289,9 @@
                                         AppData.generalData.setRecordId("Kontakt", item.data.KontaktVIEWID);
                                         AppData.generalData.setRecordId("Kontakt_Remote", item.data.KontaktVIEWID);
                                         that.setContactId(item.data.KontaktVIEWID);
-                    WinJS.Promise.timeout(0).then(function () {
-                        Application.navigateById("contact", eventInfo);
-                    });
+                                        WinJS.Promise.timeout(0).then(function () {
+                                            Application.navigateById("contact", eventInfo);
+                                        });
                                     }
                                 });
                             }
@@ -549,7 +549,7 @@
                     return !that.binding.generalData.logOffOptionActive;
                 },
                 clickNew: function() {
-                    return AppData._persistentStates.disableCaptureContactsButton;
+                    return AppData._persistentStates.disableCaptureContactsButton || AppData._persistentStates.inActiveUser;
                 }
             };
 
