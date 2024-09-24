@@ -571,6 +571,8 @@
     "userinfo.mobile"       : "Portable",
     "userinfo.entry"        : "Entrée",
     "userinfo.exit"         : "Quitter",
+    "userinfo.country" : "Pays",
+    "userinfo.notice" : "Préavis",
 
     "uservcard.title"       : "Mes coordonnées en tant que QR-Code",
 	"uservcard.firstName"    : "Prénom",

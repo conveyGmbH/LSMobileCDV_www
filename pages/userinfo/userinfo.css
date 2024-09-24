@@ -96,3 +96,17 @@
 #userInfoController .field_line {
     margin-bottom: 18px;
 }
+#userInfoController .label.group {
+    white-space: normal;
+}
+
+.view-size-medium .userinfo .input_group {
+    float: right;
+    width: 100%;
+    min-width: calc(100% - 124px);
+    /*display: inline;*/
+    /*position: relative;*/
+    top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+}

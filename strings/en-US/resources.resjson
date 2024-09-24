@@ -569,6 +569,8 @@
     "userinfo.mobile"       : "Mobile",
     "userinfo.entry"        : "Entry",
     "userinfo.exit"			: "Exit",
+    "userInfo.country" : "Country",
+    "userInfo.notice" : "Comment",
 
     "uservcard.title"       : "My contact info as QR-Code",
 	"uservcard.firstName"    : "First name",

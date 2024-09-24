@@ -187,6 +187,15 @@
         }
         AppData.getUserData();
         AppData.getContactData();
+        if (AppData._userRemoteDataPromise) {
+            Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+            AppData._userRemoteDataPromise.cancel();
+        }
+        AppData._userRemoteDataPromise = WinJS.Promise.timeout(1000).then(function () {
+            Log.print(Log.l.info, "getUserRemoteData: Now, timeout=1s is over!");
+            AppData._curGetUserRemoteDataId = 0;
+            AppData.getUserRemoteData();
+        });
         Log.ret(Log.l.trace);
     };
 

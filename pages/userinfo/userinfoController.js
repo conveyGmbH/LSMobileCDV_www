@@ -19,6 +19,8 @@
             Log.call(Log.l.trace, "UserInfo.Controller.");
             Application.Controller.apply(this, [pageElement, {
                 dataBenutzer: UserInfo.benutzerView && getEmptyDefaultValue(UserInfo.benutzerView.defaultValue),
+                InitAnredeItem: { InitAnredeID: 0, TITLE: "" },
+                InitLandItem: { InitLandID: 0, TITLE: "" },
                 dataPhoto: {},
                 photoData: null,
                 newInfo2Flag: 0,
@@ -33,6 +35,21 @@
 
             // show business card photo
             var photoContainer = pageElement.querySelector(".photo-container");
+
+            // select element
+            var initAnrede = pageElement.querySelector("#InitAnrede");
+            var initLand = pageElement.querySelector("#InitLand");
+
+            var setInitAnredeItem = function (newInitAnredeItem) {
+                Log.call(Log.l.trace, "UserInfo.Controller.");
+                var prevNotifyModified = AppBar.notifyModified;
+                AppBar.notifyModified = false;
+                that.binding.InitAnredeItem = newInitAnredeItem;
+                AppBar.modified = false;
+                AppBar.notifyModified = prevNotifyModified;
+                Log.ret(Log.l.trace);
+            }
+            this.setInitAnredeItem = setInitAnredeItem;
 
             var removePhoto = function () {
                 if (photoContainer) {
@@ -169,7 +186,59 @@
                     }, function (errorResponse) {
                         // ignore that
                     });
-                }).then(function () {
+                    }).then(function () {
+                        if (!AppData.initAnredeView.getResults().length) {
+                            Log.print(Log.l.trace, "calling select initAnredeView...");
+                            //@nedra:25.09.2015: load the list of INITAnrede for Combobox
+                            return AppData.initAnredeView.select(function (json) {
+                                Log.print(Log.l.trace, "initAnredeView: success!");
+                                if (json && json.d && json.d.results) {
+                                    // Now, we call WinJS.Binding.List to get the bindable list
+                                    if (initAnrede && initAnrede.winControl) {
+                                        initAnrede.winControl.data = new WinJS.Binding.List(json.d.results);
+                                    }
+                                }
+                            }, function (errorResponse) {
+                                // called asynchronously if an error occurs
+                                // or server returns response with an error status.
+                                Log.print(Log.l.error, "initAnredeView: error!");
+                                AppData.setErrorMsg(that.binding, errorResponse);
+                            });
+                        } else {
+                            if (initAnrede && initAnrede.winControl &&
+                                (!initAnrede.winControl.data || !initAnrede.winControl.data.length)) {
+                                initAnrede.winControl.data = new WinJS.Binding.List(AppData.initAnredeView.getResults());
+                            }
+                            return WinJS.Promise.as();
+                        }
+                    }).then(function () {
+                        if (!AppData.initLandView.getResults().length) {
+                            Log.print(Log.l.trace, "calling select initLandView...");
+                            //@nedra:25.09.2015: load the list of INITLand for Combobox
+                            return AppData.initLandView.select(function (json) {
+                                // this callback will be called asynchronously
+                                // when the response is available
+                                Log.print(Log.l.trace, "initLandView: success!");
+                                if (json && json.d && json.d.results) {
+                                    // Now, we call WinJS.Binding.List to get the bindable list
+                                    if (initLand && initLand.winControl) {
+                                        initLand.winControl.data = new WinJS.Binding.List(json.d.results);
+                                    }
+                                }
+                            }, function (errorResponse) {
+                                // called asynchronously if an error occurs
+                                // or server returns response with an error status.
+                                Log.print(Log.l.error, "initLandView: error!");
+                                AppData.setErrorMsg(that.binding, errorResponse);
+                            });
+                        } else {
+                            if (initLand && initLand.winControl &&
+                                (!initLand.winControl.data || !initLand.winControl.data.length)) {
+                                initLand.winControl.data = new WinJS.Binding.List(AppData.initLandView.getResults());
+                            }
+                            return WinJS.Promise.as();
+                        }
+                    }).then(function () {
                     if (recordId) {
                         //load of format relation record data
                         Log.print(Log.l.trace, "calling select benutzerView...");
