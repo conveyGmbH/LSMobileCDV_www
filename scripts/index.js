@@ -187,16 +187,10 @@
         }
         AppData.getUserData();
         AppData.getContactData();
-        /*DOES NOT WORK - does nothing after that*/
-        /*if (AppData._userRemoteDataPromise) {
-            Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
-            AppData._userRemoteDataPromise.cancel();
-        }
-        AppData._userRemoteDataPromise = WinJS.Promise.timeout(1000).then(function () {
-            Log.print(Log.l.info, "getUserRemoteData: Now, timeout=1s is over!");
+        /*if (!AppData._alternativeTimeout) {
             AppData._curGetUserRemoteDataId = 0;
             AppData.getUserRemoteData();
-        });*/
+        }*/
         Log.ret(Log.l.trace);
     };
 
