@@ -313,6 +313,7 @@
 	"listLocal.online" : "Uploaded",
 	"listLocal.notOnline" : "Not yet uploaded",
     "listLocal.inWork"      : "Not yet processed",
+    "listLocal.emptyContacts" : "Empty contacts",
 
     "listRemote.title"      : "Already uploaded contacts",
     "listRemote.comment"    : "On this page, use the Back button to go back!",
@@ -571,6 +572,7 @@
     "userinfo.exit"			: "Exit",
     "userinfo.country"      : "Country",
     "userinfo.notice"       : "Comment",
+    "userinfo.questionDelete": "Would you like to delete the current image?",
 
     "uservcard.title"       : "My contact info as QR-Code",
 	"uservcard.firstName"    : "First name",

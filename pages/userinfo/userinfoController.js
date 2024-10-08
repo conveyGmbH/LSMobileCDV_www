@@ -59,6 +59,10 @@
                         oldElement.innerHTML = "";
                     }
                 }
+                var userImg = pageElement.querySelector("#userImg");
+                if (userImg) {
+                    userImg.parentNode.removeChild(userImg);
+                }
             }
 
             this.dispose = function () {
@@ -285,6 +289,8 @@
                             }
                         }, function (errorResponse) {
                             // ignore that
+                            that.binding.photoData = "";
+                            removePhoto();
                         }, recordId);
                     } else {
                         return WinJS.Promise.as();
@@ -660,6 +666,40 @@
                         }
                     }*/
                     Log.ret(Log.l.trace);
+                },
+                clickDeletePhoto: function (event) {
+                    Log.call(Log.l.trace, "GenDataUserInfo.Controller.");
+                    var confirmTitle = getResourceText("userinfo.questionDelete");
+                    confirm(confirmTitle, function (result) {
+                        if (result) {
+                            Log.print(Log.l.trace, "clickDelete: user choice OK");
+                            that.deletePhotoData(function (response) {
+
+                                that.loadData();
+                                if (AppHeader.controller && typeof AppHeader.controller.loadData() === "function") {
+                                    AppHeader.controller.loadData();
+                                }
+                            }, function (errorResponse) {
+                                // delete ERROR
+                                var message = null;
+                                Log.print(Log.l.error, "error status=" + errorResponse.status + " statusText=" + errorResponse.statusText);
+                                if (errorResponse.data && errorResponse.data.error) {
+                                    Log.print(Log.l.error, "error code=" + errorResponse.data.error.code);
+                                    if (errorResponse.data.error.message) {
+                                        Log.print(Log.l.error, "error message=" + errorResponse.data.error.message.value);
+                                        message = errorResponse.data.error.message.value;
+                                    }
+                                }
+                                if (!message) {
+                                    message = getResourceText("error.delete");
+                                }
+                                alert(message);
+                            });
+                        } else {
+                            Log.print(Log.l.trace, "clickDelete: user choice CANCEL");
+                        }
+                    });
+                    Log.ret(Log.l.trace);
                 }
             };
 
@@ -688,8 +728,35 @@
                         return false;
                     }
                     return !that.binding.generalData.logOffOptionActive;
+                },
+                clickDeletePhoto: function() {
+                    if (AppBar.busy || !that.binding.photoData) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
             };
+
+            var deletePhotoData = function (complete, error) {
+                var recordId = getRecordId();
+                Log.call(Log.l.trace, "GenDataUserInfo.Controller.");
+                var ret = UserInfo.userPhotoView.deleteRecord(function (json) {
+                    Log.print(Log.l.trace, "GenDataUserInfo: delete success!");
+                    if (typeof complete === "function") {
+                        complete(json);
+                    }
+                }, function (errorResponse) {
+                    Log.print(Log.l.error, "GenDataUserInfo: delete error!");
+                    AppData.setErrorMsg(that.binding, errorResponse);
+                    if (typeof error === "function") {
+                        error(errorResponse);
+                    }
+                }, recordId);
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+            that.deletePhotoData = deletePhotoData;
 
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");

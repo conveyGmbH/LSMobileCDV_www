@@ -313,6 +313,7 @@
 	"listLocal.online" : "Caricati",
 	"listLocal.notOnline" : "Non ancora caricato",
     "listLocal.inWork"      : "Non ancora elaborato",
+    "listLocal.emptyContacts" : "Contatti vuoti",
 
     "listRemote.title"      : "Elenco dei contatti caricati",
     "listRemote.comment"    : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
@@ -571,8 +572,9 @@
     "userinfo.mobile"       : "Cell",
     "userinfo.entry"        : "Entrance",
     "userinfo.exit"         : "Exit",
-    "userinfo.country" : "Nazione",
-    "userinfo.notice" : "Commenti",
+    "userinfo.country"      : "Nazione",
+    "userinfo.notice"       : "Commenti",
+    "userinfo.questionDelete": "Vuoi cancellare l'immagine corrente?",
 
     "uservcard.title"       : "Le mie informazioni di contatto come QR-Code",
 	"uservcard.firstName"    : "Primo nome",

@@ -24,6 +24,7 @@
                 showNumberInWork: "",
                 uploaded: AppData.generalData.contactUploaded,
                 notUploaded: AppData.generalData.contactNotUploaded,
+                emptyContacts: AppData.getCountEmptyContacts(),
                 count: 0
             }, commandList]);
             this.nextUrl = null;
@@ -576,9 +577,15 @@
                 if (that.contacts) {
                     that.contacts.length = 0;
                 }
+                if (that.binding.emptyContacts > 0) {
+                    that.binding.emptyContacts = getResourceText("listLocal.emptyContacts") +
+                        ": " + that.binding.emptyContacts + ", ";
+                } else {
+                    that.binding.emptyContacts = "";
+                }
                 if (AppData.generalData.contactCountLocal > 0) {
                     that.binding.showNumberContacts = getResourceText("listLocal.contactTotal") +
-                        ": " + AppData.generalData.contactCountLocal;
+                        ": " + AppData.generalData.contactCountLocal + ", ";
                 } else {
                     that.binding.showNumberContacts = "";
                 }
@@ -711,7 +718,7 @@
                             if (json && json.d && json.d.results && json.d.results.length === 1) {
                                 var result = json.d.results[0];
                                 if (result.Uploaded > 0) {
-                                    that.binding.showNumberUploaded = ", " + getResourceText("listLocal.online") +
+                                    that.binding.showNumberUploaded = getResourceText("listLocal.online") +
                                         ": " + result.Uploaded;
                                 } else {
                                     that.binding.showNumberUploaded = "";

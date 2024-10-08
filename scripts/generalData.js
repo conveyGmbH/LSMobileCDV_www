@@ -1032,6 +1032,18 @@
             Log.ret(Log.l.u1, ret);
             return ret;
         },
+        getCountEmptyContacts: function () {
+            Log.call(Log.l.u1, "AppData.");
+            var ret;
+            if (AppData._userRemoteData &&
+                AppData._userRemoteData.AnzLeereKontakte) {
+                ret = AppData._userRemoteData.AnzLeereKontakte;
+            } else {
+                ret = 0;
+            }
+            Log.ret(Log.l.u1, ret);
+            return ret;
+        },
         getVisitorFlowLimit: function () {
             Log.call(Log.l.u1, "AppData.");
             var ret;
@@ -1080,7 +1092,17 @@
                         AppData._persistentStates.individualColors = true;
                         AppData._persistentStates.serverColors = true;
                     } else {
+                        AppData._persistentStates.individualColors = false;
                         AppData._persistentStates.serverColors = false;
+                        WinJS.Promise.timeout(0).then(function () {
+                            AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
+                            var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
+                            var promise = colors._loadCssPromise || WinJS.Promise.timeout(0);
+                            promise.then(function () {
+                                AppBar.loadIcons();
+                                NavigationBar.groups = Application.navigationBarGroups;
+                            });
+                        });
                     }
                     break;
                 case 11:

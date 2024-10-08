@@ -313,6 +313,7 @@
 	"listLocal.online" : "Hochgeladen",
 	"listLocal.notOnline" : "Noch nicht hochgeladen",
     "listLocal.inWork"      : "Noch nicht verarbeitet",
+	"listLocal.emptyContacts" : "Leere Kontakte",
 
     "listRemote.title"      : "Bereits hochgeladene Kontakte",
     "listRemote.comment"    : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
@@ -571,8 +572,9 @@
     "userinfo.mobile"       : "Mobil",
 	"userinfo.entry"        : "Eingang",
 	"userinfo.exit"			: "Ausgang",
-    "userinfo.country" : "Land",
-    "userinfo.notice" : "Bemerkung",
+    "userinfo.country"      : "Land",
+    "userinfo.notice"       : "Bemerkung",
+    "userinfo.questionDelete": "Möchten Sie das aktuelle Bild löschen?",
 
     "uservcard.title"       : "Meine Kontaktinfo als QR-Code",
 	"uservcard.firstName"    : "Vorname",

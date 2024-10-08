@@ -24,12 +24,17 @@
                                     </div>
                                 </div>
                                 <div class="content-header-line text-textcolor">
-                                    <div class="counter win-type-caption">
-                                        <span data-win-bind="textContent: showNumberContacts"></span>
-                                        <span data-win-bind="textContent: showNumberUploaded"></span><br />
-                                        <span data-win-bind="textContent: showNumberNotUploaded"></span><div class="header-status-image" data-win-bind="style.display: showNumberNotUploaded Binding.Converter.toDisplay"><div id="clock" class="status-image"></div></div>
-                                        <span data-win-bind="textContent: showNumberInWork"></span><div class="header-status-image" data-win-bind="style.display: showNumberInWork Binding.Converter.toDisplay"><div id="check" class="status-image"></div></div>
-                                    </div>
+	                                <div class="counter win-type-caption">
+		                                <span data-win-bind="textContent: emptyContacts"></span>
+		                                <span data-win-bind="textContent: showNumberContacts"></span>
+		                                <span data-win-bind="textContent: showNumberUploaded"></span><br/>
+		                                <span data-win-bind="textContent: showNumberNotUploaded"></span>
+		                                <div class="header-status-image" data-win-bind="style.display: showNumberNotUploaded Binding.Converter.toDisplay">
+			                                <div id="clock" class="status-image"></div></div>
+		                                <span data-win-bind="textContent: showNumberInWork"></span>
+		                                <div class="header-status-image" data-win-bind="style.display: showNumberInWork Binding.Converter.toDisplay">
+			                                <div id="check" class="status-image"></div></div>
+	                                </div>
                                 </div>
                             </div>
                             <div class="list-landscape-only list-header-columns">
