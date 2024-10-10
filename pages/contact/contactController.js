@@ -322,6 +322,18 @@
                     }
                     Log.ret(Log.l.trace);
                 },
+                blockEnterKey: function (event) {
+                    for (var i = 0; i < AppBar.commandList.length; i++) {
+                        if (AppBar.commandList[i].id === "clickForward")
+                            AppBar.commandList[i].key = null;
+                    }
+                },
+                releaseEnterKey: function (event) {
+                    for (var i = 0; i < AppBar.commandList.length; i++) {
+                        if (AppBar.commandList[i].id === "clickForward")
+                            AppBar.commandList[i].key = WinJS.Utilities.Key.enter;
+                    }
+                },
                 clickLogoff: function (event) {
                     Log.call(Log.l.trace, "Start.Controller.");
                     var confirmTitle = getResourceText("account.confirmLogOff");

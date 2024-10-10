@@ -79,8 +79,7 @@
                         <span class="label label-big win-type-caption" data-win-res="{textContent: 'userinfo.message1'}"></span>
                         <textarea class="input_field win-textarea input_text_comment"
                                   data-win-bind="value: dataBenutzer.Info1 Binding.Mode.twoway"
-                                  onblur="AppBar.handleEvent('blur', 'activateEnterKey', event)"
-                                  onfocus="AppBar.handleEvent('focus', 'deactivateEnterKey', event)"
+                                  onfocusin="AppBar.handleEvent('focusin', 'deactivateEnterKey', event)"
                                   onkeydown="AppBar.handleEvent('keydown', 'pressEnterKey', event)"></textarea>
                         <div class="label-left" data-win-bind="style.display: dataBenutzer.Info1TS Binding.Converter.toDisplay">
                             <span class="label win-type-caption" data-win-res="{textContent: 'userinfo.message1time'}"></span>
@@ -221,7 +220,11 @@
                     <div class="field_line field_line_even">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'userinfo.notice'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'userinfo.notice'}"></span>
-                        <textarea class="input_field win-textarea input_text_comment" data-win-bind="value: dataBenutzer.Bemerkungen Binding.Mode.twoway; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplayNone" onfocusin="AppBar.handleEvent('focusin', 'blockEnterKey', event)" onfocusout="AppBar.handleEvent('focusout', 'releaseEnterKey', event)"></textarea>
+                        <textarea class="input_field win-textarea input_text_comment" 
+                                  data-win-bind="value: dataBenutzer.Bemerkungen Binding.Mode.twoway; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplayNone" 
+                                  onfocusin="AppBar.handleEvent('focusin', 'deactivateEnterKey', event)"
+                                  onkeydown="AppBar.handleEvent('keydown', 'pressEnterKey', event)">
+                        </textarea>
                         <span class="input_field" data-win-bind="textContent: dataBenutzer.Bemerkungen; style.display: dataBenutzer.Flag_NoEdit Binding.Converter.toDisplay"></span>
                     </div>
                 </div>
