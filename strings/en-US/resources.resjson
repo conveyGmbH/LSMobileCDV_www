@@ -19,7 +19,7 @@
     "general.unauthorizedUser" : "Invalid username/password!\nlogon denied!\nPassword may have been changed, please enter the new password",
     "general.eventFinishedMsg1" : "Fair is over, please register your pending contacts within 7 days, after that it will no longer be possible to register contacts for this event.",
     "general.eventFinishedMsg2" : "Please note, your account is assigned to the XXXX fair which has been over for at least 30 days. You cannot add more contacts, only modify already added contacts. Please contact your administrator or convey if you want to add more contacts",
-    "general.userChanging" : "Please note: the admin has changed the event your user is assigned to. After clicking on \"Yes, change\" you will be switched to the new event. If you still want to collect more contacts for the current event, click on \"no, remind me in 5 minutes\".", 
+    "general.userChanging" : "Please note: the admin has changed the event your user is assigned to. After clicking on \"Yes, change\" you will be switched to the new event. If you still want to collect more contacts for the current event, click on \"no, remind me later\".", 
     "general.newDB" : "Attention! There is a new database version!",
     "general.newApp"		: "Attention! There is a new app version, please update!",
     "general.userChangedSuccess" : "The event has been successfully changed for your user. Your current event is: ",
@@ -171,6 +171,7 @@
     "contact.mrs"           : "Mrs",
     "contact.useRestriction": "use",
     "contact.comment2" : "Freitext",
+    "contact.waitCircleMessage" : "Please wait, data is being processed.\nIf you scanned a valid ticket for your current event or a business card, you can keep on working and collecting information. The data about the scanned QR-code/business card will be delivered as soon as possible and it won't be lost.",
 
     "contactRemote.title"   : "Already uploaded Contact",
 	"contactRemote.comment"       : "On this page, use the Back button to go back!",
@@ -638,7 +639,7 @@
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Cancel",
     "flyout.okChange"       : "Yes, change",
-    "flyout.cancelToLater"  : "No, remember in 5 minutes",
+    "flyout.cancelToLater"  : "no, remind me later",
 
     "error.delete"          : "Error on delete",
 

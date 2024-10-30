@@ -496,7 +496,7 @@
                                     }
                                     AppData.generalData.setRecordId("DOC1IMPORT_CARDSCAN",
                                         json.d.DOC1Import_CardscanID);
-                                    loadInitSelection();
+                                    //loadInitSelection();
                                 }
                                 if (prevModifiedTS === modifiedTS && that.binding.dataContact && that.binding.dataContact.Flag_NoEdit) {
                                     that.addDisposablePromise(WinJS.Promise.timeout(2000).then(function () {

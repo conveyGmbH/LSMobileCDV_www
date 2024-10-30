@@ -115,10 +115,7 @@
                         if (child && child.style) {
                             child.style.fontSize = Math.min(Math.min(containerRect.max_width / childRect.width, containerRect.max_height / childRect.height), 1.32) + "em";
                             while (container.getBoundingClientRect().height / (1.5 * 14) >= 3) {
-                                //binding ändern und das überschreiben nicht erlauben aus generaldata
-                                //if (that.controller.binding && that.controller.binding.userData && that.controller.binding.userData.VeranstaltungName) {
                                     child.innerText = child.innerText.replace(/\W*\s(\S)*$/, '...');
-                                //}
                             }
                             if ((child.getBoundingClientRect().height / (1.5 * 14)) >= 2) {
                                 container.style.marginTop = "-2px";

@@ -154,41 +154,6 @@
             WinJS.Resources.processAll(that.element).then(function () {
                 return WinJS.Binding.processAll(that.element, that.binding);
             }).then(function () {
-                var eventField = document.querySelector(".event-field");
-
-                function resize2fit(container) {
-                    var child = container.children[0];
-                    if (!container.parentElement || child.offsetWidth === 0) return;
-                    child.style.fontSize = "1em";
-                    var containerRect = {
-                        max_width: container.getBoundingClientRect().width + 48,
-                        max_height: container.getBoundingClientRect().height + 4
-                    };
-                    var childRect = {
-                        width: child.getBoundingClientRect().width,
-                        height: child.getBoundingClientRect().height
-                    }
-                    if (child && child.style) {
-                        child.style.fontSize = Math.min(Math.min(containerRect.max_width / childRect.width, containerRect.max_height / childRect.height), 1.32) + "em";
-                        while (container.getBoundingClientRect().height / (1.5 * 14) >= 3) {
-                            //binding ändern und das überschreiben nicht erlauben aus generaldata
-                            if (that.binding && that.binding.userData && that.binding.userData.VeranstaltungName) {
-                                that.binding.userData.VeranstaltungName = that.binding.userData.VeranstaltungName.replace(/\W*\s(\S)*$/, '...');
-                            }
-                        }
-                        if ((child.getBoundingClientRect().height / (1.5 * 14)) >= 2) {
-                            container.style.marginTop = "-2px";
-                            container.style.lineHeight = "normal";
-                        } else {
-                            container.style.marginTop = "8px";
-                            container.style.lineHeight = "1.5";
-                        }
-                    }
-                }
-                if (eventField) {
-                    resize2fit(eventField);
-                }
-            }).then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
             });
             Log.ret(Log.l.trace);

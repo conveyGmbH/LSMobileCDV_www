@@ -19,7 +19,7 @@
     "general.unauthorizedUser" : "Invalid username/password!\nlogon denied!\nPassword may have been changed, please enter the new password",
     "general.eventFinishedMsg1" : "Le salon est terminé, veuillez saisir vos contacts en attente dans les 7 jours, après quoi il ne sera plus possible de saisir des contacts pour cet événement.",
     "general.eventFinishedMsg2" : "Veuillez noter que votre compte est associé au salon XXXX qui est terminé depuis au moins 30 jours. Vous ne pouvez pas saisir d'autres contacts, seulement modifier les contacts déjà saisis. Veuillez contacter votre administrateur ou convey si vous souhaitez saisir d'autres contacts.",
-    "general.userChanging" : "Veuillez noter que l'événement auquel l'utilisateur a été assigné a été modifié par l'administrateur. Après avoir cliqué sur \"Oui, changer\", vous serez transféré vers le nouvel événement. Si vous souhaitez toujours collecter des contacts pour l'événement en cours, cliquez sur \"Non, rappelez-moi dans 5 minutes\".", 
+    "general.userChanging" : "Veuillez noter que l'événement auquel l'utilisateur a été assigné a été modifié par l'administrateur. Après avoir cliqué sur \"Oui, changer\", vous serez transféré vers le nouvel événement. Si vous souhaitez toujours collecter des contacts pour l'événement en cours, cliquez sur \"Non, rappelez-vous plus tard\".", 
     "general.newDB" : "Attention ! Il y a une nouvelle version de la base de données!",
     "general.newApp"		: "Attention ! Il y a une nouvelle version de l'application, veuillez la mettre à jour!",
     "general.userChangedSuccess" : "L'événement a été modifié avec succès pour votre utilisateur. Votre événement actuel est: ",
@@ -171,6 +171,7 @@
     "contact.mrs"           : "Madame",
     "contact.useRestriction": "utiliser",
     "contact.comment2" : "Freitext",
+    "contact.waitCircleMessage" : "Veuillez patienter, les données sont en cours de traitement.\nSi vous avez scanné un billet valide pour votre événement actuel ou une carte de visite, vous pouvez continuer à travailler et à collecter des informations. Les données relatives au code QR scanné ou à la carte de visite seront transmises dès que possible et ne seront pas perdues.",
 
     "contactRemote.title"   : "Contact déjà téléchargé",
 	"contactRemote.comment"       : "Utilisez le bouton Retour sur cette page pour y retourner!",
@@ -640,7 +641,7 @@
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Annuler",
     "flyout.okChange"       : "Oui, changer",
-    "flyout.cancelToLater"  : "Non, rappeler dans 5 minutes",
+    "flyout.cancelToLater"  : "Non, rappelez-vous plus tard",
 
     "error.delete"          : "Erreur pendant la suppression",
 
