@@ -419,7 +419,14 @@
                                 // Now, we call WinJS.Binding.List to get the bindable list
                                 if (initLand && initLand.winControl) {
                                     that.initLandList = new WinJS.Binding.List(json.d.results);
-                                    initLand.winControl.data = that.initLandList.createSorted(initLandSorter);
+                                    for (var i = 0; i < that.initLandList.length; i++) {
+                                        var item = that.initLandList.getAt(i);
+                                        if (item && item.INITLandID === 53) {
+                                            that.initLandList.unshift(item);
+                                            break;
+                                        }
+                                    }
+                                    initLand.winControl.data = that.initLandList;
                                 }
                             }
                         }, function (errorResponse) {
@@ -432,7 +439,14 @@
                     } else {
                         if (initLand && initLand.winControl) {
                             that.initLandList = new WinJS.Binding.List(AppData.initLandView.getResults());
-                            initLand.winControl.data = that.initLandList.createSorted(initLandSorter);
+                            for (var i = 0; i < that.initLandList.length; i++) {
+                                var item = that.initLandList.getAt(i);
+                                if (item && item.INITLandID === 53) {
+                                    that.initLandList.unshift(item);
+                                    break;
+                                }
+                            }
+                            initLand.winControl.data = that.initLandList;
                         }
                         return WinJS.Promise.as();
                     }
