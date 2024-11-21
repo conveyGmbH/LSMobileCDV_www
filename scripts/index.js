@@ -64,6 +64,7 @@
             useOffline: true,
             replActive: true,
             replInterval: 30,
+            replIntervalFastReqs: 0.25,
             replPrevPostMs: 0,
             replPrevSelectMs: 0,
             replPrevFlowSpecId: 0,
