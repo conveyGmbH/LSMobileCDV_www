@@ -63,6 +63,7 @@
             registerPassword: "6530bv6OIUed3",
             useOffline: true,
             replActive: true,
+            numFastReqs: 10,
             replInterval: 30,
             replIntervalFastReqs: 0.25,
             replPrevPostMs: 0,

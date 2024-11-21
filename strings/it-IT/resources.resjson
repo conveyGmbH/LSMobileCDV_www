@@ -495,6 +495,7 @@
     "info.replication"      : "Opzioni di sincronizzazione",
     "info.replActive"       : "Sincronizzazione",
     "info.replInterval"     : "Intervallo in s",
+    "info.numFastReqs"      : "Richieste rapide dopo la scansione",
     "info.datatimestamps"   : "Ora di modifica dei dati degli ultimi trasferimenti di dati",
     "info.upload"           : "Caricamento",
     "info.download"         : "Download",

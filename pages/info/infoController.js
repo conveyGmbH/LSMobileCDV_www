@@ -345,6 +345,20 @@
                     }
                     Log.ret(Log.l.trace);
                 },
+                changedNumFastReqs: function (event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var range = event.currentTarget;
+                        if (range) {
+                            var value = 10;
+                            if (typeof range.value === "string") {
+                                value = parseInt(range.value);
+                            }
+                            that.binding.appSettings.odata.numFastReqs = value;
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
                 changedReplInterval: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
                     if (event.currentTarget && AppBar.notifyModified) {

@@ -498,11 +498,7 @@
                                         json.d.DOC1Import_CardscanID);
                                     //loadInitSelection();
                                 }
-                                if (prevModifiedTS === modifiedTS && that.binding.dataContact && that.binding.dataContact.Flag_NoEdit) {
-                                    that.addDisposablePromise(WinJS.Promise.timeout(2000).then(function () {
-                                        that.reloadData(prevModifiedTS);
-                                    }));
-                                } else {
+                                if (!(prevModifiedTS === modifiedTS && that.binding.dataContact && that.binding.dataContact.Flag_NoEdit)) {
                                     var addresscontainer = pageElement.querySelector(".address-container");
                                     if (addresscontainer && WinJS.Utilities.hasClass(addresscontainer, "blur")) {
                                         addresscontainer.classList.remove("blur");
@@ -703,12 +699,6 @@
                     var addresscontainer = pageElement.querySelector(".address-container");
                     if (addresscontainer && that.binding.dataContact.Flag_NoEdit) {
                         addresscontainer.classList.add("blur");
-                    }
-                }).then(function () {
-                    if (that.binding.dataContact.Flag_NoEdit) {
-                        return that.reloadData(prevModifiedTS);
-                    } else {
-                        return WinJS.Promise.as();
                     }
                 });
                 Log.ret(Log.l.trace);

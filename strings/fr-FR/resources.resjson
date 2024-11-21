@@ -495,6 +495,7 @@
     "info.replication"      : "Paramètres de sync",
     "info.replActive"       : "Sync",
     "info.replInterval"     : "Intervalle en sec",
+    "info.numFastReqs"        : "Demandes rapides après un scan",
     "info.datatimestamps"   : "L'heure de modification des dernier transfers",
     "info.upload"           : "Upload",
     "info.download"         : "Download",
