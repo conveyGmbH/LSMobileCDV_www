@@ -41,6 +41,7 @@
         logGroup: false,
         logNoStack: true,
         logWinJS: false,
+        showFastRecTime: false,
         inputBorder: 1,
         inputBorderRadius: 2,
         inputBorderBottom: true,
@@ -63,7 +64,7 @@
             registerPassword: "6530bv6OIUed3",
             useOffline: true,
             replActive: true,
-            numFastReqs: 10,
+            numFastReqs: 20,
             replInterval: 30,
             replIntervalFastReqs: 0.25,
             replPrevPostMs: 0,
@@ -195,6 +196,23 @@
         }*/
         Log.ret(Log.l.trace);
     };
+    Application.reflectFastReqOverride = function (timeMs) {
+        Log.call(Log.l.trace, "Application.");
+        if (typeof AppHeader === "object" &&
+            AppHeader.controller && AppHeader.controller.binding) {
+            if (!AppData._persistentStates.showFastRecTime) {
+                timeMs = 0;
+            }
+            if (!timeMs) {
+                AppHeader.controller.binding.hasContactData = null;
+            }
+            if (!AppHeader.controller.binding.hasContactData) {
+                AppHeader.controller.binding.curFastReqs = timeMs.toString() + "s";
+            }
+        }
+        Log.ret(Log.l.trace);
+    };
+
 
     NavigationBar._vertWidth = 188;
 

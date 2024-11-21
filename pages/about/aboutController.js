@@ -22,11 +22,14 @@
                 AppBar.scope.binding &&
                 AppBar.scope.binding.error &&
                 AppBar.scope.binding.error.errorMsg) ? AppBar.scope.binding.error.errorMsg : "";
-
+            var environment = navigator.appVersion;
+            if (typeof device === "object") {
+                environment += " " + device.platform + " " + device.version;
+            }
             Application.Controller.apply(this, [pageElement, {
                 isDarkTheme: Colors.isDarkTheme,
                 version: Application.version,
-                environment: "Platform: " + navigator.appVersion,
+                environment: "Platform: " + environment,
                 eventName: getResourceText("info.eventName") + AppData._userData.VeranstaltungName,
                 lastError: lastError,
                 siteId: AppData._persistentStates.odata.dbSiteId ? "DBSiteId " + AppData._persistentStates.odata.dbSiteId : ""
@@ -34,6 +37,19 @@
 
             var that = this;
 
+            var checkIPhoneBug = function () {
+                if (navigator.appVersion) {
+                    var testDevice = ["iPhone OS", "iPod OS"];
+                    for (var i = 0; i < testDevice.length; i++) {
+                        var iPhonePod = navigator.appVersion.indexOf(testDevice[i]);
+                        if (iPhonePod >= 0) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            };
+            var isAppleDevice = checkIPhoneBug();
             //var lastError = that.binding.error.errorMsg;
 
             this.dispose = function () {

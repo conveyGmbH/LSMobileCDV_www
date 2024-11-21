@@ -16,8 +16,15 @@
         display: none;
     }
 }
+.appHeader .repl-field {
+    position: fixed;
+    opacity: 0.5;
+    bottom: 4px;
+    left: 4px;
+    z-index: 10000;
+}
 #logoffbutton:disabled,
-#logoffbutton[disabled]{
+#logoffbutton[disabled] {
     border: 1px solid #999999;
     background-color: #cccccc;
     color: #666666;

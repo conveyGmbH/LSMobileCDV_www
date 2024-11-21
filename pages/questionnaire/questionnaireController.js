@@ -1695,10 +1695,10 @@
                         // when the response is available
                         Log.print(Log.l.trace, "QuestionnaireRemote.questionnaireView: success!");
                         // startContact returns object already parsed from json file in response
-                        if (json && json.d) {
+                        if (json && json.d && that.questions) {
                             that.nextUrl = Questionnaire.questionnaireView.getNextUrl(json);
                             var results = json.d.results;
-                            results.forEach(function (item) {
+                            results.forEach(function(item) {
                                 that.resultConverter(item, that.binding.count);
                                 that.binding.count = that.questions.push(item);
                             });
@@ -1706,10 +1706,18 @@
                             that.checkPfQestionFeature();
                             Log.print(Log.l.trace, "TEST" + AppData._generalContactView.attribSpec);
                             if (that.hideQuestion) {
-                                WinJS.Promise.timeout(200).then(function () {
+                                WinJS.Promise.timeout(200).then(function() {
                                     that.loadNextUrl();
                                 });
                             }
+                        } else {
+                            if (progress && progress.style) {
+                                progress.style.display = "none";
+                            }
+                            if (counter && counter.style) {
+                                counter.style.display = "inline";
+                            }
+                            that.loading = false;
                         }
                     }, function (errorResponse) {
                         // called asynchronously if an error occurs

@@ -1370,7 +1370,7 @@
                         // when the response is available
                         Log.print(Log.l.trace, "QuestionnaireRemote.questionnaireView: success!");
                         // startContact returns object already parsed from json file in response
-                        if (json && json.d) {
+                        if (json && json.d && that.questions) {
                             that.nextUrl = QuestionnaireRemote.questionnaireView.getNextUrl(json);
                             var results = json.d.results;
                             results.forEach(function (item) {
@@ -1383,6 +1383,14 @@
                                     that.loadNextUrl();
                                 });
                             }
+                        } else {
+                            if (progress && progress.style) {
+                                progress.style.display = "none";
+                            }
+                            if (counter && counter.style) {
+                                counter.style.display = "inline";
+                            }
+                            that.loading = false;
                         }
                     }, function (errorResponse) {
                         // called asynchronously if an error occurs

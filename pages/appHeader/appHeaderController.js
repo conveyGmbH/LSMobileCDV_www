@@ -24,6 +24,8 @@
             this.pageData.userData = AppData._userData;
             this.pageData.photoData = null;
             this.pageData.showNameInHeader = !!AppData._persistentStates.showNameInHeader;
+            this.pageData.curFastReqs = 0;
+            this.pageData.hasContactData = null;
 
             AppHeader.controller = this;
 

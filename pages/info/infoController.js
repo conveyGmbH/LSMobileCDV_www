@@ -8,7 +8,6 @@
 /// <reference path="~/www/lib/convey/scripts/pageController.js" />
 /// <reference path="~/www/scripts/generalData.js" />
 /// <reference path="~/www/pages/info/infoService.js" />
-/// <reference path="~/plugins/cordova-plugin-device/www/device.js" />
 
 (function () {
     "use strict";
@@ -140,6 +139,16 @@
                 clickChangeUserState: function (event) {
                     Log.call(Log.l.trace, "Info.Controller.");
                     Application.navigateById("userinfo", event);
+                    Log.ret(Log.l.trace);
+                },
+                clickShowFastRecTime: function (event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var toggle = event.currentTarget.winControl;
+                        if (toggle) {
+                            that.binding.generalData.showFastRecTime = toggle.checked;
+                        }
+                    }
                     Log.ret(Log.l.trace);
                 },
                 clickLogEnabled: function (event) {
@@ -353,6 +362,8 @@
                             var value = 10;
                             if (typeof range.value === "string") {
                                 value = parseInt(range.value);
+                            } else if (typeof range.value === "number") {
+                                value = range.value;
                             }
                             that.binding.appSettings.odata.numFastReqs = value;
                         }

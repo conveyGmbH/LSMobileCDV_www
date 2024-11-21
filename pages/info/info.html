@@ -319,6 +319,17 @@
                             </div>
                         </div>
                     </div>
+                    <div class="field_line field_line_odd">
+	                    <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.showFastRecTime'}"></span>
+	                    <span class="label landscape_only" data-win-res="{textContent: 'info.showFastRecTime'}"></span>
+	                    <div class="input_field toggle-switch-parent">
+		                    <div id="showFastRecTime" 
+		                         data-win-control="WinJS.UI.ToggleSwitch"
+		                         data-win-bind="winControl.checked: generalData.showFastRecTime; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
+		                         onchange="AppBar.handleEvent('change', 'clickShowFastRecTime', event)">
+		                    </div>
+	                    </div>
+                    </div>
                 </div>
                 <div class="error-message"
                      data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>

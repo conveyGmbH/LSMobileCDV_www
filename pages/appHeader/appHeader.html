@@ -19,6 +19,10 @@
                         <div class="event-field">
                             <span data-win-bind="textContent: userData.VeranstaltungName"></span>
                         </div>
+                        <div class="repl-field win-type-caption"
+                             data-win-bind="style.display: hasContactData Binding.Converter.toDisplay">
+	                        <span data-win-bind="textContent: curFastReqs"></span>
+                        </div>
                         <!--<div class="user-name-field">
                             <span data-win-bind="textContent: userData.Login; style.display: showNameInHeader Binding.Converter.toDisplayNone"></span>
                             <span data-win-bind="textContent: userData.Name; style.display: showNameInHeader Binding.Converter.toDisplay"></span>
