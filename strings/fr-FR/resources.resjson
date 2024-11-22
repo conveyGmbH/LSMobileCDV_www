@@ -494,6 +494,7 @@
     "info.useExternalCamera": "Scanner de cartes de visite",
     "info.replication"      : "Paramètres de sync",
     "info.replActive"       : "Sync",
+    "info.replIntervalFastReqs" : "Intervalle rapide en s",
     "info.replInterval"     : "Intervalle en sec",
     "info.numFastReqs"      : "Demandes rapides après le scan",
     "info.showFastRecTime"  : "Montrer le temps de calcul",

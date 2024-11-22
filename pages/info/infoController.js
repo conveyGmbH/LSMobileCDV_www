@@ -354,6 +354,22 @@
                     }
                     Log.ret(Log.l.trace);
                 },
+                changedReplIntervalFastReqs: function (event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var range = event.currentTarget;
+                        if (range) {
+                            var value = 0.25;
+                            if (typeof range.value === "string") {
+                                value = parseFloat(range.value);
+                            } else if (typeof range.value === "number") {
+                                value = range.value;
+                            }
+                            that.binding.appSettings.odata.replIntervalFastReqs = value;
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
                 changedNumFastReqs: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
                     if (event.currentTarget && AppBar.notifyModified) {

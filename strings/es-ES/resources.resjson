@@ -494,6 +494,7 @@
     "info.useExternalCamera": "Visitenkarten Scanner",
     "info.replication"      : "Synchronisationsoptionen",
     "info.replActive"       : "Synchronisation",
+    "info.replIntervalFastReqs" : "Schnelles Intervall in s",
     "info.replInterval"     : "Intervall in s",
     "info.numFastReqs"      : "Fast requests after Scan",
     "info.showFastRecTime"  : "Show computation time",

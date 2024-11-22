@@ -494,6 +494,7 @@
     "info.useExternalCamera": "Scanner per biglietti da visita",
     "info.replication"      : "Opzioni di sincronizzazione",
     "info.replActive"       : "Sincronizzazione",
+    "info.replIntervalFastReqs" : "Intervallo veloce in s",
     "info.replInterval"     : "Intervallo in s",
     "info.numFastReqs"      : "Richieste rapide dopo la scansione",
     "info.showFastRecTime"  : "Mostra tempo di calcolo",

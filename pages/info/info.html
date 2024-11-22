@@ -169,6 +169,16 @@
 		                    </div>
 	                    </div>
                     </div>
+                    <div class="field_line field_line_even" data-win-bind="style.display: appSettings.odata.replActive Binding.Converter.toDisplay">
+	                    <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.replIntervalFastReqs'}"></span>
+	                    <span class="label landscape_only" data-win-res="{textContent: 'info.replIntervalFastReqs'}"></span>
+	                    <span class="input_field win-type-subtitle" data-win-bind="textContent: appSettings.odata.replIntervalFastReqs"></span>
+	                    <input id="replIntervalFastReqs" class="input_field win-range"
+	                           type="range" min="0.15" max="0.3" step="0.05"
+	                           data-win-bind="value: appSettings.odata.replIntervalFastReqs"
+	                           onchange="AppBar.handleEvent('change', 'changedReplIntervalFastReqs', event)"
+	                           oninput="AppBar.handleEvent('change', 'changedReplIntervalFastReqs', event)" />
+                    </div>
                     <div class="line-separator"></div>
                     <div class="field_line field_line_odd" data-win-bind="style.display: appSettings.odata.replActive Binding.Converter.toDisplay">
 	                    <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.numFastReqs'}"></span>
