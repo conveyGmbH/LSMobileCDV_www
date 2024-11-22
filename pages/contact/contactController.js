@@ -466,7 +466,7 @@
             }
             this.loadInitSelection = loadInitSelection;
 
-            var reloadData = function (prevModifiedTS) {
+            var reloadData = function (prevModifiedTs) {
                 Log.call(Log.l.trace, "Contact.Controller.");
                 if (that.contactReloadPromise) {
                     that.contactReloadPromise.cancel();
@@ -482,12 +482,9 @@
                             that.removeDisposablePromise(that.contactReloadPromise);
                             AppData.setErrorMsg(that.binding);
                             Log.print(Log.l.trace, "contactView: success!");
-                            var modifiedTS = null;
-                            var flagNoEdit = null;
                             if (json && json.d) {
-                                modifiedTS = json.d.ModifiedTS;
-                                flagNoEdit = json.d.Flag_NoEdit;
-                                if (!flagNoEdit) {
+                                var modifiedTs = json.d.ModifiedTS;
+                                if (!(prevModifiedTs === modifiedTs)) {
                                     that.setDataContact(json.d);
                                     if (that.binding.dataContact.Request_Barcode) {
                                         AppData._barcodeRequest = that.binding.dataContact.Request_Barcode;
@@ -497,11 +494,10 @@
                                     AppData.generalData.setRecordId("DOC1IMPORT_CARDSCAN",
                                         json.d.DOC1Import_CardscanID);
                                     //loadInitSelection();
-                                }
-                                if (!(prevModifiedTS === modifiedTS && that.binding.dataContact && that.binding.dataContact.Flag_NoEdit)) {
-                                    WinJS.Promise.timeout(50).then(function() {
+                                    WinJS.Promise.timeout(50).then(function () {
                                         var addresscontainer = pageElement.querySelector(".address-container");
-                                        if (addresscontainer && WinJS.Utilities.hasClass(addresscontainer, "blur")) {
+                                        if (addresscontainer && !that.binding.dataContact.Flag_NoEdit &&
+                                            WinJS.Utilities.hasClass(addresscontainer, "blur")) {
                                             addresscontainer.classList.remove("blur");
                                         }
                                     });
@@ -523,7 +519,6 @@
             var loadData = function () {
                 Log.call(Log.l.trace, "Contact.Controller.");
                 AppData.setErrorMsg(that.binding);
-                var prevModifiedTS = null;
                 var ret = new WinJS.Promise.as().then(function () {
                     if (!AppData.initAnredeView.getResults().length) {
                         Log.print(Log.l.trace, "calling select initAnredeData...");
@@ -630,7 +625,6 @@
                             Log.print(Log.l.trace, "contactView: success!");
                             if (json && json.d) {
                                 that.setDataContact(json.d);
-                                prevModifiedTS = that.binding.dataContact.ModifiedTS;
                                 if (that.binding.dataContact.Request_Barcode) {
                                     AppData._barcodeRequest = that.binding.dataContact.Request_Barcode;
                                 } else {
@@ -638,6 +632,10 @@
                                 }
                                 AppData.generalData.setRecordId("DOC1IMPORT_CARDSCAN", json.d.DOC1Import_CardscanID);
                                 loadInitSelection();
+                            }
+                            var addresscontainer = pageElement.querySelector(".address-container");
+                            if (addresscontainer && that.binding.dataContact.Flag_NoEdit) {
+                                addresscontainer.classList.add("blur");
                             }
                         }, function (errorResponse) {
                             that.removeDisposablePromise(contactSelectPromise);
@@ -696,11 +694,6 @@
                     } else {
                         showPhoto();
                         return WinJS.Promise.as();
-                    }
-                }).then(function () {
-                    var addresscontainer = pageElement.querySelector(".address-container");
-                    if (addresscontainer && that.binding.dataContact.Flag_NoEdit) {
-                        addresscontainer.classList.add("blur");
                     }
                 });
                 Log.ret(Log.l.trace);

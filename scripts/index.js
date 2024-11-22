@@ -183,17 +183,23 @@
         return id;
     };
 
-    Application.refreshAfterFetchOverride = function() {
+    Application.refreshAfterFetchOverride = function (fetchRequests) {
         Log.call(Log.l.trace, "Application.");
-        if (typeof AppBar.scope.reloadData === "function" && !AppBar.modified) {
-            AppBar.scope.reloadData(AppBar.scope.binding.dataContact && AppBar.scope.binding.dataContact.ModifiedTS);
+        if (fetchRequests) for (var i = 0; i < fetchRequests.length; i++) {
+            var fetchRequest = fetchRequests[i];
+            if (fetchRequest && fetchRequest.relationName === "Kontakt") {
+                if (typeof AppBar.scope.reloadData === "function" && !AppBar.modified) {
+                    AppBar.scope.reloadData(AppBar.scope.binding.dataContact && AppBar.scope.binding.dataContact.ModifiedTS);
+                }
+                AppData.getUserData();
+                AppData.getContactData();
+                /*if (!AppData._alternativeTimeout) {
+                    AppData._curGetUserRemoteDataId = 0;
+                    AppData.getUserRemoteData();
+                }*/
+
+            }
         }
-        AppData.getUserData();
-        AppData.getContactData();
-        /*if (!AppData._alternativeTimeout) {
-            AppData._curGetUserRemoteDataId = 0;
-            AppData.getUserRemoteData();
-        }*/
         Log.ret(Log.l.trace);
     };
     Application.reflectFastReqOverride = function (timeMs) {

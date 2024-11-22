@@ -169,7 +169,7 @@
                                     // accelarate replication
                                     if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
                                         var numFastReqs = 10;
-                                        AppRepl.replicator.run(numFastReqs);
+                                        AppRepl.replicator.run(AppData._persistentStates.odata.numFastReqs || numFastReqs);
                                     }
                                 });
                                 complete(json);
