@@ -237,8 +237,7 @@
         });
         WinJS.Promise.timeout(50).then(function() {
         if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
-            var numFastReqs = 1;
-            AppRepl.replicator.run(numFastReqs);
+            AppRepl.replicator.run();
         }
         });
         Log.ret(Log.l.trace);

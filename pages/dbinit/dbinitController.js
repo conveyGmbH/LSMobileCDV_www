@@ -333,8 +333,7 @@
                         if (updateMessage) {
                             if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
                                 AppData._persistentStates.odata.replActive = true;
-                                var numFastReqs = 1;
-                                AppRepl.replicator.run(numFastReqs);
+                                AppRepl.replicator.run();
                                 Application.pageframe.hideSplashScreen();
                                 var confirmFirst = getResourceText("flyout.ok");
                                 var confirmSecond = null;
