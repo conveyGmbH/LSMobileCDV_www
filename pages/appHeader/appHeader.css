@@ -18,6 +18,7 @@
 }
 .appHeader .repl-field {
     position: fixed;
+    color: #808080;
     opacity: 0.5;
     bottom: 4px;
     left: 4px;
