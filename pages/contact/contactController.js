@@ -499,10 +499,12 @@
                                     //loadInitSelection();
                                 }
                                 if (!(prevModifiedTS === modifiedTS && that.binding.dataContact && that.binding.dataContact.Flag_NoEdit)) {
-                                    var addresscontainer = pageElement.querySelector(".address-container");
-                                    if (addresscontainer && WinJS.Utilities.hasClass(addresscontainer, "blur")) {
-                                        addresscontainer.classList.remove("blur");
-                                    }
+                                    WinJS.Promise.timeout(50).then(function() {
+                                        var addresscontainer = pageElement.querySelector(".address-container");
+                                        if (addresscontainer && WinJS.Utilities.hasClass(addresscontainer, "blur")) {
+                                            addresscontainer.classList.remove("blur");
+                                        }
+                                    });
                                 }
                             }
                         }, function (errorResponse) {
