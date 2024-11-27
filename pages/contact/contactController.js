@@ -499,6 +499,7 @@
                                         if (addresscontainer && !that.binding.dataContact.Flag_NoEdit &&
                                             WinJS.Utilities.hasClass(addresscontainer, "blur")) {
                                             addresscontainer.classList.remove("blur");
+                                            Log.print(Log.l.info, "contactView: Flag_NoEdit is reset!");
                                         }
                                     });
                                 }

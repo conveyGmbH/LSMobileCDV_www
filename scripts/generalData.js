@@ -928,6 +928,7 @@
                                     !equals(prevContactData, AppData._contactData))) {
                                 if (parseInt(AppHeader.controller.binding.curFastReqs)) {
                                     AppHeader.controller.binding.hasContactData = 1;
+                                    Log.print(Log.l.info, "generalContactView: contactdata changed!");
                                 } else {
                                     AppHeader.controller.binding.hasContactData = null;
                                 }
