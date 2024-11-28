@@ -929,6 +929,10 @@
                                 if (parseInt(AppHeader.controller.binding.curFastReqs)) {
                                     AppHeader.controller.binding.hasContactData = 1;
                                     Log.print(Log.l.info, "generalContactView: contactdata changed!");
+                                    if (AppRepl.replicator && AppRepl.replicator.inFastRepl) {
+                                        // reset numFastReqs to 0!
+                                        AppRepl.replicator.run(1);
+                                    }
                                 } else {
                                     AppHeader.controller.binding.hasContactData = null;
                                 }
