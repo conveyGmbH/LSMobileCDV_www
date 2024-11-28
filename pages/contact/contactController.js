@@ -117,9 +117,6 @@
                     newDataContact.Bemerkungen = "";
                 }
                 newDataContact.Flag_NoEdit = !!newDataContact.Flag_NoEdit;
-                if (!newDataContact.Flag_NoEdit) {
-                    newDataContact.Flag_NoEdit = AppRepl.replicator && AppRepl.replicator.inFastRepl;
-                }
                 that.binding.dataContact = newDataContact;
                 if (!that.binding.dataContact.KontaktVIEWID) {
                     that.binding.dataContact.Nachbearbeitet = 1;
