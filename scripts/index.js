@@ -197,7 +197,7 @@
                     AppData._curGetUserRemoteDataId = 0;
                     AppData.getUserRemoteData();
                 }*/
-
+                break;
             }
         }
         Log.ret(Log.l.trace);
