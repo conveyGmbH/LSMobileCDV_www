@@ -485,6 +485,10 @@
                             if (json && json.d) {
                                 var modifiedTs = json.d.ModifiedTS;
                                 if (!(prevModifiedTs === modifiedTs)) {
+                                    if (!json.d.Flag_NoEdit && AppRepl.replicator && AppRepl.replicator.inFastRepl) {
+                                        // reset numFastReqs to 0!
+                                        AppRepl.replicator.run(1);
+                                    }
                                     that.setDataContact(json.d);
                                     if (that.binding.dataContact.Request_Barcode) {
                                         AppData._barcodeRequest = that.binding.dataContact.Request_Barcode;
