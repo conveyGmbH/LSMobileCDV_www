@@ -70,7 +70,7 @@
 
             var checkIPhoneBug = function () {
                 if (navigator.appVersion) {
-                    var testDevice = ["iPhone OS", "iPod OS"];
+                    var testDevice = ["iPhone OS", "iPod OS", "Mac OS"];
                     for (var i = 0; i < testDevice.length; i++) {
                         var iPhonePod = navigator.appVersion.indexOf(testDevice[i]);
                         if (iPhonePod >= 0) {
@@ -140,6 +140,16 @@
                         menu.show(anchor, placement);
                     } else {
                         Application.navigateById("userinfo", event);
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                clickPrivacyLink: function (event) {
+                    Log.call(Log.l.trace, "Account.Controller.");
+                    var url = getResourceText("account.privacyPolicyLink");
+                    if (isAppleDevice && cordova.InAppBrowser) {
+                        cordova.InAppBrowser.open(url, '_system');
+                    } else {
+                        window.open(url, '_system');
                     }
                     Log.ret(Log.l.trace);
                 }

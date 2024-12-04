@@ -70,8 +70,13 @@
                                 <span class="checkbox"
                                       data-win-res="{textContent: 'login.privacyPolicyAggreement'}"></span>
                             </label>
-                            <span class="large_field"
-                                  id="privacyPolicyLink"></span>
+                            <!--<span class="large_field"
+                                      id="privacyPolicyLink"></span>-->
+                            <div class="large_field">
+	                            <a class="win-link checkbox"
+	                               href="#" data-win-res="{textContent: 'login.privacyPolicy'}"
+	                               onclick="AppBar.handleEvent('click', 'clickPrivacyLink', event)"></a>
+                            </div>
                         </div>
                         <div class="field_line field_line_full"
                              data-win-bind="style.display: progress.show Binding.Converter.toDisplayNone">

@@ -29,7 +29,7 @@
 
             var checkIPhoneBug = function () {
                 if (navigator.appVersion) {
-                    var testDevice = ["iPhone OS", "iPod OS"];
+                    var testDevice = ["iPhone OS", "iPod OS", "Mac OS"];
                     for (var i = 0; i < testDevice.length; i++) {
                         var iPhonePod = navigator.appVersion.indexOf(testDevice[i]);
                         if (iPhonePod >= 0) {
