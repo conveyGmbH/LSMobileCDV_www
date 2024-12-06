@@ -21,6 +21,9 @@ body {
     margin-bottom: env(safe-area-inset-bottom);
 }
 .appbar-padder-bottom {
+    display: none;
+}
+.appbar-padder-bottom.appbar-bottom-visible {
     bottom: 0;
     height: constant(safe-area-inset-bottom);
     height: env(safe-area-inset-bottom);
