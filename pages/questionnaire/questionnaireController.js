@@ -1085,8 +1085,14 @@
                     // Show the captured photo
                     // The inline CSS rules are used to resize the image
                     //
-                    cameraImage.src = "data:image/jpeg;base64," + imageData;
-
+                    //cameraImage.src = "data:image/jpeg;base64," + imageData;
+                    // compare data:image
+                    var dataURLMimeType = "data:image/jpeg;base64,";
+                    if (imageData.substr(0, dataURLMimeType.length) === dataURLMimeType) {
+                        cameraImage.src = imageData;
+                    } else {
+                        cameraImage.src = "data:image/jpeg;base64," + imageData;
+                    }
                     var width = cameraImage.width;
                     var height = cameraImage.height;
                     Log.print(Log.l.trace, "width=" + width + " height=" + height);
@@ -1193,7 +1199,7 @@
                     navigator.camera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                         destinationType: Camera.DestinationType.DATA_URL,
                         sourceType: Camera.PictureSourceType.CAMERA,
-                        allowEdit: !isWindows10,
+                        allowEdit: false, //!isWindows10
                         quality: AppData.generalData.cameraQuality,
                         targetWidth: -1,
                         targetHeight: -1,

@@ -16,9 +16,17 @@ body {
     overflow-y: hidden;
 }
 /*style for iphones/ipad without physical home button need space for appbar*/
-.appbar-container {
+#appbar.win-appbar-bottom {
     margin-bottom: constant(safe-area-inset-bottom);
     margin-bottom: env(safe-area-inset-bottom);
+}
+.appbar-padder-bottom {
+    bottom: 0;
+    height: constant(safe-area-inset-bottom);
+    height: env(safe-area-inset-bottom);
+    width: 100%;
+    display: block;
+    position: fixed;
 }
 label {
     cursor: pointer;

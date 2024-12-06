@@ -450,8 +450,13 @@
                     var cameraImage = new Image();
                     // Show the captured photo
                     // The inline CSS rules are used to resize the image
-                    //
-                    cameraImage.src = "data:image/jpeg;base64," + imageData;
+                    // compare data:image
+                    var dataURLMimeType = "data:image/jpeg;base64,";
+                    if (imageData.substr(0, dataURLMimeType.length) === dataURLMimeType) {
+                        cameraImage.src = imageData;
+                    } else {
+                        cameraImage.src = "data:image/jpeg;base64," + imageData;
+                    }
                     var width = cameraImage.width;
                     var height = cameraImage.height;
                     Log.print(Log.l.trace, "width=" + width + " height=" + height);
@@ -596,15 +601,6 @@
                 } else if (typeof AppData.generalData.cameraMegapixel === "number") {
                     cameraMegapixel = AppData.generalData.cameraMegapixel;
                 }
-                /*if (that.binding.generalData.useClippingCamera &&
-                    cordova.plugins.GeniusScan &&
-                    typeof cordova.plugins.GeniusScan.scanWithConfiguration === "function") {
-                    cordova.plugins.GeniusScan.scanWithConfiguration({
-                        ocrConfiguration: {
-                            languages: ["eng", "deu"]
-                        }
-                    }, onPhotoDataSuccess, onPhotoDataFail);
-                }*/
                 if (that.binding.generalData.useClippingCamera &&
                     scan &&
                     typeof scan.scanDoc === "function") {
@@ -650,7 +646,7 @@
                         navigator.camera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                             destinationType: Camera.DestinationType.DATA_URL,
                             sourceType: Camera.PictureSourceType.CAMERA,
-                            allowEdit: !isWindows10,
+                            allowEdit: false, //!isWindows10
                             quality: typeof AppData.generalData.cameraQuality === "string" ? parseInt(AppData.generalData.cameraQuality) : AppData.generalData.cameraQuality,
                             targetWidth: -1,
                             targetHeight: -1,

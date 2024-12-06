@@ -80,7 +80,13 @@
                         that.img.id = "pagePhoto";
                         photoContainer.appendChild(that.img);
                         WinJS.Utilities.addClass(that.img, "page-photo");
-                        that.img.src = "data:image/jpeg;base64," + that.binding.photoData;
+                        //that.img.src = "data:image/jpeg;base64," + that.binding.photoData;
+                        var dataURLMimeType = "data:image/jpeg;base64,";
+                        if (that.binding.photoData.substr(0, dataURLMimeType.length) === dataURLMimeType) {
+                            that.img.src = that.binding.photoData;
+                        } else {
+                            that.img.src = "data:image/jpeg;base64," + that.binding.photoData;
+                        }
                         if (photoContainer.childElementCount > 1) {
                             var oldElement = photoContainer.firstElementChild || photoContainer.firstChild;
                             if (oldElement) {
@@ -485,8 +491,14 @@
                 // Show the captured photo
                 // The inline CSS rules are used to resize the image
                 //
+                //cameraImage.src = "data:image/jpeg;base64," + imageData;
+                // compare data:image
+                var dataURLMimeType = "data:image/jpeg;base64,";
+                if (imageData.substr(0, dataURLMimeType.length) === dataURLMimeType) {
+                    cameraImage.src = imageData;
+                } else {
                 cameraImage.src = "data:image/jpeg;base64," + imageData;
-
+                }
                 var width = cameraImage.width;
                 var height = cameraImage.height;
                 Log.print(Log.l.trace, "width=" + width + " height=" + height);
