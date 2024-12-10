@@ -379,7 +379,7 @@
                 AppBar.busy = true;
                 Log.call(Log.l.trace, "UserInfo.Controller.");
                 var ret = new WinJS.Promise.as().then(function () {
-                    return Colors.resizeImageBase64(imageData, "image/jpeg", 2560);
+                    return Colors.resizeImageBase64(imageData, "image/jpeg", 1024);
                 }).then(function (resizeData) {
                     if (resizeData) {
                         Log.print(Log.l.trace, "resized");
@@ -536,8 +536,8 @@
                         correctOrientation: true,
                         allowEdit: isAppleDevice,
                         quality: 50,
-                        targetWidth: 256,
-                        targetHeight: 256,
+                        targetWidth: 1024,
+                        targetHeight: 1024,
                         encodingType: Camera.EncodingType.JPEG,
                         saveToPhotoAlbum: false,
                         cameraDirection: Camera.Direction.FRONT
