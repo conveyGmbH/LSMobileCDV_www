@@ -533,6 +533,7 @@
                     navigator.camera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                         destinationType: Camera.DestinationType.DATA_URL,
                         sourceType: Camera.PictureSourceType.CAMERA,
+                        correctOrientation: true,
                         allowEdit: isAppleDevice,
                         quality: 50,
                         targetWidth: 256,
