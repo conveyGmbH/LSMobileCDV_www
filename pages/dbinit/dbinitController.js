@@ -31,19 +31,7 @@
                 }
             }, commandList]);
 
-            var checkIPhoneBug = function () {
-                if (navigator.appVersion) {
-                    var testDevice = ["iPhone OS", "iPod OS", "Mac OS"];
-                    for (var i = 0; i < testDevice.length; i++) {
-                        var iPhonePod = navigator.appVersion.indexOf(testDevice[i]);
-                        if (iPhonePod >= 0) {
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            };
-            var isAppleDevice = checkIPhoneBug();
+            var isAppleDevice = AppData.checkIPhoneBug();
             var isWindowsDevice = device && (device.platform === "windows");
             var isAndroidDevice = device && (device.platform === "Android");
 

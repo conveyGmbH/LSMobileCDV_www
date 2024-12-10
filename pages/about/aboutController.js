@@ -37,19 +37,7 @@
 
             var that = this;
 
-            var checkIPhoneBug = function () {
-                if (navigator.appVersion) {
-                    var testDevice = ["iPhone OS", "iPod OS", "Mac OS"];
-                    for (var i = 0; i < testDevice.length; i++) {
-                        var iPhonePod = navigator.appVersion.indexOf(testDevice[i]);
-                        if (iPhonePod >= 0) {
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            };
-            var isAppleDevice = checkIPhoneBug();
+            var isAppleDevice = AppData.checkIPhoneBug();
             //var lastError = that.binding.error.errorMsg;
 
             this.dispose = function () {

@@ -44,7 +44,12 @@
                         userImg = new Image();
                         userImg.id = "userImg";
                         WinJS.Utilities.addClass(userImg, "user-photo");
-                        userImg.src = "data:image/jpeg;base64," + that.binding.photoData;
+                        var dataURLMimeType = "data:image/jpeg;base64,";
+                        if (that.binding.photoData.substr(0, dataURLMimeType.length) === dataURLMimeType) {
+                            userImg.src = that.binding.photoData;
+                        } else {
+                            userImg.src = "data:image/jpeg;base64," + that.binding.photoData;
+                        }
                         userImageContainer.appendChild(userImg);
                         if (userImageContainer.childElementCount > 2) {
                             var oldElement = userImageContainer.firstElementChild.nextElementSibling;

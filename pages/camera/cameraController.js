@@ -43,6 +43,7 @@
             canvas.height = 0;
             var imagesObjects = [];
             var isLicenceKeyValid = true;
+            var isAppleDevice = AppData.checkIPhoneBug();
 
             var updateStates = function (states) {
                 Log.call(Log.l.trace, "Camera.Controller.", "errorMessage=" + states.errorMessage + "");
@@ -646,7 +647,7 @@
                         navigator.camera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                             destinationType: Camera.DestinationType.DATA_URL,
                             sourceType: Camera.PictureSourceType.CAMERA,
-                            allowEdit: false, //!isWindows10
+                            allowEdit: isAppleDevice, //!isWindows10
                             quality: typeof AppData.generalData.cameraQuality === "string" ? parseInt(AppData.generalData.cameraQuality) : AppData.generalData.cameraQuality,
                             targetWidth: -1,
                             targetHeight: -1,

@@ -52,19 +52,7 @@
             var prevOnlinePath = AppData._persistentStates.odata.onlinePath;
             var prevUseOffline = AppData._persistentStates.odata.useOffline;
 
-            var checkIPhoneBug = function () {
-                if (navigator.appVersion) {
-                    var testDevice = ["iPhone OS", "iPod OS", "Mac OS"];
-                    for (var i = 0; i < testDevice.length; i++) {
-                        var iPhonePod = navigator.appVersion.indexOf(testDevice[i]);
-                        if (iPhonePod >= 0) {
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            };
-            var isAppleDevice = checkIPhoneBug();
+            var isAppleDevice = AppData.checkIPhoneBug();
 
             if (!prevLogin || !prevPassword || !prevHostName || !prevUseOffline) {
                 // enable edit per default on empty settings

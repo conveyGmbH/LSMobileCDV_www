@@ -44,7 +44,7 @@
             canvas.width = 0;
             canvas.height = 0;
             //var imagesObjects = [];
-            //var isLicenceKeyValid = true;
+            var isAppleDevice = AppData.checkIPhoneBug();
 
             var getDocData = function () {
                 return that.binding.dataSketch && that.binding.dataSketch.photoData;
@@ -749,7 +749,7 @@
                     navigator.camera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                         destinationType: Camera.DestinationType.DATA_URL,
                         sourceType: Camera.PictureSourceType.CAMERA,
-                        allowEdit: false, //!isWindows10
+                        allowEdit: isAppleDevice, //!isWindows10
                         quality: AppData.generalData.cameraQuality,
                         targetWidth: -1,
                         targetHeight: -1,
@@ -1054,7 +1054,6 @@
                         },
                         function (error) {
                             Log.print(Log.l.error, "LicenceKey not valid" + error);
-                            isLicenceKeyValid = false;
                             return WinJS.Promise.as();
                         });
                 } else {

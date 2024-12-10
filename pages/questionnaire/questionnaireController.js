@@ -56,6 +56,7 @@
                 return false;
             };
             var hasIPhoneBug = checkIPhoneBug();
+            var isAppleDevice = AppData.checkIPhoneBug();
 
             var that = this;
 
@@ -1199,7 +1200,7 @@
                     navigator.camera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                         destinationType: Camera.DestinationType.DATA_URL,
                         sourceType: Camera.PictureSourceType.CAMERA,
-                        allowEdit: false, //!isWindows10
+                        allowEdit: isAppleDevice, //!isWindows10
                         quality: AppData.generalData.cameraQuality,
                         targetWidth: -1,
                         targetHeight: -1,

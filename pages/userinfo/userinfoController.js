@@ -40,6 +40,8 @@
             var initAnrede = pageElement.querySelector("#InitAnrede");
             var initLand = pageElement.querySelector("#InitLand");
 
+            var isAppleDevice = AppData.checkIPhoneBug();
+
             var setInitAnredeItem = function (newInitAnredeItem) {
                 Log.call(Log.l.trace, "UserInfo.Controller.");
                 var prevNotifyModified = AppBar.notifyModified;
@@ -497,7 +499,7 @@
                 if (imageData.substr(0, dataURLMimeType.length) === dataURLMimeType) {
                     cameraImage.src = imageData;
                 } else {
-                cameraImage.src = "data:image/jpeg;base64," + imageData;
+                    cameraImage.src = "data:image/jpeg;base64," + imageData;
                 }
                 var width = cameraImage.width;
                 var height = cameraImage.height;
@@ -531,7 +533,7 @@
                     navigator.camera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                         destinationType: Camera.DestinationType.DATA_URL,
                         sourceType: Camera.PictureSourceType.CAMERA,
-                        allowEdit: true,
+                        allowEdit: isAppleDevice,
                         quality: 50,
                         targetWidth: 256,
                         targetHeight: 256,
