@@ -40,9 +40,9 @@
 
             Application.Controller.apply(this, [pageElement, {
                 uploadTS: (AppData.appSettings.odata.replPrevPostMs ?
-                "\/Date(" + AppData.appSettings.odata.replPrevPostMs + ")\/" : null),
+                    "\/Date(" + AppData.appSettings.odata.replPrevPostMs + ")\/" : null),
                 downloadTS: (AppData.appSettings.odata.replPrevSelectMs ?
-                "\/Date(" + AppData.appSettings.odata.replPrevSelectMs + ")\/" : null),
+                    "\/Date(" + AppData.appSettings.odata.replPrevSelectMs + ")\/" : null),
                 version: Application.version,
                 environment: "Platform: " + navigator.appVersion,
                 isAndroid: isAndroid,
@@ -109,7 +109,7 @@
             this.setupLog = setupLog;
 
             this.eventHandlers = {
-                clickHomepageLink: function(event) {
+                clickHomepageLink: function (event) {
                     Log.call(Log.l.trace, "Info.Controller.");
                     var url = "https://" + getResourceText("info.homepage");
                     if (isAppleDevice && cordova.InAppBrowser) {
@@ -170,7 +170,7 @@
                     }
                     Log.ret(Log.l.trace);
                 },
-                clicklogOffOptionActive: function(event) {
+                clicklogOffOptionActive: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
                     if (event.currentTarget && AppBar.notifyModified) {
                         var toggle = event.currentTarget.winControl;
@@ -245,7 +245,7 @@
                         } else {
                             messageText = getResourceText("info.useBarcodeActivityOff");
                         }
-                        if (device && device.model === "TC20" || device.model === "TC22") {
+                        /*if (device && device.model === "TC20" || device.model === "TC22") {
                             messageText = null;
                         }
                         if (!messageText) {
@@ -267,7 +267,7 @@
                             } else if (Barcode.listening) {
                                 Barcode.stopListen();
                             }
-                        }
+                        }*/
                         confirmModal(null,
                             messageText,
                             getResourceText("info.confirm"),
@@ -299,16 +299,17 @@
                                     toggle.checked = !toggle.checked;
                                 }
                             });
+
                     }
                     Log.ret(Log.l.trace);
                 },
-                changeBarcodeDeviceSelect: function(event) {
+                changeBarcodeDeviceSelect: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
                     if (event.currentTarget && AppBar.notifyModified) {
                         var prevValue = that.binding.generalData.barcodeDevice;
                         var value = event.currentTarget.value;
                         if (prevValue !== value) {
-                            WinJS.Promise.timeout(0).then(function() {
+                            WinJS.Promise.timeout(0).then(function () {
                                 Barcode.stopListen(prevValue);
                                 return WinJS.Promise.timeout(500);
                             }).then(function () {
@@ -497,7 +498,7 @@
             }
 
             AppData.setErrorMsg(this.binding);
-            
+
             var setDeviceList = function (newDeviceList) {
                 Log.call(Log.l.trace, "info.Controller.");
                 if (newDeviceList) {
@@ -544,62 +545,62 @@
             }
             this.setDeviceList = setDeviceList;
 
-            var loadData = function() {
+            var loadData = function () {
                 Log.call(Log.l.trace, "info.Controller.");
-                var ret = new WinJS.Promise.as().then(function() {
+                var ret = new WinJS.Promise.as().then(function () {
                     if (picturesFolderSelect &&
                         picturesFolderSelect.winControl &&
                         hasPicturesDirectory &&
                         typeof window.resolveLocalFileSystemURL === "function") {
                         try {
                             window.resolveLocalFileSystemURL(cordova.file.picturesDirectory,
-                                function(dirEntry) {
+                                function (dirEntry) {
                                     Log.print(Log.l.info,
                                         "resolveLocalFileSystemURL: file system open name=" + dirEntry.name);
                                     var dirReader = dirEntry.createReader();
-                                    dirReader.readEntries(function(entries) {
-                                            var bFound = false;
-                                            for (var i = 0; i < entries.length; i++) {
-                                                if (entries[i].isDirectory) {
-                                                    picturesDirectoryFolders.push({
-                                                        name: entries[i].name
-                                                    });
-                                                    if (entries[i].name === that.picturesDirectorySubFolder) {
-                                                        bFound = true;
-                                                    }
+                                    dirReader.readEntries(function (entries) {
+                                        var bFound = false;
+                                        for (var i = 0; i < entries.length; i++) {
+                                            if (entries[i].isDirectory) {
+                                                picturesDirectoryFolders.push({
+                                                    name: entries[i].name
+                                                });
+                                                if (entries[i].name === that.picturesDirectorySubFolder) {
+                                                    bFound = true;
                                                 }
                                             }
-                                            if (!bFound) {
-                                                that.picturesDirectorySubFolder = "";
-                                            }
-                                            if (picturesDirectoryFolders.length > 1) {
-                                                picturesFolderSelect.winControl.data =
-                                                    new WinJS.Binding.List(picturesDirectoryFolders);
-                                            }
-                                            that.binding.generalData.picturesDirectorySubFolder =
-                                                that.picturesDirectorySubFolder;
-                                        },
-                                        function(errorResponse) {
+                                        }
+                                        if (!bFound) {
+                                            that.picturesDirectorySubFolder = "";
+                                        }
+                                        if (picturesDirectoryFolders.length > 1) {
+                                            picturesFolderSelect.winControl.data =
+                                                new WinJS.Binding.List(picturesDirectoryFolders);
+                                        }
+                                        that.binding.generalData.picturesDirectorySubFolder =
+                                            that.picturesDirectorySubFolder;
+                                    },
+                                        function (errorResponse) {
                                             Log.print(Log.l.error, "readEntries: error " + errorResponse.toString());
                                         });
                                 },
-                                function(errorResponse) {
+                                function (errorResponse) {
                                     Log.print(Log.l.error, "resolveLocalFileSystemURL error " + errorResponse.toString());
                                 });
                         } catch (e) {
                             AppData.setErrorMsg(this.binding, e);
                         }
                     };
-                }).then(function() {
+                }).then(function () {
                     if (that.binding.hasSerialDevice &&
                         navigator.serialDevice &&
                         typeof navigator.serialDevice.openDeviceList === "function") {
-                        navigator.serialDevice.openDeviceList(that.setDeviceList, function(error) {
+                        navigator.serialDevice.openDeviceList(that.setDeviceList, function (error) {
                             Log.print(Log.l.error, "openDeviceList returned " + error);
                             isDeviceListOpened = false;
                         }, {
-                            onDeviceListChange: that.setDeviceList
-                        });
+                                onDeviceListChange: that.setDeviceList
+                            });
                         isDeviceListOpened = true;
                     }
                 });
@@ -608,7 +609,7 @@
             }
             this.loadData = loadData;
 
-            that.processAll().then(function() {
+            that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 return that.loadData();
             }).then(function () {
