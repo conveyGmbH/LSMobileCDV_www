@@ -387,6 +387,12 @@
                 Log.ret(Log.l.info, "semaphore set: extra ignored");
                 return WinJS.Promise.as();
             }
+            if (!AppData.appSettings.odata.login ||
+                !AppData.appSettings.odata.password ||
+                !AppData.appSettings.odata.dbSiteId) {
+                Log.print(Log.l.trace, "getMobileVersion: no logon information provided!");
+                return WinJS.Promise.as();
+            }
             var ret = new WinJS.Promise.as().then(function () {
                 return DBInit.versionView.select(function (json) {
                     AppData._persistentStates.dbVersion = json && json.d && json.d.results && json.d.results[0] && json.d.results[0].Version;
