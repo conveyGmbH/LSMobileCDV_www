@@ -442,39 +442,40 @@
             }
             this.onPhotoDataFail = onPhotoDataFail;
 
-            var onPhotoDataSuccess = function (imageData, retryCount) {
-                retryCount = retryCount || 0;
-                Log.call(Log.l.trace, "Camera.Controller.", "retryCount=" + retryCount);
+            var onPhotoDataSuccess = function (imageData) {
+                Log.call(Log.l.trace, "Camera.Controller.");
                 if (imageData && imageData.length > 0) {
-                    // Get image handle
-                    //
-                    var cameraImage = new Image();
-                    // Show the captured photo
-                    // The inline CSS rules are used to resize the image
-                    // compare data:image
-                    var dataURLMimeType = "data:image/jpeg;base64,";
-                    if (imageData.substr(0, dataURLMimeType.length) === dataURLMimeType) {
-                        cameraImage.src = imageData;
+                    var promise;
+                    if (isAppleDevice || that.binding.generalData.useClippingCamera) {
+                        promise = WinJS.Promise.as();
                     } else {
-                        cameraImage.src = "data:image/jpeg;base64," + imageData;
+                        promise = ImgTools.crop(imageData);
                     }
-                    var width = cameraImage.width;
-                    var height = cameraImage.height;
-                    Log.print(Log.l.trace, "width=" + width + " height=" + height);
-                    if (width > 0 && height > 0) {
-                        Log.print(Log.l.trace, "width=" + width + " height=" + height);
-                        that.insertCameradata(imageData, width, height);
-                    } else if (retryCount < 0) {
-                        Log.print(Log.l.trace, "Invalid data ignored");
-                    } else if (retryCount < 5) {
-                        Log.print(Log.l.info, "Invalid data retry");
-                        WinJS.Promise.timeout(100).then(function () {
-                            onPhotoDataSuccess(imageData, retryCount + 1);
-                        });
-                    } else {
-                        Log.print(Log.l.error, "Invalid data error");
-                        return onPhotoDataFail("Invalid data received!");
-                    }
+                    promise.then(function(cropImageData) {
+                        if (cropImageData) {
+                            imageData = cropImageData;
+                        }
+                        // Get image handle
+                        //
+                        var cameraImage = new Image();
+                        // Show the captured photo
+                        // The inline CSS rules are used to resize the image
+                        // compare data:image
+                        cameraImage.onload = function () {
+                            var width = cameraImage.width;
+                            var height = cameraImage.height;
+                            Log.print(Log.l.trace, "width=" + width + " height=" + height);
+
+                            // todo: create preview from imageData
+                            that.insertCameradata(imageData, width, height);
+                        }
+                        var dataURLMimeType = "data:image/jpeg;base64,";
+                        if (imageData.substr(0, dataURLMimeType.length) === dataURLMimeType) {
+                            cameraImage.src = imageData;
+                        } else {
+                            cameraImage.src = "data:image/jpeg;base64," + imageData;
+                        }
+                    });
                 } else if (imageData && imageData.scans && imageData.scans.length > 0) {
                     //WinJS.Promise.timeout(100).then(function () {
                     var mediaFiles = imageData.scans;

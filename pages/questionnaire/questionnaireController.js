@@ -1080,26 +1080,39 @@
             var onPhotoDataSuccess = function (imageData) {
                 Log.call(Log.l.trace, "Questionnaire.Controller.");
                 if (imageData) {
-                    // Get image handle
-                    //
-                    var cameraImage = new Image();
-                    // Show the captured photo
-                    // The inline CSS rules are used to resize the image
-                    //
-                    //cameraImage.src = "data:image/jpeg;base64," + imageData;
-                    // compare data:image
-                    var dataURLMimeType = "data:image/jpeg;base64,";
-                    if (imageData.substr(0, dataURLMimeType.length) === dataURLMimeType) {
-                        cameraImage.src = imageData;
+                    var promise;
+                    if (isAppleDevice) {
+                        promise = WinJS.Promise.as();
                     } else {
-                        cameraImage.src = "data:image/jpeg;base64," + imageData;
+                        promise = ImgTools.crop(imageData);
                     }
-                    var width = cameraImage.width;
-                    var height = cameraImage.height;
-                    Log.print(Log.l.trace, "width=" + width + " height=" + height);
+                    promise.then(function (cropImageData) {
+                        if (cropImageData) {
+                            imageData = cropImageData;
+                        }
+                        // Get image handle
+                        //
+                        var cameraImage = new Image();
+                        // Show the captured photo
+                        // The inline CSS rules are used to resize the image
+                        //
+                        //cameraImage.src = "data:image/jpeg;base64," + imageData;
+                        // compare data:image
+                        cameraImage.onload = function () {
+                            var width = cameraImage.width;
+                            var height = cameraImage.height;
+                            Log.print(Log.l.trace, "width=" + width + " height=" + height);
 
-                    // todo: create preview from imageData
-                    that.insertCameradata(imageData, width, height);
+                            // todo: create preview from imageData
+                            that.insertCameradata(imageData, width, height);
+                        }
+                        var dataURLMimeType = "data:image/jpeg;base64,";
+                        if (imageData.substr(0, dataURLMimeType.length) === dataURLMimeType) {
+                            cameraImage.src = imageData;
+                        } else {
+                            cameraImage.src = "data:image/jpeg;base64," + imageData;
+                        }
+                    });
                 }
                 Log.ret(Log.l.trace);
             };

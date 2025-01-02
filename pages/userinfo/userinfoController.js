@@ -487,26 +487,44 @@
 
             var onPhotoDataSuccess = function (imageData) {
                 Log.call(Log.l.trace, "UserInfo.Controller.");
-                // Get image handle
-                //
-                var cameraImage = new Image();
-                // Show the captured photo
-                // The inline CSS rules are used to resize the image
-                //
-                //cameraImage.src = "data:image/jpeg;base64," + imageData;
-                // compare data:image
-                var dataURLMimeType = "data:image/jpeg;base64,";
-                if (imageData.substr(0, dataURLMimeType.length) === dataURLMimeType) {
-                    cameraImage.src = imageData;
-                } else {
-                    cameraImage.src = "data:image/jpeg;base64," + imageData;
-                }
-                var width = cameraImage.width;
-                var height = cameraImage.height;
-                Log.print(Log.l.trace, "width=" + width + " height=" + height);
+                if (imageData && imageData.length > 0) {
+                    var promise;
+                    if (isAppleDevice) {
+                        promise = WinJS.Promise.as();
+                    } else {
+                        promise = ImgTools.crop(imageData, true);
+                    }
+                    promise.then(function (cropImageData) {
+                        if (cropImageData) {
+                            imageData = cropImageData;
+                        }
+                        // Get image handle
+                        //
+                        var cameraImage = new Image();
+                        // Show the captured photo
+                        // The inline CSS rules are used to resize the image
+                        //
+                        //cameraImage.src = "data:image/jpeg;base64," + imageData;
+                        // compare data:image
+                        cameraImage.onload = function() {
+                            var width = cameraImage.width;
+                            var height = cameraImage.height;
+                            Log.print(Log.l.trace, "width=" + width + " height=" + height);
 
-                // todo: create preview from imageData
-                that.insertCameradata(imageData, width, height);
+                            // todo: create preview from imageData
+                            that.insertCameradata(imageData, width, height);
+                        }
+                        var dataURLMimeType = "data:image/jpeg;base64,";
+                        if (cropImageData.substr(0, dataURLMimeType.length) === dataURLMimeType) {
+                            cameraImage.src = imageData;
+                        } else {
+                            cameraImage.src = "data:image/jpeg;base64," + imageData;
+                        }
+                    }, function (err) {
+                        AppData.setErrorMsg(that.binding, err);
+                        AppBar.busy = false;
+                    });
+                }
                 Log.ret(Log.l.trace);
             }
 
@@ -522,7 +540,28 @@
             AppData.setErrorMsg(that.binding);
             var takePhoto = function () {
                 Log.call(Log.l.trace, "UserInfo.Controller.");
-                if (navigator.camera &&
+                var isWindows10 = false;
+                if (typeof device === "object" && typeof device.platform === "string" && typeof device.version === "string") {
+                    if (device.platform.substr(0, 7) === "windows" && device.version.substr(0, 4) === "10.0") {
+                        isWindows10 = true;
+                    }
+                }
+                if (isWindows10 &&
+                    !WinJS.Utilities.isPhone &&
+                    scan &&
+                    typeof scan.scanDoc === "function") {
+                    AppBar.busy = true;
+                    scan.scanDoc(onPhotoDataSuccess, onPhotoDataFail, {
+                        sourceType: 2, // front camera
+                        returnBase64: true,
+                        fileName: "photo",
+                        quality: 50,
+                        convertToGrayscale: false,
+                        maxResolution: 1000000,
+                        autoShutter: 0,
+                        dontClip: true
+                    });
+                } else if (navigator.camera &&
                     typeof navigator.camera.getPicture === "function") {
                     // shortcuts for camera definitions
                     //pictureSource: navigator.camera.PictureSourceType,   // picture source
