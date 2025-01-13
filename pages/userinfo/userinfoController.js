@@ -557,7 +557,7 @@
                         fileName: "photo",
                         quality: 50,
                         convertToGrayscale: false,
-                        maxResolution: 1000000,
+                        maxResolution: 2100000,
                         autoShutter: 0,
                         dontClip: true
                     });

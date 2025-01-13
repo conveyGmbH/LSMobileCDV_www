@@ -1200,7 +1200,7 @@
                         returnBase64 : true,
                         fileName : "photo",
                         quality: (1.0 - AppData.generalData.cameraQuality / 100.0) * 4.0 + 1.0,
-                        maxResolution: 5000000,
+                        maxResolution: 8000000,
                         autoShutter: 0,
                         dontClip: true
                     });
