@@ -32,7 +32,7 @@
                 environment: "Platform: " + environment,
                 eventName: getResourceText("info.eventName") + AppData._userData.VeranstaltungName,
                 lastError: lastError,
-                siteId: AppData._persistentStates.odata.dbSiteId ? "DBSiteId " + AppData._persistentStates.odata.dbSiteId : ""
+                siteId: AppData._persistentStates.odata.dbSiteId ? getResourceText("about.deviceID") + " " + AppData._persistentStates.odata.dbSiteId : ""
             }, commandList]);
 
             var that = this;
