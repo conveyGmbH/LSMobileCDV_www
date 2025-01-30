@@ -794,6 +794,8 @@
 	"pdfExport.exportPdfMsg" : "Creating your PDF",
 	"pdfExport.msg" : "Edit/Link",
 
+    "about.deviceID" : "DeviceID",
+
     "support.title" : "Support",
     "support.url" : "https://www.convey.de/en/help-desk/"
 }
