@@ -222,6 +222,15 @@
 
     NavigationBar._vertWidth = 188;
 
+    Application.onResumeOverride = function () {
+        Log.call(Log.l.trace, "Application.");
+        AppData._curGetUserRemoteDataId = 0;
+        AppData.getUserRemoteData();
+        // AppData.getCRVeranstOption();
+        AppData.getMobileVersion();
+        Log.ret(Log.l.trace);
+    };
+
     // initiate the page frame class
     var pageframe = new Application.PageFrame("LeadSuccess");
     pageframe.onOnlineHandler = function (eventInfo) {
