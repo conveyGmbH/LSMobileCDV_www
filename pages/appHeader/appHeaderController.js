@@ -26,6 +26,7 @@
             this.pageData.showNameInHeader = !!AppData._persistentStates.showNameInHeader;
             this.pageData.curFastReqs = 0;
             this.pageData.hasContactData = null;
+            this.pageData.replErrorFlag = AppRepl.replicator && AppRepl.replicator.state === "error" ? true : false;
 
             AppHeader.controller = this;
 

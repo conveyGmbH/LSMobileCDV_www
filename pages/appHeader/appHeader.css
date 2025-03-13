@@ -24,6 +24,17 @@
     left: 4px;
     z-index: 10000;
 }
+.appHeader .warning-container {
+    position: fixed;
+    color: #808080;
+    opacity: 0.5;
+    top: 5px;
+    left: 50px;
+    z-index: 10000;
+}
+.appHeader .warning-symbol {
+    display: inline;
+}
 #logoffbutton:disabled,
 #logoffbutton[disabled] {
     border: 1px solid #999999;

@@ -21,7 +21,11 @@
                         </div>
                         <div class="repl-field win-type-caption"
                              data-win-bind="style.display: hasContactData Binding.Converter.toDisplay">
-	                        <span data-win-bind="textContent: curFastReqs"></span>
+                            <span data-win-bind="textContent: curFastReqs"></span>
+                        </div>
+                        <div class="warning-container win-type-caption"
+                             data-win-bind="style.display: replErrorFlag Binding.Converter.toDisplay">
+                            <div class="warning-symbol" id="sign_warning"></div>
                         </div>
                         <!--<div class="user-name-field">
                             <span data-win-bind="textContent: userData.Login; style.display: showNameInHeader Binding.Converter.toDisplayNone"></span>

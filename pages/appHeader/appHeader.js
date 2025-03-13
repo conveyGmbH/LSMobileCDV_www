@@ -49,6 +49,16 @@
                     strokeWidth: AppData._persistentStates.iconStrokeWidth
                 });
             }
+            var warningSymbol = element.querySelector(".warning-symbol");
+            if (warningSymbol) {
+                Colors.loadSVGImage({
+                    fileName: warningSymbol.id,
+                    element: warningSymbol,
+                    size: 14,
+                    color: "#f0f0f0",
+                    strokeWidth: 500 || AppData._persistentStates.iconStrokeWidth
+                });
+            }
             Log.ret(Log.l.trace);
         },
 

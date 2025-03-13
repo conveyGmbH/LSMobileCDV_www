@@ -32,6 +32,7 @@
                 environment: "Platform: " + environment,
                 eventName: getResourceText("info.eventName") + AppData._userData.VeranstaltungName,
                 lastError: lastError,
+                replError: AppRepl.replicator.state === "error" ? AppData.getErrorMsgFromResponse(AppRepl.replicator._err) : "",
                 siteId: AppData._persistentStates.odata.dbSiteId ? getResourceText("about.deviceID") + " " + AppData._persistentStates.odata.dbSiteId : ""
             }, commandList]);
 
@@ -75,7 +76,7 @@
                         var dataDirectory = cordova.file.tempDirectory || cordova.file.dataDirectory;
                         var fileName = Application.pageframe.name + ".log"; 
                         var subject = Application.pageframe.name;
-                        var message = Application.pageframe.name + " " + getResourceText("info.share");
+                        var message = Application.pageframe.name + " " + getResourceText("info.share") + lastError;
                         try {
                             window.resolveLocalFileSystemURL(dataDirectory, function(dirEntry) {
                                 if (dirEntry) {

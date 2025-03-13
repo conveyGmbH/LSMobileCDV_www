@@ -322,6 +322,7 @@
                                 if (typeof AppHeader === "object" &&
                                     AppHeader.controller && AppHeader.controller.binding) {
                                     AppHeader.controller.binding.userData = AppData._userData;
+                                    AppHeader.controller.binding.replErrorFlag = false; 
                                     AppHeader.controller.loadData();
                                 }
                                 AppData.getPropertyFromInitoptionTypeID({
