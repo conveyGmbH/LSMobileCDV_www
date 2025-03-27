@@ -28,8 +28,8 @@
     position: fixed;
     color: #808080;
     opacity: 0.5;
-    top: 5px;
-    left: 50px;
+    bottom: 2px;
+    left: 26px;
     z-index: 10000;
 }
 .appHeader .warning-symbol {
