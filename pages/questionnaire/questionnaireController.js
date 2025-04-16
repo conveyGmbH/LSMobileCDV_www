@@ -517,7 +517,7 @@
                         break;
                         case "multi":
                             key = "MSANTWORT" + value;
-                            if (item[key] === "X") {
+                            if (item["MSANTWORT"] === "X" || item["MsAntwort" + value]) {
                                 hideQuestion = false;
                             } else {
                                 hideQuestion = true;
