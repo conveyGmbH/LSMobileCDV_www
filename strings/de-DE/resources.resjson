@@ -132,6 +132,8 @@
     "start.language"        : "Sprache",
 	"start.editedOn"        : "Erfasst",
     "start.modifiedOn"      : "Bearbeitet",
+    "start.replErrorMessage" : "Es gibt ein Problem mit der lokalen DB oder Replikation!!",
+    "start.confirmOk"         : "Ok",
 
     "contact.title"         : "Erfasste Kontaktdaten",
     "contact.comment"       : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
@@ -161,6 +163,7 @@
 	"contact.complete"		: "Manuell bearbeitet/überprüft nach der Erfassung",
     "contact.notice"        : "Bemerkung",
     "contact.comment3"      : "Kommentar",
+    "contact.unassignedAddressFields"        : "Nicht zugeordnete Adressfelder",
     "contact.url"           : "Webseite",
     "contact.barcodeState"  : "Barcode Status",
     "contact.requiredField" : "* Pflichtfeld",
@@ -520,6 +523,7 @@
     "info.useBarcodeActivityOff" : "Achtung: Sie deaktivieren das Feature zum Scannen über den integrierten Laserscanner. Es wird die Kamera zum Scannen genutzt. ", 
 	"info.confirm"			: "Ok",
 	"info.cancel"           : "Abbrechen",
+	"info.legacyBarcodescan" : "Legacy BarcodeScan",
 
 	"backup.title"          : "Backup",
 	"backup.info"			: "Hier kannst du ein Backup erstellen und es an convey information systems GmbH teilen",

@@ -132,6 +132,8 @@
     "start.language"        : "Lingua",
 	"start.editedOn"        : "Registrato il",
     "start.modifiedOn"      : "Modificato il",
+    "start.replErrorMessage" : "C'è un problema con il DB locale o con la replica!!",
+    "start.confirmOk"         : "Ok",
 
     "contact.title"         : "Il dati di contatto",
     "contact.comment"       : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
@@ -160,6 +162,8 @@
     "contact.incomplete"    : "Elaborazione incompleta",
     "contact.complete"		  : "Modificato/revisionato manualmente dopo l'acquisizione",
     "contact.notice"        : "Commenti",
+    "contact.comment3"      : "Commenti",
+    "contact.unassignedAddressFields"        : "Campi di indirizzo non assegnati",
     "contact.url"           : "Pagina Web",
     "contact.barcodeState"  : "Barcode status",
     "contact.requiredField" : "Elemento richiesto",
@@ -519,6 +523,7 @@
     "info.useBarcodeActivityOff" : "Attenzione: la funzione è disattivata per la scansione tramite lo scanner laser integrato. La fotocamera viene utilizzata per la scansione. ", 
     "info.confirm"			: "Ok",
     "info.cancel"           : "Cancel",
+    "info.legacyBarcodescan" : "Legacy BarcodeScan",
 
     "backup.title"          : "Backup",
     "backup.info"			: "Qui puoi creare un backup e condividerlo con convey information system gmbh",

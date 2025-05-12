@@ -205,6 +205,16 @@
                     }
                     Log.ret(Log.l.trace);
                 },
+                clickUseLegacyBarcodescan: function(event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var toggle = event.currentTarget.winControl;
+                        if (toggle) {
+                            that.binding.generalData.legacyBarcodescan = toggle.checked;
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
                 changedCameraMegapixel: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
                     if (event.currentTarget && AppBar.notifyModified) {

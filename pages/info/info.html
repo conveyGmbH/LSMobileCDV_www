@@ -86,6 +86,18 @@
                                onchange="AppBar.handleEvent('change', 'changedAutoShutterTime', event)"
                                oninput="AppBar.handleEvent('change', 'changedAutoShutterTime', event)" />
                     </div>
+                    <div class="line-separator"></div>
+                    <div class="field_line field_line_odd">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.legacyBarcodescan'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.legacyBarcodescan'}"></span>
+                        <div class="input_field toggle-switch-parent">
+                            <div id="useLegacyBarcodescan"
+                                 data-win-control="WinJS.UI.ToggleSwitch"
+                                 data-win-bind="winControl.checked: generalData.legacyBarcodescan; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
+                                 onchange="AppBar.handleEvent('change', 'clickUseLegacyBarcodescan', event)">
+                            </div>
+                        </div>
+                    </div>
                     <div class="header-separator float-left" data-win-bind="style.display: hasScannerOption Binding.Converter.toDisplay"></div>
                     <div class="content-header float-left" data-win-bind="style.display: hasScannerOption Binding.Converter.toDisplay">
                         <div class="half-circle half-circle-textcolor">&nbsp;</div>

@@ -480,7 +480,8 @@
                             formats: "QR_CODE,DATA_MATRIX,CODE_128,ITF,CODE_39,EAN_8,EAN_13,UPC_E,UPC_A,AZTEC,PDF_417",
                             resultDisplayDuration: 0,
                             disableAnimations: true,
-                            TRY_HARDER: "1"
+                            TRY_HARDER: "1",
+                            legacyBarcodescan: AppData.generalData.legacyBarcodescan
                         });
                     } else if (typeof device === "object" &&
                         device.platform === "iOS" &&

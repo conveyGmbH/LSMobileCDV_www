@@ -25,6 +25,7 @@
         cameraUseGrayscale: true,
         cameraMaxSize: 2560,
         useClippingCamera: true,
+        legacyBarcodescan: false,
         //useClippingCameraNewMode: true,
         autoShutterTime: 0,
         useBarcodeActivity: false,

@@ -132,6 +132,8 @@
     "start.language"        : "Language",
 	"start.editedOn"        : "Edited",
     "start.modifiedOn"      : "Modified",
+    "start.replErrorMessage" : "There is a problem with the local DB or replication!!",
+    "start.confirmOk"         : "Ok",
 
     "contact.title"         : "Entered Contact Data",
     "contact.comment"       : "On this page, use the Back button to go back!",
@@ -160,6 +162,8 @@
     "contact.incomplete"    : "Editing incomplete",
     "contact.complete"		: "Manually editied/reviewed after acquisition",
     "contact.notice"        : "Comment",
+    "contact.comment3"      : "Comment",
+    "contact.unassignedAddressFields"        : "Unassigned address fields",
     "contact.url"           : "Website",
     "contact.barcodeState"  : "Barcode State",
     "contact.requiredField" : "Mandatory item",
@@ -516,7 +520,8 @@
     "info.useBarcodeActivityOn" : "Attention: This feature only works if the device supports a 1D or 2D scanner laser scanner in addition to the camera. \nPlease note: if you activate this function on your smartphone or tablet, you will not be able to scan the tickets of the visitor any longer! ", 
     "info.useBarcodeActivityOff" : "Attention: You deactivate the feature for scanning via the integrated laser scanner. The camera is used for scanning. ", 
     "info.confirm" : "Ok",
-    "info.cancel" : "Cancel",
+    "info.cancel" : "Cancel",	
+	"info.legacyBarcodescan" : "Legacy BarcodeScan",
 
     "backup.title"          : "Backup",
     "backup.info"			: "You can create a backup here and share it with convey information systems GmbH",
