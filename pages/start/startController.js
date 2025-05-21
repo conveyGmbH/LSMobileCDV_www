@@ -42,6 +42,7 @@
             }
             var layout = null;
             var actions = Start.actions;
+            var refreshConfirmModalPromise = null;
 
             this.dispose = function () {
                 if (listView && listView.winControl) {
@@ -789,6 +790,46 @@
                 });
             }
 
+            var refreshConfirmModal = function () {
+                Log.call(Log.l.trace, "Start.Controller.");
+                if (refreshConfirmModalPromise) {
+                    Log.print(Log.l.info, "Cancelling previous refreshConfirmModalPromise");
+                    refreshConfirmModalPromise.cancel();
+                }
+                if (AppData._persistentStates.odata.confirmModalReplError &&
+                    AppData._persistentStates.odata.replErrorDate.getTime() + 15 * 60000 < new Date().getTime()) {
+                    return WinJS.Promise.as();
+                }
+                if (AppRepl.replicator.state === "error") {
+                    var errorMsg = (AppRepl.replicator._err && AppData.getErrorMsgFromResponse(AppRepl.replicator._err)
+                        ? AppData.getErrorMsgFromResponse(AppRepl.replicator._err)
+                        : "");
+                    confirmModal(null,
+                        getResourceText("start.replErrorMessage") + errorMsg,
+                        getResourceText("start.confirmOk"),
+                        null,
+                        function (updateConfirmed) {
+                            if (updateConfirmed) {
+                                AppData._persistentStates.odata.confirmModalReplError = true;
+                                AppData._persistentStates.odata.replErrorDate = new Date();
+                                AppData._persistentStates.odata.replErrorMessage = errorMsg;
+                                Application.pageframe.savePersistentStates();
+                                that.addDisposablePromise(refreshConfirmModalPromise);
+                            }
+                        });
+                }
+                var refreshMs = (AppData._persistentStates.odata.replInterval || 30) * 1000;
+                if (refreshConfirmModalPromise) {
+                    that.removeDisposablePromise(refreshConfirmModalPromise);
+                }
+                refreshConfirmModalPromise = WinJS.Promise.timeout(refreshMs).then(function () {
+                    that.refreshConfirmModal();
+                });
+                that.addDisposablePromise(refreshConfirmModalPromise);
+                Log.ret(Log.l.trace);
+            }
+            this.refreshConfirmModal = refreshConfirmModal;
+
             // finally, load the data
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete, now load data");
@@ -840,6 +881,13 @@
                         }
                     });
                 }
+            }).then(function () {
+                var refreshConfirmModalPromise = WinJS.Promise.timeout(5000).then(function () {
+                    refreshConfirmModalPromise.cancel();
+                    that.removeDisposablePromise(refreshConfirmModalPromise);
+                    that.refreshConfirmModal();
+                });
+                that.addDisposablePromise(refreshConfirmModalPromise);
             });
             Log.ret(Log.l.trace);
         })

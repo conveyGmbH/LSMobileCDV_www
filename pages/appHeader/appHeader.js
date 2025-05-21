@@ -54,8 +54,8 @@
                 Colors.loadSVGImage({
                     fileName: warningSymbol.id,
                     element: warningSymbol,
-                    size: 21,
-                    color: "#808080",
+                    size: 50,
+                    color: "red",
                     strokeWidth: AppData._persistentStates.iconStrokeWidth
                 });
             }

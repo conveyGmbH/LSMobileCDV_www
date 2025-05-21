@@ -132,7 +132,7 @@
     "start.language"        : "Langue",
 	"start.editedOn"        : "Créer",
     "start.modifiedOn"      : "Modifier",
-    "start.replErrorMessage" : "Il y a un problème avec la BD locale ou la réplication!!",
+    "start.replErrorMessage" : "Il y a un problème avec la BD locale ou la réplication - Veuillez fermer l'application et la redémarrer!",
     "start.confirmOk"         : "Ok",
 
     "contact.title"         : "Les données de Contact",

@@ -132,7 +132,7 @@
     "start.language"        : "Language",
 	"start.editedOn"        : "Edited",
     "start.modifiedOn"      : "Modified",
-    "start.replErrorMessage" : "There is a problem with the local DB or replication!!",
+    "start.replErrorMessage" : "There is a problem with the local DB or replication - Please close and restart the app!",
     "start.confirmOk"         : "Ok",
 
     "contact.title"         : "Entered Contact Data",

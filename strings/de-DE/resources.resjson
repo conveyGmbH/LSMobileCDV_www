@@ -132,7 +132,7 @@
     "start.language"        : "Sprache",
 	"start.editedOn"        : "Erfasst",
     "start.modifiedOn"      : "Bearbeitet",
-    "start.replErrorMessage" : "Es gibt ein Problem mit der lokalen DB oder Replikation!!",
+    "start.replErrorMessage" : "Es gibt ein Problem mit der lokalen DB oder Replikation - Bitte die App schließen und neustarten!",
     "start.confirmOk"         : "Ok",
 
     "contact.title"         : "Erfasste Kontaktdaten",

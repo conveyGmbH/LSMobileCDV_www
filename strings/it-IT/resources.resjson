@@ -132,7 +132,7 @@
     "start.language"        : "Lingua",
 	"start.editedOn"        : "Registrato il",
     "start.modifiedOn"      : "Modificato il",
-    "start.replErrorMessage" : "C'è un problema con il DB locale o con la replica!!",
+    "start.replErrorMessage" : "C'è un problema con il DB locale o con la replica - Chiudere e riavviare l'applicazione!",
     "start.confirmOk"         : "Ok",
 
     "contact.title"         : "Il dati di contatto",
