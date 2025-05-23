@@ -814,7 +814,6 @@
                                 AppData._persistentStates.odata.confirmModalReplError = true;
                                 AppData._persistentStates.odata.replErrorDate = new Date();
                                 AppData._persistentStates.odata.replErrorMessage = errorMsg;
-                                //Application.pageframe.savePersistentStates();
                                 that.addDisposablePromise(refreshConfirmModalPromise);
                             }
                         });
