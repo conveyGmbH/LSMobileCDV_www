@@ -797,6 +797,7 @@
                     refreshConfirmModalPromise.cancel();
                 }
                 if (AppData._persistentStates.odata.confirmModalReplError &&
+                    typeof AppData._persistentStates.odata.replErrorDate === "object" &&
                     AppData._persistentStates.odata.replErrorDate.getTime() + 15 * 60000 < new Date().getTime()) {
                     return WinJS.Promise.as();
                 }
@@ -813,7 +814,7 @@
                                 AppData._persistentStates.odata.confirmModalReplError = true;
                                 AppData._persistentStates.odata.replErrorDate = new Date();
                                 AppData._persistentStates.odata.replErrorMessage = errorMsg;
-                                Application.pageframe.savePersistentStates();
+                                //Application.pageframe.savePersistentStates();
                                 that.addDisposablePromise(refreshConfirmModalPromise);
                             }
                         });
