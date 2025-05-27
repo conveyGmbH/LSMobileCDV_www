@@ -225,14 +225,14 @@
                             }
                                 break;
                             case "camera": {
-                                disableButton(button, AppData._persistentStates.disableCaptureContactsButton || 
+                                disableButton(button, AppData._persistentStates.disableCaptureContactsButton ||
                                     AppData._persistentStates.inActiveUser ||
                                     AppData._persistentStates.hideCameraScan ||
                                     !AppData._persistentStates.cameraFeatureSupported);
                             }
                                 break;
                             case "newContact": {
-                                disableButton(button, AppData._persistentStates.disableCaptureContactsButton || 
+                                disableButton(button, AppData._persistentStates.disableCaptureContactsButton ||
                                     AppData._persistentStates.inActiveUser ||
                                     AppData._persistentStates.hideManually);
                             }
@@ -796,24 +796,23 @@
                     Log.print(Log.l.info, "Cancelling previous refreshConfirmModalPromise");
                     refreshConfirmModalPromise.cancel();
                 }
-                if (AppData._persistentStates.odata.confirmModalReplError &&
-                    typeof AppData._persistentStates.odata.replErrorDate === "object" &&
-                    AppData._persistentStates.odata.replErrorDate.getTime() + 15 * 60000 < new Date().getTime()) {
+                if (!AppData._persistentStates.odata.replErrorTimestamp ||
+                    AppData._persistentStates.odata.replErrorTimestamp + 15 * 60000 < Date.now()) {
                     return WinJS.Promise.as();
                 }
                 if (AppRepl.replicator.state === "error") {
                     var errorMsg = (AppRepl.replicator._err && AppData.getErrorMsgFromResponse(AppRepl.replicator._err)
                         ? AppData.getErrorMsgFromResponse(AppRepl.replicator._err)
                         : "");
+                    Log.print(Log.l.error, errorMsg);
                     confirmModal(null,
                         getResourceText("start.replErrorMessage") + errorMsg,
                         getResourceText("start.confirmOk"),
                         null,
                         function (updateConfirmed) {
                             if (updateConfirmed) {
-                                AppData._persistentStates.odata.confirmModalReplError = true;
-                                AppData._persistentStates.odata.replErrorDate = new Date();
-                                AppData._persistentStates.odata.replErrorMessage = errorMsg;
+                                AppData._persistentStates.odata.replErrorTimestamp = Date.now();
+                                Application.pageframe.savePersistentStates();
                                 that.addDisposablePromise(refreshConfirmModalPromise);
                             }
                         });

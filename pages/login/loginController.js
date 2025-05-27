@@ -41,8 +41,6 @@
             AppData._persistentStates.odata.login = null;
             AppData._persistentStates.odata.password = null;
             AppData._persistentStates.odata.dbSiteId = 0;
-            AppData._persistentStates.odata.confirmModalReplError = false;
-            AppData._persistentStates.odata.replErrorDate = null;
             AppData._persistentStates.veranstoption = {};
             AppData._persistentStates.allRestrictions = {};
             AppData._persistentStates.allRecIds = {};
