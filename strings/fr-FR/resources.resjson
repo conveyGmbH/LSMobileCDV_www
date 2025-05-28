@@ -214,6 +214,7 @@
     "contactRemote.mr"            : "Monsieur",
     "contactRemote.mrs"           : "Madame",
     "contactRemote.useRestriction": "utiliser",
+	"contactRemote.comment3"      : "Commentaire",
 
     "photo.title"           : "Carte de visite",
     "photo.comment"         : "Utilisez le bouton Retour sur cette page pour y retourner!",

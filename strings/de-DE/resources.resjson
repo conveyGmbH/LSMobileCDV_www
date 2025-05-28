@@ -214,6 +214,7 @@
     "contactRemote.mr"            : "Herr",
     "contactRemote.mrs"           : "Frau",
     "contactRemote.useRestriction": "verwenden",
+	"contactRemote.comment3" : "Kommentar",
 
     "photo.title"           : "Visitenkarte",
     "photo.comment"         : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",

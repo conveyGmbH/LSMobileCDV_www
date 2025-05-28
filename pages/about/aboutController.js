@@ -18,10 +18,6 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "About.Controller.");
 
-            var lastError = (AppBar.scope &&
-                AppBar.scope.binding &&
-                AppBar.scope.binding.error &&
-                AppBar.scope.binding.error.errorMsg) ? AppBar.scope.binding.error.errorMsg : "";
             var environment = navigator.appVersion;
             if (typeof device === "object") {
                 environment += " " + device.platform + " " + device.version;
@@ -31,7 +27,6 @@
                 version: Application.version,
                 environment: "Platform: " + environment,
                 eventName: getResourceText("info.eventName") + AppData._userData.VeranstaltungName,
-                lastError: lastError,
                 replError: AppRepl.replicator.state === "error" ? AppData.getErrorMsgFromResponse(AppRepl.replicator._err) : "",
                 siteId: AppData._persistentStates.odata.dbSiteId ? getResourceText("about.deviceID") + " " + AppData._persistentStates.odata.dbSiteId : ""
             }, commandList]);

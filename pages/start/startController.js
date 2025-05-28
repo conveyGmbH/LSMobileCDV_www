@@ -871,15 +871,22 @@
                     AppData.getCRVeranstOption();
                     AppData.getMobileVersion();
                 }
+            }).then(function () {
+                var ret = new WinJS.Promise.as();
                 if (AppData._movedSuccess === 0) {
-                    return confirmModal(null, getResourceText("general.userChangedSuccess") + AppData._userData.VeranstaltungName, getResourceText("flyout.ok"), null, function (updateConfirmed) {
-                        Log.print(Log.l.info, "updateMessage returned=" + updateConfirmed);
-                        if (updateConfirmed) {
-                            AppData._movedSuccess = null;
+                    ret = new WinJS.Promise.as().then(function () {
+                        return AppData.getUserData();
+                    }).then(function () {
+                        return confirmModal(null, getResourceText("general.userChangedSuccess") + AppData._userData.VeranstaltungName, getResourceText("flyout.ok"), null, function (updateConfirmed) {
+                            Log.print(Log.l.info, "updateMessage returned=" + updateConfirmed);
+                            if (updateConfirmed) {
+                                AppData._movedSuccess = null;
+                            }
                             return WinJS.Promise.as();
-                        }
+                        });
                     });
                 }
+                return ret;
             }).then(function () {
                 var refreshConfirmModalPromise = WinJS.Promise.timeout(5000).then(function () {
                     refreshConfirmModalPromise.cancel();

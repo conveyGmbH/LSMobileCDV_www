@@ -214,6 +214,7 @@
     "contactRemote.mr"            : "Mr",
     "contactRemote.mrs"           : "Mrs",
     "contactRemote.useRestriction": "use",
+	"contactRemote.comment3"      : "Comment",
 
     "photo.title"           : "Business card",
     "photo.comment"         : "On this page, use the Back button to go back!",

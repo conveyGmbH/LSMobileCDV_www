@@ -60,7 +60,8 @@
                 Fax: "",
                 EMail: "",
                 WebAdresse: "",
-                Bemerkungen: "",
+                Kommentar: "", // new comment field
+                Bemerkungen: "", // nicht zugeordnete Felder
                 Freitext1: "",
                 HostName: (window.device && window.device.uuid),
                 INITAnredeID: 0,
@@ -97,6 +98,35 @@
                 // this will return a promise to controller
                 Log.ret(Log.l.trace);
                 return ret;
+            }
+        },
+        _contactNoteView: {
+            get: function () {
+                return AppData.getFormatView("KontaktNotiz", 0, true);
+            }
+        },
+        contactNoteView: {
+            select: function (complete, error, restriction) {
+                Log.call(Log.l.trace, "contactView.");
+                var ret = Contact._contactNoteView.select(complete, error, restriction);
+                Log.ret(Log.l.trace);
+                return ret;
+            },
+            update: function (complete, error, recordId, viewResponse) {
+                Log.call(Log.l.trace, "contactView.");
+                var ret = Contact._contactNoteView.update(complete, error, recordId, viewResponse);
+                Log.ret(Log.l.trace);
+                return ret;
+            },
+            insert: function (complete, error, viewResponse) {
+                Log.call(Log.l.trace, "wavSketchView.");
+                var ret = Contact._contactNoteView.insert(complete, error, viewResponse);
+                Log.ret(Log.l.trace);
+                return ret;
+            },
+            defaultValue: {
+                KontaktNotizVIEWID: 0,
+                Quelltext: ""
             }
         }
     });
