@@ -77,9 +77,7 @@
             timeZoneRemoteAdjustment: null,
             timeZoneRemoteDiffMs: 0,
             serverFailure: true,
-            callerAddress: "LEADSUCCESS",
-            confirmModalReplError: false,
-            replErrorDate: null
+            callerAddress: "LEADSUCCESS"
         }
     };
 
