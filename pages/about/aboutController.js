@@ -40,7 +40,7 @@
             }
 
             this.eventHandlers = {
-                clickHomepageLink: function(event) {
+                clickHomepageLink: function (event) {
                     Log.call(Log.l.trace, "about.Controller.");
                     var url = "https://" + getResourceText("info.homepage");
                     if (isAppleDevice && cordova.InAppBrowser) {
@@ -69,25 +69,25 @@
                         Application.pageframe &&
                         Application.pageframe.name) {
                         var dataDirectory = cordova.file.tempDirectory || cordova.file.dataDirectory;
-                        var fileName = Application.pageframe.name + ".log"; 
+                        var fileName = Application.pageframe.name + ".log";
                         var subject = Application.pageframe.name;
                         var message = Application.pageframe.name + " " + getResourceText("info.share") + lastError;
                         try {
-                            window.resolveLocalFileSystemURL(dataDirectory, function(dirEntry) {
+                            window.resolveLocalFileSystemURL(dataDirectory, function (dirEntry) {
                                 if (dirEntry) {
                                     try {
                                         dirEntry.getFile(fileName, {
                                             create: false,
                                             exclusive: false
-                                        }, function(fileEntry) {
+                                        }, function (fileEntry) {
                                             if (fileEntry) {
-                                                fileEntry.file(function(file) {
+                                                fileEntry.file(function (file) {
                                                     try {
                                                         var reader = new FileReader();
-                                                        reader.onerror = function(errorResponse) {
+                                                        reader.onerror = function (errorResponse) {
                                                             AppData.setErrorMsg(that.binding, "Failed read file " + fileName + " error: " + JSON.stringify(errorResponse));
-                                                        }; 
-                                                        reader.onloadend = function() {
+                                                        };
+                                                        reader.onloadend = function () {
                                                             var blob = utf8_decode(this.result);
                                                             var encoded = b64.fromByteArray(blob);
                                                             var data = "data:text/log;base64," + encoded;
@@ -98,13 +98,13 @@
                                                     } catch (ex) {
                                                         console.log("Failed new FileReader error: " + JSON.stringify(ex));
                                                     }
-                                                }, function(errorResponse) {
+                                                }, function (errorResponse) {
                                                     AppData.setErrorMsg(that.binding, "Error read" + fileName + " error: " + JSON.stringify(errorResponse));
                                                 });
                                             } else {
                                                 AppData.setErrorMsg(that.binding, "file read error NO fileEntry!");
                                             }
-                                        }, function(errorResponse) {
+                                        }, function (errorResponse) {
                                             AppData.setErrorMsg(that.binding, "getFile(" + fileName + ") error: " + JSON.stringify(errorResponse));
                                         });
                                     } catch (ex) {
@@ -122,7 +122,7 @@
                     Log.call(Log.l.trace, "Info.Controller.");
                     var dbName = Application.pageframe.name;
                     var dataDirectory = cordova.file.dataDirectory;
-                    var persistenStatesName = Application.pageframe.filenamePersistentStates;
+                    //var persistenStatesName = Application.pageframe.filenamePSEncoded || Application.pageframe.filenamePersistentStates;
                     if (dbName && typeof dbName === "string") {
                         dbName = dbName.toLowerCase();
                     } else {
@@ -149,24 +149,19 @@
                         Application.pageframe &&
                         Application.pageframe.name) {
                         var fileName = dataDirectory + dbName;
-                        var fileName2 = cordova.file.dataDirectory + persistenStatesName;
-                        var subject = dbName + " " + persistenStatesName;
-                        var message = dbName + " " + persistenStatesName + " " + getResourceText("info.shareBackup");
-                        var options = { subject: subject, message: message, files: [fileName, fileName2] }
-                        /*window.plugins.socialsharing.shareWithOptions(options, function(result) {
-                            Log.print(Log.l.info, "Share completed? " + result.completed); // On Android apps mostly return false even while it's true
-                            Log.print(Log.l.info, "Shared to app: " + result.app); // On Android result.app since plugin version 5.4.0 this is no longer empty. On iOS it's empty when sharing is cancelled (result.completed=false)
-                        }, function (msg) {
-                            Log.print(Log.l.error, "Sharing failed with message: " + msg);
-                        });*/
+                        var fileName2 = cordova.file.dataDirectory + Application.pageframe.filenamePersistentStates;
+                        var fileName3 = cordova.file.dataDirectory + Application.pageframe.filenamePSEncoded;
+                        var subject = dbName + " + Settings";
+                        var message = dbName + " + Settings" + " " + getResourceText("info.shareBackup");
                         if (typeof device === "object" && (device.platform === "Android" || device.platform === "iOS")) {
-                            window.plugins.socialsharing.share(message, subject, [fileName, fileName2]);
+                            window.plugins.socialsharing.share(message, subject, [fileName, fileName2, fileName3]);
                         } else {
-                            window.resolveLocalFileSystemURL(dataDirectory, function(dirEntry) {
+                            window.resolveLocalFileSystemURL(dataDirectory, function (dirEntry) {
                                 if (dirEntry && dirEntry.filesystem && dirEntry.filesystem.winpath) {
                                     fileName = dirEntry.filesystem.winpath.replace(/\//g, "\\") + dbName;
-                                    fileName2 = dirEntry.filesystem.winpath.replace(/\//g, "\\") + persistenStatesName;
-                                    window.plugins.socialsharing.share(message, subject, [fileName, fileName2]);
+                                    fileName2 = dirEntry.filesystem.winpath.replace(/\//g, "\\") + Application.pageframe.filenamePersistentStates;
+                                    fileName3 = dirEntry.filesystem.winpath.replace(/\//g, "\\") + Application.pageframe.filenamePSEncoded;
+                                    window.plugins.socialsharing.share(message, subject, [fileName, fileName2, fileName3]);
                                 }
                             });
                         }
@@ -229,15 +224,15 @@
             }
 
             this.disableHandlers = {
-                clickBack: function() {
+                clickBack: function () {
                     if (WinJS.Navigation.canGoBack === true) {
                         return false;
                     } else {
                         return true;
                     }
                 },
-                clickShare:function () {
-                    return (AppData.generalData.logEnabled && 
+                clickShare: function () {
+                    return (AppData.generalData.logEnabled &&
                         AppData.generalData.logTarget === 2 &&
                         window.plugins &&
                         window.plugins.socialsharing &&
@@ -270,7 +265,7 @@
             }
             AppData.setErrorMsg(this.binding);
 
-            that.processAll().then(function() {
+            that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 AppBar.notifyModified = true;
                 return Colors.loadSVGImageElements(pageElement, "app-logo", 240);
