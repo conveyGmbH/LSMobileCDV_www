@@ -49,7 +49,7 @@
         iconStrokeWidth: 150,
         prevNavigateNewId: "newContact",
         manualTheme: true,
-        encodeSettings: false,
+        encodeSettings: true,
         odata: {
             https: true,
             hostName: "leadsuccess.convey.de",
