@@ -39,6 +39,9 @@
                 if (that.controller) {
                     that.controller.setupLog();
                 }
+                if (that.controller) {
+                    that.controller.saveCountryOption();
+                }
                 Application.pageframe.savePersistentStates();
                 complete(response);
             });

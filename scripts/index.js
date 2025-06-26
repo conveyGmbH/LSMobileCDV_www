@@ -20,6 +20,8 @@
         },
         showAppBkg: false,
         turnThumbsLeft: false,
+        countryOption: true,
+        countryOptionID: 53,
         cameraMegapixel: 5,
         cameraQuality: 50,
         cameraUseGrayscale: true,

@@ -35,7 +35,7 @@
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.cameraUseGrayscale'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.cameraUseGrayscale'}"></span>
                         <div class="input_field toggle-switch-parent">
-                            <div id="cameraUseGrayscale" 
+                            <div id="cameraUseGrayscale"
                                  data-win-control="WinJS.UI.ToggleSwitch"
                                  data-win-bind="winControl.checked: generalData.cameraUseGrayscale; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
                                  onchange="AppBar.handleEvent('change', 'clickCameraUseGrayscale', event)">
@@ -58,7 +58,7 @@
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.useClippingCamera'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.useClippingCamera'}"></span>
                         <div class="input_field toggle-switch-parent">
-                            <div id="useClippingCamera" 
+                            <div id="useClippingCamera"
                                  data-win-control="WinJS.UI.ToggleSwitch"
                                  data-win-bind="winControl.checked: generalData.useClippingCamera; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
                                  onchange="AppBar.handleEvent('change', 'clickUseClippingCamera', event)">
@@ -69,7 +69,7 @@
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.useClippingCameraNewMode'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.useClippingCameraNewMode'}"></span>
                         <div class="input_field toggle-switch-parent">
-                            <div id="useClippingCameraNewMode" 
+                            <div id="useClippingCameraNewMode"
                                  data-win-control="WinJS.UI.ToggleSwitch"
                                  data-win-bind="winControl.checked: generalData.useClippingCameraNewMode; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
                                  onchange="AppBar.handleEvent('change', 'clickUseClippingNewModeCamera', event)">
@@ -111,7 +111,7 @@
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.useExternalCamera'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.useExternalCamera'}"></span>
                         <div class="input_field toggle-switch-parent">
-                            <div id="useExternalCamera" 
+                            <div id="useExternalCamera"
                                  data-win-control="WinJS.UI.ToggleSwitch"
                                  data-win-bind="winControl.checked: generalData.useExternalCamera; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
                                  onchange="AppBar.handleEvent('change', 'clickUseExternalCamera', event)">
@@ -133,7 +133,7 @@
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.useBarcodeActivity'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.useBarcodeActivity'}"></span>
                         <div class="input_field toggle-switch-parent">
-                            <div id="useBarcodeActivity" 
+                            <div id="useBarcodeActivity"
                                  data-win-control="WinJS.UI.ToggleSwitch"
                                  data-win-bind="winControl.checked: generalData.useBarcodeActivity; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
                                  onclick="AppBar.handleEvent('click', 'clickUseBarcodeActivity', event)">
@@ -171,36 +171,36 @@
                         </div>
                     </div>
                     <div class="field_line field_line_odd">
-	                    <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.replActive'}"></span>
-	                    <span class="label landscape_only" data-win-res="{textContent: 'info.replActive'}"></span>
-	                    <div class="input_field toggle-switch-parent">
-		                    <div id="replActive" 
-		                         data-win-control="WinJS.UI.ToggleSwitch"
-		                         data-win-bind="winControl.checked: appSettings.odata.replActive; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
-		                         onchange="AppBar.handleEvent('change', 'clickReplActive', event)">
-		                    </div>
-	                    </div>
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.replActive'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.replActive'}"></span>
+                        <div class="input_field toggle-switch-parent">
+                            <div id="replActive"
+                                 data-win-control="WinJS.UI.ToggleSwitch"
+                                 data-win-bind="winControl.checked: appSettings.odata.replActive; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
+                                 onchange="AppBar.handleEvent('change', 'clickReplActive', event)">
+                            </div>
+                        </div>
                     </div>
                     <div class="field_line field_line_even" data-win-bind="style.display: appSettings.odata.replActive Binding.Converter.toDisplay">
-	                    <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.replIntervalFastReqs'}"></span>
-	                    <span class="label landscape_only" data-win-res="{textContent: 'info.replIntervalFastReqs'}"></span>
-	                    <span class="input_field win-type-subtitle" data-win-bind="textContent: appSettings.odata.replIntervalFastReqs"></span>
-	                    <input id="replIntervalFastReqs" class="input_field win-range"
-	                           type="range" min="0.15" max="1" step="0.05"
-	                           data-win-bind="value: appSettings.odata.replIntervalFastReqs"
-	                           onchange="AppBar.handleEvent('change', 'changedReplIntervalFastReqs', event)"
-	                           oninput="AppBar.handleEvent('change', 'changedReplIntervalFastReqs', event)" />
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.replIntervalFastReqs'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.replIntervalFastReqs'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: appSettings.odata.replIntervalFastReqs"></span>
+                        <input id="replIntervalFastReqs" class="input_field win-range"
+                               type="range" min="0.15" max="1" step="0.05"
+                               data-win-bind="value: appSettings.odata.replIntervalFastReqs"
+                               onchange="AppBar.handleEvent('change', 'changedReplIntervalFastReqs', event)"
+                               oninput="AppBar.handleEvent('change', 'changedReplIntervalFastReqs', event)" />
                     </div>
                     <div class="line-separator"></div>
                     <div class="field_line field_line_odd" data-win-bind="style.display: appSettings.odata.replActive Binding.Converter.toDisplay">
-	                    <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.numFastReqs'}"></span>
-	                    <span class="label landscape_only" data-win-res="{textContent: 'info.numFastReqs'}"></span>
-	                    <span class="input_field win-type-subtitle" data-win-bind="textContent: appSettings.odata.numFastReqs"></span>
-	                    <input id="numFastReqs" class="input_field win-range"
-	                           type="range" min="5" max="100" step="1"
-	                           data-win-bind="value: appSettings.odata.numFastReqs"
-	                           onchange="AppBar.handleEvent('change', 'changedNumFastReqs', event)"
-	                           oninput="AppBar.handleEvent('change', 'changedNumFastReqs', event)" />
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.numFastReqs'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.numFastReqs'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: appSettings.odata.numFastReqs"></span>
+                        <input id="numFastReqs" class="input_field win-range"
+                               type="range" min="5" max="100" step="1"
+                               data-win-bind="value: appSettings.odata.numFastReqs"
+                               onchange="AppBar.handleEvent('change', 'changedNumFastReqs', event)"
+                               oninput="AppBar.handleEvent('change', 'changedNumFastReqs', event)" />
                     </div>
                     <div class="field_line field_line_even" data-win-bind="style.display: appSettings.odata.replActive Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.replInterval'}"></span>
@@ -237,7 +237,7 @@
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.logOffOptionActive'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.logOffOptionActive'}"></span>
                         <div class="input_field toggle-switch-parent">
-                            <div id="logOffOptionActive" 
+                            <div id="logOffOptionActive"
                                  data-win-control="WinJS.UI.ToggleSwitch"
                                  data-win-bind="winControl.checked: generalData.logOffOptionActive; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
                                  onchange="AppBar.handleEvent('change', 'clicklogOffOptionActive', event)">
@@ -258,11 +258,42 @@
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.turnThumbsLeft'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.turnThumbsLeft'}"></span>
                         <div class="input_field toggle-switch-parent">
-                            <div id="turnThumbsLeft" 
+                            <div id="turnThumbsLeft"
                                  data-win-control="WinJS.UI.ToggleSwitch"
                                  data-win-bind="winControl.checked: generalData.turnThumbsLeft Binding.Mode.twoway; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off">
                             </div>
                         </div>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="header-separator float-left"></div>
+                    <div class="content-header float-left">
+	                    <div class="half-circle half-circle-textcolor">&nbsp;</div>
+	                    <div class="idAndDate win-type-caption">
+		                    <span class="id-field"></span>
+		                    <span class="caption-field" data-win-res="{textContent: 'info.log6'}"></span>
+		                    <span class="date-field"></span>
+	                    </div>
+                    </div>
+                    <div class="field_line field_line_odd">
+	                    <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.countryOption'}"></span>
+	                    <span class="label landscape_only" data-win-res="{textContent: 'info.countryOption'}"></span>
+	                    <div class="input_field toggle-switch-parent">
+		                    <div id="countryOption"
+		                         data-win-control="WinJS.UI.ToggleSwitch"
+		                         data-win-bind="winControl.checked: generalData.countryOption Binding.Mode.twoway; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off">
+		                    </div>
+	                    </div>
+                    </div>
+                    <div class="field_line field_line_even" data-win-bind="style.display: generalData.countryOption Binding.Converter.toDisplay">
+	                    <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.country'}"></span>
+	                    <span class="label landscape_only" data-win-res="{textContent: 'contact.country'}"></span>
+	                    <select id="InitLand"
+	                            class="input_field win-dropdown"
+	                            data-win-control="WinJS.UI.Repeater"
+	                            data-win-bind="value: countryOptionID Binding.Mode.twoway">
+		                    <option data-win-bind="value: INITLandID; textContent: TITLE"></option>
+	                    </select>
+	                    <span class="input_field win-type-subtitle" data-win-bind="textContent: InitLandItem.TITLE; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplay"></span>
                     </div>
                     <div class="line-separator"></div>
                     <div class="header-separator float-left"></div>
@@ -278,7 +309,7 @@
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.logenabled'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.logenabled'}"></span>
                         <div class="input_field toggle-switch-parent">
-                            <div id="logEnabled" 
+                            <div id="logEnabled"
                                  data-win-control="WinJS.UI.ToggleSwitch"
                                  data-win-bind="winControl.checked: generalData.logEnabled; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
                                  onchange="AppBar.handleEvent('change', 'clickLogEnabled', event)">
@@ -300,7 +331,7 @@
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.loggroup'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.loggroup'}"></span>
                         <div class="input_field toggle-switch-parent">
-                            <div id="logGroup" 
+                            <div id="logGroup"
                                  data-win-control="WinJS.UI.ToggleSwitch"
                                  data-win-bind="winControl.checked: generalData.logGroup; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
                                  onchange="AppBar.handleEvent('change', 'clickLogGroup', event)">
@@ -311,7 +342,7 @@
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.lognostack'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.lognostack'}"></span>
                         <div class="input_field toggle-switch-parent">
-                            <div id="logNoStack" 
+                            <div id="logNoStack"
                                  data-win-control="WinJS.UI.ToggleSwitch"
                                  data-win-bind="winControl.checked: generalData.logNoStack; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
                                  onchange="AppBar.handleEvent('change', 'clickLogNoStack', event)">
@@ -323,7 +354,7 @@
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.logWinJS'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.logWinJS'}"></span>
                         <div class="input_field toggle-switch-parent">
-                            <div id="logGroup" 
+                            <div id="logGroup"
                                  data-win-control="WinJS.UI.ToggleSwitch"
                                  data-win-bind="winControl.checked: generalData.logWinJS; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
                                  onchange="AppBar.handleEvent('change', 'clickLogWinJS', event)">
@@ -342,15 +373,15 @@
                         </div>
                     </div>
                     <div class="field_line field_line_odd">
-	                    <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.showFastRecTime'}"></span>
-	                    <span class="label landscape_only" data-win-res="{textContent: 'info.showFastRecTime'}"></span>
-	                    <div class="input_field toggle-switch-parent">
-		                    <div id="showFastRecTime" 
-		                         data-win-control="WinJS.UI.ToggleSwitch"
-		                         data-win-bind="winControl.checked: generalData.showFastRecTime; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
-		                         onchange="AppBar.handleEvent('change', 'clickShowFastRecTime', event)">
-		                    </div>
-	                    </div>
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.showFastRecTime'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.showFastRecTime'}"></span>
+                        <div class="input_field toggle-switch-parent">
+                            <div id="showFastRecTime"
+                                 data-win-control="WinJS.UI.ToggleSwitch"
+                                 data-win-bind="winControl.checked: generalData.showFastRecTime; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
+                                 onchange="AppBar.handleEvent('change', 'clickShowFastRecTime', event)">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="error-message"

@@ -39,10 +39,12 @@
             var lastError = AppBar.scope.binding.error.errorMsg ? AppBar.scope.binding.error.errorMsg : "";
 
             Application.Controller.apply(this, [pageElement, {
-                uploadTS: (AppData.appSettings.odata.replPrevPostMs ?
-                    "\/Date(" + AppData.appSettings.odata.replPrevPostMs + ")\/" : null),
-                downloadTS: (AppData.appSettings.odata.replPrevSelectMs ?
-                    "\/Date(" + AppData.appSettings.odata.replPrevSelectMs + ")\/" : null),
+                uploadTS: (AppData.appSettings.odata.replPrevPostMs
+                    ? "\/Date(" + AppData.appSettings.odata.replPrevPostMs + ")\/"
+                    : null),
+                downloadTS: (AppData.appSettings.odata.replPrevSelectMs
+                    ? "\/Date(" + AppData.appSettings.odata.replPrevSelectMs + ")\/"
+                    : null),
                 version: Application.version,
                 environment: "Platform: " + navigator.appVersion,
                 isAndroid: isAndroid,
@@ -53,7 +55,8 @@
                 barcodeDeviceStatus: Barcode.deviceStatus,
                 hasScannerOption: hasScannerOption,
                 lastError: lastError,
-                logToFile: AppData.generalData.logTarget === 2 ? true : false
+                logToFile: AppData.generalData.logTarget === 2 ? true : false,
+                countryOptionID: null
             }, commandList]);
 
 
@@ -72,11 +75,15 @@
 
             var that = this;
 
+            var initLand = pageElement.querySelector("#InitLand");
             //var lastError = that.binding.error.errorMsg;
 
             var isAppleDevice = AppData.checkIPhoneBug();
 
             this.dispose = function () {
+                if (initLand && initLand.winControl) {
+                    initLand.winControl.data = null;
+                }
                 if (picturesFolderSelect && picturesFolderSelect.winControl) {
                     picturesFolderSelect.winControl.data = null;
                 }
@@ -107,6 +114,14 @@
                 Log.init(settings);
             };
             this.setupLog = setupLog;
+
+            var saveCountryOption = function () {
+                Log.call(Log.l.trace, "Info.Controller.");
+                if (that.binding.countryOptionID && typeof that.binding.countryOptionID === "string")
+                    that.binding.generalData.countryOptionID = that.binding.countryOptionID;
+                Log.ret(Log.l.trace);
+            }
+            this.saveCountryOption = saveCountryOption;
 
             this.eventHandlers = {
                 clickHomepageLink: function (event) {
@@ -205,7 +220,7 @@
                     }
                     Log.ret(Log.l.trace);
                 },
-                clickUseLegacyBarcodescan: function(event) {
+                clickUseLegacyBarcodescan: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
                     if (event.currentTarget && AppBar.notifyModified) {
                         var toggle = event.currentTarget.winControl;
@@ -612,6 +627,57 @@
                                 onDeviceListChange: that.setDeviceList
                             });
                         isDeviceListOpened = true;
+                    }
+                }).then(function () {
+                    if (!AppData.initLandView.getResults().length) {
+                        Log.print(Log.l.trace, "calling select initLandData...");
+                        //@nedra:25.09.2015: load the list of INITLand for Combobox
+                        var initLandSelectPromise = AppData.initLandView.select(function (json) {
+                            that.removeDisposablePromise(initLandSelectPromise);
+                            // this callback will be called asynchronously
+                            // when the response is available
+                            Log.print(Log.l.trace, "initLandView: success!");
+                            if (json && json.d && json.d.results) {
+                                // Now, we call WinJS.Binding.List to get the bindable list
+                                if (initLand && initLand.winControl) {
+                                    that.initLandList = new WinJS.Binding.List(json.d.results);
+                                    /*for (var i = 0; i < that.initLandList.length; i++) {
+                                        var item = that.initLandList.getAt(i);
+                                        if (item && item.INITLandID === 53) {
+                                            that.initLandList.unshift(item);
+                                            break;
+                                        }
+                                    }*/
+                                    initLand.winControl.data = that.initLandList;
+                                }
+                            }
+                        }, function (errorResponse) {
+                            that.removeDisposablePromise(initLandSelectPromise);
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        });
+                        return that.addDisposablePromise(initLandSelectPromise);
+                    } else {
+                        if (initLand && initLand.winControl) {
+                            that.initLandList = new WinJS.Binding.List(AppData.initLandView.getResults());
+                            /*for (var i = 0; i < that.initLandList.length; i++) {
+                                var item = that.initLandList.getAt(i);
+                                if (item && item.INITLandID === 53) {
+                                    that.initLandList.unshift(item);
+                                    break;
+                                }
+                            }*/
+                            initLand.winControl.data = that.initLandList;
+                        }
+                        return WinJS.Promise.as();
+                    }
+                }).then(function() {
+                    if (that.binding.generalData.countryOptionID &&
+                        typeof that.binding.generalData.countryOptionID === "string") {
+                        that.binding.countryOptionID = parseInt(that.binding.generalData.countryOptionID);
+                    } else {
+                        that.binding.countryOptionID = that.binding.generalData.countryOptionID;
                     }
                 });
                 Log.ret(Log.l.trace);

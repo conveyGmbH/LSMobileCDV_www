@@ -587,7 +587,7 @@
                                     that.initLandList = new WinJS.Binding.List(json.d.results);
                                     for (var i = 0; i < that.initLandList.length; i++) {
                                         var item = that.initLandList.getAt(i);
-                                        if (item && item.INITLandID === 53) {
+                                        if (that.binding.generalData.countryOption && that.binding.generalData.countryOptionID && item && item.INITLandID === parseInt(that.binding.generalData.countryOptionID)) {
                                             that.initLandList.unshift(item);
                                             break;
                                         }
@@ -607,7 +607,7 @@
                             that.initLandList = new WinJS.Binding.List(AppData.initLandView.getResults());
                             for (var i = 0; i < that.initLandList.length; i++) {
                                 var item = that.initLandList.getAt(i);
-                                if (item && item.INITLandID === 53) {
+                                if (that.binding.generalData.countryOption && that.binding.generalData.countryOptionID && item && item.INITLandID === parseInt(that.binding.generalData.countryOptionID)) {
                                     that.initLandList.unshift(item);
                                     break;
                                 }
