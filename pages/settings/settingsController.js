@@ -217,6 +217,7 @@
                                 });
                             }
                             that.binding.generalData.individualColors = toggle.checked;
+                            AppData._persistentStates.appColors = that.binding.generalData.individualColors;   
                             Application.pageframe.savePersistentStates();
                         }
                     }

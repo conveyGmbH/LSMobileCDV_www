@@ -1109,22 +1109,27 @@
             var color;
             switch (item.INITOptionTypeID) {
                 case 10:
-                    property = "individualColors";
+                    property = "individualColors";  
                     if (item.LocalValue === "1") {
                         AppData._persistentStates.individualColors = true;
                         AppData._persistentStates.serverColors = true;
+                        AppData._persistentStates.appColors = false;
+                        NavigationBar.disablePage("settings");
                     } else {
-                        AppData._persistentStates.individualColors = false;
                         AppData._persistentStates.serverColors = false;
-                        WinJS.Promise.timeout(0).then(function () {
-                            AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
-                            var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
-                            var promise = colors._loadCssPromise || WinJS.Promise.timeout(0);
-                            promise.then(function () {
-                                AppBar.loadIcons();
-                                NavigationBar.groups = Application.navigationBarGroups;
+                        if (!AppData._persistentStates.appColors) {
+                            AppData._persistentStates.individualColors = false;
+                            WinJS.Promise.timeout(0).then(function () {
+                                AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
+                                var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
+                                var promise = colors._loadCssPromise || WinJS.Promise.timeout(0);
+                                promise.then(function () {
+                                    AppBar.loadIcons();
+                                    NavigationBar.groups = Application.navigationBarGroups;
+                                });
                             });
-                        });
+                        }
+                        NavigationBar.enablePage("settings");
                     }
                     break;
                 case 11:
