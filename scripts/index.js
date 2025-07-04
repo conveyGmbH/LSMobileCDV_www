@@ -28,6 +28,7 @@
         cameraMaxSize: 2560,
         useClippingCamera: true,
         legacyBarcodescan: true,
+        useLSRecording: false,
         //useClippingCameraNewMode: true,
         autoShutterTime: 0,
         useBarcodeActivity: false,

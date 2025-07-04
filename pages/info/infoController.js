@@ -230,6 +230,16 @@
                     }
                     Log.ret(Log.l.trace);
                 },
+                clickUseLSRecording: function (event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var toggle = event.currentTarget.winControl;
+                        if (toggle) {
+                            that.binding.generalData.useLSRecording = toggle.checked;
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
                 changedCameraMegapixel: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
                     if (event.currentTarget && AppBar.notifyModified) {

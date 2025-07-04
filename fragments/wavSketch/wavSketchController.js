@@ -20,6 +20,7 @@
             Fragments.Controller.apply(this, [fragmentElement, {
                 noteId: null,
                 isLocal: options.isLocal,
+                useLSRecording: AppData.generalData.useLSRecording,
                 dataSketch: {
                     audioData: ""
                 }
@@ -168,8 +169,8 @@
                             // or server returns response with an error status.
                             AppData.setErrorMsg(that.binding, errorResponse);
                         },
-                        dataSketch,
-                        that.binding.isLocal);
+                            dataSketch,
+                            that.binding.isLocal);
                     }
                 });
                 Log.ret(Log.l.trace);
@@ -189,23 +190,23 @@
                             create: false,
                             exclusive: false
                         },
-                        function(fileEntry) {
-                            if (fileEntry) {
-                                Log.print(Log.l.info, "resolveLocalFileSystemURL: fileEntry open!");
-                                var deleteFile = function() {
-                                    fileEntry.remove(function() {
-                                        Log.print(Log.l.info, "file deleted!");
-                                    },
-                                    function(errorResponse) {
-                                        Log.print(Log.l.error, "file delete: Failed remove file " + filePath + " error: " + JSON.stringify(errorResponse));
-                                    },
-                                    function() {
-                                        Log.print(Log.l.trace, "file delete: extra ignored!");
-                                    });
-                                }
-                                fileEntry.file(function(file) {
+                            function (fileEntry) {
+                                if (fileEntry) {
+                                    Log.print(Log.l.info, "resolveLocalFileSystemURL: fileEntry open!");
+                                    var deleteFile = function () {
+                                        fileEntry.remove(function () {
+                                            Log.print(Log.l.info, "file deleted!");
+                                        },
+                                            function (errorResponse) {
+                                                Log.print(Log.l.error, "file delete: Failed remove file " + filePath + " error: " + JSON.stringify(errorResponse));
+                                            },
+                                            function () {
+                                                Log.print(Log.l.trace, "file delete: extra ignored!");
+                                            });
+                                    }
+                                    fileEntry.file(function (file) {
                                         var reader = new FileReader();
-                                        reader.onerror = function(errorResponse) {
+                                        reader.onerror = function (errorResponse) {
                                             Log.print(Log.l.error,
                                                 "Failed read file " +
                                                 filePath +
@@ -215,7 +216,7 @@
                                             deleteFile();
                                             AppBar.busy = false;
                                         };
-                                        reader.onloadend = function() {
+                                        reader.onloadend = function () {
                                             var data = new Uint8Array(this.result);
                                             Log.print(Log.l.info,
                                                 "Successful file read! fileExt=" +
@@ -223,17 +224,17 @@
                                                 " data-length=" +
                                                 data.length);
                                             switch (fileExt) {
-                                            case "amr":
-                                                try {
-                                                    var buffer = AMR.toWAV(data);
-                                                    Log.print(Log.l.info, "AMR.toWAV: data-length=" + buffer.length);
-                                                    data = buffer;
-                                                    fileExt = "wav";
-                                                } catch (exception) {
-                                                    Log.print(Log.l.error,
-                                                        "ARM exception " + (exception && exception.message));
-                                                }
-                                                break;
+                                                case "amr":
+                                                    try {
+                                                        var buffer = AMR.toWAV(data);
+                                                        Log.print(Log.l.info, "AMR.toWAV: data-length=" + buffer.length);
+                                                        data = buffer;
+                                                        fileExt = "wav";
+                                                    } catch (exception) {
+                                                        Log.print(Log.l.error,
+                                                            "ARM exception " + (exception && exception.message));
+                                                    }
+                                                    break;
                                             }
                                             var encoded = b64.fromByteArray(data);
                                             if (encoded && encoded.length > 0) {
@@ -248,25 +249,25 @@
                                         };
                                         reader.readAsArrayBuffer(file);
                                     },
-                                    function(errorResponse) {
-                                        Log.print(Log.l.error, "file read error: " + JSON.stringify(errorResponse));
-                                        AppData.setErrorMsg(that.binding, errorResponse);
-                                        deleteFile();
-                                        AppBar.busy = false;
-                                    });
-                            } else {
-                                var err = "file read error NO fileEntry!";
-                                Log.print(Log.l.error, err);
-                                AppData.setErrorMsg(that.binding, err);
+                                        function (errorResponse) {
+                                            Log.print(Log.l.error, "file read error: " + JSON.stringify(errorResponse));
+                                            AppData.setErrorMsg(that.binding, errorResponse);
+                                            deleteFile();
+                                            AppBar.busy = false;
+                                        });
+                                } else {
+                                    var err = "file read error NO fileEntry!";
+                                    Log.print(Log.l.error, err);
+                                    AppData.setErrorMsg(that.binding, err);
+                                    AppBar.busy = false;
+                                }
+                            },
+                            function (errorResponse) {
+                                Log.print(Log.l.error,
+                                    "getFile(" + filePath + ") error: " + JSON.stringify(errorResponse));
+                                AppData.setErrorMsg(that.binding, errorResponse);
                                 AppBar.busy = false;
-                            }
-                        },
-                        function(errorResponse) {
-                            Log.print(Log.l.error,
-                                "getFile(" + filePath + ") error: " + JSON.stringify(errorResponse));
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                            AppBar.busy = false;
-                        });
+                            });
                     } else {
                         var err = "file read error NO dirEntry!";
                         Log.print(Log.l.error, err);
@@ -274,17 +275,17 @@
                         AppBar.busy = false;
                     }
                 }
-                
+
                 var fileExtPos = fileName.lastIndexOf(".");
                 if (fileExtPos >= 0) {
                     fileExt = fileName.substr(fileExtPos + 1);
                 }
                 if (bUseRootDir) {
-                    filePath = decodeURIComponent(dataDirectory + "/" + fileName);
+                    filePath = decodeURIComponent(dataDirectory ? dataDirectory + "/" + fileName : fileName);
                     if (typeof window.requestFileSystem === "function") {
-                        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fs) {
+                        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
                             readFileFromDirEntry(fs.root);
-                        }, function(errorResponse) {
+                        }, function (errorResponse) {
                             Log.print(Log.l.error, "requestFileSystem error: " + JSON.stringify(errorResponse));
                             AppData.setErrorMsg(that.binding, errorResponse);
                             AppBar.busy = false;
@@ -296,7 +297,7 @@
                 } else {
                     filePath = fileName;
                     if (typeof window.resolveLocalFileSystemURL === "function") {
-                        window.resolveLocalFileSystemURL(dataDirectory, readFileFromDirEntry, function(errorResponse) {
+                        window.resolveLocalFileSystemURL(dataDirectory, readFileFromDirEntry, function (errorResponse) {
                             Log.print(Log.l.error, "resolveLocalFileSystemURL error: " + JSON.stringify(errorResponse));
                             AppData.setErrorMsg(that.binding, errorResponse);
                             AppBar.busy = false;
@@ -350,7 +351,6 @@
                     var i, len;
                     for (i = 0, len = mediaFiles.length; i < len; i += 1) {
                         var bUseRootDir = false;
-                        var rootDirectory = cordova.file.externalRootDirectory;
                         var dataDirectory = "";
                         var fullPath = mediaFiles[i].fullPath;
                         var pos = fullPath.lastIndexOf("/");
@@ -366,20 +366,21 @@
                         if (typeof device === "object") {
                             Log.print(Log.l.trace, "platform=" + device.platform);
                             switch (device.platform) {
-                            case "Android":
-                                if (pos >= 0) {
-                                    dataDirectory = fullPath.substr(0, pos);
-                                    if (dataDirectory.indexOf(rootDirectory) >= 0) {
-                                        dataDirectory = dataDirectory.replace(rootDirectory, "");
-                                        bUseRootDir = true;
+                                case "Android":
+                                    if (pos >= 0) {
+                                        var rootDirectory = cordova.file.externalRootDirectory;
+                                        dataDirectory = fullPath.substr(0, pos);
+                                        if (dataDirectory.indexOf(rootDirectory) >= 0) {
+                                            dataDirectory = dataDirectory.replace(rootDirectory, "");
+                                            bUseRootDir = true;
+                                        }
                                     }
-                                }
-                                break;
-                            case "iOS":
-                                dataDirectory = cordova.file.tempDirectory;
-                                break;
-                            default:
-                                dataDirectory = cordova.file.dataDirectory;
+                                    break;
+                                case "iOS":
+                                    dataDirectory = cordova.file.tempDirectory;
+                                    break;
+                                default:
+                                    dataDirectory = cordova.file.dataDirectory;
                             }
                         } else {
                             dataDirectory = cordova.file.dataDirectory;
@@ -412,22 +413,188 @@
                 Log.ret(Log.l.error);
             };
 
+
+            var initMedia = function (successCallback, errorCallback, mediaOptions) {
+                // Audio player
+                var mediaRecorder = null;
+                var mediaFile = null;
+                // Android supports only AAC
+                var src = cordova.file.externalDataDirectory + "recording.aac"; 
+                var capturedFile = null;
+                var stopRecordTimeout = null;
+                var stopButton;
+
+                var cancelButton = null;
+                var progressUpdate = null;
+                var captureCancelled = false;
+                var cleanup;
+
+                var stopRecord = function () {
+                    if (mediaRecorder) {
+                        mediaRecorder.stopRecord();
+                    }
+                }
+
+                var cancelRecord = function () {
+                    captureCancelled = true;
+                    stopRecord();
+                }
+
+                cleanup = function () {
+                    if (mediaRecorder) {
+                        mediaRecorder.release();
+                    }
+                    if (stopRecordTimeout) {
+                        clearTimeout(stopRecordTimeout);
+                    }
+                    if (capturedFile) {
+                        capturedFile.deleteAsync();
+                        capturedFile = null;
+                    }
+                    if (stopButton) {
+                        stopButton.removeEventListener("click", stopRecord, false);
+                    }
+                    if (cancelButton) {
+                        cancelButton.removeEventListener("click", cancelRecord, false);
+                    }
+                    if (mediaOptions.element && mediaOptions.element.firstElementChild) {
+                        var oldElement = mediaOptions.element.firstElementChild;
+                        mediaOptions.element.removeChild(oldElement);
+                        oldElement.innerHTML = "";
+                    }
+                }
+
+                if (mediaOptions.element && typeof mediaOptions.element.tagName === "string" &&
+                    mediaOptions.element.tagName.toLowerCase() === "div") {
+                    //TODO: Create progress bar and stop button
+
+                    var captureRecorderFrame = document.createElement("div");
+                    captureRecorderFrame.className = "recorder-ui-wrap";
+
+                    var actionBar = document.createElement("div");
+                    actionBar.className = "recorder-action-bar";
+                    actionBar.onclick = function (e) {
+                        e.cancelBubble = true;
+                    };
+
+                    cancelButton = document.createElement("span");
+                    cancelButton.className = "recorder-action win-button action-cancel";
+                    actionBar.appendChild(cancelButton);
+
+                    var progressBar = document.createElement("progress");
+                    progressBar.className = "recorder-action win-progress-bar action-progress-bar";
+                    progressBar.min = 0;
+                    progressBar.max = mediaOptions.duration;
+                    actionBar.appendChild(progressBar);
+
+                    var startTime = new Date();
+                    var startMs = startTime.getHours() * 3600000 +
+                        startTime.getMinutes() * 60000 +
+                        startTime.getSeconds() * 1000 +
+                        startTime.getMilliseconds();
+                    var getProgressDuration = function () {
+                        var currentTime = new Date();
+                        var currentMs = currentTime.getHours() * 3600000 +
+                            currentTime.getMinutes() * 60000 +
+                            currentTime.getSeconds() * 1000 +
+                            currentTime.getMilliseconds();
+                        var ms = currentMs - startMs;
+                        var seconds = Math.floor(ms / 1000);
+                        var minPart = (Math.floor(seconds / 60) + 100).toString().substr(1);
+                        var secPart = (seconds % 60 + 100).toString().substr(1);
+                        var subSec = (ms % 1000 + 1000).toString().substr(1);
+                        return {
+                            seconds: seconds,
+                            textContent: minPart + ":" + secPart + "." + subSec
+                        };
+                    };
+
+                    var progressValue = document.createElement("span");
+                    progressValue.className = "recorder-action win-type-body action-progress-value";
+                    progressValue.textContent = "";
+                    actionBar.appendChild(progressValue);
+
+                    stopButton = document.createElement("span");
+                    stopButton.className = "recorder-action win-button action-stop";
+                    actionBar.appendChild(stopButton);
+
+                    captureRecorderFrame.appendChild(actionBar);
+                    mediaOptions.element.appendChild(captureRecorderFrame);
+
+                    progressUpdate = function () {
+                        var duration = getProgressDuration();
+                        progressBar.value = duration.seconds;
+                        progressValue.textContent = duration.textContent;
+                        window.setTimeout(progressUpdate, 50);
+                    };
+
+                    stopButton.addEventListener("click", stopRecord, false);
+                    cancelButton.addEventListener("click", cancelRecord, false);
+                }
+                mediaRecorder = new Media(src,
+                    // success callback
+                    function () {
+                        Log.print(Log.l.trace, "recordAudio():Audio Success");
+                        if (captureCancelled) {
+                            errorCallback("capture canceled");
+                            cleanup();
+                        } else {
+                            mediaFile = { fullPath: src }
+                            // prevent deletion on cleanup!
+                            successCallback([mediaFile]);
+                            capturedFile = null;
+                            cleanup();
+                        }
+                    },
+                    // error callback
+                    function (err) {
+                        Log.print(Log.l.trace, "recordAudio():Audio Error: " + err.code);
+                        errorCallback("audio record error");
+                        cleanup();
+                    },
+                    function (state) {
+                        Log.print(Log.l.trace, "recordAudio():Audio Status: " + state);
+                    });
+                // Record audio
+                if (mediaRecorder) {
+                    mediaRecorder.startRecord();
+                }
+                stopRecordTimeout = setTimeout(function () {
+                    if (mediaRecorder) {
+                        mediaRecorder.stopRecord();
+                    }
+                }, mediaOptions.duration * 1000);
+            }
+            this.initMedia = initMedia;
+
             //start native Camera async
             AppData.setErrorMsg(that.binding);
             var captureAudio = function () {
                 Log.call(Log.l.trace, "WavSketch.Controller.");
-                if (navigator.device &&
+                var audioRecorderContainer = fragmentElement.querySelector(".audio-recorder-container");
+                if (audioRecorderContainer && audioRecorderContainer.style) {
+                    audioRecorderContainer.style.display = "inline-block";
+                }
+                var audioOptions = {
+                    limit: 1, duration: 30, element: audioRecorderContainer
+                }
+                if (that.binding.useLSRecording && typeof Media === "function") {
+                    Log.print(Log.l.trace, "calling new Media...");
+                    AppBar.busy = true;
+                    that.initMedia(function (mediaFiles) {
+                        WinJS.Promise.timeout(0).then(function () {
+                            onCaptureSuccess(mediaFiles);
+                        });
+                    }, function (errorMessage) {
+                        WinJS.Promise.timeout(0).then(function () {
+                            onCaptureFail(errorMessage);
+                        });
+                    }, audioOptions);
+                } else if (navigator.device &&
                     navigator.device.capture &&
                     typeof navigator.device.capture.captureAudio === "function") {
-                    var audioRecorderContainer = fragmentElement.querySelector(".audio-recorder-container");
-                    if (audioRecorderContainer && audioRecorderContainer.style) {
-                        audioRecorderContainer.style.display = "inline-block";
-                    }
                     Log.print(Log.l.trace, "calling capture.captureAudio...");
                     AppBar.busy = true;
-                    var audioOptions = {
-                        limit: 1, duration: 30, element: audioRecorderContainer
-                    }
                     navigator.device.capture.captureAudio(function (mediaFiles) {
                         WinJS.Promise.timeout(0).then(function () {
                             onCaptureSuccess(mediaFiles);
@@ -468,14 +635,14 @@
                         }
                         that.bindAudio();
                     },
-                    function (errorResponse) {
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                        AppData.setErrorMsg(that.binding, errorResponse);
-                        that.removeAudio();
-                    },
-                    noteId,
-                    that.binding.isLocal);
+                        function (errorResponse) {
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                            that.removeAudio();
+                        },
+                        noteId,
+                        that.binding.isLocal);
                 } else {
                     if (that.binding.isLocal) {
                         that.removeAudio();
@@ -538,8 +705,8 @@
                             }
                             alert(message);
                         },
-                        that.binding.noteId,
-                        that.binding.isLocal);
+                            that.binding.noteId,
+                            that.binding.isLocal);
                     } else {
                         return WinJS.Promise.as();
                     }
@@ -557,7 +724,7 @@
                         var data = getDocData();
                         var formattedName = "Audio" + that.binding.dataSketch.KontaktID + "_" + that.binding.dataSketch.KontaktNotizVIEWID;
                         var subject = formattedName;
-                        var message = getResourceText("contact.title") + 
+                        var message = getResourceText("contact.title") +
                             " ID: " + AppData.generalData.globalContactID + " \r\n" +
                             formattedName;
                         window.plugins.socialsharing.share(message, subject, data, null);

@@ -524,6 +524,7 @@
     "info.confirm" : "Ok",
     "info.cancel" : "Cancel",	
 	"info.legacyBarcodescan" : "Legacy BarcodeScan",
+    "info.useLSRecording"   : "LeadSuccess Recording",
 
     "backup.title"          : "Backup",
     "backup.info"			: "You can create a backup here and share it with convey information systems GmbH",
@@ -802,6 +803,8 @@
 	"pdfExport.msg" : "Edit/Link",
 
     "about.deviceID" : "DeviceID",
+
+    "lsRecording.title" : "LeadSuccess Recording",
 
     "support.title" : "Support",
     "support.url" : "https://www.convey.de/en/help-desk/"
