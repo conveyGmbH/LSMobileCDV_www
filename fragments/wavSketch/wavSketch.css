@@ -56,20 +56,33 @@
 }
 
 .action-stop {
-    min-height: 28px;
+    position: relative;
+    min-height: 20px;
     min-width: 20px;
-    border-radius: 20px;
+    border-radius: 50%;
     border-color: white;
     color: red !important;
     text-align: center;
     font-size: 14px;
     padding-top: 8px;
-    padding-bottom: 0;
-}
-.action-stop::before {
-    content: "\2B1B";
 }
 
+.square {
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    background-color: red;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+/*.action-stop::before {
+    content: "\2B1B";
+    visibility: hidden;
+}*/
 
 .action-stop:hover {
     color: red !important;
@@ -77,18 +90,23 @@
 }
 
 .action-cancel {
-    min-height: 28px;
+    position: relative;
+    min-height: 20px;
     min-width: 20px;
-    border-radius: 20px;
+    border-radius: 50%;
     border-color: white;
     color: whitesmoke;
     text-align: center;
-    font-size: 14px;
+    font-size: 10px;
     padding-top: 8px;
-    padding-bottom: 0;
 }
 .action-cancel::before {
+    margin: 0;
+    position: absolute;
     content: "\E10A";
+    top: 56%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .action-cancel:hover {
@@ -96,11 +114,12 @@
 }
 
 .action-progress-bar {
-    top: -4px;
+    top: -18px;
     width: calc(100% - 240px);
     background-color: white;
 }
 
 .action-progress-value {
+    top: -12px;
     color: white;
 }

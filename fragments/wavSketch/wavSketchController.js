@@ -419,7 +419,7 @@
                 var mediaRecorder = null;
                 var mediaFile = null;
                 // Android supports only AAC
-                var src = cordova.file.externalDataDirectory + "recording.aac"; 
+                var src = cordova.file.externalDataDirectory + "recording.aac";
                 var capturedFile = null;
                 var stopRecordTimeout = null;
                 var stopButton;
@@ -463,74 +463,6 @@
                         oldElement.innerHTML = "";
                     }
                 }
-
-                if (mediaOptions.element && typeof mediaOptions.element.tagName === "string" &&
-                    mediaOptions.element.tagName.toLowerCase() === "div") {
-                    //TODO: Create progress bar and stop button
-
-                    var captureRecorderFrame = document.createElement("div");
-                    captureRecorderFrame.className = "recorder-ui-wrap";
-
-                    var actionBar = document.createElement("div");
-                    actionBar.className = "recorder-action-bar";
-                    actionBar.onclick = function (e) {
-                        e.cancelBubble = true;
-                    };
-
-                    cancelButton = document.createElement("span");
-                    cancelButton.className = "recorder-action win-button action-cancel";
-                    actionBar.appendChild(cancelButton);
-
-                    var progressBar = document.createElement("progress");
-                    progressBar.className = "recorder-action win-progress-bar action-progress-bar";
-                    progressBar.min = 0;
-                    progressBar.max = mediaOptions.duration;
-                    actionBar.appendChild(progressBar);
-
-                    var startTime = new Date();
-                    var startMs = startTime.getHours() * 3600000 +
-                        startTime.getMinutes() * 60000 +
-                        startTime.getSeconds() * 1000 +
-                        startTime.getMilliseconds();
-                    var getProgressDuration = function () {
-                        var currentTime = new Date();
-                        var currentMs = currentTime.getHours() * 3600000 +
-                            currentTime.getMinutes() * 60000 +
-                            currentTime.getSeconds() * 1000 +
-                            currentTime.getMilliseconds();
-                        var ms = currentMs - startMs;
-                        var seconds = Math.floor(ms / 1000);
-                        var minPart = (Math.floor(seconds / 60) + 100).toString().substr(1);
-                        var secPart = (seconds % 60 + 100).toString().substr(1);
-                        var subSec = (ms % 1000 + 1000).toString().substr(1);
-                        return {
-                            seconds: seconds,
-                            textContent: minPart + ":" + secPart + "." + subSec
-                        };
-                    };
-
-                    var progressValue = document.createElement("span");
-                    progressValue.className = "recorder-action win-type-body action-progress-value";
-                    progressValue.textContent = "";
-                    actionBar.appendChild(progressValue);
-
-                    stopButton = document.createElement("span");
-                    stopButton.className = "recorder-action win-button action-stop";
-                    actionBar.appendChild(stopButton);
-
-                    captureRecorderFrame.appendChild(actionBar);
-                    mediaOptions.element.appendChild(captureRecorderFrame);
-
-                    progressUpdate = function () {
-                        var duration = getProgressDuration();
-                        progressBar.value = duration.seconds;
-                        progressValue.textContent = duration.textContent;
-                        window.setTimeout(progressUpdate, 50);
-                    };
-
-                    stopButton.addEventListener("click", stopRecord, false);
-                    cancelButton.addEventListener("click", cancelRecord, false);
-                }
                 mediaRecorder = new Media(src,
                     // success callback
                     function () {
@@ -554,6 +486,81 @@
                     },
                     function (state) {
                         Log.print(Log.l.trace, "recordAudio():Audio Status: " + state);
+                        if (state === 2) {
+                            if (mediaOptions.element && typeof mediaOptions.element.tagName === "string" &&
+                                mediaOptions.element.tagName.toLowerCase() === "div") {
+                                //TODO: Create progress bar and stop button
+
+                                var captureRecorderFrame = document.createElement("div");
+                                captureRecorderFrame.className = "recorder-ui-wrap";
+
+                                var actionBar = document.createElement("div");
+                                actionBar.className = "recorder-action-bar";
+                                actionBar.onclick = function (e) {
+                                    e.cancelBubble = true;
+                                };
+
+                                cancelButton = document.createElement("div");
+                                cancelButton.className = "recorder-action win-button action-cancel";
+                                actionBar.appendChild(cancelButton);
+
+                                var progressBar = document.createElement("progress");
+                                progressBar.className = "recorder-action win-progress-bar action-progress-bar";
+                                progressBar.min = 0;
+                                progressBar.max = mediaOptions.duration;
+                                actionBar.appendChild(progressBar);
+
+                                var startTime = new Date();
+                                var startMs = startTime.getHours() * 3600000 +
+                                    startTime.getMinutes() * 60000 +
+                                    startTime.getSeconds() * 1000 +
+                                    startTime.getMilliseconds();
+                                var getProgressDuration = function () {
+                                    var currentTime = new Date();
+                                    var currentMs = currentTime.getHours() * 3600000 +
+                                        currentTime.getMinutes() * 60000 +
+                                        currentTime.getSeconds() * 1000 +
+                                        currentTime.getMilliseconds();
+                                    var ms = currentMs - startMs;
+                                    var seconds = Math.floor(ms / 1000);
+                                    var minPart = (Math.floor(seconds / 60) + 100).toString().substr(1);
+                                    var secPart = (seconds % 60 + 100).toString().substr(1);
+                                    var subSec = (ms % 1000 + 1000).toString().substr(1);
+                                    return {
+                                        seconds: seconds,
+                                        textContent: minPart + ":" + secPart + "." + subSec
+                                    };
+                                };
+
+                                var progressValue = document.createElement("span");
+                                progressValue.className = "recorder-action win-type-body action-progress-value";
+                                progressValue.textContent = "";
+                                actionBar.appendChild(progressValue);
+
+                                stopButton = document.createElement("div");
+                                stopButton.className = "recorder-action win-button action-stop";
+                                var square = document.createElement("div");
+                                square.className = "square";
+                                stopButton.appendChild(square);
+                                actionBar.appendChild(stopButton);
+
+                                captureRecorderFrame.appendChild(actionBar);
+                                mediaOptions.element.appendChild(captureRecorderFrame);
+
+                                progressUpdate = function () {
+                                    var duration = getProgressDuration();
+                                    progressBar.value = duration.seconds;
+                                    progressValue.textContent = duration.textContent;
+                                    window.setTimeout(progressUpdate, 50);
+                                };
+
+                                stopButton.addEventListener("click", stopRecord, false);
+                                cancelButton.addEventListener("click", cancelRecord, false);
+                            }
+                            if (progressUpdate) {
+                                progressUpdate();
+                            }
+                        }
                     });
                 // Record audio
                 if (mediaRecorder) {
@@ -576,7 +583,7 @@
                     audioRecorderContainer.style.display = "inline-block";
                 }
                 var audioOptions = {
-                    limit: 1, duration: 30, element: audioRecorderContainer
+                    limit: 1, duration: 180, element: audioRecorderContainer
                 }
                 if (that.binding.useLSRecording && typeof Media === "function") {
                     Log.print(Log.l.trace, "calling new Media...");
