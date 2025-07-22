@@ -20,6 +20,9 @@
             Log.call(Log.l.trace, pageName + ".");
             // TODO: Initialize the page here.
             // add page specific commands to AppBar
+            this.inResize = 0;
+            this.prevWidth = 0;
+            this.prevHeight = 0;
             var commandList = [
                 { id: "clickBack", label: getResourceText("command.backward"), tooltip: getResourceText("tooltip.backward"), section: "primary", svg: "navigate_left" },
                 { id: "clickNew", label: getResourceText("command.new"), tooltip: getResourceText("tooltip.new"), section: "primary", svg: "user_plus" },
@@ -65,8 +68,40 @@
         },
 
         updateLayout: function (element, viewState, lastViewState) {
+            var ret = null;
+            var that = this;
             /// <param name="element" domElement="true" />
+            Log.call(Log.l.u1, pageName + ".");
             // TODO: Respond to changes in viewState.
+            if (element && !that.inResize) {
+                that.inResize = 1;
+                ret = WinJS.Promise.timeout(0).then(function () {
+                    if (that.controller) {
+                        var contentarea = element.querySelector(".contentarea");
+                        var waitCircleContainer = element.querySelector(".wait-circle-container");
+                        var waitCircle = element.querySelector(".wait-circle");
+                        var waitCircleMessage = element.querySelector(".wait-circle-message");
+                        if (contentarea) {
+                            var width = contentarea.clientWidth;
+                            var height = contentarea.clientHeight - 8;
+                            if (that.controller.binding && that.controller.binding.dataContact && that.controller.binding.dataContact.Flag_NoEdit) {
+                                if (waitCircle.clientHeight + waitCircleMessage.clientHeight >= contentarea.clientHeight) {
+                                    waitCircleContainer.style.display = "none";
+                                } else {
+                                    if (waitCircleContainer.style.display === "none") {
+                                        waitCircleContainer.style.display = "";
+                                    }
+                                }
+                            } else {
+                                waitCircleContainer.style.display = "none";
+                            }
+                        }
+                    }
+                    that.inResize = 0;
+                });
+            }
+            Log.ret(Log.l.u1);
+            return ret || WinJS.Promise.as();
         }
     });
 })();
