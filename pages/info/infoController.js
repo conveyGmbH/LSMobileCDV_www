@@ -75,7 +75,7 @@
 
             var that = this;
 
-            var initLand = pageElement.querySelector("#InitLand");
+            var initLand = pageElement.querySelector("#InitOptionLand");
             //var lastError = that.binding.error.errorMsg;
 
             var isAppleDevice = AppData.checkIPhoneBug();
