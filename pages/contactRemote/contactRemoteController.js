@@ -29,6 +29,8 @@
             this.img = null;
             this.initAnredeList = null;
             this.initLandList = null;
+            this.prevDataContact = getEmptyDefaultValue(Contact.contactView.defaultValue);
+            this.prevDataContactNote = getEmptyDefaultValue(Contact.contactNoteView.defaultValue);
 
             var that = this;
 
@@ -113,6 +115,7 @@
             var setDataContact = function (newDataContact) {
                 var prevNotifyModified = AppBar.notifyModified;
                 AppBar.notifyModified = false;
+                that.prevDataContact = copyByValue(that.binding.dataContact);
                 // Bug: textarea control shows 'null' string on null value in Internet Explorer!
                 if (newDataContact.Bemerkungen === null) {
                     newDataContact.Bemerkungen = "";
@@ -586,6 +589,7 @@
                             that.removeDisposablePromise(contactNoteSelectPromise);
                             AppData.setErrorMsg(that.binding);
                             Log.print(Log.l.trace, "contactView: success!");
+                            that.prevDataContactNote = copyByValue(that.binding.dataContactNote);
                             if (json && json.d && json.d.results && json.d.results.length > 0) {
                                 var result = json.d.results[0];
                                 that.binding.dataContactNote = result;
@@ -612,6 +616,22 @@
             this.loadData = loadData;
 
             // save data
+            var mergeRecord = function (prevRecord, newRecord) {
+                Log.call(Log.l.u1, "ContactRemote.Controller.");
+                var ret = false;
+                for (var prop in newRecord) {
+                    if (newRecord.hasOwnProperty(prop)) {
+                        if (newRecord[prop] !== prevRecord[prop]) {
+                            prevRecord[prop] = newRecord[prop];
+                            ret = true;
+                        }
+                    }
+                }
+                Log.ret(Log.l.u1, ret);
+                return ret;
+            }
+            this.mergeRecord = mergeRecord;
+
             var saveData = function (complete, error) {
                 Log.call(Log.l.trace, "ContactRemote.Controller.");
                 AppData.setErrorMsg(that.binding);
@@ -629,7 +649,22 @@
                         AppBar.busy = true;
                         ret = new WinJS.Promise.as().then(function () {
                             // AppData.generalData.setRecordId("Kontakt", recordId);
-                            var tmpKontaktid = AppData.generalData.getRecordId("Kontakt");
+                            if (that.mergeRecord(that.prevDataContact, dataContact)) {
+                                return ContactRemote.contactView.update(function (response) {
+                                    AppBar.busy = false;
+                                    // called asynchronously if ok
+                                    Log.print(Log.l.info, "contactData update: success!");
+                                    AppBar.modified = false;
+                                    complete(response);
+                                }, function (errorResponse) {
+                                    AppBar.busy = false;
+                                    // called asynchronously if an error occurs
+                                    // or server returns response with an error status.
+                                    AppData.setErrorMsg(that.binding, errorResponse);
+                                    error(errorResponse);
+                                }, recordId, dataContact);
+                            }
+                        }).then(function () {
                             var dataSketch = {
                                 KontaktID: that.binding.dataContact.KontaktVIEWID || AppData.getRecordId("Kontakt"),
                                 Titel: "Kommentar/Comment",
@@ -639,21 +674,26 @@
                                 Quelltext: that.binding.dataContactNote.Quelltext || ""
                             };
                             if (that.binding.dataContactNote.KontaktNotizVIEWID) {
-                                return ContactRemote.contactNoteView.update(function (response) {
-                                    // called asynchronously if ok
-                                    Log.print(Log.l.info, "contactData update: success!");
-                                    if (typeof complete === "function") {
-                                        complete(response);
-                                    }
+                                dataSketch.KontaktNotizVIEWID = that.binding.dataContactNote.KontaktNotizVIEWID;
+                                if (that.mergeRecord(that.prevDataContactNote, dataSketch)) {
+                                    return ContactRemote.contactNoteView.update(function (response) {
+                                        // called asynchronously if ok
+                                        Log.print(Log.l.info, "contactData update: success!");
+                                        if (typeof complete === "function") {
+                                            complete(response);
+                                        }
+                                        return WinJS.Promise.as();
+                                    }, function (errorResponse) {
+                                        AppBar.busy = false;
+                                        // called asynchronously if an error occurs
+                                        // or server returns response with an error status.
+                                        AppData.setErrorMsg(that.binding, errorResponse);
+                                        error(errorResponse);
+                                    }, that.binding.dataContactNote.KontaktNotizVIEWID, dataSketch);
+                                } else {
                                     return WinJS.Promise.as();
-                                }, function (errorResponse) {
-                                    AppBar.busy = false;
-                                    // called asynchronously if an error occurs
-                                    // or server returns response with an error status.
-                                    AppData.setErrorMsg(that.binding, errorResponse);
-                                    error(errorResponse);
-                                }, that.binding.dataContactNote.KontaktNotizVIEWID, dataSketch);
-                            } else {
+                                }
+                            } else if (that.binding.dataContactNote.Quelltext) {
                                 return ContactRemote.contactNoteView.insert(function (json) {
                                     // this callback will be called asynchronously
                                     // when the response is available
@@ -661,30 +701,16 @@
                                     // contactData returns object already parsed from json file in response
                                     Log.print(Log.l.info, "contactData update: success!");
                                 },
-                                    function (errorResponse) {
-                                        // called asynchronously if an error occurs
-                                        // or server returns response with an error status.
-                                        AppData.setErrorMsg(that.binding, errorResponse);
-                                        if (typeof error === "function") {
-                                            error(errorResponse);
-                                        }
-                                    },
-                                    dataSketch);
+                                function (errorResponse) {
+                                    // called asynchronously if an error occurs
+                                    // or server returns response with an error status.
+                                    AppData.setErrorMsg(that.binding, errorResponse);
+                                    if (typeof error === "function") {
+                                        error(errorResponse);
+                                    }
+                                },
+                                dataSketch);
                             }
-                        }).then(function () {
-                            return ContactRemote.contactView.update(function (response) {
-                                AppBar.busy = false;
-                                // called asynchronously if ok
-                                Log.print(Log.l.info, "contactData update: success!");
-                                AppBar.modified = false;
-                                complete(response);
-                            }, function (errorResponse) {
-                                AppBar.busy = false;
-                                // called asynchronously if an error occurs
-                                // or server returns response with an error status.
-                                AppData.setErrorMsg(that.binding, errorResponse);
-                                error(errorResponse);
-                            }, recordId, dataContact);
                         });
                     } else {
                         var err = { status: 0, statusText: "no record selected" };
