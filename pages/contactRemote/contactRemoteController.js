@@ -29,8 +29,8 @@
             this.img = null;
             this.initAnredeList = null;
             this.initLandList = null;
-            this.prevDataContact = getEmptyDefaultValue(Contact.contactView.defaultValue);
-            this.prevDataContactNote = getEmptyDefaultValue(Contact.contactNoteView.defaultValue);
+            this.prevDataContact = getEmptyDefaultValue(ContactRemote.contactView.defaultValue);
+            this.prevDataContactNote = getEmptyDefaultValue(ContactRemote.contactNoteView.defaultValue);
 
             var that = this;
 
@@ -236,7 +236,7 @@
                     Log.ret(Log.l.trace);
                 },
                 clickTopButton: function (event) {
-                    Log.call(Log.l.trace, "Contact.Controller.");
+                    Log.call(Log.l.trace, "ContactRemote.Controller.");
                     if (AppData.generalData.logOffOptionActive) {
                         var anchor = document.getElementById("menuButton");
                         var menu = document.getElementById("menu1").winControl;
@@ -260,7 +260,7 @@
                     }
                 },
                 clickLogoff: function (event) {
-                    Log.call(Log.l.trace, "Start.Controller.");
+                    Log.call(Log.l.trace, "ContactRemote.Controller.");
                     var confirmTitle = getResourceText("account.confirmLogOff");
                     confirm(confirmTitle, function (result) {
                         if (result) {

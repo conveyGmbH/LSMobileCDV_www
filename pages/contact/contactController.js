@@ -658,7 +658,7 @@
                                 that.binding.dataContactNote = contactNote;
                             } else {
                                 that.binding.dataContactNote =
-                                    getEmptyDefaultValue(ContactRemote.contactNoteView.defaultValue);
+                                    getEmptyDefaultValue(Contact.contactNoteView.defaultValue);
                             }
                         }, function (errorResponse) {
                             that.removeDisposablePromise(contactNoteSelectPromise);
