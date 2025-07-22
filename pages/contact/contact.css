@@ -10,8 +10,8 @@
 
 .wait-circle {
     position: absolute;
-    width: 150px !important;
-    height: 150px !important;
+    width: 50px !important;
+    height: 50px !important;
     margin: 0;
     top: 50%;
     left: 50%;

@@ -85,7 +85,7 @@
                             var width = contentarea.clientWidth;
                             var height = contentarea.clientHeight - 8;
                             if (that.controller.binding && that.controller.binding.dataContact && that.controller.binding.dataContact.Flag_NoEdit) {
-                                if (waitCircle.clientHeight + waitCircleMessage.clientHeight >= contentarea.clientHeight) {
+                                if (waitCircle.clientHeight + waitCircleMessage.clientHeight + 100 >= contentarea.clientHeight) {
                                     waitCircleContainer.style.display = "none";
                                 } else {
                                     if (waitCircleContainer.style.display === "none") {
