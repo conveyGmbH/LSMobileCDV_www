@@ -323,16 +323,56 @@
                     }
                     Log.ret(Log.l.trace);
                 },
-                blockEnterKey: function (event) {
+                handleTextAreaFocusIn: function (event) {
                     for (var i = 0; i < AppBar.commandList.length; i++) {
                         if (AppBar.commandList[i].id === "clickForward")
                             AppBar.commandList[i].key = null;
                     }
+                    var waitCircleContainer = pageElement.querySelector(".wait-circle-container");
+                    var waitCircle = pageElement.querySelector(".wait-circle");
+                    var comment = pageElement.querySelector("#comment");
+                    var rect1 = comment.getBoundingClientRect();
+                    var rect2 = waitCircle.getBoundingClientRect();
+                    var overlap = !(rect1.right < rect2.left ||
+                        rect1.left > rect2.right ||
+                        rect1.bottom < rect2.top ||
+                        rect1.top > rect2.bottom);
+                    if (that.binding.dataContact && that.binding.dataContact.Flag_NoEdit) {
+                        if (overlap) {
+                            waitCircleContainer.style.display = "none";
+                        } else {
+                            if (waitCircleContainer.style.display === "none") {
+                                waitCircleContainer.style.display = "";
+                            }
+                        }
+                    } else {
+                        waitCircleContainer.style.display = "none";
+                    }
                 },
-                releaseEnterKey: function (event) {
+                handleTextAreaFocusOut: function (event) {
                     for (var i = 0; i < AppBar.commandList.length; i++) {
                         if (AppBar.commandList[i].id === "clickForward")
                             AppBar.commandList[i].key = WinJS.Utilities.Key.enter;
+                    }
+                    var waitCircleContainer = pageElement.querySelector(".wait-circle-container");
+                    var waitCircle = pageElement.querySelector(".wait-circle");
+                    var comment = pageElement.querySelector("#comment");
+                    var rect1 = comment.getBoundingClientRect();
+                    var rect2 = waitCircle.getBoundingClientRect();
+                    var overlap = !(rect1.right < rect2.left ||
+                        rect1.left > rect2.right ||
+                        rect1.bottom < rect2.top ||
+                        rect1.top > rect2.bottom);
+                    if (that.binding.dataContact && that.binding.dataContact.Flag_NoEdit) {
+                        if (overlap) {
+                            waitCircleContainer.style.display = "none";
+                        } else {
+                            if (waitCircleContainer.style.display === "none") {
+                                waitCircleContainer.style.display = "";
+                            }
+                        }
+                    } else {
+                        waitCircleContainer.style.display = "none";
                     }
                 },
                 clickLogoff: function (event) {
@@ -591,7 +631,8 @@
                                     for (var i = 0; i < that.initLandList.length; i++) {
                                         var item = that.initLandList.getAt(i);
                                         if (that.binding.generalData.countryOption && that.binding.generalData.countryOptionID && item && item.INITLandID === parseInt(that.binding.generalData.countryOptionID)) {
-                                            that.initLandList.unshift(item);
+                                            //that.initLandList.unshift(item);
+                                            that.initLandList.splice(1, 0, item);
                                             break;
                                         }
                                     }
@@ -611,7 +652,8 @@
                             for (var i = 0; i < that.initLandList.length; i++) {
                                 var item = that.initLandList.getAt(i);
                                 if (that.binding.generalData.countryOption && that.binding.generalData.countryOptionID && item && item.INITLandID === parseInt(that.binding.generalData.countryOptionID)) {
-                                    that.initLandList.unshift(item);
+                                    //that.initLandList.unshift(item);
+                                    that.initLandList.splice(1, 0, item);
                                     break;
                                 }
                             }
@@ -664,10 +706,10 @@
                             that.removeDisposablePromise(contactNoteSelectPromise);
                             AppData.setErrorMsg(that.binding, errorResponse);
                         }, {
-                            KontaktID: recordId,
-                            DocGroup: 3,
-                            DocFormat: 4025
-                        });
+                                KontaktID: recordId,
+                                DocGroup: 3,
+                                DocFormat: 4025
+                            });
                         return that.addDisposablePromise(contactNoteSelectPromise);
                     } else {
                         return WinJS.Promise.as();
@@ -823,20 +865,22 @@
                             if (that.binding.dataContactNote.KontaktNotizVIEWID) {
                                 dataSketch.KontaktNotizVIEWID = that.binding.dataContactNote.KontaktNotizVIEWID;
                                 if (that.mergeRecord(that.prevDataContactNote, dataSketch)) {
-                                    return Contact.contactNoteView.update(function(response) {
+                                    return Contact.contactNoteView.update(function (response) {
                                         // called asynchronously if ok
                                         Log.print(Log.l.info, "contactData update: success!");
-                                        //complete(response);
+                                        if (typeof complete === "function") {
+                                            complete(response);
+                                        }
                                     },
-                                    function(errorResponse) {
-                                        AppBar.busy = false;
-                                        // called asynchronously if an error occurs
-                                        // or server returns response with an error status.
-                                        AppData.setErrorMsg(that.binding, errorResponse);
-                                        error(errorResponse);
-                                    },
-                                    that.binding.dataContactNote.KontaktNotizVIEWID,
-                                    dataSketch);
+                                        function (errorResponse) {
+                                            AppBar.busy = false;
+                                            // called asynchronously if an error occurs
+                                            // or server returns response with an error status.
+                                            AppData.setErrorMsg(that.binding, errorResponse);
+                                            error(errorResponse);
+                                        },
+                                        that.binding.dataContactNote.KontaktNotizVIEWID,
+                                        dataSketch);
                                 } else {
                                     return WinJS.Promise.as();
 
@@ -846,6 +890,9 @@
                                     // this callback will be called asynchronously
                                     // when the response is available
                                     Log.print(Log.l.trace, "sketchData insert: success!");
+                                    if (typeof complete === "function") {
+                                        complete(json);
+                                    }
                                 }, function (errorResponse) {
                                     // called asynchronously if an error occurs
                                     // or server returns response with an error status.
@@ -895,6 +942,7 @@
                                     // this callback will be called asynchronously
                                     // when the response is available
                                     Log.print(Log.l.trace, "sketchData insert: success!");
+                                    complete(json);
                                 }, function (errorResponse) {
                                     // called asynchronously if an error occurs
                                     // or server returns response with an error status.

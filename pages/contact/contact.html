@@ -35,10 +35,10 @@
                         </div>
                     </div>
                     <div class="content-record">
-                        <div class="field_line field_line_full" data-win-bind="style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplay">
+                        <div id="comment" class="field_line field_line_full" data-win-bind="style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplay">
                             <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.comment3'}"></span>
                             <span class="label landscape_only" data-win-res="{textContent: 'contact.comment3'}"></span>
-                            <textarea class="input_field win-textarea input_text_comment" data-win-bind-onevent="oninput" data-win-bind="value: dataContactNote.Quelltext Binding.Mode.twoway" onfocusin="AppBar.handleEvent('focusin', 'blockEnterKey', event)" onfocusout="AppBar.handleEvent('focusout', 'releaseEnterKey', event)"></textarea>
+                            <textarea class="input_field win-textarea input_text_comment" data-win-bind-onevent="oninput" data-win-bind="value: dataContactNote.Quelltext Binding.Mode.twoway" onfocusin="AppBar.handleEvent('focusin', 'handleTextAreaFocusIn', event)" onfocusout="AppBar.handleEvent('focusout', 'handleTextAreaFocusOut', event)"></textarea>
                         </div>
                         <div class="address-container">
                             <div class="line-separator"
@@ -186,18 +186,18 @@
                             <div class="field_line field_line_odd">
                                 <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.comment3'}"></span>
                                 <span class="label landscape_only" data-win-res="{textContent: 'contact.comment3'}"></span>
-                                <textarea class="input_field win-textarea input_text_comment" data-win-bind-onevent="oninput" data-win-bind="value: dataContactNote.Quelltext Binding.Mode.twoway" onfocusin="AppBar.handleEvent('focusin', 'blockEnterKey', event)" onfocusout="AppBar.handleEvent('focusout', 'releaseEnterKey', event)"></textarea>
+                                <textarea class="input_field win-textarea input_text_comment" data-win-bind-onevent="oninput" data-win-bind="value: dataContactNote.Quelltext Binding.Mode.twoway" onfocusin="AppBar.handleEvent('focusin', 'handleTextAreaFocusIn', event)" onfocusout="AppBar.handleEvent('focusout', 'handleTextAreaFocusOut', event)"></textarea>
                             </div>
                             <div class="field_line field_line_even">
                                 <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.notice'}"></span>
                                 <span class="label landscape_only" data-win-res="{textContent: 'contact.notice'}"></span>
-                                <textarea class="input_field win-textarea input_text_comment" data-win-bind-onevent="oninput" data-win-bind="value: dataContact.Bemerkungen Binding.Mode.twoway; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplayNone" onfocusin="AppBar.handleEvent('focusin', 'blockEnterKey', event)" onfocusout="AppBar.handleEvent('focusout', 'releaseEnterKey', event)"></textarea>
+                                <textarea class="input_field win-textarea input_text_comment" data-win-bind-onevent="oninput" data-win-bind="value: dataContact.Bemerkungen Binding.Mode.twoway; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplayNone" onfocusin="AppBar.handleEvent('focusin', 'handleTextAreaFocusIn', event)" onfocusout="AppBar.handleEvent('focusout', 'handleTextAreaFocusOut', event)"></textarea>
                                 <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.Bemerkungen; style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplay"></span>
                             </div>
                             <!--<div class="field_line field_line_even">
                                 <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.comment3'}"></span>
                                 <span class="label landscape_only" data-win-res="{textContent: 'contact.comment3'}"></span>
-                                <textarea class="input_field win-textarea input_text_comment" data-win-bind-onevent="oninput" data-win-bind="value: dataContactNote.Quelltext Binding.Mode.twoway" onfocusin="AppBar.handleEvent('focusin', 'blockEnterKey', event)" onfocusout="AppBar.handleEvent('focusout', 'releaseEnterKey', event)"></textarea>
+                                <textarea class="input_field win-textarea input_text_comment" data-win-bind-onevent="oninput" data-win-bind="value: dataContactNote.Quelltext Binding.Mode.twoway" onfocusin="AppBar.handleEvent('focusin', 'handleTextAreaFocusIn', event)" onfocusout="AppBar.handleEvent('focusout', 'handleTextAreaFocusOut', event)"></textarea>
                             </div>-->
                             <div class="line-separator"></div>
                             <div class="field_line field_line_odd">

@@ -68,40 +68,8 @@
         },
 
         updateLayout: function (element, viewState, lastViewState) {
-            var ret = null;
-            var that = this;
             /// <param name="element" domElement="true" />
-            Log.call(Log.l.u1, pageName + ".");
             // TODO: Respond to changes in viewState.
-            if (element && !that.inResize) {
-                that.inResize = 1;
-                ret = WinJS.Promise.timeout(0).then(function () {
-                    if (that.controller) {
-                        var contentarea = element.querySelector(".contentarea");
-                        var waitCircleContainer = element.querySelector(".wait-circle-container");
-                        var waitCircle = element.querySelector(".wait-circle");
-                        var waitCircleMessage = element.querySelector(".wait-circle-message");
-                        if (contentarea) {
-                            var width = contentarea.clientWidth;
-                            var height = contentarea.clientHeight - 8;
-                            if (that.controller.binding && that.controller.binding.dataContact && that.controller.binding.dataContact.Flag_NoEdit) {
-                                if (waitCircle.clientHeight + waitCircleMessage.clientHeight + 100 >= contentarea.clientHeight) {
-                                    waitCircleContainer.style.display = "none";
-                                } else {
-                                    if (waitCircleContainer.style.display === "none") {
-                                        waitCircleContainer.style.display = "";
-                                    }
-                                }
-                            } else {
-                                waitCircleContainer.style.display = "none";
-                            }
-                        }
-                    }
-                    that.inResize = 0;
-                });
-            }
-            Log.ret(Log.l.u1);
-            return ret || WinJS.Promise.as();
         }
     });
 })();

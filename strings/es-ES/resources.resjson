@@ -485,7 +485,7 @@
     "info.log4"             : "Bedienungsablauf",
     "info.log5"             : "Anzeigefunktionen",
     "info.log6"             : "Kontakt Option",
-    "info.countryOption"    : "Favourite Land",
+    "info.countryOption"    : "Bevorzugtes Land",
     "info.loggroup"         : "Gruppierung",
     "info.lognostack"       : "Funktionen wegoptimiert",
     "info.logtarget"        : "Datei",

@@ -426,7 +426,8 @@
                                     for (var i = 0; i < that.initLandList.length; i++) {
                                         var item = that.initLandList.getAt(i);
                                         if (that.binding.generalData.countryOption && that.binding.generalData.countryOptionID && item && item.INITLandID === parseInt(that.binding.generalData.countryOptionID)) {
-                                            that.initLandList.unshift(item);
+                                            //that.initLandList.unshift(item);
+                                            that.initLandList.splice(1, 0, item);
                                             break;
                                         }
                                     }
@@ -446,7 +447,8 @@
                             for (var i = 0; i < that.initLandList.length; i++) {
                                 var item = that.initLandList.getAt(i);
                                 if (that.binding.generalData.countryOption && that.binding.generalData.countryOptionID && item && item.INITLandID === parseInt(that.binding.generalData.countryOptionID)) {
-                                    that.initLandList.unshift(item);
+                                    //that.initLandList.unshift(item);
+                                    that.initLandList.splice(1, 0, item);
                                     break;
                                 }
                             }
@@ -697,9 +699,10 @@
                                 return ContactRemote.contactNoteView.insert(function (json) {
                                     // this callback will be called asynchronously
                                     // when the response is available
-                                    Log.print(Log.l.trace, "sketchData insert: success!");
-                                    // contactData returns object already parsed from json file in response
-                                    Log.print(Log.l.info, "contactData update: success!");
+                                    Log.print(Log.l.trace, "contactData insert: success!");
+                                    if (typeof complete === "function") {
+                                        complete(json);
+                                    }
                                 },
                                 function (errorResponse) {
                                     // called asynchronously if an error occurs

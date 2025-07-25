@@ -515,7 +515,7 @@
                             that.insertCameradata(imageData, width, height);
                         }
                         var dataURLMimeType = "data:image/jpeg;base64,";
-                        if (cropImageData.substr(0, dataURLMimeType.length) === dataURLMimeType) {
+                        if (imageData.substr(0, dataURLMimeType.length) === dataURLMimeType) {
                             cameraImage.src = imageData;
                         } else {
                             cameraImage.src = "data:image/jpeg;base64," + imageData;
