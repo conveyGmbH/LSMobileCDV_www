@@ -329,25 +329,27 @@
                             AppBar.commandList[i].key = null;
                     }
                     var waitCircleContainer = pageElement.querySelector(".wait-circle-container");
-                    var waitCircle = pageElement.querySelector(".wait-circle");
                     var comment = pageElement.querySelector("#comment");
+                    var waitCircle = pageElement.querySelector(".wait-circle");
                     var rect1 = comment.getBoundingClientRect();
                     var rect2 = waitCircle.getBoundingClientRect();
-                    var overlap = !(rect1.right < rect2.left ||
-                        rect1.left > rect2.right ||
-                        rect1.bottom < rect2.top ||
-                        rect1.top > rect2.bottom);
-                    if (that.binding.dataContact && that.binding.dataContact.Flag_NoEdit) {
-                        if (overlap) {
-                            waitCircleContainer.style.display = "none";
-                        } else {
-                            if (waitCircleContainer.style.display === "none") {
-                                waitCircleContainer.style.display = "";
+                    WinJS.Promise.timeout(250).then(function () {
+                        var overlap = !(rect1.right < rect2.left ||
+                            rect1.left > rect2.right ||
+                            rect1.bottom < rect2.top ||
+                            rect1.top > rect2.bottom);
+                        if (that.binding.dataContact && that.binding.dataContact.Flag_NoEdit) {
+                            if (overlap) {
+                                waitCircleContainer.style.display = "none";
+                            } else {
+                                if (waitCircleContainer.style.display === "none") {
+                                    waitCircleContainer.style.display = "";
+                                }
                             }
+                        } else {
+                            waitCircleContainer.style.display = "none";
                         }
-                    } else {
-                        waitCircleContainer.style.display = "none";
-                    }
+                    });
                 },
                 handleTextAreaFocusOut: function (event) {
                     for (var i = 0; i < AppBar.commandList.length; i++) {
@@ -355,25 +357,27 @@
                             AppBar.commandList[i].key = WinJS.Utilities.Key.enter;
                     }
                     var waitCircleContainer = pageElement.querySelector(".wait-circle-container");
-                    var waitCircle = pageElement.querySelector(".wait-circle");
                     var comment = pageElement.querySelector("#comment");
+                    var waitCircle = pageElement.querySelector(".wait-circle");
                     var rect1 = comment.getBoundingClientRect();
                     var rect2 = waitCircle.getBoundingClientRect();
-                    var overlap = !(rect1.right < rect2.left ||
-                        rect1.left > rect2.right ||
-                        rect1.bottom < rect2.top ||
-                        rect1.top > rect2.bottom);
-                    if (that.binding.dataContact && that.binding.dataContact.Flag_NoEdit) {
-                        if (overlap) {
-                            waitCircleContainer.style.display = "none";
-                        } else {
-                            if (waitCircleContainer.style.display === "none") {
-                                waitCircleContainer.style.display = "";
+                    WinJS.Promise.timeout(250).then(function () {
+                        var overlap = !(rect1.right < rect2.left ||
+                            rect1.left > rect2.right ||
+                            rect1.bottom < rect2.top ||
+                            rect1.top > rect2.bottom);
+                        if (that.binding.dataContact && that.binding.dataContact.Flag_NoEdit) {
+                            if (overlap) {
+                                waitCircleContainer.style.display = "none";
+                            } else {
+                                if (waitCircleContainer.style.display === "none") {
+                                    waitCircleContainer.style.display = "";
+                                }
                             }
+                        } else {
+                            waitCircleContainer.style.display = "none";
                         }
-                    } else {
-                        waitCircleContainer.style.display = "none";
-                    }
+                    });
                 },
                 clickLogoff: function (event) {
                     Log.call(Log.l.trace, "Start.Controller.");
@@ -871,14 +875,13 @@
                                         if (typeof complete === "function") {
                                             complete(response);
                                         }
+                                    }, function (errorResponse) {
+                                        AppBar.busy = false;
+                                        // called asynchronously if an error occurs
+                                        // or server returns response with an error status.
+                                        AppData.setErrorMsg(that.binding, errorResponse);
+                                        error(errorResponse);
                                     },
-                                        function (errorResponse) {
-                                            AppBar.busy = false;
-                                            // called asynchronously if an error occurs
-                                            // or server returns response with an error status.
-                                            AppData.setErrorMsg(that.binding, errorResponse);
-                                            error(errorResponse);
-                                        },
                                         that.binding.dataContactNote.KontaktNotizVIEWID,
                                         dataSketch);
                                 } else {
@@ -933,6 +936,7 @@
                                     Titel: "Kommentar/Comment",
                                     DocGroup: 3,
                                     DocFormat: 4025,
+                                    ExecAppTypeID: 2,
                                     Quelltext: that.binding.dataContactNote.Quelltext || ""
                                 };
                                 if (that.binding.dataContactNote.Quelltext === "") {

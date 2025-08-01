@@ -655,6 +655,9 @@
                 if (that.binding.generalData.notAuthorizedUser) {
                     Log.print(Log.l.trace, "notAuthorizedUser: " + that.binding.generalData.notAuthorizedUser);
                     that.binding.enableChangePassword = that.binding.generalData.notAuthorizedUser;
+                    if (that.binding.doEdit && that.binding.enableChangePassword ) {
+                        that.binding.doEdit = !that.binding.enableChangePassword;
+                    }
                     that.binding.generalData.logOffOptionActive = false;
                     var errorMessage = getResourceText("general.unauthorizedUser");
                     AppData._persistentStates.odata.login = null;

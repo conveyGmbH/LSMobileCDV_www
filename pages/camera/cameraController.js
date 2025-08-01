@@ -648,6 +648,7 @@
                         navigator.camera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                             destinationType: Camera.DestinationType.DATA_URL,
                             sourceType: Camera.PictureSourceType.CAMERA,
+                            correctOrientation: true,
                             allowEdit: isAppleDevice, //!isWindows10
                             quality: typeof AppData.generalData.cameraQuality === "string" ? parseInt(AppData.generalData.cameraQuality) : AppData.generalData.cameraQuality,
                             targetWidth: -1,

@@ -68,8 +68,38 @@
         },
 
         updateLayout: function (element, viewState, lastViewState) {
+            var ret = null;
+            var that = this;
             /// <param name="element" domElement="true" />
+            Log.call(Log.l.u1, pageName + ".");
             // TODO: Respond to changes in viewState.
+            if (element && !that.inResize) {
+                that.inResize = 1;
+                ret = WinJS.Promise.timeout(100).then(function() {
+                    var waitCircleContainer = element.querySelector(".wait-circle-container");
+                    var comment = element.querySelector("#comment");
+                    var waitCircle = element.querySelector(".wait-circle");
+                    var rect1 = comment.getBoundingClientRect();
+                    var rect2 = waitCircle.getBoundingClientRect();
+                    var overlap = !(rect1.right < rect2.left ||
+                        rect1.left > rect2.right ||
+                        rect1.bottom < rect2.top ||
+                        rect1.top > rect2.bottom);
+                    if (that.controller.binding.dataContact && that.controller.binding.dataContact.Flag_NoEdit) {
+                        if (overlap) {
+                            waitCircleContainer.style.display = "none";
+                        } else {
+                            if (waitCircleContainer.style.display === "none") {
+                                waitCircleContainer.style.display = "";
+                            }
+                        }
+                    } else {
+                        waitCircleContainer.style.display = "none";
+                    }
+                });
+            }
+            Log.ret(Log.l.u1);
+            return ret;
         }
     });
 })();
