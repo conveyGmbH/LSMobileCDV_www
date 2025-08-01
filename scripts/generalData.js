@@ -228,6 +228,35 @@
             Application.pageframe.savePersistentStates();
             Log.ret(Log.l.trace);
         },
+        cancelPromises: function () {
+            Log.call(Log.l.trace, "AppData.");
+            if (AppData._userRemoteDataPromise) {
+                AppData._userRemoteDataPromise.cancel();
+                AppData._userRemoteDataPromise = null;
+            }
+            Log.ret(Log.l.trace);
+        },
+        checkForNavigateToLogin: function (errorResponse) {
+            Log.call(Log.l.trace, "AppData.");
+            if (errorResponse && (errorResponse.status === 401 || errorResponse.status === 404)) {
+                var curPageId = Application.getPageId(Application.navigator._lastPage);
+                var onLoginPage = curPageId === "dbinit" || curPageId === "login" || curPageId === "account";
+                if (errorResponse.status === 401 && !onLoginPage) {
+                    // user is not authorized to access this service
+                    AppBar.scope.binding.generalData.notAuthorizedUser = true;
+                    //var errorMessage = getResourceText("general.unauthorizedUser");
+                    AppBar.scope.binding.generalData.oDataErrorMsg = getResourceText("general.unauthorizedUser") + "\n\nError: " + (errorResponse && errorResponse.statusText);
+                    alert(AppBar.scope.binding.generalData.oDataErrorMsg);
+                }
+                AppData.cancelPromises();
+                if (!onLoginPage) {
+                    WinJS.Promise.timeout(0).then(function () {
+                        Application.navigateById("login");
+                    });
+                }
+            }
+            Log.ret(Log.l.trace);
+        },
         getUserData: function () {
             var ret;
             Log.call(Log.l.trace, "AppData.");
@@ -492,18 +521,7 @@
                 }, function (err) {
                     Log.print(Log.l.error, "PRC_CheckMobileVersion call error - ignore that!");
                     AppData._inGetMobileVersion = false;
-                    if (err.status === 401) {
-                        // user is not authorized to access this service
-                        AppBar.scope.binding.generalData.notAuthorizedUser = true;
-                        AppBar.scope.binding.generalData.oDataErrorMsg = err;
-                        //var errorMessage = getResourceText("general.unauthorizedUser");
-                        //alert(errorMessage);
-                        //AppData.setErrorMsg(AppBar.scope.binding, err);
-                        // user is not authorized to access this service
-                        WinJS.Promise.timeout(1000).then(function () {
-                            Application.navigateById("account");
-                        });
-                    }
+                    AppData.checkForNavigateToLogin(err);
                 });
             });
             Log.ret(Log.l.trace);
@@ -696,18 +714,7 @@
                                 });
                             }, function (errorResponse) {
                                 Log.print(Log.l.error, "call error=" + JSON.stringify(errorResponse));
-                                if (errorResponse.status === 401) {
-                                    // user is not authorized to access this service
-                                    AppBar.scope.binding.generalData.notAuthorizedUser = true;
-                                    //var errorMessage = getResourceText("general.unauthorizedUser");
-                                    AppBar.scope.binding.generalData.oDataErrorMsg = errorResponse;
-                                    //alert(errorMessage);
-                                    //AppData.setErrorMsg(AppBar.scope.binding, errorResponse);
-                                    // user is not authorized to access this service
-                                    WinJS.Promise.timeout(1000).then(function () {
-                                        Application.navigateById("account");
-                                    });
-                                }
+                                AppData.checkForNavigateToLogin(errorResponse);
                                 //if (errorResponse.response["\n\'error'"].code)
                                 if (AppData._prcUserRemoteCallSucceeded) {
                                     var err = "";
