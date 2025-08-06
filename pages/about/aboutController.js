@@ -152,16 +152,16 @@
                         var fileName2 = cordova.file.dataDirectory + Application.pageframe.filenamePersistentStates;
                         var fileName3 = cordova.file.dataDirectory + Application.pageframe.filenamePSEncoded;
                         var subject = dbName + " + Settings";
-                        var message = dbName + " + Settings" + " " + getResourceText("info.shareBackup");
+                        var message = dbName + " + Settings " + getResourceText("info.shareBackup");
                         if (typeof device === "object" && (device.platform === "Android" || device.platform === "iOS")) {
-                            window.plugins.socialsharing.share(message, subject, [fileName, fileName2, fileName3]);
+                            window.plugins.socialsharing.share(message, subject, [fileName, AppData._persistentStates.encodeSettings ? fileName3 : fileName2]);
                         } else {
                             window.resolveLocalFileSystemURL(dataDirectory, function (dirEntry) {
                                 if (dirEntry && dirEntry.filesystem && dirEntry.filesystem.winpath) {
                                     fileName = dirEntry.filesystem.winpath.replace(/\//g, "\\") + dbName;
                                     fileName2 = dirEntry.filesystem.winpath.replace(/\//g, "\\") + Application.pageframe.filenamePersistentStates;
                                     fileName3 = dirEntry.filesystem.winpath.replace(/\//g, "\\") + Application.pageframe.filenamePSEncoded;
-                                    window.plugins.socialsharing.share(message, subject, [fileName, fileName2, fileName3]);
+                                    window.plugins.socialsharing.share(message, subject, [fileName, AppData._persistentStates.encodeSettings ? fileName3 : fileName2]);
                                 }
                             });
                         }

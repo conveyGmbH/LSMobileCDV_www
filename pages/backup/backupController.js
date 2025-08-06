@@ -38,7 +38,7 @@
             }
 
             this.eventHandlers = {
-                clickHomepageLink: function(event) {
+                clickHomepageLink: function (event) {
                     Log.call(Log.l.trace, "backup.Controller.");
                     var url = "https://" + getResourceText("info.homepage");
                     if (isAppleDevice && cordova.InAppBrowser) {
@@ -86,23 +86,18 @@
                         Application.pageframe.name) {
                         var fileName = dataDirectory + dbName;
                         var fileName2 = cordova.file.dataDirectory + persistenStatesName;
-                        var subject = dbName + " " + persistenStatesName;
-                        var message = dbName + " " + persistenStatesName + " " + getResourceText("info.shareBackup");
-                        var options = { subject: subject, message: message, files: [fileName, fileName2] }
-                        /*window.plugins.socialsharing.shareWithOptions(options, function(result) {
-                            Log.print(Log.l.info, "Share completed? " + result.completed); // On Android apps mostly return false even while it's true
-                            Log.print(Log.l.info, "Shared to app: " + result.app); // On Android result.app since plugin version 5.4.0 this is no longer empty. On iOS it's empty when sharing is cancelled (result.completed=false)
-                        }, function (msg) {
-                            Log.print(Log.l.error, "Sharing failed with message: " + msg);
-                        });*/
+                        var fileName3 = cordova.file.dataDirectory + Application.pageframe.filenamePSEncoded;
+                        var subject = dbName + " + Settings" ;
+                        var message = dbName + " + Settings " + getResourceText("info.shareBackup");
                         if (typeof device === "object" && (device.platform === "Android" || device.platform === "iOS")) {
-                            window.plugins.socialsharing.share(message, subject, [fileName, fileName2]);
+                            window.plugins.socialsharing.share(message, subject, [fileName, AppData._persistentStates.encodeSettings ? fileName3 : fileName2]);
                         } else {
-                            window.resolveLocalFileSystemURL(dataDirectory, function(dirEntry) {
+                            window.resolveLocalFileSystemURL(dataDirectory, function (dirEntry) {
                                 if (dirEntry && dirEntry.filesystem && dirEntry.filesystem.winpath) {
                                     fileName = dirEntry.filesystem.winpath.replace(/\//g, "\\") + dbName;
                                     fileName2 = dirEntry.filesystem.winpath.replace(/\//g, "\\") + persistenStatesName;
-                                    window.plugins.socialsharing.share(message, subject, [fileName, fileName2]);
+                                    fileName3 = dirEntry.filesystem.winpath.replace(/\//g, "\\") + Application.pageframe.filenamePSEncoded;
+                                    window.plugins.socialsharing.share(message, subject, [fileName, AppData._persistentStates.encodeSettings ? fileName3 : fileName2]);
                                 }
                             });
                         }
@@ -165,7 +160,7 @@
             }
 
             this.disableHandlers = {
-                clickBack: function() {
+                clickBack: function () {
                     if (WinJS.Navigation.canGoBack === true) {
                         return false;
                     } else {
@@ -193,7 +188,7 @@
             }
             AppData.setErrorMsg(this.binding);
 
-            that.processAll().then(function() {
+            that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 AppBar.notifyModified = true;
                 //return Colors.loadSVGImageElements(pageElement, "app-logo", 240);
