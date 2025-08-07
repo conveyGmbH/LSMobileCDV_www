@@ -251,7 +251,7 @@
                 AppData.cancelPromises();
                 if (!onLoginPage) {
                     WinJS.Promise.timeout(0).then(function () {
-                        Application.navigateById("login");
+                        Application.navigateById("account");
                     });
                 }
             }

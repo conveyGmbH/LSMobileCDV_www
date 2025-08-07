@@ -651,13 +651,12 @@
                                 // Now, we call WinJS.Binding.List to get the bindable list
                                 if (initLand && initLand.winControl) {
                                     that.initLandList = new WinJS.Binding.List(json.d.results);
-                                    /*for (var i = 0; i < that.initLandList.length; i++) {
-                                        var item = that.initLandList.getAt(i);
-                                        if (item && item.INITLandID === 53) {
-                                            that.initLandList.unshift(item);
-                                            break;
-                                        }
-                                    }*/
+                                    that.initLandList.sort(function (a, b) {
+                                        if (a.TITLE === null && b.TITLE === null) return 0;
+                                        if (a.TITLE === null) return -1;  // a zuerst
+                                        if (b.TITLE === null) return 1;   // b zuerst
+                                        return a.TITLE.localeCompare(b.TITLE, 'de', 'en', 'fr', 'it', { sensitivity: 'base' });
+                                    }); 
                                     initLand.winControl.data = that.initLandList;
                                 }
                             }
@@ -671,13 +670,12 @@
                     } else {
                         if (initLand && initLand.winControl) {
                             that.initLandList = new WinJS.Binding.List(AppData.initLandView.getResults());
-                            /*for (var i = 0; i < that.initLandList.length; i++) {
-                                var item = that.initLandList.getAt(i);
-                                if (item && item.INITLandID === 53) {
-                                    that.initLandList.unshift(item);
-                                    break;
-                                }
-                            }*/
+                            that.initLandList.sort(function (a, b) {
+                                if (a.TITLE === null && b.TITLE === null) return 0;
+                                if (a.TITLE === null) return -1;  // a zuerst
+                                if (b.TITLE === null) return 1;   // b zuerst
+                                return a.TITLE.localeCompare(b.TITLE, 'de', 'en', 'fr', 'it', { sensitivity: 'base' });
+                            }); 
                             initLand.winControl.data = that.initLandList;
                         }
                         return WinJS.Promise.as();

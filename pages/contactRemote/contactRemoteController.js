@@ -423,12 +423,21 @@
                                 // Now, we call WinJS.Binding.List to get the bindable list
                                 if (initLand && initLand.winControl) {
                                     that.initLandList = new WinJS.Binding.List(json.d.results);
-                                    for (var i = 0; i < that.initLandList.length; i++) {
-                                        var item = that.initLandList.getAt(i);
-                                        if (that.binding.generalData.countryOption && that.binding.generalData.countryOptionID && item && item.INITLandID === parseInt(that.binding.generalData.countryOptionID)) {
-                                            //that.initLandList.unshift(item);
-                                            that.initLandList.splice(1, 0, item);
-                                            break;
+                                    that.initLandList.sort(function (a, b) {
+                                        if (a.TITLE === null && b.TITLE === null) return 0;
+                                        if (a.TITLE === null) return -1;  // a zuerst
+                                        if (b.TITLE === null) return 1;   // b zuerst
+                                        return a.TITLE.localeCompare(b.TITLE, 'de', 'en', 'fr', 'it', { sensitivity: 'base' });
+                                    }); 
+                                    if (that.binding.generalData.countryOption &&
+                                        that.binding.generalData.countryOptionID) {
+                                        for (var i = 0; i < that.initLandList.length; i++) {
+                                            var item = that.initLandList.getAt(i);
+                                            if (item && item.INITLandID === parseInt(that.binding.generalData.countryOptionID)) {
+                                                //that.initLandList.unshift(item);
+                                                that.initLandList.splice(1, 0, item);
+                                                break;
+                                            }
                                         }
                                     }
                                     initLand.winControl.data = that.initLandList;
@@ -444,12 +453,20 @@
                     } else {
                         if (initLand && initLand.winControl) {
                             that.initLandList = new WinJS.Binding.List(AppData.initLandView.getResults());
-                            for (var i = 0; i < that.initLandList.length; i++) {
-                                var item = that.initLandList.getAt(i);
-                                if (that.binding.generalData.countryOption && that.binding.generalData.countryOptionID && item && item.INITLandID === parseInt(that.binding.generalData.countryOptionID)) {
-                                    //that.initLandList.unshift(item);
-                                    that.initLandList.splice(1, 0, item);
-                                    break;
+                            that.initLandList.sort(function (a, b) {
+                                if (a.TITLE === null && b.TITLE === null) return 0;
+                                if (a.TITLE === null) return -1;  // a zuerst
+                                if (b.TITLE === null) return 1;   // b zuerst
+                                return a.TITLE.localeCompare(b.TITLE, 'de', 'en', 'fr', 'it', { sensitivity: 'base' });
+                            }); 
+                            if (that.binding.generalData.countryOption && that.binding.generalData.countryOptionID) {
+                                for (var i = 0; i < that.initLandList.length; i++) {
+                                    var item = that.initLandList.getAt(i);
+                                    if (item && item.INITLandID === parseInt(that.binding.generalData.countryOptionID)) {
+                                        //that.initLandList.unshift(item);
+                                        that.initLandList.splice(1, 0, item);
+                                        break;
+                                    }
                                 }
                             }
                             initLand.winControl.data = that.initLandList;
