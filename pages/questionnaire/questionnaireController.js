@@ -1213,6 +1213,7 @@
                     navigator.camera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
                         destinationType: Camera.DestinationType.DATA_URL,
                         sourceType: Camera.PictureSourceType.CAMERA,
+                        correctOrientation: true,
                         allowEdit: isAppleDevice, //!isWindows10
                         quality: AppData.generalData.cameraQuality,
                         targetWidth: -1,
