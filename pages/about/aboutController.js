@@ -71,7 +71,7 @@
                         var dataDirectory = cordova.file.tempDirectory || cordova.file.dataDirectory;
                         var fileName = Application.pageframe.name + ".log";
                         var subject = Application.pageframe.name;
-                        var message = Application.pageframe.name + " " + getResourceText("info.share") + lastError;
+                        var message = Application.pageframe.name + " " + getResourceText("info.share") + " " + that.binding.replError;
                         try {
                             window.resolveLocalFileSystemURL(dataDirectory, function (dirEntry) {
                                 if (dirEntry) {
