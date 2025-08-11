@@ -429,7 +429,7 @@
                             that.loadData();
                             if (typeof AppHeader === "object" &&
                                 AppHeader.controller &&
-                                AppHeader.controller.loadData === "function") {
+                                typeof AppHeader.controller.loadData === "function") {
                                 AppHeader.controller.loadData();
                             }
                         }, function (errorResponse) {
@@ -462,7 +462,7 @@
                                 }
                                 if (typeof AppHeader === "object" &&
                                     AppHeader.controller &&
-                                    AppHeader.controller.loadData === "function") {
+                                    typeof AppHeader.controller.loadData === "function") {
                                     AppHeader.controller.loadData();
                                 }
                             } else {
@@ -672,6 +672,12 @@
                                 that.binding.dataBenutzer.Present = newPresent;
                                 if (!AppBar.modified) {
                                     AppBar.modified = true;
+                                    that.saveData(function (response) {
+                                        // called asynchronously if ok
+                                        Log.print(Log.l.trace, "saveData succeed");
+                                    }, function (errorResponse) {
+                                        Log.print(Log.l.error, "saveData error");
+                                    });
                                 }
                             }
                         }
@@ -728,7 +734,6 @@
                         if (result) {
                             Log.print(Log.l.trace, "clickDelete: user choice OK");
                             that.deletePhotoData(function (response) {
-
                                 that.loadData();
                                 if (AppHeader.controller && typeof AppHeader.controller.loadData() === "function") {
                                     AppHeader.controller.loadData();
@@ -797,6 +802,7 @@
                 Log.call(Log.l.trace, "GenDataUserInfo.Controller.");
                 var ret = UserInfo.userPhotoView.deleteRecord(function (json) {
                     Log.print(Log.l.trace, "GenDataUserInfo: delete success!");
+                    that.binding.photoData = "";
                     if (typeof complete === "function") {
                         complete(json);
                     }

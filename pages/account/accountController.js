@@ -137,7 +137,7 @@
                 clickChangeUserState: function (event) {
                     Log.call(Log.l.trace, "Account.Controller.");
                     //ignore that here!
-                    //Application.navigateById("userinfo", event);
+                    Application.navigateById("userinfo", event);
                     Log.ret(Log.l.trace);
                 },
                 clickDoEdit: function (event) {
@@ -241,7 +241,16 @@
                     if (that.binding.generalData.notAuthorizedUser) {
                         return false;
                     }
+                    if (!AppData._persistentStates.odata.login && !AppData._persistentStates.odata.password) {
+                        return true;
+                    }
                     return !that.binding.generalData.logOffOptionActive;
+                },
+                clickChangeUserState: function () {
+                    var accountbutton = document.getElementById("accountbutton");
+                    if (accountbutton) {
+                        accountbutton.disabled = !AppData._persistentStates.odata.login && !AppData._persistentStates.odata.password;
+                    }
                 }
             };
 

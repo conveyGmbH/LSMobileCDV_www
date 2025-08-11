@@ -111,7 +111,7 @@
                 },
                 clickChangeUserState: function (event) {
                     Log.call(Log.l.trace, "about.Controller.");
-                    Application.navigateById("account", event);
+                    Application.navigateById("userinfo", event);
                     Log.ret(Log.l.trace);
                 },
                 clickTopButton: function (event) {
@@ -174,6 +174,12 @@
                 clickShareDB: function () {
                     // always enabled!
                     return false;
+                },
+                clickChangeUserState: function() {
+                    var accountbutton = document.getElementById("accountbutton");
+                    if (accountbutton) {
+                        accountbutton.disabled = !AppData._persistentStates.odata.login && !AppData._persistentStates.odata.password;
+                    }
                 },
                 clickLogoff: function () {
                     var logoffbutton = document.getElementById("logoffbutton");
