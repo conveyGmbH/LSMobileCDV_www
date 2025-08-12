@@ -803,6 +803,7 @@
                 var ret = UserInfo.userPhotoView.deleteRecord(function (json) {
                     Log.print(Log.l.trace, "GenDataUserInfo: delete success!");
                     that.binding.photoData = "";
+                    that.binding.dataPhoto = {};
                     if (typeof complete === "function") {
                         complete(json);
                     }
