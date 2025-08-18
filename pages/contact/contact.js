@@ -79,8 +79,8 @@
                     var waitCircleContainer = element.querySelector(".wait-circle-container");
                     var comment = element.querySelector("#comment");
                     var waitCircle = element.querySelector(".wait-circle");
-                    var rect1 = comment.getBoundingClientRect();
-                    var rect2 = waitCircle.getBoundingClientRect();
+                    var rect1 = waitCircle.getBoundingClientRect();
+                    var rect2 = comment.getBoundingClientRect();
                     var overlap = !(rect1.right < rect2.left ||
                         rect1.left > rect2.right ||
                         rect1.bottom < rect2.top ||

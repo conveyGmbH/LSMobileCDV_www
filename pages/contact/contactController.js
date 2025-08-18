@@ -328,12 +328,12 @@
                         if (AppBar.commandList[i].id === "clickForward")
                             AppBar.commandList[i].key = null;
                     }
+                    WinJS.Promise.timeout(100).then(function () {
                     var waitCircleContainer = pageElement.querySelector(".wait-circle-container");
                     var comment = pageElement.querySelector("#comment");
                     var waitCircle = pageElement.querySelector(".wait-circle");
-                    var rect1 = comment.getBoundingClientRect();
-                    var rect2 = waitCircle.getBoundingClientRect();
-                    WinJS.Promise.timeout(250).then(function () {
+                        var rect1 = waitCircle.getBoundingClientRect();
+                        var rect2 = comment.getBoundingClientRect();
                         var overlap = !(rect1.right < rect2.left ||
                             rect1.left > rect2.right ||
                             rect1.bottom < rect2.top ||
@@ -356,12 +356,12 @@
                         if (AppBar.commandList[i].id === "clickForward")
                             AppBar.commandList[i].key = WinJS.Utilities.Key.enter;
                     }
+                    WinJS.Promise.timeout(250).then(function () {
                     var waitCircleContainer = pageElement.querySelector(".wait-circle-container");
                     var comment = pageElement.querySelector("#comment");
                     var waitCircle = pageElement.querySelector(".wait-circle");
-                    var rect1 = comment.getBoundingClientRect();
-                    var rect2 = waitCircle.getBoundingClientRect();
-                    WinJS.Promise.timeout(250).then(function () {
+                        var rect1 = waitCircle.getBoundingClientRect();
+                        var rect2 = comment.getBoundingClientRect();
                         var overlap = !(rect1.right < rect2.left ||
                             rect1.left > rect2.right ||
                             rect1.bottom < rect2.top ||
