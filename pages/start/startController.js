@@ -333,7 +333,7 @@
                                         changed = true;
                                     }
                                 } else if (AppData._barcodeRequest) {
-                                    var newSvg = (AppData._barcodeType === "barcode") ? "barcode" : "barcode-qr";
+                                    var newSvg = "barcode-qr"; //(AppData._barcodeType === "barcode") ? "barcode" : "barcode-qr"
                                     if (actionLine.button0.showBusinessCard ||
                                         actionLine.button0.svg !== newSvg) {
                                         actionLine.button0.showBusinessCard = false;

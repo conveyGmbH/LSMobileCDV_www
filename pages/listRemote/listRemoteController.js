@@ -121,7 +121,7 @@
                 }
                 item.showDoc = true;
                 if (item.SHOW_Barcode || item.IMPORT_CARDSCANID && !item.SHOW_Visitenkarte) {
-                    item.svgSource = item.IMPORT_CARDSCANID ? "barcode-qr" : "barcode";
+                    item.svgSource = "barcode-qr";
                 } else if (!item.SHOW_Barcode && item.IMPORT_CARDSCANID && item.SHOW_Visitenkarte) {
                     item.svgSource = "";
                 } else {
@@ -158,7 +158,7 @@
                                 contact.svgSource = "";
                             }*/
                             if (contact.SHOW_Barcode || contact.IMPORT_CARDSCANID && !contact.SHOW_Visitenkarte) {
-                                contact.svgSource = contact.IMPORT_CARDSCANID ? "barcode-qr" : "barcode";
+                                contact.svgSource = "barcode-qr";
                             } else if (!contact.SHOW_Barcode && contact.IMPORT_CARDSCANID && contact.SHOW_Visitenkarte) {
                                 contact.svgSource = "";
                             } else {
