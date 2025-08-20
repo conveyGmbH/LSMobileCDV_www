@@ -28,3 +28,11 @@
 #contactController .label.group {
     white-space: normal;
 }
+
+#commentTextArea:focus .wait-circle-container {
+    display: none;
+}
+
+#commentTextArea:not(:focus) .wait-circle-container {
+    display: inline;
+}

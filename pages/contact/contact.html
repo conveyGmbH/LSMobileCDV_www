@@ -38,7 +38,7 @@
                         <div id="comment" class="field_line field_line_full" data-win-bind="style.display: dataContact.Flag_NoEdit Binding.Converter.toDisplay">
                             <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.comment3'}"></span>
                             <span class="label landscape_only" data-win-res="{textContent: 'contact.comment3'}"></span>
-                            <textarea class="input_field win-textarea input_text_comment" data-win-bind-onevent="oninput" data-win-bind="value: dataContactNote.Quelltext Binding.Mode.twoway" onfocusin="AppBar.handleEvent('focusin', 'handleTextAreaFocusIn', event)" onfocusout="AppBar.handleEvent('focusout', 'handleTextAreaFocusOut', event)"></textarea>
+                            <textarea id="commentTextArea" class="input_field win-textarea input_text_comment" data-win-bind-onevent="oninput" data-win-bind="value: dataContactNote.Quelltext Binding.Mode.twoway" onfocusin="AppBar.handleEvent('focusin', 'handleTextAreaFocusIn', event)" onfocusout="AppBar.handleEvent('focusout', 'handleTextAreaFocusOut', event)"></textarea>
                         </div>
                         <div class="address-container">
                             <div class="line-separator"

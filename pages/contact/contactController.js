@@ -328,7 +328,7 @@
                         if (AppBar.commandList[i].id === "clickForward")
                             AppBar.commandList[i].key = null;
                     }
-                    WinJS.Promise.timeout(100).then(function () {
+                    WinJS.Promise.timeout(250).then(function () {
                     var waitCircleContainer = pageElement.querySelector(".wait-circle-container");
                     var comment = pageElement.querySelector("#comment");
                     var waitCircle = pageElement.querySelector(".wait-circle");
