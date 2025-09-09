@@ -22,7 +22,7 @@
                 AppData._userRemoteDataPromise = null;
             }
             if (device &&
-                (device.model === "TC20" || device.model ==="TC22")) {
+                (device.model === "TC20" || device.model === "TC22" || device.model === "TC27")) {
                 AppData._persistentStates.useBarcodeActivity = true;
             }
             if (device &&
