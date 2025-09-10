@@ -94,10 +94,9 @@
                             this.controller.pflichtfeldName +
                             "\n" +
                             this.controller.actualPfquestion.FRAGESTELLUNG;
-                    }
-
-                    if (AppData._contactData && AppData._contactData.Flag_NoEdit) {
-                        confirmTitle = getResourceText("questionnaire.labelNoEditPflichtfeldAntwort");
+                        if (AppData._contactData && AppData._contactData.Flag_NoEdit) {
+                            confirmTitle = confirmTitle + "\n" + getResourceText("questionnaire.labelNoEditPflichtfeldAntwort");
+                        }
                     }
                     if (showconfirmbox && AppData._persistentStates.showConfirmQuestion) {
                         ret = alert(confirmTitle,
