@@ -87,6 +87,9 @@
                         confirmTitle = getResourceText("questionnaire.labelConfirmMandatoryField") +
                             ":\n" +
                             this.controller.actualquestion.FRAGESTELLUNG;
+                        if (showConfirmBoxPflichtfeldAntwort) {
+                            confirmTitle = confirmTitle + "\n";
+                        }
                     }
                     if (showConfirmBoxPflichtfeldAntwort) {
                         confirmTitle = confirmTitle + getResourceText("questionnaire.labelConfirmPflichtfeldAntwort") +
