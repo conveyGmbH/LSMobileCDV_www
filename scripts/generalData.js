@@ -1811,16 +1811,9 @@
             if (Application.getPageId(nav.location) === "camera" &&
                 AppBar.scope &&
                 typeof AppBar.scope.onPhotoDataSuccess === "function") {
+                AppBar.scope.onPhotoDataSuccess(result);
                 CameraGlobals.dontCapture = false;
-                var ret = AppBar.scope.onPhotoDataSuccess(result, -1);
-                if (!ret && retryCount < 5) {
-                    Log.print(Log.l.info, "Invalid data retry");
-                    WinJS.Promise.timeout(100).then(function () {
-                        CameraGlobals.onPhotoDataSuccess(result, retryCount + 1);
-                    });
-                } else {
-                    CameraGlobals.startListenDelayed(1000);
-                }
+                CameraGlobals.startListenDelayed(1000);
             } else {
                 CameraGlobals.dontCapture = true;
                 Application.navigateById("camera");

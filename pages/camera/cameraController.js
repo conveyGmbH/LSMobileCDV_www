@@ -446,7 +446,7 @@
                 Log.call(Log.l.trace, "Camera.Controller.");
                 if (imageData && imageData.length > 0) {
                     var promise;
-                    if (isAppleDevice || that.binding.generalData.useClippingCamera) {
+                    if (isAppleDevice || that.binding.generalData.useClippingCamera || CameraGlobals.dontCapture) {
                         promise = WinJS.Promise.as();
                     } else {
                         promise = ImgTools.crop(imageData);
