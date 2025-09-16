@@ -610,30 +610,7 @@
                     }).then(function () {
                         if (clickOk && !err && !AppData.appSettings.odata.serverFailure) {
                             // load color settings
-                            return Account.CR_VERANSTOPTION_ODataView.select(function (json) {
-                                // this callback will be called asynchronously
-                                // when the response is available
-                                Log.print(Log.l.trace, "CR_VERANSTOPTION: success!");
-                                // CR_VERANSTOPTION_ODataView returns object already parsed from json file in response
-                                if (json && json.d && json.d.results) {
-                                    var results = json.d.results;
-                                    AppData._persistentStates.veranstoption = copyByValue(results);
-                                    AppData._persistentStates.serverColors = false;
-                                    if (json.d.results.length > 0) {
-                                        results.forEach(function (item, index) {
-                                            that.resultConverter(item, index);
-                                        });
-                                    }
-                                    Application.pageframe.savePersistentStates();
-                                }
-                            }, function (errorResponse) {
-                                // called asynchronously if an error occurs
-                                // or server returns response with an error status.
-                                AppData.setErrorMsg(that.binding, errorResponse);
-                            }).then(function () {
-                                Colors.updateColors();
-                                return WinJS.Promise.as();
-                            });
+                            return AppData.getCRVeranstOption();
                         } else {
                             return WinJS.Promise.as();
                         }

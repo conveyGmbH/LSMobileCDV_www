@@ -558,16 +558,18 @@
                         }
                     }
                     var results = json.d.results;
+                    var resultsStringiFy = JSON.stringify(results);
+                    var hashValue = CRC32.str(resultsStringiFy); //;
                     // this callback will be called asynchronously
                     // when the response is available
                     Log.print(Log.l.trace, "CR_VERANSTOPTION: success!");
                     // CR_VERANSTOPTION_ODataView returns object already parsed from json file in response
                     if (json && json.d && json.d.results) {
-                        if (equals(json.d.results, AppData._persistentStates.veranstoption)) {
+                        if (hashValue === AppData._persistentStates.veranstoption) {
                             Log.print(Log.l.trace, "CR_VERANSTOPTION: extra ignored!");
                         } else {
                             Log.print(Log.l.trace, "CR_VERANSTOPTION: values changed!");
-                            AppData._persistentStates.veranstoption = copyByValue(results);
+                            AppData._persistentStates.veranstoption = hashValue;
                             AppData._persistentStates.serverColors = false;
                             if (json.d.results.length > 0) {
                                 results.forEach(function (item, index) {
