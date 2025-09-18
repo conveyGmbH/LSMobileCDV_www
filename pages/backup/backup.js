@@ -23,6 +23,7 @@
             var commandList = [
                 { id: "clickBack", label: getResourceText("command.backward"), tooltip: getResourceText("tooltip.backward"), section: "primary", svg: "navigate_left" },
                 { id: "clickShareDB", label: getResourceText("info.shareBackup"), tooltip: getResourceText("info.shareBackup"), section: "primary", svg: "data_floppy_disk" },
+                { id: "clickShare", label: getResourceText("command.share"), tooltip: getResourceText("info.share"), section: "primary", svg: "share" },
                 { id: "clickOk", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check", key: WinJS.Utilities.Key.enter }
             ];
 

@@ -52,7 +52,7 @@
         iconStrokeWidth: 150,
         prevNavigateNewId: "newContact",
         manualTheme: true,
-        encodeSettings: false, // for Zebra always false
+        encodeSettings: true, // for Zebra always false
         odata: {
             https: true,
             hostName: "leadsuccess.convey.de",
