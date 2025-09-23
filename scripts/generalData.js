@@ -129,6 +129,7 @@
         _alternativeTimeout: null,
         _ignore: false,
         _fromStartPage: false,
+        _lastTimestamp: null,
         getRecordId: function (relationName) {
             Log.call(Log.l.trace, "AppData.", "relationName=" + relationName);
             // check for initial values
@@ -425,9 +426,7 @@
             }
             var ret = new WinJS.Promise.as().then(function () {
                 return DBInit.versionView.select(function (json) {
-                    AppData._persistentStates.dbVersion = json && json.d && json.d.results && json.d.results[0] && json.d.results[0].Version;
-                    Log.print(Log.l.info, "versionView select success! dbVersion=" + AppData._persistentStates.dbVersion);
-                    Application.pageframe.savePersistentStates();
+                    Log.print(Log.l.info, "versionView select success!");
                 }, function (err) {
                     Log.print(Log.l.error, "versionView select error - ignore that!");
                 });
@@ -539,7 +538,7 @@
             }
             ret = new WinJS.Promise.as().then(function () {
                 AppData._inGetCRVeranstOption = true;
-                Log.print(Log.l.trace, "calling select generalContactView...");
+                Log.print(Log.l.trace, "calling select CR_VERANSTOPTION_ODataView...");
                 return AppData.CR_VERANSTOPTION_ODataView.select(function (json) {
                     function resultConverter(item, index) {
                         var property = AppData.getPropertyFromInitoptionTypeID(item);
@@ -562,13 +561,13 @@
                     var hashValue = CRC32.str(resultsStringiFy); //;
                     // this callback will be called asynchronously
                     // when the response is available
-                    Log.print(Log.l.trace, "CR_VERANSTOPTION: success!");
+                    Log.print(Log.l.info, "CR_VERANSTOPTION: success!");
                     // CR_VERANSTOPTION_ODataView returns object already parsed from json file in response
                     if (json && json.d && json.d.results) {
                         if (hashValue === AppData._persistentStates.veranstoption) {
                             Log.print(Log.l.trace, "CR_VERANSTOPTION: extra ignored!");
                         } else {
-                            Log.print(Log.l.trace, "CR_VERANSTOPTION: values changed!");
+                            Log.print(Log.l.info, "CR_VERANSTOPTION: values changed!");
                             AppData._persistentStates.veranstoption = hashValue;
                             AppData._persistentStates.serverColors = false;
                             if (json.d.results.length > 0) {
@@ -787,6 +786,22 @@
                                                     AppData.getErrorMsgFromResponse(errorResponse));
                                                 AppData._persistentStates.odata.registerPath = prevRegisterPath;
                                                 // ignore this error here for compatibility!
+                                                // stop replication and so on
+                                                if (AppData._userRemoteDataPromise) {
+                                                    Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                                                    AppData._userRemoteDataPromise.cancel();
+                                                }
+                                                if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
+                                                    AppRepl.replicator.stop();
+                                                }
+                                                if (!AppData.appSettings.odata.serverFailure) {
+                                                    AppData.appSettings.odata.serverFailure = true;
+                                                    NavigationBar.disablePage("listRemote");
+                                                    NavigationBar.disablePage("search");
+                                                    if (AppBar.scope && typeof AppBar.scope.checkListButtonStates === "function") {
+                                                        AppBar.scope.checkListButtonStates();
+                                                    }
+                                                }
                                             }, {
                                                     LoginName: AppData._persistentStates.odata.login
                                                 });
@@ -839,6 +854,13 @@
                                     }, function (errorResponse) {
                                         Log.print(Log.l.error, "error=" + AppData.getErrorMsgFromResponse(errorResponse));
                                         //AppData.setErrorMsg(AppBar.scope.binding, errorResponse);
+                                        if (AppData._userRemoteDataPromise) {
+                                            Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                                            AppData._userRemoteDataPromise.cancel();
+                                        }
+                                        if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
+                                            AppRepl.replicator.stop();
+                                        }
                                         AppData.appSettings.odata.serverFailure = true;
                                         NavigationBar.disablePage("listRemote");
                                         NavigationBar.disablePage("search");
@@ -1528,6 +1550,37 @@
                 }
             }
             return false;
+        },
+        // call metadata as a function and call run etc. as a function
+        startReplicationHelper: function () {
+            // metadata try connect with vpn using register-user
+            Log.call(Log.l.trace, "AppData.startReplicationHelper.");
+            AppData._lastTimestamp = Date.now();
+            var url = AppData.getBaseURL(AppData.appSettings.odata.onlinePort) + "/" + AppData.getOnlinePath(true) + "/$metadata";
+            var options = AppData.initXhrOptions("GET", url, true);
+            Log.print(Log.l.info, "calling xhr method=GET metadata... url=" + options.url);
+            WinJS.xhr(options).then(function xhrSuccess(response) {
+                Log.print(Log.l.info, "AppData.call xhr metadata.", "method=GET" + options.url);
+                AppData._lastTimestamp = null;
+                if (AppData._userRemoteDataPromise) {
+                    Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                    AppData._userRemoteDataPromise.cancel();
+                }
+                AppData._userRemoteDataPromise = WinJS.Promise.timeout(1000).then(function () {
+                    Log.print(Log.l.info, "getUserRemoteData: Now, timeout=1s is over!");
+                    AppData._curGetUserRemoteDataId = 0;
+                    AppData.getUserRemoteData();
+                });
+                WinJS.Promise.timeout(50).then(function () {
+                    if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
+                        AppRepl.replicator.run();
+                    }
+                });
+            }, function (errorResponse) {
+                Log.print(Log.l.error, "error=" + AppData.getErrorMsgFromResponse(errorResponse));
+                //AppData.setErrorMsg(AppBar.scope.binding, errorResponse);
+            });
+            Log.ret(Log.l.trace);
         }
     });
 

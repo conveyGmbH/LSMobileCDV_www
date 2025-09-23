@@ -129,6 +129,17 @@
     Application.navigateByIdOverride = function (id, event) {
         Log.call(Log.l.trace, "Application.", "id=" + id);
         //if (!AppData._persistentStates.showvisitorFlow) {
+        WinJS.Promise.timeout(200).then(function() {
+            if (AppData.appSettings.odata.serverFailure &&
+                AppData._persistentStates.odata.replActive &&
+                (!AppData._lastTimestamp ||
+                    AppData._lastTimestamp &&
+                    AppData._lastTimestamp + 30000 > Date.now())) {
+                AppData.startReplicationHelper();
+            } else {
+                Log.print(Log.l.trace, "not calling AppData.startReplicationHelper");
+            }
+        });
         if (id === "newContact") {
             Application.prevNavigateNewId = id;
             Log.print(Log.l.trace, "reset contact Id");
@@ -238,7 +249,7 @@
     // initiate the page frame class
     var pageframe = new Application.PageFrame("LeadSuccess");
     pageframe.onOnlineHandler = function (eventInfo) {
-        Log.call(Log.l.trace, "Application.PageFrame.");
+        Log.call(Log.l.info, "Application.PageFrame.");
         if (AppData._userRemoteDataPromise) {
             Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
             AppData._userRemoteDataPromise.cancel();
@@ -256,7 +267,14 @@
         Log.ret(Log.l.trace);
     };
     pageframe.onOfflineHandler = function (eventInfo) {
-        Log.call(Log.l.trace, "Application.PageFrame.");
+        Log.call(Log.l.info, "Application.PageFrame.");
+        if (AppData._userRemoteDataPromise) {
+            Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+            AppData._userRemoteDataPromise.cancel();
+        }
+        if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
+            AppRepl.replicator.stop();
+        }
         if (!AppData.appSettings.odata.serverFailure) {
             AppData.appSettings.odata.serverFailure = true;
             NavigationBar.disablePage("listRemote");
