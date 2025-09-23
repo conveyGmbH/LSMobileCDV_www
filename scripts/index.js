@@ -129,7 +129,6 @@
     Application.navigateByIdOverride = function (id, event) {
         Log.call(Log.l.trace, "Application.", "id=" + id);
         //if (!AppData._persistentStates.showvisitorFlow) {
-        WinJS.Promise.timeout(200).then(function() {
             if (AppData.appSettings.odata.serverFailure &&
                 AppData._persistentStates.odata.replActive &&
                 (!AppData._lastTimestamp ||
@@ -139,7 +138,6 @@
             } else {
                 Log.print(Log.l.trace, "not calling AppData.startReplicationHelper");
             }
-        });
         if (id === "newContact") {
             Application.prevNavigateNewId = id;
             Log.print(Log.l.trace, "reset contact Id");
