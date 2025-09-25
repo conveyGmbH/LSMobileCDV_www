@@ -140,6 +140,16 @@
             }
             this.setDataContact = setDataContact;
 
+            var setDataContactNote = function (newDataContactNote) {
+                var prevNotifyModified = AppBar.notifyModified;
+                AppBar.notifyModified = false;
+                that.prevDataContactNote = copyByValue(that.binding.dataContactNote);
+                that.binding.dataContactNote = newDataContactNote;
+                AppBar.modified = false;
+                AppBar.notifyModified = prevNotifyModified;
+            }
+            this.setDataContactNote = setDataContactNote;
+
             var setInitLandItem = function (newInitLandItem) {
                 var prevNotifyModified = AppBar.notifyModified;
                 AppBar.notifyModified = false;
@@ -163,6 +173,7 @@
                 var recordId = AppData.generalData.getRecordId("Kontakt");
                 if (!recordId) {
                     that.setDataContact(getEmptyDefaultValue(Contact.contactView.defaultValue));
+                    that.setDataContactNote(getEmptyDefaultValue(Contact.contactNoteView.defaultValue));
                 }
                 Log.ret(Log.l.trace, recordId);
                 return recordId;
@@ -173,6 +184,7 @@
                 Log.call(Log.l.trace, "Contact.Controller.", recordId);
                 if (!recordId) {
                     that.setDataContact(getEmptyDefaultValue(Contact.contactView.defaultValue));
+                    that.setDataContactNote(getEmptyDefaultValue(Contact.contactNoteView.defaultValue));
                 }
                 AppData.generalData.setRecordId("Kontakt", recordId);
                 Log.ret(Log.l.trace);
@@ -703,39 +715,9 @@
                         // or server returns response with an error status.
                         AppData.setErrorMsg(that.binding, errorResponse);
                     }, {
-                            LanguageSpecID: AppData.getLanguageId()
-                        });
+                        LanguageSpecID: AppData.getLanguageId()
+                    });
                     return that.addDisposablePromise(contactMandatorySelectPromise);
-                }).then(function () {
-                    // Kommentar (neues Feld aus KontaktNotiz)
-                    var recordId = getRecordId();
-                    if (recordId) {
-                        //load of format relation record data
-                        Log.print(Log.l.trace, "calling select contactView...");
-                        var contactNoteSelectPromise = Contact.contactNoteView.select(function (json) {
-                            that.removeDisposablePromise(contactNoteSelectPromise);
-                            AppData.setErrorMsg(that.binding);
-                            Log.print(Log.l.trace, "contactView: success!");
-                            that.prevDataContactNote = copyByValue(that.binding.dataContactNote);
-                            if (json && json.d && json.d.results && json.d.results.length > 0) {
-                                var contactNote = json.d.results[0];
-                                that.binding.dataContactNote = contactNote;
-                            } else {
-                                that.binding.dataContactNote =
-                                    getEmptyDefaultValue(Contact.contactNoteView.defaultValue);
-                            }
-                        }, function (errorResponse) {
-                            that.removeDisposablePromise(contactNoteSelectPromise);
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                        }, {
-                                KontaktID: recordId,
-                                DocGroup: 3,
-                                DocFormat: 4025
-                            });
-                        return that.addDisposablePromise(contactNoteSelectPromise);
-                    } else {
-                        return WinJS.Promise.as();
-                    }
                 }).then(function () {
                     var recordId = getRecordId();
                     if (recordId) {
@@ -764,6 +746,34 @@
                             AppData.setErrorMsg(that.binding, errorResponse);
                         }, recordId);
                         return that.addDisposablePromise(contactSelectPromise);
+                    } else {
+                        return WinJS.Promise.as();
+                    }
+                }).then(function () {
+                    // Kommentar (neues Feld aus KontaktNotiz)
+                    var recordId = getRecordId();
+                    if (recordId) {
+                        //load of format relation record data
+                        Log.print(Log.l.trace, "calling select contactNoteView...");
+                        var contactNoteSelectPromise = Contact.contactNoteView.select(function (json) {
+                            that.removeDisposablePromise(contactNoteSelectPromise);
+                            AppData.setErrorMsg(that.binding);
+                            if (json && json.d && json.d.results && json.d.results.length > 0) {
+                                Log.print(Log.l.trace, "contactNoteView: success!");
+                                that.setDataContactNote(json.d.results[0]);
+                            } else {
+                                Log.print(Log.l.trace, "contactNoteView: not data found!");
+                                that.setDataContactNote(getEmptyDefaultValue(Contact.contactNoteView.defaultValue));
+                            }
+                        }, function (errorResponse) {
+                            that.removeDisposablePromise(contactNoteSelectPromise);
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        }, {
+                            KontaktID: recordId,
+                            DocGroup: 3,
+                            DocFormat: 4025
+                        });
+                        return that.addDisposablePromise(contactNoteSelectPromise);
                     } else {
                         return WinJS.Promise.as();
                     }
@@ -899,29 +909,30 @@
                                         // or server returns response with an error status.
                                         AppData.setErrorMsg(that.binding, errorResponse);
                                         error(errorResponse);
-                                    },
-                                        that.binding.dataContactNote.KontaktNotizVIEWID,
-                                        dataSketch);
+                                    }, that.binding.dataContactNote.KontaktNotizVIEWID, dataSketch);
                                 } else {
                                     return WinJS.Promise.as();
-
                                 }
                             } else if (that.binding.dataContactNote.Quelltext) {
-                                return Contact.contactNoteView.insert(function (json) {
-                                    // this callback will be called asynchronously
-                                    // when the response is available
-                                    Log.print(Log.l.trace, "sketchData insert: success!");
-                                    if (typeof complete === "function") {
-                                        complete(json);
-                                    }
-                                }, function (errorResponse) {
-                                    // called asynchronously if an error occurs
-                                    // or server returns response with an error status.
-                                    AppData.setErrorMsg(that.binding, errorResponse);
-                                    if (typeof error === "function") {
-                                        error(errorResponse);
-                                    }
-                                }, dataSketch);
+                                return Contact.contactNoteView.insert(function(json) {
+                                        // this callback will be called asynchronously
+                                        // when the response is available
+                                        Log.print(Log.l.trace, "sketchData insert: success!");
+                                        if (typeof complete === "function") {
+                                            complete(json);
+                                        }
+                                    },
+                                    function(errorResponse) {
+                                        // called asynchronously if an error occurs
+                                        // or server returns response with an error status.
+                                        AppData.setErrorMsg(that.binding, errorResponse);
+                                        if (typeof error === "function") {
+                                            error(errorResponse);
+                                        }
+                                    },
+                                    dataSketch);
+                            } else {
+                                return WinJS.Promise.as();
                             }
                         });
                     } else {

@@ -144,6 +144,16 @@
             }
             this.setDataContact = setDataContact;
 
+            var setDataContactNote = function (newDataContactNote) {
+                var prevNotifyModified = AppBar.notifyModified;
+                AppBar.notifyModified = false;
+                that.prevDataContactNote = copyByValue(that.binding.dataContactNote);
+                that.binding.dataContactNote = newDataContactNote;
+                AppBar.modified = false;
+                AppBar.notifyModified = prevNotifyModified;
+            }
+            this.setDataContactNote = setDataContactNote;
+
             var setInitLandItem = function (newInitLandItem) {
                 var prevNotifyModified = AppBar.notifyModified;
                 AppBar.notifyModified = false;
@@ -167,6 +177,7 @@
                 var recordId = AppData.generalData.getRecordId("Kontakt_Remote");
                 if (!recordId) {
                     that.setDataContact(getEmptyDefaultValue(ContactRemote.contactView.defaultValue));
+                    that.setDataContactNote(getEmptyDefaultValue(ContactRemote.contactNoteView.defaultValue));
                 }
                 Log.ret(Log.l.trace, recordId);
                 return recordId;
@@ -499,8 +510,8 @@
                         // or server returns response with an error status.
                         AppData.setErrorMsg(that.binding, errorResponse);
                     }, {
-                            LanguageSpecID: AppData.getLanguageId()
-                        });
+                        LanguageSpecID: AppData.getLanguageId()
+                    });
                     return that.addDisposablePromise(contactMandatorySelectPromise);
                 }).then(function () {
                     var recordId = getRecordId();
@@ -527,6 +538,34 @@
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
+                    // Kommentar (neues Feld aus KontaktNotiz)
+                    var recordId = getRecordId();
+                    if (recordId) {
+                        //load of format relation record data
+                        Log.print(Log.l.trace, "calling select contactNoteView...");
+                        var contactNoteSelectPromise = ContactRemote.contactNoteView.select(function (json) {
+                            that.removeDisposablePromise(contactNoteSelectPromise);
+                            AppData.setErrorMsg(that.binding);
+                            if (json && json.d && json.d.results && json.d.results.length > 0) {
+                                Log.print(Log.l.trace, "contactNoteView: success!");
+                                that.setDataContactNote(json.d.results[0]);
+                            } else {
+                                Log.print(Log.l.trace, "contactNoteView: not data found!");
+                                that.setDataContactNote(getEmptyDefaultValue(ContactRemote.contactNoteView.defaultValue));
+                            }
+                        }, function (errorResponse) {
+                            that.removeDisposablePromise(contactNoteSelectPromise);
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        }, {
+                            KontaktID: recordId,
+                            DocGroup: 3,
+                            DocFormat: 4025
+                        });
+                        return that.addDisposablePromise(contactNoteSelectPromise);
+                    } else {
+                        return WinJS.Promise.as();
+                    }
+                }).then(function () {
                     var recordId = getRecordId();
                     if (recordId) {
                         var sketchSelectPromise = ContactRemote.sketchView.select(function (jsonSketch) {
@@ -542,8 +581,8 @@
                             Log.print(Log.l.error, "sketchView: error!");
                             NavigationBar.disablePage("sketchRemote");
                         }, {
-                                KontaktID: recordId
-                            });
+                            KontaktID: recordId
+                        });
                         return that.addDisposablePromise(sketchSelectPromise);
                     } else {
                         return WinJS.Promise.as();
@@ -596,36 +635,6 @@
                         }
                     } else {
                         showPhoto();
-                        return WinJS.Promise.as();
-                    }
-                }).then(function () {
-                    // Kommentar (neues Feld aus KontaktNotiz)
-                    var recordId = getRecordId();
-                    if (recordId) {
-                        //load of format relation record data
-                        Log.print(Log.l.trace, "calling select contactView...");
-                        var contactNoteSelectPromise = ContactRemote.contactNoteView.select(function (json) {
-                            that.removeDisposablePromise(contactNoteSelectPromise);
-                            AppData.setErrorMsg(that.binding);
-                            Log.print(Log.l.trace, "contactView: success!");
-                            that.prevDataContactNote = copyByValue(that.binding.dataContactNote);
-                            if (json && json.d && json.d.results && json.d.results.length > 0) {
-                                var result = json.d.results[0];
-                                that.binding.dataContactNote = result;
-                            } else {
-                                that.binding.dataContactNote =
-                                    getEmptyDefaultValue(ContactRemote.contactNoteView.defaultValue);
-                            }
-                        }, function (errorResponse) {
-                            that.removeDisposablePromise(contactNoteSelectPromise);
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                        }, {
-                                KontaktID: recordId,
-                                DocGroup: 3,
-                                DocFormat: 4025
-                            });
-                        return that.addDisposablePromise(contactNoteSelectPromise);
-                    } else {
                         return WinJS.Promise.as();
                     }
                 });
@@ -682,6 +691,8 @@
                                     AppData.setErrorMsg(that.binding, errorResponse);
                                     error(errorResponse);
                                 }, recordId, dataContact);
+                            } else {
+                                return WinJS.Promise.as();
                             }
                         }).then(function () {
                             var dataSketch = {
@@ -730,6 +741,8 @@
                                     }
                                 },
                                 dataSketch);
+                            } else {
+                                return WinJS.Promise.as();
                             }
                         });
                     } else {

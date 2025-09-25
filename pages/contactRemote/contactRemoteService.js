@@ -118,20 +118,20 @@
         },
         contactNoteView: {
             select: function (complete, error, restriction) {
-                Log.call(Log.l.trace, "sketchDocView.");
+                Log.call(Log.l.trace, "contactNoteView.");
                 var ret = ContactRemote.getContactNoteView().select(complete, error, restriction);
                 // this will return a promise to controller
                 Log.ret(Log.l.trace);
                 return ret;
             },
             update: function (complete, error, recordId, viewResponse) {
-                Log.call(Log.l.trace, "sketchDocView.", "recordId=" + recordId);
+                Log.call(Log.l.trace, "contactNoteView.", "recordId=" + recordId);
                 var ret = ContactRemote.getContactNoteView().update(complete, error, recordId, viewResponse);
                 Log.ret(Log.l.trace);
                 return ret;
             },
             insert: function (complete, error, viewResponse) {
-                Log.call(Log.l.trace, "sketchDocView.");
+                Log.call(Log.l.trace, "contactNoteView.");
                 var ret = ContactRemote.getContactNoteView().insert(complete, error, viewResponse);
                 Log.ret(Log.l.trace);
                 return ret;

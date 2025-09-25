@@ -107,19 +107,19 @@
         },
         contactNoteView: {
             select: function (complete, error, restriction) {
-                Log.call(Log.l.trace, "contactView.");
+                Log.call(Log.l.trace, "contactNoteView.");
                 var ret = Contact._contactNoteView.select(complete, error, restriction);
                 Log.ret(Log.l.trace);
                 return ret;
             },
             update: function (complete, error, recordId, viewResponse) {
-                Log.call(Log.l.trace, "contactView.");
+                Log.call(Log.l.trace, "contactNoteView.");
                 var ret = Contact._contactNoteView.update(complete, error, recordId, viewResponse);
                 Log.ret(Log.l.trace);
                 return ret;
             },
             insert: function (complete, error, viewResponse) {
-                Log.call(Log.l.trace, "wavSketchView.");
+                Log.call(Log.l.trace, "contactNoteView.");
                 var ret = Contact._contactNoteView.insert(complete, error, viewResponse);
                 Log.ret(Log.l.trace);
                 return ret;
