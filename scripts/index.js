@@ -129,14 +129,14 @@
     Application.navigateByIdOverride = function (id, event) {
         Log.call(Log.l.trace, "Application.", "id=" + id);
         //if (!AppData._persistentStates.showvisitorFlow) {
-            if (AppData.appSettings.odata.serverFailure &&
-                AppData._persistentStates.odata.replActive &&
-                (!AppData._lastTimestamp ||
-                    AppData._lastTimestamp &&
-                    AppData._lastTimestamp + 30000 > Date.now())) {
+        if (AppData.appSettings.odata.serverFailure) {
                 AppData.startReplicationHelper();
-            } else {
-                Log.print(Log.l.trace, "not calling AppData.startReplicationHelper");
+            if (id === "login" && AppData.appSettings.odata.login &&
+                AppData.appSettings.odata.password &&
+                AppData.appSettings.odata.dbSiteId) {
+                Log.print(Log.l.error, "login page not allowed because is serverFailure");
+                id = "account";
+            }
             }
         if (id === "newContact") {
             Application.prevNavigateNewId = id;
@@ -237,10 +237,7 @@
 
     Application.onResumeOverride = function () {
         Log.call(Log.l.trace, "Application.");
-        AppData._curGetUserRemoteDataId = 0;
-        AppData.getUserRemoteData();
-        // AppData.getCRVeranstOption();
-        AppData.getMobileVersion();
+        AppData.startReplicationHelper();
         Log.ret(Log.l.trace);
     };
 

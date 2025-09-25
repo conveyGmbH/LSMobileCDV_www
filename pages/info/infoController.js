@@ -235,6 +235,7 @@
                     if (event.currentTarget && AppBar.notifyModified) {
                         var toggle = event.currentTarget.winControl;
                         if (toggle) {
+                            AppData._persistentStates.serverOptions = false;
                             that.binding.generalData.useLSRecording = toggle.checked;
                         }
                     }
@@ -686,6 +687,22 @@
                         that.binding.countryOptionID = parseInt(that.binding.generalData.countryOptionID);
                     } else {
                         that.binding.countryOptionID = that.binding.generalData.countryOptionID;
+                    }
+                    if (AppData._persistentStates.serverOptions) {
+                        return confirmModal(null,
+                            "Serveroption ist aktiv",
+                            "OK",
+                            "Cancel",
+                            function (updateConfirmed) {
+                                Log.print(Log.l.info, "updateMessage returned=" + updateConfirmed);
+                                if (updateConfirmed) {
+                                    AppData._persistentStates.serverOptions = true;
+                                    Log.print(Log.l.trace, "user choice OK");
+                                } else {
+                                    AppData._persistentStates.serverOptions = false;
+                                    Log.print(Log.l.trace, "user choice CANCEL");
+                                }
+                            });
                     }
                 });
                 Log.ret(Log.l.trace);

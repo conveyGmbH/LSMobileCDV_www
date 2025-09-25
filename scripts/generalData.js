@@ -1555,6 +1555,11 @@
         startReplicationHelper: function () {
             // metadata try connect with vpn using register-user
             Log.call(Log.l.trace, "AppData.startReplicationHelper.");
+            if (AppData._lastTimestamp &&
+                AppData._lastTimestamp + 30000 < Date.now()) {
+                Log.ret(Log.l.trace, "Extra call ignored");
+                return;
+            }
             AppData._lastTimestamp = Date.now();
             var url = AppData.getBaseURL(AppData.appSettings.odata.onlinePort) + "/" + AppData.getOnlinePath(true) + "/$metadata";
             var options = AppData.initXhrOptions("GET", url, true);
@@ -1572,7 +1577,8 @@
                     AppData.getUserRemoteData();
                 });
                 WinJS.Promise.timeout(50).then(function () {
-                    if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
+                    if (AppData._persistentStates.odata.useOffline && AppRepl.replicator &&
+                        AppData._persistentStates.odata.replActive) {
                         AppRepl.replicator.run();
                     }
                 });
