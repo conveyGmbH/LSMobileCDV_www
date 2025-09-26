@@ -190,7 +190,7 @@
         } else if (id === "start") {
             AppData.generalData.setRecordId("Kontakt_Remote", 0);
         }
-        if ((id === "account" || id === "start") &&
+        if (id === "account" &&
             (AppData._persistentStates.odata.dbinitIncomplete ||
             !AppData._persistentStates.odata.login ||
             !AppData._persistentStates.odata.password ||
