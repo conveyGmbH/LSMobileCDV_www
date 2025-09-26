@@ -79,7 +79,7 @@
             timeZoneAdjustment: 0,
             timeZoneRemoteAdjustment: null,
             timeZoneRemoteDiffMs: 0,
-            serverFailure: true,
+            serverFailure: false,
             callerAddress: "LEADSUCCESS"
         }
     };
