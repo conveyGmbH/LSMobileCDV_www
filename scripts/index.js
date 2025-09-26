@@ -129,11 +129,13 @@
     Application.navigateByIdOverride = function (id, event) {
         Log.call(Log.l.trace, "Application.", "id=" + id);
         //if (!AppData._persistentStates.showvisitorFlow) {
-        if (AppData.appSettings.odata.serverFailure) {
+        if (AppData._persistentStates.odata.serverFailure) {
                 AppData.startReplicationHelper();
-            if (id === "login" && AppData.appSettings.odata.login &&
-                AppData.appSettings.odata.password &&
-                AppData.appSettings.odata.dbSiteId) {
+            if (id === "login" &&
+                !AppData._persistentStates.odata.dbinitIncomplete &&
+                AppData._persistentStates.odata.login &&
+                AppData._persistentStates.odata.password &&
+                AppData._persistentStates.odata.dbSiteId) {
                 Log.print(Log.l.error, "login page not allowed because is serverFailure");
                 id = "account";
             }
@@ -270,8 +272,8 @@
         if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
             AppRepl.replicator.stop();
         }
-        if (!AppData.appSettings.odata.serverFailure) {
-            AppData.appSettings.odata.serverFailure = true;
+        if (!AppData._persistentStates.odata.serverFailure) {
+            AppData._persistentStates.odata.serverFailure = true;
             NavigationBar.disablePage("listRemote");
             NavigationBar.disablePage("search");
             if (AppBar.scope && typeof AppBar.scope.checkListButtonStates === "function") {
