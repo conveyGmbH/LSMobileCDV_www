@@ -690,8 +690,14 @@
                                         AppData._persistentStates.inActiveUser = false;
                                     }
                                 }
-                                if (AppBar.scope && typeof AppBar.scope.updateActions === "function" && doUpdate) {
-                                    AppBar.scope.updateActions();
+                                if (doUpdate) {
+                                    if (AppBar.scope && typeof AppBar.scope.updateActions === "function") {
+                                        AppBar.scope.updateActions();
+                                    }
+                                } else {
+                                    if (AppBar.scope && typeof AppBar.scope.checkListButtonStates === "function") {
+                                        AppBar.scope.checkListButtonStates();
+                                    }
                                 }
                                 AppData._curGetUserRemoteDataId = 0;
                                 AppData._inGetUserRemotedata = false;
