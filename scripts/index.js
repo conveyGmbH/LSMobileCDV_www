@@ -200,7 +200,10 @@
                 AppData._persistentStates.odata.login + " password=" + 
                 (AppData._persistentStates.odata.password ? "*****" : AppData._persistentStates.odata.password) + " dbSiteId" + 
                 AppData._persistentStates.odata.dbSiteId);
-            id = "login";
+            var curPageId = Application.getPageId(Application.navigator._lastPage);
+            if (curPageId !== "login") {
+                id = "login";
+            }
         }
         Log.ret(Log.l.trace);
         return id;
