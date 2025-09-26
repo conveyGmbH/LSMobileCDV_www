@@ -130,16 +130,12 @@
         Log.call(Log.l.trace, "Application.", "id=" + id);
         //if (!AppData._persistentStates.showvisitorFlow) {
         if (AppData._persistentStates.odata.serverFailure) {
-                AppData.startReplicationHelper();
-            if (id === "login" &&
-                !AppData._persistentStates.odata.dbinitIncomplete &&
-                AppData._persistentStates.odata.login &&
-                AppData._persistentStates.odata.password &&
-                AppData._persistentStates.odata.dbSiteId) {
-                Log.print(Log.l.error, "login page not allowed because is serverFailure");
+            AppData.startReplicationHelper();
+            if (id === "login") {
+                Log.print(Log.l.error, "because of serverFailure navigate to account page");
                 id = "account";
             }
-            }
+        }
         if (id === "newContact") {
             Application.prevNavigateNewId = id;
             Log.print(Log.l.trace, "reset contact Id");
@@ -193,6 +189,18 @@
             }
         } else if (id === "start") {
             AppData.generalData.setRecordId("Kontakt_Remote", 0);
+        }
+        if ((id === "account" || id === "start") &&
+            (AppData._persistentStates.odata.dbinitIncomplete ||
+            !AppData._persistentStates.odata.login ||
+            !AppData._persistentStates.odata.password ||
+            !AppData._persistentStates.odata.dbSiteId)) {
+            Log.print(Log.l.error, "force login page: dbinitIncomplete=" + 
+                AppData._persistentStates.odata.dbinitIncomplete + " login=" + 
+                AppData._persistentStates.odata.login + " password=" + 
+                (AppData._persistentStates.odata.password ? "*****" : AppData._persistentStates.odata.password) + " dbSiteId" + 
+                AppData._persistentStates.odata.dbSiteId);
+            id = "login";
         }
         Log.ret(Log.l.trace);
         return id;
