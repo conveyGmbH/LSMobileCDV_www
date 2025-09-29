@@ -21,15 +21,23 @@
                             <span class="date-field"></span>
                         </div>
                     </div>
-                    <!--<div class="field_line field_line_full">
-                        <div class="large_field">
-                            <span data-win-bind="textContent: version"></span>
-                        </div>
-                    </div>-->
                     <div class="field_line field_line_full">
-                        <div class="large_field">
-                            <span data-win-res="{innerHTML: 'backup.info'}"></span>
-                        </div>
+	                    <div class="large_field">
+		                    <span data-win-res="{innerHTML: 'backup.info'}"></span>
+	                    </div>
+                    </div>
+                    <div class="listBackups-template"
+                         data-win-control="WinJS.Binding.Template" style="display: none">
+	                    <div class="list-item-line-full"
+	                         data-win-bind="textContent: title"></div>
+                    </div>
+                    <div id="listBackups"
+                         class="listview win-selectionstylefilled"
+                         data-win-control="WinJS.UI.ListView"
+                         data-win-options="{
+                             layout : { type: WinJS.UI.ListLayout },
+                             itemTemplate: select('.listBackups-template')
+                         }">
                     </div>
                 </div>
                 <div class="error-message"

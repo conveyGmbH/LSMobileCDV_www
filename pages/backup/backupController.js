@@ -30,14 +30,36 @@
                 lastError: lastError
             }, commandList]);
 
+            this.backups = null;
+
             var that = this;
 
-            //var lastError = that.binding.error.errorMsg;
+            // ListView control
+            var listView = pageElement.querySelector("#listBackups.listview");
 
             this.dispose = function () {
             }
 
             this.eventHandlers = {
+                onLoadingStateChanged: function (eventInfo) {
+                    Log.call(Log.l.trace, "Backup.Controller.");
+                    if (listView && listView.winControl) {
+                        Log.print(Log.l.trace, "loadingState=" + listView.winControl.loadingState);
+                        // single list selection
+                        if (listView.winControl.selectionMode !== WinJS.UI.SelectionMode.single) {
+                            listView.winControl.selectionMode = WinJS.UI.SelectionMode.single;
+                        }
+                        // direct selection on each tap
+                        if (listView.winControl.tapBehavior !== WinJS.UI.TapBehavior.directSelect) {
+                            listView.winControl.tapBehavior = WinJS.UI.TapBehavior.directSelect;
+                        }
+                        if (listView.winControl.loadingState === "itemsLoading") {
+                        } else if (listView.winControl.loadingState === "itemsLoaded") {
+                        } else if (listView.winControl.loadingState === "complete") {
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
                 clickHomepageLink: function (event) {
                     Log.call(Log.l.trace, "backup.Controller.");
                     var url = "https://" + getResourceText("info.homepage");
@@ -118,24 +140,8 @@
                 },
                 clickShareDB: function (event) {
                     Log.call(Log.l.trace, "Info.Controller.");
-                    var dbName = Application.pageframe.name;
-                    var dataDirectory = cordova.file.dataDirectory;
-                    var persistenStatesName = Application.pageframe.filenamePersistentStates;
-                    if (dbName && typeof dbName === "string") {
-                        dbName = dbName.toLowerCase();
-                    } else {
-                        dbName = 'leadsuccess';
-                    }
-                    dbName += '.db';
-                    // cordova.file
-                    Log.print(Log.l.trace, "cordova.file: success!" + cordova.file);
-                    if (typeof device === "object" && device.platform === "Android") {
-                        dataDirectory = cordova.file.applicationStorageDirectory + "databases/";
-                    } else if (typeof device === "object" && device.platform === "iOS") {
-                        dataDirectory = cordova.file.applicationStorageDirectory + "Library/LocalDatabase/";
-                    } else {
-                        dataDirectory = cordova.file.dataDirectory;
-                    }
+                    var dataDirectory = AppData.getDataDirectory();
+
                     if (window.plugins &&
                         window.plugins.socialsharing &&
                         typeof window.plugins.socialsharing.share === "function" &&
@@ -143,22 +149,28 @@
                         typeof cordova !== "undefined" &&
                         cordova.file &&
                         cordova.file.dataDirectory &&
-                        Application.pageframe &&
-                        Application.pageframe.name) {
-                        var fileName = dataDirectory + dbName;
-                        var fileName2 = cordova.file.dataDirectory + persistenStatesName;
-                        var fileName3 = cordova.file.dataDirectory + Application.pageframe.filenamePSEncoded;
-                        var subject = dbName + " + Settings" ;
-                        var message = dbName + " + Settings " + getResourceText("info.shareBackup");
-                        if (typeof device === "object" && (device.platform === "Android" || device.platform === "iOS")) {
-                            window.plugins.socialsharing.share(message, subject, [fileName, AppData._persistentStates.encodeSettings ? fileName3 : fileName2]);
-                        } else {
-                            window.resolveLocalFileSystemURL(dataDirectory, function (dirEntry) {
-                                if (dirEntry && dirEntry.filesystem && dirEntry.filesystem.winpath) {
-                                    fileName = dirEntry.filesystem.winpath.replace(/\//g, "\\") + dbName;
-                                    fileName2 = dirEntry.filesystem.winpath.replace(/\//g, "\\") + persistenStatesName;
-                                    fileName3 = dirEntry.filesystem.winpath.replace(/\//g, "\\") + Application.pageframe.filenamePSEncoded;
-                                    window.plugins.socialsharing.share(message, subject, [fileName, AppData._persistentStates.encodeSettings ? fileName3 : fileName2]);
+                        dataDirectory &&
+                        listView && listView.winControl && listView.winControl.selection) {
+                        var selectionCount = listView.winControl.selection.count();
+                        if (selectionCount === 1) {
+                            // Only one item is selected, share the files
+                            listView.winControl.selection.getItems().done(function (items) {
+                                var itemData = items[0] && items[0].data;
+                                var fileNameDb = dataDirectory + itemData.fileNameDb;
+                                var fileNamePs = cordova.file.dataDirectory + itemData.fileNamePs;
+
+                                var subject = itemData.fileNameDb + " + Settings";
+                                var message = itemData.fileNameDb + " + Settings " + getResourceText("info.shareBackup");
+                                if (typeof device === "object" && (device.platform === "Android" || device.platform === "iOS")) {
+                                    window.plugins.socialsharing.share(message, subject, [fileNameDb, fileNamePs]);
+                                } else {
+                                    window.resolveLocalFileSystemURL(dataDirectory, function (dirEntry) {
+                                        if (dirEntry && dirEntry.filesystem && dirEntry.filesystem.winpath) {
+                                            fileNameDb = dirEntry.filesystem.winpath.replace(/\//g, "\\") + itemData.fileNameDb;
+                                            fileNamePs = dirEntry.filesystem.winpath.replace(/\//g, "\\") + itemData.fileNamePs;
+                                            window.plugins.socialsharing.share(message, subject, [fileNameDb, fileNamePs]);
+                                        }
+                                    });
                                 }
                             });
                         }
@@ -266,12 +278,52 @@
                     return !that.binding.generalData.logOffOptionActive;
                 }
             }
+
+            // register ListView event handler
+            if (listView) {
+                this.addRemovableEventListener(listView, "loadingstatechanged", this.eventHandlers.onLoadingStateChanged.bind(this));
+            }
+            var loadData = function() {
+                Log.call(Log.l.trace, "Backup.Controller.");
+                if (that.backups) {
+                    that.backups.length = 0;
+                }
+                var ret = Backup.backupList.select(function(json) {
+                    Log.print(Log.l.trace, "Backup.backupList: success!");
+                    if (json && json.d && json.d.results) {
+                        if (!that.backups) {
+                            that.backups = new WinJS.Binding.List(json.d.results);
+                        } else {
+                            json.d.results.forEach(function(item, index) {
+                                that.backups.push(item);
+                            });
+                        }
+                        if (listView && listView.winControl) {
+                            // add ListView dataSource
+                            listView.winControl.itemDataSource = that.backups.dataSource;
+                        }
+                    }
+                }, function (errorResponse) {
+                    AppData.setErrorMsg(that.binding, errorResponse);
+                }).then(function() {
+                    if (listView && listView.winControl && listView.winControl.selection) {
+                        listView.winControl.selection.set(that.backups.length - 1);
+                    }
+                });
+
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+            this.loadData = loadData;
+
             AppData.setErrorMsg(this.binding);
 
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
+                return that.loadData();
+            }).then(function () {
                 AppBar.notifyModified = true;
-                //return Colors.loadSVGImageElements(pageElement, "app-logo", 240);
+                Log.print(Log.l.trace, "Data loaded");
             });
             Log.ret(Log.l.trace);
         })
