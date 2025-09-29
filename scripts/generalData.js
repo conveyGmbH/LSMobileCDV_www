@@ -424,6 +424,7 @@
                 Log.print(Log.l.trace, "getMobileVersion: no logon information provided!");
                 return WinJS.Promise.as();
             }
+            var result = null;
             var ret = new WinJS.Promise.as().then(function () {
                 return DBInit.versionView.select(function (json) {
                     Log.print(Log.l.info, "versionView select success!");
@@ -438,8 +439,6 @@
                 } else {
                     versionNo = Application.version;
                 }
-                var alertFlyoutOk = document.querySelector("#okButton");
-                var alertFlyoutCancel = document.querySelector("#cancelButton");
                 AppData._inGetMobileVersion = true;
                 return AppData.call("PRC_CheckMobileVersion", {
                     pCreatorSiteID: AppData._persistentStates.odata.dbSiteId,
@@ -449,79 +448,80 @@
                     pLanguageID: AppData.getLanguageId()
                 }, function (json) {
                     Log.print(Log.l.info, "PRC_CheckMobileVersion call success!");
-                    if (json && json.d && json.d.results && json.d.results[0] && json.d.results[0].UpdateMessage) {
-                        var messageText = null;
-                        var confirmFirst = null;
-                        var confirmSecond = null;
-                        if (json.d.results[0].NewDBRequired === 0) {
-                            messageText = getResourceText("general.newApp");
-                        }
-                        if (json.d.results[0].NewDBRequired === 1) {
-                            messageText = getResourceText("general.newDB");
-                        }
-                        if (json.d.results[0].NewDBRequired === 2) {
-                            confirmFirst = getResourceText("flyout.okChange");
-                            confirmSecond = getResourceText("flyout.cancelToLater");
-                            messageText = getResourceText("general.userChanging");
-                        }
-                        //return confirm(messageText, function (changeConfirmed) {
-                        if (AppData._ignore) {
-                            // ignore
-                            AppData._ignore = false;
-                        } else {
-                            return confirmModal(null,
-                                messageText,
-                                confirmFirst,
-                                confirmSecond,
-                                function(changeConfirmed) {
-                                    Log.print(Log.l.info, "updateMessage returned=" + changeConfirmed);
-                                    if (changeConfirmed) {
-                                        // neue App Version
-                                        AppData._inGetMobileVersion = false;
-                                        if (json.d.results[0].NewDBRequired === 0) {
-                                            messageText = null;
-                                            var appleStore = getResourceText("general.appleStore");
-                                            var playStore = getResourceText("general.playStore");
-                                            var microsoftStore = getResourceText("general.microsoftStore");
-                                            if (isAppleDevice && cordova.InAppBrowser) {
-                                                cordova.InAppBrowser.open(appleStore, '_system');
-                                                WinJS.Navigation.back(1).done();
-                                            }
-                                            if (isWindowsDevice && cordova.InAppBrowser) {
-                                                cordova.InAppBrowser.open(microsoftStore, '_system');
-                                                WinJS.Navigation.back(1).done();
-                                            }
-                                            if (isAndroidDevice) {
-                                                window.open(playStore, '_system');
-                                                WinJS.Navigation.back(1).done();
-                                            }
-                                        } else {
-                                            WinJS.Promise.timeout(500).then(function() {
-                                                if (json.d.results[0].NewDBRequired === 2) {
-                                                    AppData._fromStartPage = true;
-                                                }
-                                                Application.navigateById("dbinit");
-                                                return WinJS.Promise.timeout(100);
-                                            });
-                                        }
-                                    } else {
-                                        Log.print(Log.l.trace, "User changed: user choice wait - cancel");
-                                        AppData._inGetMobileVersion = false;
-                                        if (json.d.results[0].NewDBRequired === 2) {
-                                            AppData._alternativeTimeout = 300; //150
-                                            AppData.getUserRemoteData();
-                                        }
-                                    }
-                                });
-                        }
-                    } else {
-                        AppData._inGetMobileVersion = false;
+                    if (json && json.d && json.d.results) {
+                        result = json.d.results[0];
                     }
                 }, function (err) {
                     Log.print(Log.l.error, "PRC_CheckMobileVersion call error - ignore that!");
                     AppData._inGetMobileVersion = false;
                     AppData.checkForNavigateToLogin(err);
                 });
+            }).then(function () {
+                if (result && result.UpdateMessage) {
+                    var messageText = null;
+                    // at least OK Button text must be set!
+                    var confirmFirst = getResourceText("flyout.ok");
+                    var confirmSecond = null;
+                    if (result.NewDBRequired === 0) {
+                        messageText = getResourceText("general.newApp");
+                    }
+                    if (result.NewDBRequired === 1) {
+                        messageText = getResourceText("general.newDB");
+                    }
+                    if (result.NewDBRequired === 2) {
+                        confirmFirst = getResourceText("flyout.okChange");
+                        confirmSecond = getResourceText("flyout.cancelToLater");
+                        messageText = getResourceText("general.userChanging");
+                    }
+                    if (AppData._ignore) {
+                        // ignore
+                        AppData._ignore = false;
+                        return WinJS.Promise.as();
+                    } else {
+                        return confirmModal(null, messageText, confirmFirst, confirmSecond, function (changeConfirmed) {
+                            Log.print(Log.l.info, "updateMessage returned=" + changeConfirmed);
+                            if (changeConfirmed) {
+                                // neue App Version
+                                AppData._inGetMobileVersion = false;
+                                if (result.NewDBRequired === 0) {
+                                    messageText = null;
+                                    var appleStore = getResourceText("general.appleStore");
+                                    var playStore = getResourceText("general.playStore");
+                                    var microsoftStore = getResourceText("general.microsoftStore");
+                                    if (isAppleDevice && cordova.InAppBrowser) {
+                                        cordova.InAppBrowser.open(appleStore, '_system');
+                                        WinJS.Navigation.back(1).done();
+                                    }
+                                    if (isWindowsDevice && cordova.InAppBrowser) {
+                                        cordova.InAppBrowser.open(microsoftStore, '_system');
+                                        WinJS.Navigation.back(1).done();
+                                    }
+                                    if (isAndroidDevice) {
+                                        window.open(playStore, '_system');
+                                        WinJS.Navigation.back(1).done();
+                                    }
+                                } else {
+                                    WinJS.Promise.timeout(500).then(function () {
+                                        if (result.NewDBRequired === 2) {
+                                            AppData._fromStartPage = true;
+                                        }
+                                        Application.navigateById("dbinit");
+                                    });
+                                }
+                            } else {
+                                Log.print(Log.l.trace, "User changed: user choice wait - cancel");
+                                AppData._inGetMobileVersion = false;
+                                if (result.NewDBRequired === 2) {
+                                    AppData._alternativeTimeout = 300; //150
+                                    AppData.getUserRemoteData();
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    AppData._inGetMobileVersion = false;
+                    return WinJS.Promise.as();
+                }
             });
             Log.ret(Log.l.trace);
             return ret;

@@ -569,31 +569,37 @@
                             that.removeDisposablePromise(that.contactReloadPromise);
                             AppData.setErrorMsg(that.binding, errorResponse);
                         }, recordId);
+                        return that.addDisposablePromise(that.contactReloadPromise);
                     } else {
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
-                    // nur selektieren wenn es ein Kontakt gibt
-                    var contactNoteSelectPromise = Contact.contactNoteView.select(function (json) {
-                        that.removeDisposablePromise(contactNoteSelectPromise);
-                        AppData.setErrorMsg(that.binding);
-                        Log.print(Log.l.trace, "contactNoteView: success!");
-                        if (json && json.d && json.d.results && json.d.results.length > 0) {
-                            var result = json.d.results = json.d.results[json.d.results.length - 1];
-                            if (result) {
-                                that.binding.noteId = result.KontaktNotizVIEWID;
-                                that.binding.noteTitle = result.Titel;
+                    var recordId = getRecordId();
+                    if (recordId) {
+                        // nur selektieren wenn es ein Kontakt gibt
+                        var contactNoteSelectPromise = Contact.contactNoteView.select(function (json) {
+                            that.removeDisposablePromise(contactNoteSelectPromise);
+                            AppData.setErrorMsg(that.binding);
+                            Log.print(Log.l.trace, "contactNoteView: success!");
+                            if (json && json.d && json.d.results && json.d.results.length > 0) {
+                                var result = json.d.results = json.d.results[json.d.results.length - 1];
+                                if (result) {
+                                    that.binding.noteId = result.KontaktNotizVIEWID;
+                                    that.binding.noteTitle = result.Titel;
+                                }
                             }
-                        }
-                    }, function (errorResponse) {
-                        that.removeDisposablePromise(contactNoteSelectPromise);
-                        AppData.setErrorMsg(that.binding, errorResponse);
-                    }, {
+                        }, function (errorResponse) {
+                            that.removeDisposablePromise(contactNoteSelectPromise);
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        }, {
                             KontaktID: that.binding.contactId,
                             DocGroup: 3,
                             DocFormat: 4025
                         });
-                    return that.addDisposablePromise(contactNoteSelectPromise);
+                        return that.addDisposablePromise(contactNoteSelectPromise);
+                    } else {
+                        return WinJS.Promise.as();
+                    }
                 });
                 Log.ret(Log.l.trace);
                 return ret;
