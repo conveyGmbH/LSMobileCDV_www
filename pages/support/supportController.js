@@ -18,7 +18,7 @@
             }, commandList]);
 
             var isAppleDevice = AppData.checkIPhoneBug();
-            var isWindowsDevice = device && (device.platform === "windows");
+            var isWindowsDevice = AppData.checkWindows();
 
             var that = this;
 
