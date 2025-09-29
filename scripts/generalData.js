@@ -488,6 +488,9 @@
                                     var appleStore = getResourceText("general.appleStore");
                                     var playStore = getResourceText("general.playStore");
                                     var microsoftStore = getResourceText("general.microsoftStore");
+                                    var isAppleDevice = AppData.checkIPhoneBug();
+                                    var isWindowsDevice = AppData.checkWindows();
+                                    var isAndroidDevice = AppData.checkAndroid();
                                     if (isAppleDevice && cordova.InAppBrowser) {
                                         cordova.InAppBrowser.open(appleStore, '_system');
                                         WinJS.Navigation.back(1).done();
@@ -1556,6 +1559,12 @@
                 }
             }
             return false;
+        },
+        checkAndroid: function () {
+            return device && (device.platform === "Android");
+        },
+        checkWindows: function () {
+            return device && (device.platform === "windows");
         },
         // call metadata as a function and call run etc. as a function
         startReplicationHelper: function () {
