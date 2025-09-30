@@ -398,7 +398,16 @@
                     Log.print(Log.l.trace, "Backup.backupList: success!");
                     if (json && json.d && json.d.results) {
                         if (!that.backups) {
-                            that.backups = new WinJS.Binding.List(json.d.results);
+                            var backups = new WinJS.Binding.List(json.d.results);
+                            that.backups = backups.createSorted(function(item1, item2) {
+                                var title1 = item1 && item1.title;
+                                var title2 = item2 && item2.title;
+                                if (typeof title2 === "string") {
+                                    return title2.localeCompare(title1);
+                                } else {
+                                    return 0;
+                                }
+                            });
                         } else {
                             json.d.results.forEach(function(item, index) {
                                 that.backups.push(item);
@@ -413,7 +422,7 @@
                     AppData.setErrorMsg(that.binding, errorResponse);
                 }).then(function() {
                     if (listView && listView.winControl && listView.winControl.selection) {
-                        listView.winControl.selection.set(that.backups.length - 1);
+                        listView.winControl.selection.set(0);
                     }
                 });
 
