@@ -10,10 +10,9 @@
         backupList: {
             select: function (complete, error) {
                 var err = null;
-                var dataDirectory = AppData.getDataDirectory();
                 var dbFileName = AppData.getDbFileName();
                 return new WinJS.Promise(function(c, e) {
-                    window.resolveLocalFileSystemURL(dataDirectory, function (directoryEntry) {
+                    window.resolveLocalFileSystemURL(cordova.file && cordova.file.dataDirectory, function (directoryEntry) {
                         if (directoryEntry && directoryEntry.isDirectory) {
                             const directoryReader = directoryEntry.createReader();
                             if (directoryReader) {
