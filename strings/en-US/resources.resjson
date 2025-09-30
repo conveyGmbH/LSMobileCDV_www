@@ -529,6 +529,7 @@
 
     "backup.title"          : "Backup",
     "backup.info"			: "You can create a backup here and share it with convey information systems GmbH",
+    "backup.questionDelete" : "Do You want to delete the selected backup archive?",
 
     "infodesk.actualEmployee"     : "Current employee",
     "infodesk.employee"     : "Employee",

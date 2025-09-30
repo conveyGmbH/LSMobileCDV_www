@@ -27,6 +27,7 @@
                 isDarkTheme: Colors.isDarkTheme,
                 version: Application.version,
                 environment: "Platform: " + navigator.appVersion,
+                selectedIsArchived: false,
                 lastError: lastError
             }, commandList]);
 
@@ -41,6 +42,22 @@
             }
 
             this.eventHandlers = {
+                onSelectionChanged: function (eventInfo) {
+                    Log.call(Log.l.trace, "ListLocal.Controller.");
+                    if (listView && listView.winControl && listView.winControl.selection &&
+                        listView.winControl.selection.count() === 1) {
+                        // Only one item is selected, show the page
+                        listView.winControl.selection.getItems().done(function (items) {
+                            var itemData = items[0] && items[0].data;
+                            that.binding.selectedIsArchived = itemData && itemData.isArchived;
+                            AppBar.triggerDisableHandlers();
+                        });
+                    } else {
+                        that.binding.selectedIsArchived = false;
+                        AppBar.triggerDisableHandlers();
+                    }
+                    Log.ret(Log.l.trace);
+                },
                 onLoadingStateChanged: function (eventInfo) {
                     Log.call(Log.l.trace, "Backup.Controller.");
                     if (listView && listView.winControl) {
@@ -141,7 +158,6 @@
                 clickShareDB: function (event) {
                     Log.call(Log.l.trace, "Info.Controller.");
                     var dataDirectory = AppData.getDataDirectory();
-
                     if (window.plugins &&
                         window.plugins.socialsharing &&
                         typeof window.plugins.socialsharing.share === "function" &&
@@ -156,25 +172,184 @@
                             // Only one item is selected, share the files
                             listView.winControl.selection.getItems().done(function (items) {
                                 var itemData = items[0] && items[0].data;
-                                var fileNameDb = dataDirectory + itemData.fileNameDb;
-                                var fileNamePs = cordova.file.dataDirectory + itemData.fileNamePs;
+                                if (itemData) {
+                                    var fileNameDb = dataDirectory + itemData.fileNameDb;
+                                    var fileNamePs = cordova.file.dataDirectory + itemData.fileNamePs;
 
-                                var subject = itemData.fileNameDb + " + Settings";
-                                var message = itemData.fileNameDb + " + Settings " + getResourceText("info.shareBackup");
-                                if (typeof device === "object" && (device.platform === "Android" || device.platform === "iOS")) {
-                                    window.plugins.socialsharing.share(message, subject, [fileNameDb, fileNamePs]);
-                                } else {
-                                    window.resolveLocalFileSystemURL(dataDirectory, function (dirEntry) {
-                                        if (dirEntry && dirEntry.filesystem && dirEntry.filesystem.winpath) {
-                                            fileNameDb = dirEntry.filesystem.winpath.replace(/\//g, "\\") + itemData.fileNameDb;
-                                            fileNamePs = dirEntry.filesystem.winpath.replace(/\//g, "\\") + itemData.fileNamePs;
-                                            window.plugins.socialsharing.share(message, subject, [fileNameDb, fileNamePs]);
-                                        }
-                                    });
+                                    var subject = itemData.fileNameDb + " + Settings";
+                                    var message = itemData.fileNameDb + " + Settings " + getResourceText("info.shareBackup");
+                                    if (typeof device === "object" && (device.platform === "Android" || device.platform === "iOS")) {
+                                        window.plugins.socialsharing.share(message, subject, [fileNameDb, fileNamePs]);
+                                    } else {
+                                        window.resolveLocalFileSystemURL(dataDirectory, function (dirEntry) {
+                                            if (dirEntry && dirEntry.filesystem && dirEntry.filesystem.winpath) {
+                                                fileNameDb = dirEntry.filesystem.winpath.replace(/\//g, "\\") + itemData.fileNameDb;
+                                                fileNamePs = dirEntry.filesystem.winpath.replace(/\//g, "\\") + itemData.fileNamePs;
+                                                window.plugins.socialsharing.share(message, subject, [fileNameDb, fileNamePs]);
+                                            }
+                                        });
+                                    }
                                 }
                             });
                         }
                     }
+                    Log.ret(Log.l.trace);
+                },
+                clickDelete: function (event) {
+                    Log.call(Log.l.trace, "about.Controller.");
+                    var dataDirectory = AppData.getDataDirectory();
+                    if (typeof cordova !== "undefined" &&
+                        cordova.file &&
+                        cordova.file.dataDirectory &&
+                        dataDirectory &&
+                        listView && listView.winControl && listView.winControl.selection) {
+                        var selectionCount = listView.winControl.selection.count();
+                        if (selectionCount === 1) {
+                            // Only one item is selected, share the files
+                            var itemData = null;
+                            var doDelete = false;
+                            var filePromises = [];
+                            listView.winControl.selection.getItems().then(function (items) {
+                                itemData = items[0] && items[0].data;
+                            }).then(function() {
+                                if (itemData && itemData.isArchived) {
+                                    var confirmTitle = getResourceText("backup.questionDelete");
+                                    return confirm(confirmTitle, function(result) {
+                                        doDelete = result;
+                                        if (result) {
+                                            Log.print(Log.l.trace, "clickDelete: user choice OK");
+                                        } else {
+                                            Log.print(Log.l.trace, "clickDelete: user choice CANCEL");
+                                        }
+                                    });
+                                } else {
+                                    Log.print(Log.l.error, "clickDelete: invalid file selected: " + itemData.title);
+                                    return WinJS.Promise.as();
+                                }
+                            }).then(function () {
+                                if (doDelete &&
+                                    typeof cordova !== "undefined" &&
+                                    cordova.file &&
+                                    cordova.file.dataDirectory &&
+                                    dataDirectory &&
+                                    listView &&
+                                    listView.winControl &&
+                                    listView.winControl.selection &&
+                                    listView.winControl.selection.count() === 1) {
+                                    return listView.winControl.selection.getItems();
+                                } else {
+                                    return WinJS.Promise.as();
+                                }
+                            }).then(function (items) {
+                                var itemData = items[0] && items[0].data;
+                                if (itemData) {
+                                    var fileNameDb = dataDirectory + itemData.fileNameDb;
+                                    var fileNamePs = cordova.file.dataDirectory + itemData.fileNamePs;
+                                    Log.print(Log.l.info, "Deleting files: " + fileNameDb + ", " + fileNamePs);
+                                    filePromises.push(new WinJS.Promise(function (complete, error) {
+                                        window.resolveLocalFileSystemURL(fileNameDb, function (fileEntry) {
+                                            fileEntry.remove(function () {
+                                                Log.print(Log.l.info, "File deleted successfully: " + fileNameDb);
+                                                complete();
+                                            }, function (err) {
+                                                Log.print(Log.l.error, "Error deleting file: ", err);
+                                                error();
+                                            });
+                                        }, function (err) {
+                                            Log.print(Log.l.error, "Error resolving file URL: ", err);
+                                            error();
+                                        });
+                                    }));
+                                    filePromises.push(new WinJS.Promise(function (complete, error) {
+                                        window.resolveLocalFileSystemURL(fileNamePs, function (fileEntry) {
+                                            fileEntry.remove(function () {
+                                                Log.print(Log.l.info, "File deleted successfully: " + fileNamePs);
+                                                complete();
+                                            }, function (err) {
+                                                Log.print(Log.l.error, "Error deleting file: ", err);
+                                                error();
+                                            });
+                                        }, function (err) {
+                                            Log.print(Log.l.error, "Error resolving file URL: ", err);
+                                            error();
+                                        });
+                                    }));
+                                    return WinJS.Promise.join(filePromises);
+                                } else {
+                                    return WinJS.Promise.as();
+                                }
+                            }).then(function (items) {
+                                if (filePromises.length > 0) {
+                                    return that.loadData();
+                                } else {
+                                    return WinJS.Promise.as();
+                                }
+                            });
+                        }
+                    }
+
+
+                    var confirmTitle = getResourceText("backup.questionDelete");
+                    confirm(confirmTitle, function (result) {
+                        if (result) {
+                            var dataDirectory = AppData.getDataDirectory();
+
+                            if (typeof cordova !== "undefined" &&
+                                cordova.file &&
+                                cordova.file.dataDirectory &&
+                                dataDirectory &&
+                                listView && listView.winControl && listView.winControl.selection) {
+                                var selectionCount = listView.winControl.selection.count();
+                                if (selectionCount === 1) {
+                                    // Only one item is selected, share the files
+                                    listView.winControl.selection.getItems().then(function (items) {
+                                        var itemData = items[0] && items[0].data;
+                                        if (itemData) {
+                                            var fileNameDb = dataDirectory + itemData.fileNameDb;
+                                            var fileNamePs = cordova.file.dataDirectory + itemData.fileNamePs;
+                                            Log.print(Log.l.info, "Deleting files: " + fileNameDb + ", " + fileNamePs);
+                                            var filePromises = [];
+                                            filePromises.push(new WinJS.Promise(function (complete, error) {
+                                                window.resolveLocalFileSystemURL(fileNameDb, function (fileEntry) {
+                                                    fileEntry.remove(function () {
+                                                        Log.print(Log.l.info, "File deleted successfully: " + fileNameDb);
+                                                        complete();
+                                                    }, function (err) {
+                                                        Log.print(Log.l.error, "Error deleting file: ", err);
+                                                        error();
+                                                    });
+                                                }, function (err) {
+                                                    Log.print(Log.l.error, "Error resolving file URL: ", err);
+                                                    error();
+                                                });
+                                            }));
+                                            filePromises.push(new WinJS.Promise(function (complete, error) {
+                                                window.resolveLocalFileSystemURL(fileNamePs, function (fileEntry) {
+                                                    fileEntry.remove(function () {
+                                                        Log.print(Log.l.info, "File deleted successfully: " + fileNamePs);
+                                                        complete();
+                                                    }, function (err) {
+                                                        Log.print(Log.l.error, "Error deleting file: ", err);
+                                                        error();
+                                                    });
+                                                }, function (err) {
+                                                    Log.print(Log.l.error, "Error resolving file URL: ", err);
+                                                    error();
+                                                });
+                                            }));
+                                            return WinJS.Promise.join(filePromises);
+                                        } else {
+                                            return WinJS.Promise.as();
+                                        }
+                                    }).then(function() {
+                                        return that.loadData();
+                                    });
+                                }
+                            }
+                        } else {
+                            Log.print(Log.l.trace, "clickDelete: user choice CANCEL");
+                        }
+                    });
                     Log.ret(Log.l.trace);
                 },
                 clickOk: function (event) {
@@ -240,6 +415,9 @@
                         return true;
                     }
                 },
+                clickDelete: function() {
+                    return !that.binding.selectedIsArchived;
+                },
                 clickOk: function () {
                     // always enabled!
                     return false;
@@ -281,6 +459,7 @@
 
             // register ListView event handler
             if (listView) {
+                this.addRemovableEventListener(listView, "selectionchanged", this.eventHandlers.onSelectionChanged.bind(this));
                 this.addRemovableEventListener(listView, "loadingstatechanged", this.eventHandlers.onLoadingStateChanged.bind(this));
             }
             var loadData = function() {

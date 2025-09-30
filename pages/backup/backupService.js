@@ -33,21 +33,25 @@
                                                 }
                                                 if (fileNamePs || fileNameDb) {
                                                     var title;
+                                                    var isArchived;
                                                     if (entry.name.substr(0, 7) === "Backup_") {
                                                         var timeMs = parseInt(entry.name.substr(7));
                                                         var date = new Date(timeMs);
                                                         var m = moment(date);
                                                         m.locale(Application.language);
                                                         title = "Archived " + m.format("YYYY-MM-DD HH:mm");
+                                                        isArchived = true;
                                                     } else {
                                                         title = "Current Database";
+                                                        isArchived = false;
                                                     }
                                                     var i = results.findIndex(function (item) {
                                                         return (item.title === title);
                                                     });
                                                     if (i < 0) {
                                                         i = results.push({
-                                                            "title": title
+                                                            "title": title,
+                                                            "isArchived": isArchived
                                                         }) - 1;
                                                     }
                                                     results[i].index = i;

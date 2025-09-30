@@ -531,6 +531,7 @@
 
     "backup.title"          : "Backup",
     "backup.info"			: "Qui puoi creare un backup e condividerlo con convey information system gmbh",
+    "backup.questionDelete" : "Vuoi eliminare l'archivio di backup selezionato?",
 
     "infodesk.actualEmployee"     : "Employee attuale",
     "infodesk.employee"     : "Employee",
