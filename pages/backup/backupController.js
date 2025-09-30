@@ -173,17 +173,18 @@
                             listView.winControl.selection.getItems().done(function (items) {
                                 var itemData = items[0] && items[0].data;
                                 if (itemData) {
-                                    var fileNameDb = (itemData.isArchived ? cordova.file.dataDirectory : dataDirectory) + itemData.fileNameDb;
+                                    var nameDb = itemData.fileNameDb || AppData.getDbFileName();
+                                    var fileNameDb = (itemData.isArchived ? cordova.file.dataDirectory : dataDirectory) + nameDb;
                                     var fileNamePs = cordova.file.dataDirectory + itemData.fileNamePs;
 
-                                    var subject = itemData.fileNameDb + " + Settings";
-                                    var message = itemData.fileNameDb + " + Settings " + getResourceText("info.shareBackup");
+                                    var subject = nameDb + " + Settings";
+                                    var message = nameDb + " + Settings " + getResourceText("info.shareBackup");
                                     if (typeof device === "object" && (device.platform === "Android" || device.platform === "iOS")) {
                                         window.plugins.socialsharing.share(message, subject, [fileNameDb, fileNamePs]);
                                     } else {
                                         window.resolveLocalFileSystemURL(dataDirectory, function (dirEntry) {
                                             if (dirEntry && dirEntry.filesystem && dirEntry.filesystem.winpath) {
-                                                fileNameDb = dirEntry.filesystem.winpath.replace(/\//g, "\\") + itemData.fileNameDb;
+                                                fileNameDb = dirEntry.filesystem.winpath.replace(/\//g, "\\") + nameDb;
                                                 fileNamePs = dirEntry.filesystem.winpath.replace(/\//g, "\\") + itemData.fileNamePs;
                                                 window.plugins.socialsharing.share(message, subject, [fileNameDb, fileNamePs]);
                                             }
@@ -233,7 +234,8 @@
                     }).then(function (items) {
                         var itemData = items[0] && items[0].data;
                         if (itemData) {
-                            var fileNameDb = cordova.file.dataDirectory + itemData.fileNameDb;
+                            var nameDb = itemData.fileNameDb || AppData.getDbFileName();
+                            var fileNameDb = cordova.file.dataDirectory + nameDb;
                             var fileNamePs = cordova.file.dataDirectory + itemData.fileNamePs;
                             Log.print(Log.l.info, "Deleting files: " + fileNameDb + ", " + fileNamePs);
                             filePromises.push(new WinJS.Promise(function (complete, error) {
