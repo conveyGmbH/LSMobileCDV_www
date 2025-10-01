@@ -171,10 +171,6 @@
             var getRecordId = function () {
                 Log.call(Log.l.trace, "Contact.Controller.");
                 var recordId = AppData.generalData.getRecordId("Kontakt");
-                if (!recordId) {
-                    that.setDataContact(getEmptyDefaultValue(Contact.contactView.defaultValue));
-                    that.setDataContactNote(getEmptyDefaultValue(Contact.contactNoteView.defaultValue));
-                }
                 Log.ret(Log.l.trace, recordId);
                 return recordId;
             }
@@ -201,7 +197,7 @@
                     ret = Contact.contactView.deleteRecord(function (response) {
                         AppBar.busy = false;
                         // called asynchronously if ok
-                        setRecordId(null);
+                        setRecordId(0);
                         AppData.getUserData();
                         //delete image
                         removePhoto();
@@ -893,7 +889,7 @@
                             }
                         }).then(function () {
                             var dataSketch = {
-                                KontaktID: that.binding.dataContactNote.KontaktID || AppData.getRecordId("Kontakt"),
+                                KontaktID: getRecordId(),
                                 Titel: "Kommentar/Comment",
                                 DocGroup: 3,
                                 DocFormat: 4025,
@@ -966,30 +962,31 @@
                                 AppData.setErrorMsg(that.binding, errorResponse);
                                 error(errorResponse);
                             }, dataContact).then(function () {
-                                var dataSketch = {
-                                    KontaktID: that.binding.dataContact.KontaktID || AppData.getRecordId("Kontakt"),
-                                    Titel: "Kommentar/Comment",
-                                    DocGroup: 3,
-                                    DocFormat: 4025,
-                                    ExecAppTypeID: 2,
-                                    Quelltext: that.binding.dataContactNote.Quelltext || ""
-                                };
-                                if (that.binding.dataContactNote.Quelltext === "") {
+                                if (that.binding.dataContactNote.Quelltext) {
+                                    var dataSketch = {
+                                        KontaktID: getRecordId(),
+                                        Titel: "Kommentar/Comment",
+                                        DocGroup: 3,
+                                        DocFormat: 4025,
+                                        ExecAppTypeID: 2,
+                                        Quelltext: that.binding.dataContactNote.Quelltext || ""
+                                    };
+                                    return Contact.contactNoteView.insert(function (json) {
+                                        // this callback will be called asynchronously
+                                        // when the response is available
+                                        Log.print(Log.l.trace, "sketchData insert: success!");
+                                        complete(json);
+                                    }, function (errorResponse) {
+                                        // called asynchronously if an error occurs
+                                        // or server returns response with an error status.
+                                        AppData.setErrorMsg(that.binding, errorResponse);
+                                        if (typeof error === "function") {
+                                            error(errorResponse);
+                                        }
+                                    }, dataSketch);
+                                } else {
                                     return WinJS.Promise.as();
                                 }
-                                return Contact.contactNoteView.insert(function (json) {
-                                    // this callback will be called asynchronously
-                                    // when the response is available
-                                    Log.print(Log.l.trace, "sketchData insert: success!");
-                                    complete(json);
-                                }, function (errorResponse) {
-                                    // called asynchronously if an error occurs
-                                    // or server returns response with an error status.
-                                    AppData.setErrorMsg(that.binding, errorResponse);
-                                    if (typeof error === "function") {
-                                        error(errorResponse);
-                                    }
-                                }, dataSketch);
                             });
                         });
                     }
