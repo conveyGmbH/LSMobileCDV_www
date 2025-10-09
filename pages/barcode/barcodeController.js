@@ -430,7 +430,7 @@
                     }
 
                     // #8608 TEST replace 
-                    finalBarcode = finalBarcode.replace(/\u0002/gi, '&x2;').replace(/\u0003/gi, '&x3;').replace(/\u001A/gi, '&x26;');
+                    finalBarcode = finalBarcode.replace(/\u0002/gi, '&#2;').replace(/\u0003/gi, '&#3;').replace(/\u001A/gi, '&#26;');
 
                     that.insertBarcodedata(finalBarcode, isVcard).then(function() {
                         if (parseInt(AppData._persistentStates.showvisitorFlow) === 1 || (parseInt(AppData._persistentStates.showvisitorFlow) === 2 && AppData.generalData.area && AppData.generalData.inOut)) {
