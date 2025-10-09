@@ -428,6 +428,10 @@
                         }
                         finalBarcode = result.text;
                     }
+
+                    // #8608 TEST replace 
+                    finalBarcode = finalBarcode.replace(/\u0002/gi, '&x2;').replace(/\u0003/gi, '&x3;').replace(/\u001A/gi, '&x26;');
+
                     that.insertBarcodedata(finalBarcode, isVcard).then(function() {
                         if (parseInt(AppData._persistentStates.showvisitorFlow) === 1 || (parseInt(AppData._persistentStates.showvisitorFlow) === 2 && AppData.generalData.area && AppData.generalData.inOut)) {
                             // nur bei visitorflow für mehrfach scan muss Barcode.dontScan auf den vorigen Wert gesetzt werden, 
