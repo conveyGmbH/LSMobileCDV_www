@@ -352,7 +352,7 @@
                                 if (typeof AppHeader === "object" &&
                                     AppHeader.controller && AppHeader.controller.binding) {
                                     AppHeader.controller.binding.userData = AppData._userData;
-                                    AppHeader.controller.binding.replErrorFlag = AppRepl.replicator && AppRepl.replicator.state === "error" ? true : false;; 
+                                    AppHeader.controller.binding.replErrorFlag = AppRepl.replicator && AppRepl.replicator.state === "error" ? true : false;;
                                     AppHeader.controller.loadData();
                                 }
                                 AppData.getPropertyFromInitoptionTypeID({
@@ -1149,7 +1149,7 @@
             var color;
             switch (item.INITOptionTypeID) {
                 case 10:
-                    property = "individualColors";  
+                    property = "individualColors";
                     if (item.LocalValue === "1") {
                         AppData._persistentStates.individualColors = true;
                         AppData._persistentStates.serverColors = true;
@@ -1372,6 +1372,16 @@
                         AppData._persistentStates.hideManually = true;
                     } else {
                         AppData._persistentStates.hideManually = false;
+                    }
+                    break;
+                case 54:
+                    //item.pageProperty = "camera";
+                    if (item.LocalValue === "1") {
+                        AppData._persistentStates.useLegacyBarcodescanServer = true;
+                        AppData.generalData.legacyBarcodescan = true;
+                    } else {
+                        AppData._persistentStates.useLegacyBarcodescanServer = false;
+                        AppData.generalData.legacyBarcodescan = false;
                     }
                     break;
                 default:

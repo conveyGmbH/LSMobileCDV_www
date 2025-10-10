@@ -59,7 +59,6 @@
                 countryOptionID: null
             }, commandList]);
 
-
             this.picturesDirectorySubFolder = AppData.generalData.picturesDirectorySubFolder;
             this.binding.generalData.picturesDirectorySubFolder = "";
 
@@ -74,6 +73,14 @@
             var deviceList = null;
 
             var that = this;
+
+            var toggle = pageElement.querySelector("#useLegacyBarcodescan");
+            if (AppData._persistentStates.useLegacyBarcodescanServer) {
+                if (toggle && toggle.winControl) {
+                    toggle.winControl.disabled = AppData._persistentStates.useLegacyBarcodescanServer;
+                    that.binding.generalData.legacyBarcodescan = AppData._persistentStates.useLegacyBarcodescanServer;
+                }
+            }
 
             var initLand = pageElement.querySelector("#InitOptionLand");
             //var lastError = that.binding.error.errorMsg;
