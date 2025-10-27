@@ -749,6 +749,7 @@
                         }, recordId);
                         return that.addDisposablePromise(contactSelectPromise);
                     } else {
+                        that.setDataContact(getEmptyDefaultValue(Contact.contactView.defaultValue));
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
@@ -777,6 +778,7 @@
                         });
                         return that.addDisposablePromise(contactNoteSelectPromise);
                     } else {
+                        that.setDataContactNote(getEmptyDefaultValue(Contact.contactNoteView.defaultValue));
                         return WinJS.Promise.as();
                     }
                 }).then(function () {

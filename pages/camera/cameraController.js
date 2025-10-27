@@ -604,7 +604,7 @@
                     cameraMegapixel = AppData.generalData.cameraMegapixel;
                 }
                 if (that.binding.generalData.useClippingCamera &&
-                    scan &&
+                    typeof scan === "object" &&
                     typeof scan.scanDoc === "function") {
                     AppBar.busy = true;
                     scan.scanDoc(onPhotoDataSuccess, onPhotoDataFail, {
@@ -625,7 +625,7 @@
                     }
                     if (isWindows10 &&
                         !WinJS.Utilities.isPhone &&
-                        scan &&
+                        typeof scan === "object" &&
                         typeof scan.scanDoc === "function") {
                         AppBar.busy = true;
                         scan.scanDoc(onPhotoDataSuccess, onPhotoDataFail, {
