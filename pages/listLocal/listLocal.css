@@ -175,3 +175,12 @@
     opacity: 0.6;
 }
 
+#listLocalContacts .action-image-container,
+#listLocalContacts .incomplete-status-icon-container {
+    float: left;
+    margin-top: -4px;
+    margin-right: 8px;
+}
+
+#listLocalContacts .incomplete-status-icon {
+}

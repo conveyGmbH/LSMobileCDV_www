@@ -20,7 +20,8 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
             Application.Controller.apply(this, [pageElement, {
-                count: 0
+                count: 0,
+                QuestionnaireIncomplete: null
             }, commandList]);
             this.nextUrl = null;
             this.loading = false;
@@ -272,6 +273,8 @@
 
             var resultConverter = function (item, index) {
                 var keyValue, keyTitle, iStr, i;
+
+                that.binding.QuestionnaireIncomplete = item.QuestionnaireIncomplete;
                 if (item.SRMax) {
                     item.type = "single-rating";
                 } else if (item.MRShow01) {
@@ -642,7 +645,9 @@
                         } else if (type === "single-rating") {
                             field = element.querySelector(".win-rating");
                             if (field && field.winControl) {
-                                if (field.winControl.userRating < 10) {
+                                if (!field.winControl.userRating) {
+                                    ret["RRANTWORT"] = null;
+                                } else if (field.winControl.userRating < 10) {
                                     ret["RRANTWORT"] = "0" + field.winControl.userRating;
                                 } else {
                                     ret["RRANTWORT"] = field.winControl.userRating;
@@ -708,11 +713,14 @@
                             Log.print(Log.l.trace, "save changes of recordId:" + recordId);
                             ret = QuestionnaireRemote.questionnaireView.update(function (response) {
                                 // called asynchronously if ok
-                                complete(response);
                             }, function (errorResponse) {
                                 AppData.setErrorMsg(that.binding, errorResponse);
                                 error(errorResponse);
-                            }, recordId, curScope);
+                            }, recordId, curScope).then(function () {
+                                return that.loadData(recordId);
+                            }).then(function () {
+                                complete({});
+                            });
                         } else {
                             Log.print(Log.l.trace, "no changes in recordId:" + recordId);
                         }
@@ -1446,21 +1454,53 @@
             }
             this.loadPicture = loadPicture;
 
-            var loadData = function () {
-                Log.call(Log.l.trace, "QuestionnaireRemote.Controller.");
+            var loadData = function (recordId) {
+                Log.call(Log.l.trace, "QuestionnaireRemote.Controller.", "recordId=" + recordId);
                 AppData.setErrorMsg(that.binding);
-                if (that.questions) {
-                    that.questions.length = 0;
+                that.binding.QuestionnaireIncomplete = null;
+                if (!recordId) {
+                    if (that.questions) {
+                        that.questions.length = 0;
+                    }
+                    that.docIds = [];
+                    if (that.images) {
+                        that.images.length = 0;
+                    }
+                    that.docCount = 0;
+                    that.hideQuestion = false;
                 }
-                that.docIds = [];
-                if (that.images) {
-                    that.images.length = 0;
-                }
-                that.docCount = 0;
-                that.hideQuestion = false;
                 var contactId = AppData.getRecordId("Kontakt_Remote");
                 var ret = new WinJS.Promise.as().then(function () {
-                    if (!contactId) {
+                    if (recordId) {
+                        var index = -1;
+                        if (that.questions) for (var i = 0; i < that.questions.length; i++) {
+                            var question = that.questions.getAt(i);
+                            if (question && typeof question === "object" &&
+                                question.ZeilenantwortVIEWID === recordId) {
+                                index = i;
+                                break;
+                            }
+                        }
+                        if (index >= 0) {
+                            return QuestionnaireRemote.questionnaireView.select(function (json) {
+                                // this callback will be called asynchronously
+                                // when the response is available
+                                Log.print(Log.l.trace, "Questionnaire.questionnaireView: success!");
+                                // startContact returns object already parsed from json file in response
+                                if (json && json.d) {
+                                    var item = json.d;
+                                    that.resultConverter(item, index);
+                                    that.questions.setAt(index, item);
+                                }
+                            }, function (errorResponse) {
+                                // called asynchronously if an error occurs
+                                // or server returns response with an error status.
+                                AppData.setErrorMsg(that.binding, errorResponse);
+                            }, recordId);
+                        } else {
+                            return WinJS.Promise.as();
+                        }
+                    } else if (!contactId) {
                         AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
                         return WinJS.Promise.as();
                     } else {
@@ -1511,8 +1551,8 @@
                             // or server returns response with an error status.
                             AppData.setErrorMsg(that.binding, errorResponse);
                         }, {
-                                KontaktID: contactId
-                            });
+                            KontaktID: contactId
+                        });
                         return that.addDisposablePromise(questionnaireSelectPromise);
                     }
                 }).then(function () {

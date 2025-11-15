@@ -1,4 +1,9 @@
-﻿#listQuestionnaireRemote .win-itemcontainer .win-itembox,
+﻿#questionnaireRemoteController .mandatory-empty-warning {
+    color: orange;
+    font-weight: bold;
+}
+
+#listQuestionnaireRemote .win-itemcontainer .win-itembox,
 #listQuestionnaireRemote .win-listview .win-itembox {
     background-color: transparent;
 }

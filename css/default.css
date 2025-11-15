@@ -398,14 +398,15 @@ section[role=main] {
 }
 
 .content-header {
-    height: 72px;
     /*
+    height: 72px;
     width: calc(100% - 2px);
     height: calc(100% - 2px);
     border-style: solid;
     border-width: 1px;
     border-color: gray;
     */
+    height: 92px;
     width: 100%;
     border: none;
 }
@@ -1734,10 +1735,18 @@ button.win-button {
 }
 
 .lightthemeMandatory {
-    background-color: lightyellow;
+    background-color: rgba(255,160,122,0.2);
+}
+
+.lightthemeMandatory.emptyMandatory {
+    background-color: lightsalmon;
 }
 
 .darkthemeMandatory {
+    background-color: rgba(139,69,19,0.2);
+}
+
+.darkthemeMandatory.emptyMandatory {
     background-color: #8b4513;
 }
 .bkgcolor-hoverable:hover {

@@ -3,3 +3,7 @@
 #contactRemoteController .label.group {
     white-space: normal;
 }
+#contactRemoteController .mandatory-empty-warning {
+    color: orange;
+    font-weight: bold;
+}

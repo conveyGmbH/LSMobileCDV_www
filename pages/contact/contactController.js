@@ -224,9 +224,9 @@
             var resultMandatoryConverter = function (item, index) {
                 var inputfield = null;
                 if (item.AttributeName === "AnredeID") {
-                    inputfield = pageElement.querySelector("#InitAnrede");
+                    inputfield = initAnrede;
                 } else if (item.AttributeName === "LandID") {
-                    inputfield = pageElement.querySelector("#InitLand");
+                    inputfield = initLand;
                 } else {
                     inputfield = pageElement.querySelector("input[name=" + item.AttributeName + "]");
                 }
@@ -243,6 +243,34 @@
                 }
             };
             this.resultMandatoryConverter = resultMandatoryConverter;
+
+            var removeMandatory = function () {
+                var mandatoryFields = pageElement.querySelectorAll(".lightthemeMandatory, .darkthemeMandatory");
+                if (mandatoryFields) for (var i = 0; i < mandatoryFields.length; i++) {
+                    var mandatoryField = mandatoryFields[i];
+                    if (mandatoryField) {
+                        WinJS.Utilities.removeClass(mandatoryField, "emptyMandatory");
+                        WinJS.Utilities.removeClass(mandatoryField, "lightthemeMandatory");
+                        WinJS.Utilities.removeClass(mandatoryField, "darkthemeMandatory");
+                    }
+                }
+            };
+            this.removeMandatory = removeMandatory;
+
+            var handleValueChanged = function () {
+                var mandatoryFields = pageElement.querySelectorAll(".lightthemeMandatory, .darkthemeMandatory");
+                if (mandatoryFields) for (var i = 0; i < mandatoryFields.length; i++) {
+                    var mandatoryField = mandatoryFields[i];
+                    if (mandatoryField) {
+                        if (mandatoryField.value) {
+                            WinJS.Utilities.removeClass(mandatoryField, "emptyMandatory");
+                        } else {
+                            WinJS.Utilities.addClass(mandatoryField, "emptyMandatory");
+                        }
+                    }
+                }
+            };
+            this.handleValueChanged = handleValueChanged;
 
             // define handlers
             this.eventHandlers = {
@@ -465,6 +493,7 @@
                     }
                 },
                 clickForward: function () {
+                    that.handleValueChanged(); //handle mandatory value changed!
                     return AppBar.busy;
                 },
                 clickShare: function () {
@@ -706,6 +735,7 @@
                         // select returns object already parsed from json file in response
                         if (json && json.d) {
                             //that.nextUrl = MandatoryList.mandatoryView.getNextUrl(json);
+                            that.removeMandatory();
                             var results = json.d.results;
                             results.forEach(function (item, index) {
                                 that.resultMandatoryConverter(item, index);

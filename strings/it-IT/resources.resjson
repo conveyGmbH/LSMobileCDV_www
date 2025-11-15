@@ -177,6 +177,7 @@
     "contact.useRestriction": "Utilizza",
     "contact.comment2" : "Freitext",
     "contact.waitCircleMessage" : "Attendere, i dati sono in fase di elaborazione.\nSe avete scansionato un biglietto valido per l'evento in corso o un biglietto da visita, potete continuare a lavorare e a raccogliere informazioni. I dati relativi al QR-code/biglietto da visita scansionato verranno consegnati il prima possibile e non andranno persi.",
+    "contact.mandatoryEmpty": "Campi obbligatori non compilati completamente",
 
     "contactRemote.title"   : "Contatto già caricato",
     "contactRemote.comment"       : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",

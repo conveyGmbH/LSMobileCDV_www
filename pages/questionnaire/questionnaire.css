@@ -1,4 +1,9 @@
-﻿#listQuestionnaire .win-itemcontainer .win-itembox,
+﻿#questionnaireController .mandatory-empty-warning {
+    color: orange;
+    font-weight: bold;
+}
+
+#listQuestionnaire .win-itemcontainer .win-itembox,
 #listQuestionnaire .win-listview .win-itembox {
     background-color: transparent;
 }

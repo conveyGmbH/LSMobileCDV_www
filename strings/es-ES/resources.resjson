@@ -216,6 +216,7 @@
     "contactRemote.mrs"           : "Frau",
     "contactRemote.useRestriction": "verwenden",
     "contactRemote.comment3" : "Kommentar und Notizen zu Interessenten",
+    "contact.mandatoryEmpty": "Mandatory fields not completely filled in",
 
     "photo.title"           : "Visitenkarte",
     "photo.comment"         : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",

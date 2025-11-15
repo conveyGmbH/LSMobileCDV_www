@@ -177,6 +177,7 @@
     "contact.useRestriction": "utiliser",
     "contact.comment2" : "Freitext",
     "contact.waitCircleMessage" : "Veuillez patienter, les données sont en cours de traitement.\nSi vous avez scanné un billet valide pour votre événement actuel ou une carte de visite, vous pouvez continuer à travailler et à collecter des informations. Les données relatives au code QR scanné ou à la carte de visite seront transmises dès que possible et ne seront pas perdues.",
+    "contact.mandatoryEmpty": "Champs obligatoires non remplis",
 
     "contactRemote.title"   : "Contact déjà téléchargé",
 	"contactRemote.comment"       : "Utilisez le bouton Retour sur cette page pour y retourner!",

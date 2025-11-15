@@ -98,6 +98,12 @@
                                 <div class="list-item-label-left win-type-caption">
                                     <span data-win-bind="textContent: globalContactId"></span>
                                 </div>
+                                <div class="incomplete-status-icon-container" data-win-bind="style.display: IsIncomplete Binding.Converter.toDisplay">
+	                                <div name="contact_Ereignis" class="incomplete-status-icon"></div>
+                                </div>
+                                <div class="incomplete-status-icon-container" data-win-bind="style.display: QuestionnaireIncomplete Binding.Converter.toDisplay">
+	                                <div name="pflichtFelder" class="incomplete-status-icon"></div>
+                                </div>
                                 <div class="list-item-label-right win-type-caption">
                                     <span data-win-bind="textContent: Erfassungsdatum Binding.Converter.toDateString"></span>
                                     <div class="list-div-right"

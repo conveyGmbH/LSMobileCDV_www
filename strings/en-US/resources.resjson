@@ -177,6 +177,7 @@
     "contact.useRestriction": "use",
     "contact.comment2" : "Freitext",
     "contact.waitCircleMessage" : "Please wait, data is being processed.\nIf you scanned a valid ticket for your current event or a business card, you can keep on working and collecting information. The data about the scanned QR-code/business card will be delivered as soon as possible and it won't be lost.",
+    "contact.mandatoryEmpty": "Mandatory fields not completely filled in",
 
     "contactRemote.title"   : "Already uploaded Contact",
 	"contactRemote.comment"       : "On this page, use the Back button to go back!",

@@ -362,13 +362,14 @@
                                     }
                                 }
                             }
-                        } else if (listView.winControl.loadingState === "complete") {
                             // load SVG images
                             Colors.loadSVGImageElements(listView, "action-image-right", 40, Colors.textColor, "name", null, {
                                 "barcode-qr": { useStrokeColor: false }
                             });
                             Colors.loadSVGImageElements(listView, "status-image", 12, Colors.textColor);
                             Colors.loadSVGImageElements(listHeader, "status-image", 12, Colors.textColor);
+                            Colors.loadSVGImageElements(listView, "incomplete-status-icon", 20, Colors.pauseColor, "name");
+                        } else if (listView.winControl.loadingState === "complete") {
                             if (that.loading) {
                                 progress = listView.querySelector(".list-footer .progress");
                                 counter = listView.querySelector(".list-footer .counter");

@@ -34,11 +34,16 @@
         },
         questionnaireView: {
             select: function (complete, error, restriction) {
+                var ret = null;
                 Log.call(Log.l.trace, "QuestionnaireRemote.questionnaireView.");
-                var ret = QuestionnaireRemote._questionnaireView20433.select(complete, error, restriction, {
-                    ordered: true,
-                    orderAttribute: "Sortierung"
-                });
+                if (typeof restriction === "number") {
+                    ret = QuestionnaireRemote._questionnaireView20433.selectById(complete, error, restriction);
+                } else {
+                    ret = QuestionnaireRemote._questionnaireView20433.select(complete, error, restriction, {
+                        ordered: true,
+                        orderAttribute: "Sortierung"
+                    });
+                }
                 // this will return a promise to controller
                 Log.ret(Log.l.trace);
                 return ret;

@@ -22,6 +22,9 @@
                                     <span class="caption-field" data-win-res="{textContent: 'questionnaire.title'}"></span>
                                     <span class="date-field" data-win-bind="textContent: generalData.contactDate Binding.Converter.toDateString"></span>
                                 </div>
+                                <div class="content-header-line" data-win-bind="style.display: QuestionnaireIncomplete Binding.Converter.toDisplay">
+                                    <span class="mandatory-empty-warning" data-win-res="{textContent: 'contact.mandatoryEmpty'}"></span>
+                                </div>
                                 <div class="line-separator"></div>
                             </div>
                         </div>

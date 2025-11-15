@@ -28,6 +28,9 @@
                             <span class="caption-field" data-win-res="{textContent: 'contactRemote.title'}"></span>
                             <span class="date-field" data-win-bind="textContent: dataContact.Erfassungsdatum Binding.Converter.toDateString"></span>
                         </div>
+                        <div class="content-header-line" data-win-bind="style.display: dataContact.IsIncomplete Binding.Converter.toDisplay">
+                            <span class="mandatory-empty-warning" data-win-res="{textContent: 'contact.mandatoryEmpty'}"></span>
+                        </div>
                     </div>
                     <div class="content-record"
                          data-win-bind="style.display: dataContact.KontaktVIEWID Binding.Converter.toDisplay">
