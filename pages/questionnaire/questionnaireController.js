@@ -355,10 +355,18 @@
                     item["DateComboboxButtonOk"] = false;
                 }
                 if (item.PflichtFeld) {
-                    if (Colors.isDarkTheme) {
-                        item["mandatoryColor"] = "#8b4513";
+                    if (item.CurrentQuestionIncomplete) {
+                        if (Colors.isDarkTheme) {
+                            item["mandatoryColor"] = "#8b4513";
+                        } else {
+                            item["mandatoryColor"] = "lightsalmon";
+                        }
                     } else {
-                        item["mandatoryColor"] = "lightyellow";
+                        if (Colors.isDarkTheme) {
+                            item["mandatoryColor"] = "rgba(139,69,19,0.2)";
+                        } else {
+                            item["mandatoryColor"] = "rgba(255,160,122,0.2)";
+                        }
                     }
                 } else {
                     item["mandatoryColor"] = AppData._persistentStates.showAppBkg ? "transparent" : Colors.backgroundColor;
