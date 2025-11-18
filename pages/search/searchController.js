@@ -132,12 +132,6 @@
                     }
                     that.showDateRestrictions();
                 },
-                clickIncompleteFilter: function (event) {
-                    if (event.currentTarget) {
-                        that.binding.restriction.usemodifiedTS = event.currentTarget.checked;
-                    }
-                    that.showDateRestrictions();
-                },
                 changeErfassungsdatum: function (event) {
                     if (event.currentTarget) {
                         that.binding.restriction.Erfassungsdatum = event.currentTarget.current;
