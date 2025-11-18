@@ -181,7 +181,22 @@
                             </label>
                         </div>
                     </div>
-                    <!--<div class="line-separator"></div>-->
+                    <div class="line-separator"></div>
+                    <div class="field_line field_line_odd">
+	                    <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'search.filterIncomplete'}"></span>
+	                    <div class="input_group">
+		                    <label class="checkbox">
+			                    <input type="checkbox" class="win-checkbox" value="1"
+			                           data-win-bind="checked: restriction.IsIncomplete Binding.Mode.twoway"/>
+			                    <span data-win-res="{textContent: 'search.incompleteContact'}"></span>
+		                    </label>
+		                    <label class="checkbox">
+			                    <input type="checkbox" class="win-checkbox" value="1"
+			                           data-win-bind="checked: restriction.QuestionnaireIncomplete Binding.Mode.twoway"/>
+			                    <span data-win-res="{textContent: 'search.incompleteQuestionnaire'}"></span>
+		                    </label>
+	                    </div>
+                    </div>
                 </div>
                 <div class="error-message"
                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>

@@ -299,6 +299,10 @@
 	"search.importFilterOwnContact" : "Default",
     "search.importFilterAllContact" : "Filtrer les contacts",
 	"search.importfilter"   : "Contact filtre",
+	"search.filterIncomplete" : "Seulement incomplets",
+	"search.incompleteContact" : "Champs de contact",
+	"search.incompleteQuestionnaire" : "Questionnaire",
+
 
     "listLocal.title"       : "Liste de contacts locaux",
     "listLocal.comment"     : "Utilisez le bouton Retour sur cette page pour y retourner!",

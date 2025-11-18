@@ -724,7 +724,7 @@
                     cordova.plugins.GeniusScan &&
                     typeof cordova.plugins.GeniusScan.setLicenseKey === "function") {
                     cordova.plugins.GeniusScan.setLicenseKey(
-                        "533c500753530303015c0f513955504d070c5c12514f1c75317b5b045e54557326623b530f0203045600020a5b", false,
+                        "533c500854500902085400533955504d070c5c12514f1c75317b5b045e54557326623b530005000e500204045b", true,
                         function (success) {
                             Log.print(Log.l.trace, "LicenceKey valid" + success);
                             return WinJS.Promise.as();

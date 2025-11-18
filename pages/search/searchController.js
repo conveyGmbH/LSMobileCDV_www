@@ -32,6 +32,7 @@
             //var erfasserIDname = document.getElementById("ErfasserIDSearch");
             var Erfassungsdatum = pageElement.querySelector("#Erfassungsdatum.win-datepicker");
             var modifiedTS = pageElement.querySelector("#modifiedTS.win-datepicker");
+
             var initLand = pageElement.querySelector("#InitLandSearch");
             var radios = pageElement.querySelectorAll('input[type="radio"]');
 
@@ -67,6 +68,19 @@
                 });
             }
             this.showDateRestrictions = showDateRestrictions;
+
+            var showInCompleteRestrictions = function () {
+                return WinJS.Promise.as().then(function () {
+                    if (typeof that.binding.restriction.IsIncomplete == "undefined") {
+                        that.binding.restriction.IsIncomplete = false;
+                    }
+                    if (typeof that.binding.restriction.QuestionnaireIncomplete == "undefined") {
+                        that.binding.restriction.QuestionnaireIncomplete = false;
+                    }
+                });
+            }
+            this.showInCompleteRestrictions = showInCompleteRestrictions;
+
 
             var resultConverter = function (item, index) {
                 item.index = index;
@@ -113,6 +127,12 @@
                     that.showDateRestrictions();
                 },
                 clickmodifiedTS: function (event) {
+                    if (event.currentTarget) {
+                        that.binding.restriction.usemodifiedTS = event.currentTarget.checked;
+                    }
+                    that.showDateRestrictions();
+                },
+                clickIncompleteFilter: function (event) {
                     if (event.currentTarget) {
                         that.binding.restriction.usemodifiedTS = event.currentTarget.checked;
                     }
@@ -246,6 +266,7 @@
                     } else {
                         that.binding.restriction.importFilter = false;
                     }
+
                     if (Search.Bearbeitet === "1") {
                         that.binding.restriction.Nachbearbeitet = "NULL";
                     } else if (Search.Bearbeitet === "2") {
@@ -279,6 +300,10 @@
                     if (that.binding.restriction.MitarbeiterID === 0) {
                         that.binding.restriction.MitarbeiterID = "";
                     }
+
+                    that.binding.restriction.IsIncomplete = that.binding.restriction.IsIncomplete ? 1 : null;
+                    that.binding.restriction.QuestionnaireIncomplete = that.binding.restriction.QuestionnaireIncomplete ? 1 : null;
+
                     that.binding.restriction.bExact = false;
                     AppData.setRestriction('Kontakt', that.binding.restriction);
                     AppData.setRecordId("Kontakt", null);
@@ -337,13 +362,6 @@
                         } else {
                             radios[3].checked = true;
                         }
-                        /*if (savedRestriction.Nachbearbeitet === "NULL") {
-                            radios[3].checked = true;
-                        } else if (savedRestriction.Nachbearbeitet === 1) {
-                            radios[4].checked = true;
-                        } else {
-                            radios[5].checked = true;
-                        }*/
                         that.binding.restriction.MitarbeiterID = savedRestriction.MitarbeiterID;
                     }
                     var defaultRestriction = Search.defaultValue;
@@ -381,6 +399,8 @@
                 }
                 Log.print(Log.l.trace, "Data loaded");
                 return that.showDateRestrictions();
+            }).then(function() {
+                return that.showInCompleteRestrictions();
             }).then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Date restrictions shown");

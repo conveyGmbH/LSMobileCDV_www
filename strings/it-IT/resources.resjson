@@ -299,6 +299,9 @@
 	"search.importFilterOwnContact" : "Default",
     "search.importFilterAllContact" : "Tutti i contatti",
 	"search.importfilter"   : "Filtro contatti",
+	"search.filterIncomplete" : "Solo incompleti",
+	"search.incompleteContact" : "Campi di contatto",
+	"search.incompleteQuestionnaire" : "Questionario",
 
     "listLocal.title"       : "Lista dei contatti locali",
     "listLocal.comment"     : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
