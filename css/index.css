@@ -258,14 +258,24 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     display: none;
 }
 
+.win-appbar-top .win-appbar-actionarea,
+.win-appbar-top .win-appbar-actionarea,
+.rootsplitview-full #navigationbar_horizontal.win-listview,
+.rootsplitview-tablet #navigationbar_horizontal.win-listview,
+.rootsplitview-full .pagecontrol > div > div > section[role="main"],
+.rootsplitview-tablet .pagecontrol > div > div > section[role="main"],
+.rootsplitview-full #navigationbar_vertical.win-listview,
+.rootsplitview-tablet #navigationbar_vertical.win-listview {
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-left-color: gray;
+}
+
 #navigationbar_vertical.win-listview {
     margin: 0;
     padding: 0;
     width: calc(100% - 1px);
     height: 100%;
-    border-right-style: solid;
-    border-right-width: 1px;
-    border-right-color: gray;
 }
 
 #navigationbar_horizontal .win-viewport {

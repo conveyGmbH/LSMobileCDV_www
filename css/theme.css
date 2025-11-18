@@ -73,11 +73,26 @@ body.cnv-ui-dark, body.cnv-ui-dark * {
     background-color: #101010;
 }
 
-#navigationbar_vertical.win-listview {
-    border-right-color: #e6e6e6;
+.win-appbar-top .win-appbar-actionarea,
+.win-appbar-top .win-appbar-actionarea,
+.rootsplitview-full .pagecontrol > div > div > section[role="main"],
+.rootsplitview-tablet .pagecontrol > div > div > section[role="main"],
+.rootsplitview-full #navigationbar_horizontal.win-listview,
+.rootsplitview-tablet #navigationbar_horizontal.win-listview,
+.rootsplitview-full #navigationbar_vertical.win-listview,
+.rootsplitview-tablet #navigationbar_vertical.win-listview {
+    border-left-color: #e6e6e6;
 }
-.cnv-ui-dark #navigationbar_vertical.win-listview {
-    border-right-color: #525252;
+
+.cnv-ui-dark .win-appbar-top .win-appbar-actionarea,
+.cnv-ui-dark .win-appbar-top .win-appbar-actionarea,
+.cnv-ui-dark .rootsplitview-full .pagecontrol > div > div > section[role="main"],
+.cnv-ui-dark .rootsplitview-tablet .pagecontrol > div > div > section[role="main"],
+.cnv-ui-dark .rootsplitview-full #navigationbar_horizontal.win-listview,
+.cnv-ui-dark .rootsplitview-tablet #navigationbar_horizontal.win-listview,
+.cnv-ui-dark .rootsplitview-full #navigationbar_vertical.win-listview,
+.cnv-ui-dark .rootsplitview-tablet #navigationbar_vertical.win-listview {
+    border-left-color: #525252;
 }
 
 #navigationbar_horizontal.win-listview {
