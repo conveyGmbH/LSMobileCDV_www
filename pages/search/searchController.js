@@ -15,6 +15,8 @@
             Log.call(Log.l.trace, "Search.Controller.");
             Application.Controller.apply(this, [pageElement, {
                 restriction: getEmptyDefaultValue(Search.defaultValue),
+                disableFilterKontaktFelder: false,
+                disableFilterFragebogenzeile: false,
                 Erfassungsart0: Search.Erfassungsart0,
                 Erfassungsart1: Search.Erfassungsart1,
                 Erfassungsart2: Search.Erfassungsart2,
@@ -80,7 +82,6 @@
                 });
             }
             this.showInCompleteRestrictions = showInCompleteRestrictions;
-
 
             var resultConverter = function (item, index) {
                 item.index = index;
@@ -312,6 +313,38 @@
                 that.binding.messageText = null;
                 AppData.setErrorMsg(that.binding);
                 var ret = WinJS.Promise.as().then(function () {
+                    return Search.mandatoryView.select(function (json) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                        Log.print(Log.l.trace, "Search.mandatoryView: success!");
+                        // select returns object already parsed from json file in response
+                        if (json && json.d) {
+                            that.binding.disableFilterKontaktFelder = json.d.results.length === 0;
+                        }
+                    }, function (errorResponse) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        AppData.setErrorMsg(that.binding, errorResponse);
+                    }, {
+                            FieldFlag: 1
+                        });
+                }).then(function () {
+                    return Search.fragebogenzeileView.select(function (json) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                        Log.print(Log.l.trace, "Search.fragebogenzeileView: success!");
+                        // select returns object already parsed from json file in response
+                        if (json && json.d) {
+                            that.binding.disableFilterFragebogenzeile = json.d.results.length === 0;
+                        }
+                    }, function (errorResponse) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        AppData.setErrorMsg(that.binding, errorResponse);
+                    }, {
+                            PflichtFlag: 1
+                        });
+                }).then(function () {
                     if (!AppData.initLandView.getResults().length) {
                         Log.print(Log.l.trace, "calling select initLandData...");
                         //@nedra:25.09.2015: load the list of INITLand for Combobox
@@ -336,7 +369,7 @@
                             initLand.winControl.data = new WinJS.Binding.List(AppData.initLandView.getResults());
                         }
                         return WinJS.Promise.as();
-                    }             
+                    }
                 }).then(function () {
                     var savedRestriction = AppData.getRestriction("Kontakt");
                     if (!savedRestriction) {
@@ -376,7 +409,7 @@
                     if (typeof that.binding.restriction.ModifiedTS === "undefined") {
                         that.binding.restriction.ModifiedTS = new Date();
                     }
-                   // erfasserIDname.selectedIndex = 0;
+                    // erfasserIDname.selectedIndex = 0;
                 });
                 return ret;
             }
@@ -393,7 +426,7 @@
                 }
                 Log.print(Log.l.trace, "Data loaded");
                 return that.showDateRestrictions();
-            }).then(function() {
+            }).then(function () {
                 return that.showInCompleteRestrictions();
             }).then(function () {
                 AppBar.notifyModified = true;

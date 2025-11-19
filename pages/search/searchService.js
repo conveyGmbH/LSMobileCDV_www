@@ -6,6 +6,8 @@
 (function () {
     "use strict";
 
+    var namespaceName = "Search";
+
     WinJS.Namespace.define("Search", {
         defaultValue: {
             MitarbeiterID: "",
@@ -97,6 +99,54 @@
                 if (checked) {
                     this.ImportFilter = 1;
                 }
+            }
+        },
+        _mandatoryView: {
+            get: function () {
+                return AppData.getFormatView("PflichtFelder", 0);
+            }
+        },
+        mandatoryView: {
+            select: function (complete, error, restriction) {
+                Log.call(Log.l.trace, namespaceName + ".mandatoryView.");
+                var ret = Search._mandatoryView.select(complete, error, restriction, {
+                    ordered: true,
+                    orderAttribute: "PflichtFelderVIEWID"
+                });
+                Log.ret(Log.l.trace);
+                return ret;
+
+            }
+        },
+        _fragebogenzeileView: {
+            get: function () {
+                return AppData.getFormatView("Fragebogenzeile", 0);
+            }
+        },
+        fragebogenzeileView: {
+            select: function (complete, error, restricion) {
+                Log.call(Log.l.trace, namespaceName + ".fragebogenzeileView.");
+                var ret = Search._fragebogenzeileView.select(complete, error, restricion,
+                    {
+                        ordered: true,
+                        orderAttribute: "SORTIERUNG",
+                        desc: true
+                    });
+                // this will return a promise to controller
+                Log.ret(Log.l.trace);
+                return ret;
+            },
+            getResults: function () {
+                Log.call(Log.l.trace, namespaceName + ".fragebogenzeileView.");
+                var ret = Search._fragebogenzeileView.results;
+                Log.ret(Log.l.trace);
+                return ret;
+            },
+            getMap: function () {
+                Log.call(Log.l.trace, namespaceName + ".fragebogenzeileView.");
+                var ret = Search._fragebogenzeileView.map;
+                Log.ret(Log.l.trace);
+                return ret;
             }
         }
     });

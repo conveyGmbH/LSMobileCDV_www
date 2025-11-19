@@ -187,12 +187,12 @@
 	                    <div class="input_group">
 		                    <label class="checkbox">
 			                    <input type="checkbox" class="win-checkbox" value="1"
-			                           data-win-bind="checked: restriction.IsIncomplete Binding.Mode.twoway"/>
+			                           data-win-bind="checked: restriction.IsIncomplete Binding.Mode.twoway; disabled: disableFilterKontaktFelder"/>
 			                    <span data-win-res="{textContent: 'search.incompleteContact'}"></span>
 		                    </label>
 		                    <label class="checkbox">
 			                    <input type="checkbox" class="win-checkbox" value="1"
-			                           data-win-bind="checked: restriction.QuestionnaireIncomplete Binding.Mode.twoway"/>
+			                           data-win-bind="checked: restriction.QuestionnaireIncomplete Binding.Mode.twoway; disabled: disableFilterFragebogenzeile"/>
 			                    <span data-win-res="{textContent: 'search.incompleteQuestionnaire'}"></span>
 		                    </label>
 	                    </div>
