@@ -445,6 +445,76 @@
                         }
                     }*/
                     Log.ret(Log.l.trace);
+                },
+                clickLinkedinOauth: function (event) {
+                    Log.call(Log.l.trace, "Contact.Controller.");
+                    var clientId = "864p6p9834wv0n"; // <--- hier deine LinkedIn Client ID einfügen
+                    var redirectUri = encodeURIComponent("https://lslinkedinbackend.azurewebsites.net/auth/callback");
+                    var state = "zufaelligerWert123"; // sollte ein zufälliger Wert sein
+                    var scope = encodeURIComponent("openid profile email"); //openid profile w_member_social email
+
+                    var oauthUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}&scope=${scope}`;
+
+                    // Weiterleitung zum LinkedIn Login
+                    //window.location.href = oauthUrl;
+                    var isAppleDevice = AppData.checkIPhoneBug();
+                    var isAndroidDevice = AppData.checkAndroid();
+                    var ref = null;
+                    if (cordova.InAppBrowser && (isAppleDevice || isAndroidDevice)) {
+                        ref = cordova.InAppBrowser.open(oauthUrl, '_blank', 'location=no');
+                    } else {
+                        var oauthWindow = window.open(oauthUrl, '_blank');
+                        oauthWindow.addEventListener('message', function (event) {
+                            if (event.origin !== "https://lslinkedinbackend.azurewebsites.net") return; // Sicherheit
+                            console.log("OAuth Code erhalten:", event.data.code);
+                        });
+                        var checkWindow = setInterval(function () {
+                            if (oauthWindow.closed) {
+                                clearInterval(checkWindow);
+                                console.log("OAuth-Fenster wurde geschlossen");
+                            }
+                        }, 500);
+                    }
+                    if (!ref) {
+                        return WinJS.Promise.as();
+                    }
+                    ref.addEventListener('loadstart', function (event) {
+                        if (event.url.startsWith("http://myapp://auth?session")) {
+                            var sessionId = new URL(event.url).searchParams.get("session");
+                            var sessionUrl = "https://lslinkedinbackend.azurewebsites.net/result";
+                            if (sessionId) {
+                                fetch(sessionUrl, {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ session: sessionId })
+                                })
+                                .then(res => res.json())
+                                .then(user => {
+                                    // du hast jetzt alle Userdaten
+                                    alert(user);
+                                }).catch(err => console.error("Fehler beim Abrufen der Session:", err));
+                            } else {
+                                alert("Kein data erhalten.");
+                            }
+                            ref.close();
+                        }else if(event.url.startsWith("http://myapp://auth?data")) {
+                            var data = new URL(event.url).searchParams.get("data");
+                            if(data) {
+                                var jsonObj = JSON.parse(data);
+                                that.binding.dataContact.EMail = jsonObj.email;
+                                that.binding.dataContact.Vorname = jsonObj.given_name;
+                                that.binding.dataContact.Name = jsonObj.family_name;
+                                that.binding.dataContact.WebAdresse = jsonObj.picture;
+                                that.binding.dataContact.INITLandID = jsonObj.locale.country === "DE" ? 53 : null;
+                                AppBar.modified = true;
+                                //alert(data);
+                            } else {
+                                alert("Kein data erhalten.");
+                            }
+                            ref.close();
+                        }
+                    });
+                    Log.ret(Log.l.trace);
                 }
             };
 
@@ -1036,6 +1106,24 @@
             }
             this.saveData = saveData;
 
+            window.handleOpenURL = function (url) {
+                setTimeout(() => {
+                    console.log("OAuth Redirect URL:", url);
+
+                    var uri = new URL(url);
+                    var code = uri.searchParams.get("code");
+                    var state = uri.searchParams.get("state");
+                    var data = uri.searchParams.get("data");
+                    if (state !== STATE) {
+                        alert("Ungültiger OAuth State!");
+                        return;
+                    }
+
+                    if (code) {
+                        //exchangeCodeForToken(code);
+                    }
+                }, 0);
+            };
 
             // set  Nachbearbeitet
             this.binding.dataContact.Nachbearbeitet = 1;

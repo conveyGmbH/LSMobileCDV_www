@@ -57,6 +57,7 @@
 	"command.resetRestriction" : "Supprimer",
     "command.buttonQRCodeLogin": "Connexion par code QR",
     "command.scrollToSignature" : "Champ de signature",
+    "command.linkedinOauth" : "linkedin",
 
     "tooltip.backward"      : "Page présédente",
     "tooltip.edit"          : "Modifier le contact en cours",
@@ -102,6 +103,7 @@
 	"tooltip.buttonQRCodeLogin" : "Kamera",
     "tooltip.scrollToSignature" : "Faire défiler jusqu'au champ de signature",
     "tooltip.deleteUserPhoto"  :  "Supprimer l'image",
+    "tooltip.linkedinOauth" : "linkedin",
 
     "start.title"           : "Accueil",
     "start.comment"         : "Utilisez les boutons sur cette page pour accéder à d'autres pages!",

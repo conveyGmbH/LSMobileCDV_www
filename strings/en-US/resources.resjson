@@ -57,6 +57,7 @@
 	"command.resetRestriction" : "Delete Filters",
     "command.buttonQRCodeLogin": "QR-Code login",
     "command.scrollToSignature" : "Signature field",
+    "command.linkedinOauth" : "linkedin",
 
     "tooltip.backward"      : "Browse back",
     "tooltip.edit"          : "Edit current record",
@@ -102,6 +103,7 @@
 	"tooltip.buttonQRCodeLogin" : "Camera",
     "tooltip.scrollToSignature" : "Scroll to the signature field",
     "tooltip.deleteUserPhoto"  :  "Delete image",
+    "tooltip.linkedinOauth" : "linkedin",
 
     "start.title"           : "Start Page",
     "start.comment"         : "On this page, use the buttons to go to additional pages!",

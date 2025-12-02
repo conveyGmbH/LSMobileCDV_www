@@ -57,6 +57,7 @@
     "command.resetRestriction" : "Elimina",
     "command.buttonQRCodeLogin": "Login codice QR",
     "command.scrollToSignature" : "Campo firma",
+    "command.linkedinOauth" : "linkedin",
 
     "tooltip.backward"      : "Pagina precedente",
     "tooltip.edit"          : "Modifica Record attuale",
@@ -102,6 +103,7 @@
 	"tooltip.buttonQRCodeLogin" : "Telecamera",
     "tooltip.scrollToSignature" : "Scorrere fino al campo della firma",
     "tooltip.deleteUserPhoto"  :  "Cancellare immagine",
+    "tooltip.linkedinOauth" : "linkedin",
 
     "start.title"           : "Pagina iniziale",
     "start.comment"         : "Utilizzate i pulsanti su questa pagina per muoversi tra le pagine!",

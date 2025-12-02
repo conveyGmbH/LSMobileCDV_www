@@ -29,6 +29,7 @@
                 /*{ id: "clickOpen", label: getResourceText("command.open"), tooltip: getResourceText("tooltip.open"), section: "primary", svg: "id_card" },*/
                 { id: "clickShare", label: getResourceText("command.share"), tooltip: getResourceText("tooltip.share"), section: "primary", svg: "share" },
                 { id: "clickBarcodeEdit", label: getResourceText("command.barcodeEdit"), tooltip: getResourceText("tooltip.barcodeEdit"), section: "primary", svg: "barcode_hand_point_up" },
+                { id: "clickLinkedinOauth", label: getResourceText("command.linkedinOauth"), tooltip: getResourceText("tooltip.linkedinOauth"), section: "primary", svg: "linkedin" },
                 { id: "clickForward", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check", key: WinJS.Utilities.Key.enter },
                 { id: "clickDelete", label: getResourceText("command.delete"), tooltip: getResourceText("tooltip.delete"), section: "secondary", svg: "garbage_can" }
             ];

@@ -57,6 +57,7 @@
 	"command.resetRestriction" : "Zurücksetzen",
     "command.buttonQRCodeLogin" : "QR-Code Login",
 	"command.scrollToSignature" : "Unterschriftsfeld",
+	"command.linkedinOauth" : "linkedin",
 
     "tooltip.backward"      : "Zurück blättern",
     "tooltip.edit"          : "Aktuellen Datensatz bearbeiten",
@@ -102,6 +103,7 @@
 	"tooltip.buttonQRCodeLogin" : "Kamera",
     "tooltip.scrollToSignature" : "Zur Unterschriftsfeld scrollen",
     "tooltip.deleteUserPhoto"  :  "Bild entfernen",
+    "tooltip.linkedinOauth" : "linkedin",
 
     "start.title"           : "Startseite",
     "start.comment"         : "Verwende die Schaltflächen auf dieser Seite um auf weitere Seiten zu gehen!",
