@@ -366,6 +366,7 @@
     "barcode.welcome"       : "Welcome",
     "barcode.byebye"        : "Goodbye",
     "barcode.visitorFlowAttention" : "Veuillez définir une zone pour cet utilisateur avant de pouvoir utiliser LeadSuccess VisitorFlow",
+    "barcode.googleplayservices" : "Les services Google Play ne sont pas installés ou doivent être mis à jour. Appuyez sur « OK » pour lancer l’installation/la mise à jour. Appuyez sur « Annuler » si vous souhaitez utiliser le module de codes-barres hérité.",
 
     "settings.title"        : "Paramètres de conception",
     "settings.comment"      : "Utilisez le bouton Retour sur cette page pour y retourner!",

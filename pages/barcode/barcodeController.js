@@ -477,6 +477,36 @@
                     typeof cordova.plugins.barcodeScanner.scan === "function") {
 
                     if (typeof device === "object" && device.platform === "Android") {
+                        // check if google play service is available
+                        if (typeof GooglePlayServicesChecker === "object" && !AppData.generalData.legacyBarcodescan) {
+                            var success = function (installedAndUpdated) {
+                                if (installedAndUpdated.status) {
+                                    Log.print(Log.l.trace, "Google Play Services is installed and updated");
+                                } else {
+                                    Log.print(Log.l.trace, "Google Play Services is not installed or needs update");
+                                    confirmModal(null, getResourceText("barcode.googleplayservices"), "Ok", "Cancel", function(confirmed) {
+                                        if (confirmed) {
+                                            var isAppleDevice = AppData.checkIPhoneBug();
+                                            var isAndroidDevice = AppData.checkAndroid();
+                                            var url = "https://play.google.com/store/apps/details?id=com.google.android.gms&hl=en";
+                                            if ((isAppleDevice || isAndroidDevice) && cordova.InAppBrowser) {
+                                                cordova.InAppBrowser.open(url, '_system');
+                                            } else {
+                                                window.open(url, '_system');
+                                            }
+                                        } else {
+                                            Log.print(Log.l.error, "Canceled, set AppData.generalData.legacyBarcodescan to true...");
+                                            AppData.generalData.legacyBarcodescan = true;
+                                        }
+                                    });
+                                }
+                            }
+                            var failure = function (reason) {
+                                Log.print(Log.l.error, "Google Play Services not supported..." + reason);
+                            }
+                            GooglePlayServicesChecker.check(success, failure);
+                        }
+
                         Log.print(Log.l.trace, "Android: calling barcodeScanner.scan...");
                         cordova.plugins.barcodeScanner.scan(onBarcodeSuccess, onBarcodeError, {
                             preferFrontCamera: false,

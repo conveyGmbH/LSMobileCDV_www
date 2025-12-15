@@ -365,6 +365,7 @@
 	"barcode.welcome"       : "Willkommen",
 	"barcode.byebye"        : "Auf Wiedersehen",
 	"barcode.visitorFlowAttention" : "Bitte stellen Sie für diesen User einen Bereich ein, bevor Sie LeadSuccess VisitorFlow nutzen können",
+    "barcode.googleplayservices" : "Google Play Services sind nicht installiert oder müssen aktualisiert werden. Tippe auf „OK“, um die Installation/Aktualisierung zu starten. Tippe auf „Abbrechen“, wenn stattdessen das Legacy-Barcode-Modul verwenden möchtest.",
 
     "settings.title"        : "Einstellungen zur Gestaltung",
     "settings.comment"      : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",

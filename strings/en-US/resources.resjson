@@ -365,6 +365,7 @@
     "barcode.welcome"       : "Welcome",
     "barcode.byebye"        : "Goodbye",
     "barcode.visitorFlowAttention" : "Please set an area for this user before you can use LeadSuccess VisitorFlow",
+	"barcode.googleplayservices" : "Google Play Services are not installed or need to be updated. Tap ‘OK’ to start the installation/update. Tap ‘Cancel’ if you prefer to use the legacy barcode module.",
 
     "settings.title"        : "Design Settings",
     "settings.comment"      : "On this page, use the Back button to go back!",
