@@ -30,6 +30,7 @@
         legacyBarcodescan: false,
         useLSRecording: true,
         //useClippingCameraNewMode: true,
+        googlePlayServicesWork: false,
         autoShutterTime: 0,
         useBarcodeActivity: false,
         barcodeDevice: "",

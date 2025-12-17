@@ -847,6 +847,35 @@
                 Log.print(Log.l.trace, "List binding complete");
                 return that.loadData();
             }).then(function () {
+                // check if google play service is available
+                if (typeof device === "object" && device.platform === "Android" && typeof GooglePlayServicesChecker === "object" && !AppData.generalData.legacyBarcodescan && !AppData._persistentStates.googlePlayServicesWork) {
+                    var success = function (installedAndUpdated) {
+                        if (installedAndUpdated.status) {
+                            Log.print(Log.l.trace, "Google Play Services is installed and updated");
+                            AppData._persistentStates.googlePlayServicesWork = true;
+                            Application.pageframe.savePersistentStates();
+                            return WinJS.Promise.as();
+                        } else {
+                            Log.print(Log.l.trace, "Google Play Services is not installed or needs update");
+                            AppData._persistentStates.googlePlayServicesWork = false;
+                            Application.pageframe.savePersistentStates();
+                            return confirmModal(null, getResourceText("barcode.googleplayservices"), getResourceText("barcode.installUpdate"), getResourceText("barcode.useLegacy"), function (confirmed) {
+                                if (confirmed) {
+                                    var url = "https://play.google.com/store/apps/details?id=com.google.android.gms&hl=en";
+                                    cordova.InAppBrowser.open(url, '_system');
+                                } else {
+                                    Log.print(Log.l.error, "Canceled, set AppData.generalData.legacyBarcodescan to true...");
+                                    AppData.generalData.legacyBarcodescan = true;
+                                }
+                            });
+                        }
+                    }
+                    var failure = function (reason) {
+                        Log.print(Log.l.error, "Google Play Services not supported..." + reason);
+                    }
+                    GooglePlayServicesChecker.check(success, failure);
+                }
+            }).then(function () {
                 Log.print(Log.l.trace, "Data loaded");
                 AppBar.notifyModified = true;
                 if (device &&
