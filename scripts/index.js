@@ -127,7 +127,8 @@
     // new contact function select feature:
     Application.prevNavigateNewId = "newContact";
     // some more default page navigation handling
-    Application.navigateByIdOverride = function (id, event) {
+    Application.navigateByIdOverride = function (id, event, noNavigate) {
+        var i;
         Log.call(Log.l.trace, "Application.", "id=" + id);
         //if (!AppData._persistentStates.showvisitorFlow) {
         if (AppData._persistentStates.odata.serverFailure) {
@@ -138,21 +139,25 @@
             }
         }
         if (id === "newContact") {
-            Application.prevNavigateNewId = id;
-            Log.print(Log.l.trace, "reset contact Id");
-            AppData.setRecordId("Kontakt", 0);
+            if (!noNavigate) {
+                Application.prevNavigateNewId = id;
+                Log.print(Log.l.trace, "reset contact Id");
+                AppData.setRecordId("Kontakt", 0);
+            }
             id = "contact";
             Log.print(Log.l.trace, "new page id=" + id);
-            if (Application.navigator._lastPage === Application.getPagePath(id)) {
+            if (!noNavigate && Application.navigator._lastPage === Application.getPagePath(id)) {
                 Log.print(Log.l.trace, "force navigation to " + id + " page!");
                 Application.navigator._lastPage = "";
             }
         } else if (id === "camera" || id === "barcode") {
-            Application.prevNavigateNewId = id;
+            if (!noNavigate) {
+                Application.prevNavigateNewId = id;
+            }
         } else if (id === "newAccount") {
             id = "account";
         } else if (id === "questionnaire") {
-            for (var i = 0; i < Application.navigationBarPages.length; i++) {
+            for (i = 0; i < Application.navigationBarPages.length; i++) {
                 if (Application.navigationBarPages[i].id === id) {
                     if (Application.navigationBarPages[i].disabled === true) {
                         id = "sketch";
@@ -161,7 +166,7 @@
                 }
             }
         } else if (id === "questionnaireRemote") {
-            for (var i = 0; i < Application.navigationBarPages.length; i++) {
+            for (i = 0; i < Application.navigationBarPages.length; i++) {
                 if (Application.navigationBarPages[i].id === id) {
                     if (Application.navigationBarPages[i].disabled === true) {
                         id = "sketchRemote";
@@ -178,9 +183,9 @@
                     Application.navigator._lastPage !== Application.getPagePath("privacy")) {
                     id = "privacy";
                 } else {
-                    for (var y = 0; y < Application.navigationBarPages.length; y++) {
-                        if (Application.navigationBarPages[y].id === id) {
-                            if (Application.navigationBarPages[y].disabled === true) {
+                    for (i = 0; i < Application.navigationBarPages.length; i++) {
+                        if (Application.navigationBarPages[i].id === id) {
+                            if (Application.navigationBarPages[i].disabled === true) {
                                 id = "start";
                                 break;
                             }
@@ -188,10 +193,12 @@
                     }
                 }
             }
-        } else if (id === "start") {
-            AppData.generalData.setRecordId("Kontakt_Remote", 0);
         }
-        if (id === "account" &&
+        if (id === "start") {
+            if (!noNavigate) {
+                AppData.generalData.setRecordId("Kontakt_Remote", 0);
+            }
+        } else if (id === "account" &&
             (AppData._persistentStates.odata.dbinitIncomplete ||
             !AppData._persistentStates.odata.login ||
             !AppData._persistentStates.odata.password ||

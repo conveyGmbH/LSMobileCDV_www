@@ -1,6 +1,6 @@
 ﻿.window-color {
-    color: WindowText;
-    background-color: Window;
+    color: var(--WindowText);
+    background-color: var(--Window);
 }
 
 .win-listview .win-focusedoutline,
@@ -14,15 +14,15 @@
 }
 
 .navigationbar-container {
-    background-color: Window;
-    color: ButtonText;
+    background-color: var(--Window);
+    color: var(--ColorText);
     position: absolute;
     display: block;
     margin: 0;
     padding: 0;
 }
 .masterhost-container .pagecontrol {
-    background-color: transparent;
+    background-color: var(--ColorMasterHostBackground);
     /*
     border-right-style: solid;
     border-right-width: 2px;
@@ -30,17 +30,11 @@
     */
 }
 .masterhost-background {
-    background-color: transparent;
+    background-color: var(--ColorMasterHostBackground);
 }
 .contenthost-background {
-    background-color: transparent;
+    background-color: var(--ColorBackground);
 }
-/*
-.win-selectionstylefilled.win-listview .win-selected {
-    background-color: #e0e0e0;
-    color: HighlightText;
-}
-*/
 
 .navigationbar-container-horizontal {
     height: 48px;
@@ -152,6 +146,167 @@ html.win-hoverable .cnv-ui-dark .navigationbar-container-horizontal .win-navbutt
     width: 280px;
 }
 
+.help-pane-container {
+    display: none;
+    position: absolute;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    right: 18px;
+    top: 156px;
+    width: 280px;
+    height: fit-content;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);
+    /*
+    box-shadow: rgba(0, 0, 0, 0.133) 1.0px 1.6px 3.6px 0.6px, rgba(0, 0, 0, 0.11) 0.4px 0.6px 0.9px 0px;
+    */
+}
+.help-pane-container.expanded {
+    top: 48px;
+    right: 0;
+    max-width: 420px;
+    width: 36%;
+    height: calc(100% - 48px);
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none;
+}
+/*
+    margins/paddings for medium screens 
+*/
+@media (max-width:899px) {
+    .help-pane-container.expanded {
+        width: calc(50% - 50px);
+    }
+}
+/*
+    margins/paddings for mediumSmall screens 
+*/
+@media (max-width:699px) {
+    .help-pane-container.expanded {
+        width: calc(64% - 50px);
+    }
+}
+/*
+    margins/paddings for small screens
+*/
+@media (max-width:499px) {
+    .help-pane-container.expanded {
+        max-width: 100%;
+        width: 100%;
+        border: none;
+    }
+}
+
+
+
+.help-pane {
+    overflow: hidden;
+}
+.help-details {
+    overflow-y: auto;
+}
+.help-pane.help-opener,
+.expanded .help-pane.help-details {
+    display: inline-block;
+    position: relative;
+}
+.expanded .help-pane.help-opener,
+.help-pane.help-details {
+    display: none;
+}
+
+.help-opener {
+    height: 100%;
+    width: 100%;
+}
+
+.help-details {
+    width: 100%;
+    height: 100%;
+}
+
+.help-pane .close-button {
+    display: inline-block;
+    position: fixed;
+    top: 4px;
+    right: 4px;
+    border-color: transparent;
+    background: none;
+}
+
+.help-pane .close-button > span:before {
+    font-weight: bold;
+    font-family: "Segoe MDL2 Assets", "Symbols";
+    content: "\e10a";
+}
+
+.help-pane .close-button > span:hover,
+.help-pane .close-button > span:active {
+    color: WindowText;
+}
+
+.help-content {
+    margin: 0;
+    line-height: 1.25em;
+}
+.help-pane-opener .help-content {
+    padding-right: 16px;
+}
+.expanded .help-content {
+    padding-right: 8px;
+    padding-bottom: 16px;
+}
+
+.help-pane .help-title {
+    width: 100%;
+    padding: 4px 8px;
+}
+.help-pane .help-subtitle,
+.help-pane .help-media-container,
+.help-pane .help-text-container {
+    width: 100%;
+    padding: 4px 8px;
+}
+.help-pane #videoFrame.player {
+    width: 100%;
+    min-height: 240px;
+}
+.help-pane .help-text-container {
+}
+.help-pane .help-text {
+}
+.help-pane .help-hidden {
+    width: 100%;
+    padding: 4px 8px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.help-pane .help-expand,
+.help-pane .help-close {
+    width: 100%;
+    text-align: center;
+    padding: 4px 8px;
+}
+.help-pane .help-expand > a,
+.help-pane .help-close > a {
+    margin: 0;
+    font-size: 16px;
+    opacity: 0.9;
+}
+.help-pane .help-expand > a:hover,
+.help-pane .help-expand > a:active,
+.help-pane .help-close > a:hover,
+.help-pane .help-close > a:active {
+    opacity: 1;
+}
+
 #root-split-view-submenu {
     margin: 0;
     padding: 0;
@@ -167,13 +322,14 @@ html.win-hoverable .cnv-ui-dark .navigationbar-container-horizontal .win-navbutt
 .pane-submenu-list {
     margin: 0;
     padding: 0;
-    width: 100%;
     height: 100%;
-    /*
+    width: calc(100% - 2px);
+    border-left-color: gray;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-color: gray;
     border-right-style: solid;
     border-right-width: 1px;
-    border-right-color: #e6e6e6;
-    */
 }
 
 .pane-submenu-list .win-disabled .win-item {
@@ -190,20 +346,33 @@ html.win-hoverable .cnv-ui-dark .navigationbar-container-horizontal .win-navbutt
     width: calc(100% - 40px);
 }
 
+.win-selected .win-splitviewcommand-button-content {
+    border-left-color: var(--ColorNavigation);
+}
+
 .win-splitviewcommand-button-content {
-    padding-left: 12px;
+    border-left: solid 4px transparent;
+    padding-left: 8px;
     padding-right: 12px;
     width: calc(100% - 16px);
+    margin-top: 4px;
+    margin-bottom: 4px;
+    height: 40px;
 }
 .win-splitviewcommand-label {
-    color: var(--WindowText);
-    font-size: 20px;
+    color: var(--ColorNavigation);
+    font-size: 16px;
     margin-top: 12px;
     margin-bottom: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.win-splitviewcommand-icon {
+    margin-top: 10px;
+}
+
 .win-splitviewcommand.submenu-collapsed .win-splitviewcommand-icon,
 .win-splitviewcommand.submenu-expanded .win-splitviewcommand-icon {
     margin-right: 3px;
@@ -213,12 +382,18 @@ html.win-hoverable .cnv-ui-dark .navigationbar-container-horizontal .win-navbutt
     font-weight: 600;
     font-family: "Segoe MDL2 Assets", "Symbols";
     content: "\e0e3\00a0\00a0";
+    position: relative;
+    display: inline-block;
+    top: -2px;
 }
 .win-splitviewcommand.submenu-expanded .win-splitviewcommand-label:before {
     font-size: 8px;
     font-weight: 600;
     font-family: "Segoe MDL2 Assets", "Symbols";
     content: "\e019\00a0\00a0";
+    position: relative;
+    display: inline-block;
+    top: -2px;
 }
 
 .win-splitviewcommand.win-disabled {
@@ -239,7 +414,7 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 
 #navigationbar_horizontal .win-selected,
 #navigationbar_vertical .win-selected {
-    color: WindowText;
+    color: var(--ColorNavigation);
 }
 #navigationbar_horizontal.win-listview {
     margin: 0;
@@ -278,6 +453,8 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     height: 100%;
 }
 
+#navigationbar_horizontal.win-listview
+
 #navigationbar_horizontal .win-viewport {
     margin-bottom: -50px;
     padding-bottom: 50px;
@@ -293,16 +470,29 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     top: 43px;
     left: 0;
     width: 0;
+    z-index: 2;
 }
 #navigationbar_vertical .win-selectionbackground {
     width: 4px;
     top: 4px;
     bottom: 4px;
     left: 0;
+    z-index: 2;
+}
+
+#navigationbar_horizontal .navigationbar-signal-bkg,
+#navigationbar_vertical .navigationbar-signal-bkg {
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    opacity: 0.2;
 }
 
 .pane-submenu {
-
 }
 .pane-submenu .win-splitviewcommand-button-content {
     padding-left: 56px;
@@ -310,12 +500,13 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 }
 
 .pane-submenu .win-splitviewcommand-icon {
-    margin: 16px 8px 0 0;
+    margin: 14px 8px 0 0;
     padding: 0;
 }
 
 .pane-submenu .win-splitviewcommand-label {
-    font-size: 16px;
+    font-size: 14px;
+    margin-top: 12px;
 }
 
 .navigationbar-horizontal-template,
@@ -331,14 +522,18 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 }
 .pane-submenu-header-text {
     margin: 0 6px;
-    padding-top: 12px;
+    padding-top: 16px;
     padding-bottom: 0;
     padding-right: 0;
     height: 36px;
     display: inherit;
 }
+.pane-submenu-list.win-listview .win-vertical .win-footercontainer {
+    min-height: 0 !important;
+}
+
 .pane-submenu-list .win-container {
-    margin: 4px 0 !important;
+    margin: 0 !important;
     padding: 0 !important;
     width: 100%;
 }
@@ -368,12 +563,15 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 
 .navigationbar-text {
     margin: 0;
-    padding-top: 12px;
+    font-size: 16px;
+    padding-top: 16px;
     padding-bottom: 0;
     padding-right: 0;
     height: 36px;
-    text-transform: uppercase;
     display: inherit;
+    /*
+    text-transform: uppercase;
+    */
 }
 
 .pane-submenu-icon-container {
@@ -388,8 +586,7 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 }
 
 .pane-submenu-text {
-    margin: 0;
-    padding-top: 9px;
+    margin: 12px 0 0 0;
     padding-bottom: 0;
     padding-right: 0;
     height: 36px;
@@ -417,6 +614,7 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 }
 
 .pane-submenu-inner-text {
+    font-size: 14px;
 }
 .navigationbar-inner-text {
     white-space: nowrap;
@@ -450,8 +648,11 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 
 /* Confirm modal */
 #confirmModal .win-contentdialog-dialog {
-    margin-top: 48px;
+    margin-top: 64px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);
+    /*
     box-shadow: rgba(0, 0, 0, 0.133) 1.0px 1.6px 3.6px 0.6px, rgba(0, 0, 0, 0.11) 0.4px 0.6px 0.9px 0px;
+    */
 }
 .win-contentdialog .win-contentdialog-commands > button {
     white-space: normal;
@@ -464,8 +665,11 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 /* Flyout buttons */
 #alertFlyout {
     visibility: hidden;
-    margin-top: 48px;
+    margin-top: 64px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);
+    /*
     box-shadow: rgba(0, 0, 0, 0.133) 1.0px 1.6px 3.6px 0.6px, rgba(0, 0, 0, 0.11) 0.4px 0.6px 0.9px 0px;
+    */
 }
 
 #alertText {
@@ -486,11 +690,11 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 }
 */
 .view-size-small .navigationbar-text {
-    padding-top: 14px;
-    font-size: 15px;
+    padding-top: 16px;
+    font-size: 14px;
 }
 .view-size-small .win-splitviewcommand-label {
-    font-size: 15px;
+    font-size: 14px;
     margin-top: 16px;
 }
 
@@ -531,112 +735,174 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     z-index: 10010;
 }
 
-#accountbutton {
-    color: black !important;
-    text-transform: uppercase;
-    background: #ffffff;
-    padding: 20px;
-    display: inline-block;
+.appHeader #menu1 {
+    border-color: #e6e6e6;
+    padding: 0 !important;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);
+}
+.cnv-ui-dark .appHeader #menu1 {
+    border-color: #525252;
 }
 
-    #accountbutton:hover {
-        color: black !important;
-        background: #d4d4d4;
-        border-color: #d4d4d4 !important;
-        transition: all 0.4s ease 0s;
-    }
-
-#logoffbutton {
-    color: #ed3330 !important;
+.appHeader #menu1 .win-command {
+    /*
+    text-transform: uppercase;
     font-weight: bold;
-    text-transform: uppercase;
-    background: #ffffff;
-    padding: 20px;
-    display: inline-block;
+    */
+    background-color: #f2f2f2;
+    height: 48px;
+}
+.cnv-ui-dark .appHeader #menu1 .win-command {
+    background-color: #171717;
 }
 
-    #logoffbutton:hover {
-        color: #ffffff !important;
-        font-weight: bold;
-        background: #ed3330;
-        border-color: #ed3330 !important;
-        transition: all 0.4s ease 0s;
-    }
+.appHeader #menu1 .win-menucommand-liner {
+    opacity: 0.9;
+}
 
-#menu1 {
-    border-color: #d4d4d4;
+.appHeader #menu1 .win-command .white-icon {
+    display: inline-block;
+    position: absolute;
+}
+.appHeader #menuButton {
+    border: none !important;
+}
+.appHeader #menu1 .win-command:hover,
+.appHeader #menuButton:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease 0s;
+}
+.cnv-ui-dark .appHeader #menu1 .win-command:hover,
+.cnv-ui-dark .appHeader #menuButton:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+.appHeader #menu1 .win-command:active,
+.appHeader #menuButton:active {
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: none;
+}
+
+.cnv-ui-dark .appHeader #menu1 .win-command:active,
+.cnv-ui-dark .appHeader #menuButton:active {
+    background-color: rgba(255, 255, 255, 0.4);
+    transition: none;
+}
+.appHeader #menu1 .win-command#logoff:hover {
+    background-color: var(--ColorSignalRed);
+}
+.appHeader #menu1 .win-command#logoff:active {
+    background-color: var(--ColorNavigation);
+    transition: none;
+}
+.appHeader #menu1 .win-command#logoff:not(:hover):not(:active) .white-icon {
+    display: none !important;
+}
+
+.appHeader #menu1 .win-command#logoff:hover .red-icon,
+.appHeader #menu1 .win-command#logoff:active .red-icon {
+    visibility: hidden !important;
+}
+.appHeader #menu1 .win-command#logoff .win-label {
+    font-weight: bold;
+}
+.appHeader #menu1 .win-command#logoff:not(:hover):not(:active) .win-label {
+    color: var(--ColorSignalRed) !important;
+}
+.appHeader #menu1 .win-command#logoff:hover .win-label,
+.appHeader #menu1 .win-command#logoff:active .win-label {
+    color: white !important;
+}
+.appHeader #menu1 .win-toggleicon {
+    display: block !important;
+    visibility: visible !important;
+    margin-top: 4px;
+}
+.appHeader #menu1 .win-toggleicon::before {
+    content: none !important;
 }
 /*
-    event name
+event name
 */
 .event-line {
-    width: calc(100% - 236px);
+    width: calc(100% - 284px);
     margin-left: 40px;
     margin-top: 0;
     padding-top: 4px;
-    padding-right: 1px;
     float: left;
 }
 
 .app-logo-container {
-    margin-left: 8px;
+    height: 44px;
+    margin-left: 20px;
+    margin-top: 0;
     padding: 0;
+    float: left;
     display: inline;
 }
-
 .app-logo {
     display: inline-block;
     position: relative;
-    top: 6px;
+    top: -2px;
 }
 
 .event-field {
     width: calc(100% - 278px);
-    /*height: 32px;*/
     float: right;
     margin-top: 8px;
 }
 
 .event-name {
+    display:inline-block;
     width: 100%;
 }
 
+.server-name {
+    font-size: 12px;
+    margin-top: -2px; 
+    width: 100%;
+}
 /*.appHeader .win-button {
     z-index: 9900;
 }*/
 .publish-button {
     display: block;
-    background-color: #f2f2f2;
-    color: red;
     width: 300px;
     padding: 2px 6px;
-    position: relative;
-    margin-left: calc(100% - 300px);
-    margin-top: -27px;
-}
-
-/*
-    user name and on-site / off-site button
-*/
-
-.status-on-off {
-    margin: 0;
-    padding-top: 2px;
-    padding-right: 4px;
-    padding-bottom: 2px;
-    padding-left: 0px;
-    min-width: 60px;
-    max-width: 236px;
-    height: 48px;
-    visibility: hidden;
-    display: block;
     position: absolute;
-    right: 0;
+    right: 250px;
+    top: 8px;
 }
+.publish-button .win-button {
+    background-color: white;
+}
+.publish-button .win-button:hover,
+.publish-button .win-button:active {
+    background-color: lightgrey;
+}
+.publish-button .win-button > span {
+    color: var(--ColorSignalRed);
+}
+/*
+user name and on-site / off-site button
+*/
+    .status-on-off {
+        margin: 0;
+        padding-top: 2px;
+        padding-right: 4px;
+        padding-bottom: 2px;
+        padding-left: 2px;
+        min-width: 60px;
+        max-width: 236px;
+        height: 48px;
+        visibility: hidden;
+        display: block;
+        position: absolute;
+        right: 0;
+    }
 
 .user-name-container {
     float: left;
-    padding: 4px 40px 4px 4px;
+    padding: 4px 48px 4px 4px;
     text-align: right;
     white-space: nowrap;
     max-width: 196px;
@@ -647,14 +913,20 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 }
 
 .user-name-field {
+    display: block;
     font-size: 15px;
+}
+
+.user-role-field {
+    float: right;
+    font-size: 12px;
 }
 
 .user-overlay-container {
     display: block;
     position: absolute;
-    top: 2px;
-    left: calc(100% - 40px);
+    top: 4px;
+    left: calc(100% - 48px);
     width: 40px;
     height: 40px;
     border: none;
@@ -664,8 +936,8 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 .user-image-container {
     display: block;
     position: absolute;
-    top: 2px;
-    left: calc(100% - 40px);
+    top: 4px;
+    left: calc(100% - 48px);
     background-color: gray;
     width: 40px;
     height: 40px;
@@ -699,11 +971,11 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     border-radius: 10px;
     border-style: solid;
     border-width: 2px;
-    border-color: #f0f0f0;
+    border-color: #e6e6e6;
     display: block;
     position: relative;
-    left: 20px;
-    top: 20px;
+    left: 22px;
+    top: -22px;
     z-index: 10000;
     padding: 0;
     text-align: center;
@@ -711,6 +983,23 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     overflow-x: hidden;
     overflow-y: hidden;
 }
+
+.cnv-ui-dark .onsite-offsite {
+    border-color: #101010;
+}
+
+.win-selected .onsite-offsite, .win-selected .list-symbol-addon {
+    border-color: var(--ColorNavigationSelected);
+}
+/*
+.onsite-offsite-symbol {
+    font-family: "Symbols";
+    padding: 16px;
+    display: block;
+    position: relative;
+    left: -14px;
+    top: -15px;
+}*/
 
 .onsite-offsite-symbol {
     font-family: "Symbols";
@@ -731,7 +1020,7 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     display: block;
     position: relative;
     left: 20px;
-    top: 0;
+    top: -22px;
     z-index: 10000;
     padding: 0;
     text-align: center;
@@ -750,29 +1039,38 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 }
 
 .statusNew {
-    background-color: blue;
+    background-color: var(--ColorSignalBlue);
     color: white;
 }
 
 .statusOn {
-    background-color: forestgreen;
+    background-color: var(--ColorSignalGreen);
+    color: white;
+}
+
+.statusPause {
+    background-color: var(--ColorSignalOrange);
     color: white;
 }
 
 .statusOff {
-    background-color: red;
+    background-color: var(--ColorSignalRed);
+    color: white;
+}
+
+.statusUnknown {
+    background-color: var(--ColorSignalGrey);
     color: white;
 }
 
 @media (max-width:899px) {
-    /*
     .app-logo-container {
         display: none;
     }
-    */
+
     .event-line {
         margin-left: 52px;
-        /*width: calc(100% - 230px);*/
+        width: calc(100% - 230px);
     }
 
     .event-field {
@@ -781,22 +1079,21 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     }
 
     .status-on-off {
-        max-width: 178px;
+        max-width: 233px;
     }
 
     .user-name-field {
         font-size: 12px;
     }
+    .user-role-field {
+        font-size: 12px;
+    }
 }
 
-@media (max-width:499px) {
-    .status-on-off {
-        max-width: 140px;
-    }
+@media (max-width:605px) {
 
     .user-name-container {
         padding-top: 4px;
-        max-width: 90px;
     }
     /*
     .event-line {
@@ -820,6 +1117,17 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
         font-size: 12px;
         line-height: 1.167;
     }
+    .user-role-field {
+        font-size: 12px;
+        line-height: 1.167;
+    }
+    .publish-button {
+        width: 200px;
+        right: 235px;
+    }
+    .publish-button .win-button {
+        font-size: 10px;
+    }
 }
 /*Zebra Device TC20*/
 /*@media (max-width:320px) {
@@ -835,7 +1143,7 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 .win-commandingsurface .win-commandingsurface-actionarea {
     border-top-color: gray;
     border-bottom-color: gray;
-    background-color: Window;
+    background-color: var(--Window);
 }
 
 .win-appbar-bottom.win-appbar .win-commandingsurface .win-commandingsurface-actionarea {
@@ -853,4 +1161,15 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
 .win-commandingsurface .win-commandingsurface-actionarea .leftmost {
     position: absolute;
     left: 0;
+}
+
+button .win-label, 
+button[aria-checked=true]:enabled .win-commandimage, 
+button[aria-checked=true]:enabled .win-label, 
+button[aria-checked=true]:enabled:hover:active .win-commandimage.win-commandimage {
+    color: var(--ColorLabel);
+}
+
+button.win-splitviewpanetoggle {
+    color: var(--ColorTitleArea) !important;
 }

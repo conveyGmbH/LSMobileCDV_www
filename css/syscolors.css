@@ -1,4 +1,4 @@
-﻿/* Replacement for Deprecated CSS System Colors */
+/* Replacement for Deprecated CSS System Colors */
 
 
 /* Default CSS2 colors */
@@ -8,6 +8,27 @@
     --MenuText: MenuText;
     --WindowText: WindowText;
     --Window: Window;
+    --ColorSignalBlue: #318ce7; /* Bleu de France */
+    --ColorSignalGrey: #808080; /* Grey */
+    --ColorSignalRed: #c23b22; /* Dark Pastel Red */
+    --ColorSignalOrange: #ed9121; /* Carrot Orange */
+    --ColorSignalGreen: #66b032; /* Green (Ryb) */
+    --ColorAccent: #fe3600;
+    --ColorSelectionBackground: var(--ColorAccent);
+    --ColorNavigation: #d86141;
+    --ColorNavigationSelected: var(--ColorNavigation);
+    --ColorText: var(--WindowText);
+    --ColorLabel: var(--ColorSignalGrey);
+    --ColorBackground: var(--Window);
+    --ColorMasterHostBackground: var(--Window);
+    --ColorTileText: var(--WindowText);
+    --ColorTileBackground: var(--Window);
+    --ColorTitleArea: #ffffff;
+    --ColorMandatoryEmpty: #FFA07A; /* lightsalmon */
+    --ColorMandatory: rgba(255, 160, 122, 0.2); /* lightsalmon 20% */
+    --ColorDarkMandatoryEmpty: #8b4513;
+    --ColorDarkMandatory: rgba(255, 160, 122, 0.2);
+    --ColorMandatoryFocus: #FFCCB7;
 }
 
 /* Chrome & Safari (any version) */

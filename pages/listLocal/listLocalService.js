@@ -8,6 +8,8 @@
     "use strict";
 
     WinJS.Namespace.define("ListLocal", {
+        _orderAttribute: "Erfassungsdatum",
+        _orderDesc: true,
         _contactId: 0,
         _contactView: {
             get: function () {
@@ -21,8 +23,8 @@
                 Log.call(Log.l.trace, "ListLocal.");
                 var ret = ListLocal._contactView.select(complete, error, restriction, {
                     ordered: true,
-                    orderAttribute: "Erfassungsdatum",
-                    desc: true
+                    orderAttribute: ListLocal._orderAttribute,
+                    desc: ListLocal._orderDesc
                 });
                 // this will return a promise to controller
                 Log.ret(Log.l.trace);
@@ -40,6 +42,24 @@
                 // this will return a promise to controller
                 Log.ret(Log.l.trace);
                 return ret;
+            },
+            get relationName() {
+                return ListLocal._contactView.relationName;
+            },
+            get pkName() {
+                return ListLocal._contactView.oDataPkName;
+            },
+            getRecordId: function (record) {
+                var ret = null;
+                if (record) {
+                    if (ListLocal._contactView.oDataPkName) {
+                        ret = record[ListLocal._contactView.oDataPkName];
+                    }
+                    if (!ret && ListLocal._contactView.pkName) {
+                        ret = record[ListLocal._contactView.pkName];
+                    }
+                }
+                return ret;
             }
         },
         _contactDocView: {
@@ -54,8 +74,8 @@
                 Log.call(Log.l.trace, "ContactList.");
                 var ret = ListLocal._contactDocView.select(complete, error, restriction, {
                     ordered: true,
-                    orderAttribute: "Erfassungsdatum",
-                    desc: true
+                    orderAttribute: ListLocal._orderAttribute,
+                    desc: ListLocal._orderDesc
                 });
                 // this will return a promise to controller
                 Log.ret(Log.l.trace);

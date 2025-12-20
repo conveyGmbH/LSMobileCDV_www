@@ -8,6 +8,8 @@
     "use strict";
 
     WinJS.Namespace.define("ListRemote", {
+        _orderAttribute: "Erfassungsdatum",
+        _orderDesc: true,
         _contactView: {
             get: function () {
                 var ret = AppData.getFormatView("Kontakt", 20432, false);
@@ -20,8 +22,8 @@
                 Log.call(Log.l.trace, "ListRemote.");
                 var ret = ListRemote._contactView.select(complete, error, restriction, {
                     ordered: true,
-                    orderAttribute: "Erfassungsdatum",
-                    desc: true
+                    orderAttribute: ListRemote._orderAttribute,
+                    desc: ListRemote._orderDesc
                 });
                 // this will return a promise to controller
                 Log.ret(Log.l.trace);
@@ -39,6 +41,24 @@
                 // this will return a promise to controller
                 Log.ret(Log.l.trace);
                 return ret;
+            },
+            get relationName() {
+                return ListRemote._contactView.relationName;
+            },
+            get pkName() {
+                return ListRemote._contactView.oDataPkName;
+            },
+            getRecordId: function (record) {
+                var ret = null;
+                if (record) {
+                    if (ListRemote._contactView.oDataPkName) {
+                        ret = record[ListRemote._contactView.oDataPkName];
+                    }
+                    if (!ret && ListRemote._contactView.pkName) {
+                        ret = record[ListRemote._contactView.pkName];
+                    }
+                }
+                return ret;
             }
         },
         _contactDocView: {
@@ -53,8 +73,8 @@
                 Log.call(Log.l.trace, "ContactList.");
                 var ret = ListRemote._contactDocView.select(complete, error, restriction, {
                     ordered: true,
-                    orderAttribute: "Erfassungsdatum",
-                    desc: true
+                    orderAttribute: ListRemote._orderAttribute,
+                    desc: ListRemote._orderDesc
                 });
                 // this will return a promise to controller
                 Log.ret(Log.l.trace);

@@ -55,6 +55,8 @@
 
             var that = this;
 
+            var delayedSaveDataPromise = null;
+
             // ListView control
             var listView = pageElement.querySelector("#listQuestionnaireRemote.listview");
             var flipView = pageElement.querySelector("#imgListQuestionnaireRemote.flipview");
@@ -313,7 +315,7 @@
                                 }
                             } else {
                                 var checked = keyValue + "CHECKED";
-                                if (item[keyValue] !== null) {
+                                if (item[keyValue] && item[keyValue] !== "null") {
                                     if (item[keyValue] === item.SSANTWORT) {
                                         item[checked] = true;
                                     } else {
@@ -351,15 +353,15 @@
                 if (item.PflichtFeld) {
                     if (item.CurrentQuestionIncomplete) {
                         if (Colors.isDarkTheme) {
-                            item["mandatoryColor"] = "#8b4513";
+                            item["mandatoryColor"] = "var(--ColorDarkMandatoryEmpty)";
                         } else {
-                            item["mandatoryColor"] = "lightsalmon";
+                            item["mandatoryColor"] = "var(--ColorMandatoryEmpty)";
                         }
                     } else {
                         if (Colors.isDarkTheme) {
-                            item["mandatoryColor"] = "rgba(139,69,19,0.2)";
+                            item["mandatoryColor"] = "var(--ColorDarkMandatory)";
                         } else {
-                            item["mandatoryColor"] = "rgba(255,160,122,0.2)";
+                            item["mandatoryColor"] = "var(--ColorMandatory)";
                         }
                     }
                 } else {
@@ -567,29 +569,88 @@
             this.checkForHideQuestion = checkForHideQuestion;
 
             var checkForSelectionQuestion = function (selIdx) {
-                if (that.selectQuestionIdxs && that.questions) {
+                if (that.questions) {
                     var curScope = null;
                     var question = that.questions.getAt(selIdx);
                     if (question && typeof question === "object" &&
-                        typeof that.selectQuestionIdxs[selIdx] === "object") {
+                        (that.selectQuestionIdxs &&
+                            typeof that.selectQuestionIdxs[selIdx] === "object" || question.PflichtFeld)) {
                         curScope = copyByValue(question);
-                    }
-                    if (curScope) {
-                        var newRecord = that.getFieldEntries(selIdx, curScope.type);
-                        if (that.mergeRecord(curScope, newRecord)) {
-                            Log.print(Log.l.trace, "handle changes of item[" + selIdx + "]");
-                            var optionQuestionIdxs = that.selectQuestionIdxs[selIdx];
-                            for (var i = 0; i < optionQuestionIdxs.length; i++) {
-                                var idx = optionQuestionIdxs[i];
-                                var item = that.questions.getAt(idx);
-                                var selQuestionIdx = item.SelektierteFrageIdx > 0 ? item.SelektierteFrageIdx - 1 : -1;
-                                if (!item.PflichtFeld &&
-                                    selQuestionIdx === selIdx &&
-                                    selQuestionIdx !== idx) {
-                                    var hideQuestion = getHideQuestion(curScope, item.SelektierteAntwortIdx);
-                                    if (hideQuestion !== item.hideQuestion) {
-                                        item.hideQuestion = hideQuestion;
-                                        that.questions.setAt(idx, item);
+                        if (curScope) {
+                            var newRecord = that.getFieldEntries(selIdx, curScope.type);
+                            if (that.mergeRecord(curScope, newRecord) || that.showHideModified) {
+                                Log.print(Log.l.trace, "handle changes of item[" + selIdx + "]");
+                                if (that.selectQuestionIdxs &&
+                                    typeof that.selectQuestionIdxs[selIdx] === "object") {
+                                    var optionQuestionIdxs = that.selectQuestionIdxs[selIdx];
+                                    for (var i = 0; i < optionQuestionIdxs.length; i++) {
+                                        var idx = optionQuestionIdxs[i];
+                                        var item = that.questions.getAt(idx);
+                                        var selQuestionIdx = item.SelektierteFrageIdx > 0 ? item.SelektierteFrageIdx - 1 : -1;
+                                        if (!item.PflichtFeld &&
+                                            selQuestionIdx === selIdx &&
+                                            selQuestionIdx !== idx) {
+                                            var hideQuestion = getHideQuestion(curScope, item.SelektierteAntwortIdx);
+                                            if (hideQuestion !== item.hideQuestion) {
+                                                item.hideQuestion = hideQuestion;
+                                                that.questions.setAt(idx, item);
+                                                that.showHideModified = true;
+                                            }
+                                        }
+                                    }
+                                }
+                                if (question.PflichtFeld) {
+                                    var newValues =
+                                        (newRecord.SSANTWORT ? newRecord.SSANTWORT : "") +
+                                        (newRecord.MSANTWORT01 ? newRecord.MSANTWORT01 : "") +
+                                        (newRecord.MSANTWORT02 ? newRecord.MSANTWORT02 : "") +
+                                        (newRecord.MSANTWORT03 ? newRecord.MSANTWORT03 : "") +
+                                        (newRecord.MSANTWORT04 ? newRecord.MSANTWORT04 : "") +
+                                        (newRecord.MSANTWORT05 ? newRecord.MSANTWORT05 : "") +
+                                        (newRecord.MSANTWORT06 ? newRecord.MSANTWORT06 : "") +
+                                        (newRecord.MSANTWORT07 ? newRecord.MSANTWORT07 : "") +
+                                        (newRecord.MSANTWORT08 ? newRecord.MSANTWORT08 : "") +
+                                        (newRecord.MSANTWORT09 ? newRecord.MSANTWORT09 : "") +
+                                        (newRecord.MSANTWORT10 ? newRecord.MSANTWORT10 : "") +
+                                        (newRecord.MSANTWORT11 ? newRecord.MSANTWORT11 : "") +
+                                        (newRecord.MSANTWORT12 ? newRecord.MSANTWORT12 : "") +
+                                        (newRecord.Freitext ? newRecord.Freitext : "") +
+                                        (newRecord.MsAntwort13 ? newRecord.MsAntwort13 : "") +
+                                        (newRecord.MsAntwort14 ? newRecord.MsAntwort14 : "") +
+                                        (newRecord.MsAntwort15 ? newRecord.MsAntwort15 : "") +
+                                        (newRecord.MsAntwort16 ? newRecord.MsAntwort16 : "") +
+                                        (newRecord.MsAntwort17 ? newRecord.MsAntwort17 : "") +
+                                        (newRecord.MsAntwort18 ? newRecord.MsAntwort18 : "") +
+                                        (newRecord.MsAntwort19 ? newRecord.MsAntwort19 : "") +
+                                        (newRecord.MsAntwort20 ? newRecord.MsAntwort20 : "") +
+                                        (newRecord.MsAntwort21 ? newRecord.MsAntwort21 : "") +
+                                        (newRecord.MsAntwort22 ? newRecord.MsAntwort22 : "") +
+                                        (newRecord.MsAntwort23 ? newRecord.MsAntwort23 : "") +
+                                        (newRecord.MsAntwort24 ? newRecord.MsAntwort24 : "") +
+                                        (newRecord.MsAntwort25 ? newRecord.MsAntwort25 : "") +
+                                        (newRecord.MsAntwort26 ? newRecord.MsAntwort26 : "") +
+                                        (newRecord.MsAntwort27 ? newRecord.MsAntwort27 : "") +
+                                        (newRecord.MsAntwort28 ? newRecord.MsAntwort28 : "") +
+                                        (newRecord.MsAntwort29 ? newRecord.MsAntwort29 : "") +
+                                        (newRecord.MsAntwort30 ? newRecord.MsAntwort30 : "") +
+                                        (newRecord.MrAntwort01 ? newRecord.MrAntwort01 : "") +
+                                        (newRecord.MrAntwort02 ? newRecord.MrAntwort02 : "") +
+                                        (newRecord.MrAntwort03 ? newRecord.MrAntwort03 : "") +
+                                        (newRecord.MrAntwort04 ? newRecord.MrAntwort04 : "") +
+                                        (newRecord.MrAntwort05 ? newRecord.MrAntwort05 : "") +
+                                        (newRecord.MrAntwort06 ? newRecord.MrAntwort06 : "") +
+                                        (newRecord.MrAntwort07 ? newRecord.MrAntwort07 : "") +
+                                        (newRecord.MrAntwort08 ? newRecord.MrAntwort08 : "") +
+                                        (newRecord.MrAntwort09 ? newRecord.MrAntwort09 : "") +
+                                        (newRecord.MrAntwort10 ? newRecord.MrAntwort10 : "") +
+                                        (newRecord.MrAntwort11 ? newRecord.MrAntwort11 : "") +
+                                        (newRecord.MrAntwort12 ? newRecord.MrAntwort12 : "") +
+                                        (newRecord.RRANTWORT ? newRecord.RRANTWORT : "");
+                                    if (question.CurrentQuestionIncomplete && newValues ||
+                                        !question.CurrentQuestionIncomplete && !newValues) {
+                                        that.delayedSaveData();
+                                    } else if (delayedSaveDataPromise) {
+                                        that.delayedSaveData();
                                     }
                                 }
                             }
@@ -663,13 +724,13 @@
                             }
                         } else if (type === "combo") {
                             field = element.querySelector(".win-dropdown");
-                            if (field && field.value !== "null") {
-                                ret["SSANTWORT"] = field.value;
+                            if (field) {
+                                ret["SSANTWORT"] = (field.value && field.value !== "null") ? field.value : null;
                             }
                         }
                         field = element.querySelector("textarea");
-                        if (field && field.value !== "null") {
-                            ret["Freitext"] = field.value;
+                        if (field) {
+                            ret["Freitext"] = field.value ? field.value : null;
                         }
                     }
                 }
@@ -721,13 +782,18 @@
                             Log.print(Log.l.trace, "save changes of recordId:" + recordId);
                             ret = QuestionnaireRemote.questionnaireView.update(function (response) {
                                 // called asynchronously if ok
+                                AppBar.modified = false;
                             }, function (errorResponse) {
                                 AppData.setErrorMsg(that.binding, errorResponse);
-                                error(errorResponse);
+                                if (typeof error === "function") {
+                                    error(errorResponse);
+                                }
                             }, recordId, curScope).then(function () {
                                 return that.loadData(recordId);
                             }).then(function () {
-                                complete({});
+                                if (typeof complete === "function") {
+                                    complete({});
+                                }
                             });
                         } else {
                             Log.print(Log.l.trace, "no changes in recordId:" + recordId);
@@ -736,7 +802,9 @@
                 }
                 if (!ret) {
                     ret = new WinJS.Promise.as().then(function () {
-                        complete({});
+                        if (typeof complete === "function") {
+                            complete({});
+                        }
                     });
                 }
                 Log.ret(Log.l.u1, ret);
@@ -1227,22 +1295,25 @@
                     if (event && event.currentTarget &&
                         listView && listView.winControl) {
                         var element = event.currentTarget.parentElement;
+                        var i = -1;
                         while (element && element !== listView) {
                             if (element.className === "questionnaire-row") {
-                                var i = listView.winControl.indexOfElement(element.parentElement);
-                                var selIdxs = listView.winControl.selection && listView.winControl.selection.getIndices();
-                                var promise;
-                                if (!selIdxs || selIdxs.indexOf(i) < 0) {
-                                    promise = listView.winControl.selection.set(i);
-                                } else {
-                                    promise = WinJS.Promise.as();
-                                }
-                                promise.then(function () {
-                                    that.checkForSelectionQuestion(i);
-                                });
+                                i = listView.winControl.indexOfElement(element.parentElement);
                                 break;
                             }
                             element = element.parentElement;
+                        }
+                        if (i >= 0) {
+                            var selIdxs = listView.winControl.selection && listView.winControl.selection.getIndices();
+                            var promise;
+                            if (!selIdxs || selIdxs.indexOf(i) < 0) {
+                                promise = listView.winControl.selection.set(i);
+                            } else {
+                                promise = WinJS.Promise.as();
+                            }
+                            promise.then(function () {
+                                that.checkForSelectionQuestion(i);
+                            });
                         }
                     }
                 },
@@ -1563,14 +1634,24 @@
                         });
                         return that.addDisposablePromise(questionnaireSelectPromise);
                     }
-                }).then(function () {
-                    AppBar.triggerDisableHandlers();
-                    return WinJS.Promise.as();
                 });
                 Log.ret(Log.l.trace);
                 return ret;
             };
             this.loadData = loadData;
+
+            var delayedSaveData = function () {
+                if (delayedSaveDataPromise) {
+                    delayedSaveDataPromise.cancel();
+                }
+                delayedSaveDataPromise = WinJS.Promise.timeout(150).then(function () {
+                    that.saveData();
+                    that.removeDisposablePromise(delayedSaveDataPromise);
+                    delayedSaveDataPromise = null;
+                });
+                that.addDisposablePromise(delayedSaveDataPromise);
+            }
+            this.delayedSaveData = delayedSaveData;
 
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
@@ -1581,28 +1662,28 @@
             });
             Log.ret(Log.l.trace);
         }, {
-                _docCount: 0,
-                prevRecId: 0,
-                curRecId: 0,
-                cursorPos: { x: 0, y: 0 },
-                docCount: {
-                    get: function () {
-                        return this._docCount;
-                    },
-                    set: function (value) {
-                        if (this._docCount !== value) {
-                            this._docCount = value;
-                            if (this.images) {
-                                for (var i = 0; i < this.images.length; i++) {
-                                    var item = this.images.getAt(i);
-                                    item.title = (i + 1).toString() + " / " + this._docCount;
-                                    this.images.setAt(i, item);
-                                }
+            _docCount: 0,
+            prevRecId: 0,
+            curRecId: 0,
+            cursorPos: { x: 0, y: 0 },
+            docCount: {
+                get: function () {
+                    return this._docCount;
+                },
+                set: function (value) {
+                    if (this._docCount !== value) {
+                        this._docCount = value;
+                        if (this.images) {
+                            for (var i = 0; i < this.images.length; i++) {
+                                var item = this.images.getAt(i);
+                                item.title = (i + 1).toString() + " / " + this._docCount;
+                                this.images.setAt(i, item);
                             }
                         }
                     }
                 }
-            })
+            }
+        })
     });
 })();
 

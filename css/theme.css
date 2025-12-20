@@ -15,13 +15,14 @@ body.cnv-ui-dark, body.cnv-ui-dark * {
 .cnv-ui-dark .row-bkg-gray {
     opacity: 0.2;
 }
+/*
 .masterhost-container .pagecontrol {
     background-color: #fcfcfc;
 }
 .cnv-ui-dark .masterhost-container .pagecontrol {
     background-color: #101010;
 }
-
+*/
 .list-container,
 .win-selectionstylefilled .win-container:hover .row-bkg {
     background-color: rgba(32,32,32,0.1);
@@ -66,13 +67,27 @@ body.cnv-ui-dark, body.cnv-ui-dark * {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-.navigationbar-container {
+.help-pane-container {
+    border-color: #e6e6e6;
+}
+
+.cnv-ui-dark .help-pane-container {
+    border-color: #525252;
+}
+
+.navigationbar-container,
+.help-pane-container {
     background-color: #fcfcfc;
 }
-.cnv-ui-dark .navigationbar-container {
+.cnv-ui-dark .navigationbar-container,
+.cnv-ui-dark .help-pane-container {
     background-color: #101010;
 }
 
+.pane-submenu-list {
+    border-right-color: #e6e6e6;
+}
+.pane-submenu-list,
 .win-appbar-top .win-appbar-actionarea,
 .win-appbar-top .win-appbar-actionarea,
 .rootsplitview-full .pagecontrol > div > div > section[role="main"],
@@ -83,7 +98,14 @@ body.cnv-ui-dark, body.cnv-ui-dark * {
 .rootsplitview-tablet #navigationbar_vertical.win-listview {
     border-left-color: #e6e6e6;
 }
+.win-splitviewcommand.pane-submenu-expanded {
+    background-color: #e6e6e6;
+}
 
+.cnv-ui-dark .pane-submenu-list {
+    border-right-color: #525252;
+}
+.cnv-ui-dark .pane-submenu-list,
 .cnv-ui-dark .win-appbar-top .win-appbar-actionarea,
 .cnv-ui-dark .win-appbar-top .win-appbar-actionarea,
 .cnv-ui-dark .rootsplitview-full .pagecontrol > div > div > section[role="main"],
@@ -93,6 +115,9 @@ body.cnv-ui-dark, body.cnv-ui-dark * {
 .cnv-ui-dark .rootsplitview-full #navigationbar_vertical.win-listview,
 .cnv-ui-dark .rootsplitview-tablet #navigationbar_vertical.win-listview {
     border-left-color: #525252;
+}
+.cnv-ui-dark .win-splitviewcommand.pane-submenu-expanded {
+    background-color: #525252;
 }
 
 #navigationbar_horizontal.win-listview {
@@ -178,8 +203,13 @@ body.cnv-ui-dark, body.cnv-ui-dark * {
 .cnv-input-border-bottom span.input_small_left,
 .cnv-input-border-bottom span.input_threequarter_left,
 .cnv-input-border-bottom span.input_quarter_right {
-    border-bottom-color: #e6e6e6;
+    /*
+    border-bottom-color: #d0d0d0;
     border-bottom-style: solid;
+    */
+    border-bottom-color: transparent;
+    border-bottom-width: 0;
+    border-bottom-style: none;
 }
 .cnv-ui-dark:not(.cnv-input-border-bottom) .field_line,
 .cnv-ui-dark .cnv-input-border-bottom span.input_field,
@@ -187,8 +217,13 @@ body.cnv-ui-dark, body.cnv-ui-dark * {
 .cnv-ui-dark .cnv-input-border-bottom span.input_small_left,
 .cnv-ui-dark .cnv-input-border-bottom span.input_threequarter_left,
 .cnv-ui-dark .cnv-input-border-bottom span.input_quarter_right {
+    /*
     border-bottom-color: #393939;
     border-bottom-style: solid;
+    */
+    border-bottom-color: transparent;
+    border-bottom-width: 0;
+    border-bottom-style: none;
 }
 .cnv-ui-dark .win-selectionstylefilled .win-selected .win-textbox {
     background-color: rgba(250,250,250,0.2);
@@ -208,3 +243,47 @@ body.cnv-ui-dark, body.cnv-ui-dark * {
     border-color: #393939;
     background-color: rgba(255,255,255,0.1);
 }
+
+.win-textbox:focus,
+.win-textarea:focus {
+    color: #000000;
+    background-color: #ffffff;
+}
+
+.cnv-ui-dark .win-textbox:focus,
+.cnv-ui-dark .win-textarea:focus {
+    color: #000000;
+    background-color: #ffffff;
+}
+
+.bkgcolor-hoverable:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.bkgcolor-activatable.bkgcolor-hoverable:hover:active, .bkgcolor-activatable:active {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #000000;
+}
+
+.bkgcolor-mandatory {
+    background-color: var(--ColorMandatory);
+}
+.bkgcolor-mandatory:focus,
+.bkgcolor-mandatory:active {
+    background-color: var(--ColorMandatoryFocus) !important;
+}
+
+.bkgcolor-mandatory.empty-mandatory:not(:active):not(:focus) {
+    background-color: var(--ColorMandatoryEmpty);
+}
+
+.cnv-ui-dark .bkgcolor-mandatory:not(:active):not(:focus) {
+    background-color: var(--ColorDarkMandatory);
+}
+
+.cnv-ui-dark .bkgcolor-mandatory.empty-mandatory:not(:active):not(:focus) {
+    background-color: var(--ColorDarkMandatoryEmpty);
+}
+
+
+

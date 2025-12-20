@@ -129,38 +129,38 @@
     height: 40px;
 }
 
-.action-image-container {
+.start .action-image-container {
     display: inline-block;
     width: 100%;
     padding-left: calc(50% - 20px);
 }
 
-.action-image-container-disconnect {
+.start .action-image-container-disconnect {
     display: none;
     width: 100%;
     padding-left: calc(50% - 20px);
 }
 
-.action-image {
+.start .action-image {
     margin-right: 4px;
     width: 40px;
     display: inline-block;
 }
 
- .start-div-right{
+.start-div-right{
     float: right;
     width: 60px;
- }
- .start-idAndDate {
+}
+.start-idAndDate {
     text-align: right;
- }
- .list-date-label {
-     float: left;
-     opacity: 0.6;
- }
- .list-date-value {
-     float: left;
- }
+}
+.list-date-label {
+    float: left;
+    opacity: 0.6;
+}
+.list-date-value {
+    float: left;
+}
 
 /*
     margins/paddings for medium size screens or orientation landscape

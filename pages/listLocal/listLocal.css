@@ -34,13 +34,16 @@
     padding-top: 48px;
 }
 
-.listLocal .list-div-right {
-    width: 20px
+#listLocalContacts .win-viewport {
+    overflow-x: auto;
 }
 
-#listLocalContacts .list-header {
-    font-weight: bold;
-    display: flex;
+.view-size-medium-small #listLocalContacts .win-viewport {
+    overflow-x: hidden;
+}
+
+.listLocal .list-div-right {
+    width: 20px
 }
 
 .pagecontrol:not(.view-size-bigger) #listLocalContacts .win-headercontainer {
@@ -50,6 +53,49 @@
     /* Add any other styles you need for the header */
 }
 
+#listLocalContacts .list-header {
+    font-weight: bold;
+    display: flex;
+    height: auto;
+}
+
+#listLocalContacts .list-header-columns {
+    height: auto;
+}
+
+#listLocalContacts .list-header-columns > .order-asc::after {
+    content: " \25b2";
+    font-size: 10px;
+    vertical-align: super;
+    opacity: 0.6;
+}
+
+#listLocalContacts .list-header-columns > .order-desc::after {
+    content: " \25bc";
+    font-size: 10px;
+    vertical-align: super;
+    opacity: 0.6;
+}
+
+#listLocalContacts .win-headercontainer,
+#listLocalContacts .win-surface,
+#listLocalContacts .win-footercontainer {
+    min-width: 1796px;
+}
+
+.view-size-medium-small #listLocalContacts .win-headercontainer,
+.view-size-medium-small #listLocalContacts .win-surface,
+.view-size-medium-small #listLocalContacts .win-footercontainer {
+    min-width: inherit;
+    width: 100% !important;
+}
+
+.pagecontrol:not(.view-size-biggest) #listLocalContacts .win-headercontainer,
+.pagecontrol:not(.view-size-biggest) #listLocalContacts .win-surface,
+.pagecontrol:not(.view-size-biggest) #listLocalContacts .win-footercontainer {
+    width: 100% !important;
+}
+
 /* Styles used for the custom layout */
 .listView .listLocalLayout {
     position: static;
@@ -57,6 +103,26 @@
 .listView .listLocalLayout .win-surface {
     margin-left: 0;
 }
+#listLocalContacts .signal-bkg {
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    opacity: 0.15;
+}
+
+#listLocalContacts .list-portrait-only .warning-icon {
+    position: relative;
+    top: -4px;
+}
+
+#listLocalContacts .warning-icon::after {
+    content: "\26A0";
+}
+
 #listLocalContacts .win-container {
     margin: 0;
 }
@@ -69,26 +135,26 @@
     border-color: transparent;
 }
 */
-#listLocalContacts .list-field-small-relative-10 {
-    width: calc(10% - 28px);
-}
 
-#listLocalContacts .win-footer,
+#listLocalContacts .win-item,
 #listLocalContacts .list-header,
-#listLocalContacts .win-item {
-    width: auto;
+#listLocalContacts .list-footer {
+    width: 100%;
     padding-left: 26px;
     padding-right: 26px;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-top-style: solid;
+    border-top-color: gray;
+    border-top-width: 1px;
+    width: calc(100% - 52px);
 }
 #listLocalContacts .content-header {
-    margin-top: -2px;
+    /* margin-top: -2px; */
 }
-
- #listLocalContacts .row-bkg{
-     display: inline-block;
- }
+#listLocalContacts .row-bkg {
+    display: inline-block;
+}
 
 
 /*
@@ -111,20 +177,21 @@
     margin-bottom: 16px;
 }
 */
-.view-size-bigger #listLocalContacts .win-footer,
+.view-size-bigger #listLocalContacts .win-item,
 .view-size-bigger #listLocalContacts .list-header,
-.view-size-bigger #listLocalContacts .win-item {
-    padding-top: 8px;
-    padding-bottom: 8px;
+.view-size-bigger #listLocalContacts .list-footer {
 }
+
 .view-size-bigger #listLocalContacts .content-header {
-    margin-top: -8px;
+    /* margin-top: -8px; */
 }
 
 .action-image-right {
     /*width: 100%;*/
+    margin-right: 4px;
     float: right;
 }
+
 
 /*
     margins/paddings for middle sized screens 
@@ -136,16 +203,23 @@
     }
 */
 
-.view-size-medium #listLocalContacts .win-footer,
+.view-size-medium #listLocalContacts .win-item,
 .view-size-medium #listLocalContacts .list-header,
-.view-size-medium #listLocalContacts .win-item {
+.view-size-medium #listLocalContacts .list-footer {
     padding-left: 18px;
     padding-right: 18px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    width: calc(100% - 36px);
 }
 .view-size-medium #listLocalContacts .content-header {
-    margin-top: -8px;
+    /* margin-top: -8px; */
+}
+
+.view-size-medium-small #listLocalContacts .win-item,
+.view-size-medium-small #listLocalContacts .list-header,
+.view-size-medium-small #listLocalContacts .list-footer {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border: none;
 }
 
 
@@ -158,28 +232,61 @@
     @media (max-width:499px) {
     }
 */
-.view-size-small #listLocalContacts .win-footer,
+.view-size-small #listLocalContacts .win-item,
 .view-size-small #listLocalContacts .list-header,
-.view-size-small #listLocalContacts .win-item {
+.view-size-small #listLocalContacts .list-footer {
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 4px;
     padding-bottom: 4px;
+    width: calc(100% - 20px);
 }
 .view-size-small #listLocalContacts .content-header {
     margin-top: -4px;
 }
 
 
-.status-image {
+#listLocalContacts .status-image {
     opacity: 0.6;
+}
+
+.view-size-bigger #listLocalContacts .list-portrait-only,
+.view-size-medium-small #listLocalContacts .list-landscape-only {
+    display: none;
+}
+
+.view-size-medium-small #listLocalContacts .list-portrait-only {
+    display: block;
+}
+
+#listLocalContacts .list-landscape-only > div:not(.row-bkg-gray):not(:last-child) {
+    border-right-style: solid;
+    border-right-color: gray;
+    border-right-width: 1px;
+}
+
+#listLocalContacts .wrap-text {
+    white-space: pre-wrap;
+    word-break: normal;
+    overflow-wrap: normal;
+}
+
+#listLocalContacts .list-field-small-fixed {
+    line-height: 1;
+    padding: 8px;
+}
+
+#listLocalContacts .list-field-small-fixed > span {
+    display: inline-block;
+    height: auto;
+    width: auto;
 }
 
 #listLocalContacts .action-image-container,
 #listLocalContacts .incomplete-status-icon-container {
     float: left;
-    margin-top: -4px;
-    margin-right: 8px;
+    margin-top: -2px;
+    margin-right: 4px;
 }
 
 #listLocalContacts .incomplete-status-icon {

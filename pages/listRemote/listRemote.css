@@ -11,7 +11,6 @@
 .listRemote .win-listview .win-itembox {
     background-color: transparent;
 }
-
 .listRemote .contentarea {
     overflow-y: hidden !important;
 }
@@ -29,9 +28,12 @@
     padding-top: 48px;
 }
 
-#listRemoteContacts .list-header {
-    font-weight: bold;
-    display: flex;
+#listRemoteContacts .win-viewport {
+    overflow-x: auto;
+}
+
+.view-size-medium-small #listRemoteContacts .win-viewport {
+    overflow-x: hidden;
 }
 
 .pagecontrol:not(.view-size-bigger) #listRemoteContacts .win-headercontainer {
@@ -41,6 +43,48 @@
     /* Add any other styles you need for the header */
 }
 
+#listRemoteContacts .list-header {
+    font-weight: bold;
+    display: flex;
+    height: auto;
+}
+
+#listRemoteContacts .list-header-columns {
+    height: auto;
+}
+
+#listRemoteContacts .list-header-columns > .order-asc::after {
+    content: " \25b2";
+    font-size: 10px;
+    vertical-align: super;
+    opacity: 0.6;
+}
+
+#listRemoteContacts .list-header-columns > .order-desc::after {
+    content: " \25bc";
+    font-size: 10px;
+    vertical-align: super;
+    opacity: 0.6;
+}
+
+#listRemoteContacts .win-headercontainer,
+#listRemoteContacts .win-surface,
+#listRemoteContacts .win-footercontainer {
+    min-width: 1796px;
+}
+
+.view-size-medium-small #listRemoteContacts .win-headercontainer,
+.view-size-medium-small #listRemoteContacts .win-surface,
+.view-size-medium-small #listRemoteContacts .win-footercontainer {
+    min-width: inherit;
+    width: 100% !important;
+}
+
+.pagecontrol:not(.view-size-biggest) #listRemoteContacts .win-headercontainer,
+.pagecontrol:not(.view-size-biggest) #listRemoteContacts .win-surface,
+.pagecontrol:not(.view-size-biggest) #listRemoteContacts .win-footercontainer {
+    width: 100% !important;
+}
 
 /* Styles used for the custom layout */
 .listView .listRemoteLayout {
@@ -49,6 +93,26 @@
 .listView .listRemoteLayout .win-surface {
     margin-left: 0;
 }
+#listRemoteContacts .signal-bkg {
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    opacity: 0.15;
+}
+
+#listRemoteContacts .list-portrait-only .warning-icon {
+    position: relative;
+    top: -4px;
+}
+
+#listRemoteContacts .warning-icon::after {
+    content: "\26A0";
+}
+
 #listRemoteContacts .win-container {
     margin: 0;
 }
@@ -61,21 +125,21 @@
     border-color: transparent;
 }
 */
-#listRemoteContacts .list-field-small-relative-10 {
-    width: calc(10% - 28px);
-}
-
-#listRemoteContacts .win-footer,
+#listRemoteContacts .win-item,
 #listRemoteContacts .list-header,
-#listRemoteContacts .win-item {
-    width: auto;
+#listRemoteContacts .list-footer {
+    width: 100%;
     padding-left: 26px;
     padding-right: 26px;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-top-style: solid;
+    border-top-color: gray;
+    border-top-width: 1px;
+    width: calc(100% - 52px);
 }
 #listRemoteContacts .content-header {
-    margin-top: -2px;
+    /* margin-top: -2px; */
 }
 #listRemoteContacts .row-bkg {
     display: inline-block;
@@ -102,14 +166,13 @@
     margin-bottom: 16px;
 }
 */
-.view-size-bigger #listRemoteContacts .win-footer,
+.view-size-bigger #listRemoteContacts .win-item,
 .view-size-bigger #listRemoteContacts .list-header,
-.view-size-bigger #listRemoteContacts .win-item {
-    padding-top: 8px;
-    padding-bottom: 8px;
+.view-size-bigger #listRemoteContacts .list-footer {
 }
+
 .view-size-bigger #listRemoteContacts .content-header {
-    margin-top: -8px;
+    /* margin-top: -8px; */
 }
 
 .action-image-right {
@@ -129,19 +192,24 @@
     }
 */
 
-.view-size-medium #listRemoteContacts .win-footer,
+.view-size-medium #listRemoteContacts .win-item,
 .view-size-medium #listRemoteContacts .list-header,
-.view-size-medium #listRemoteContacts .win-item {
+.view-size-medium #listRemoteContacts .list-footer {
     padding-left: 18px;
     padding-right: 18px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    width: calc(100% - 36px);
 }
 .view-size-medium #listRemoteContacts .content-header {
-    margin-top: -8px;
+    /* margin-top: -8px; */
 }
 
-
+.view-size-medium-small #listRemoteContacts .win-item,
+.view-size-medium-small #listRemoteContacts .list-header,
+.view-size-medium-small #listRemoteContacts .list-footer {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border: none;
+}
 
 
 /*
@@ -153,29 +221,61 @@
     @media (max-width:499px) {
     }
 */
-
-.view-size-small #listRemoteContacts .win-footer,
+.view-size-small #listRemoteContacts .win-item,
 .view-size-small #listRemoteContacts .list-header,
-.view-size-small #listRemoteContacts .win-item {
+.view-size-small #listRemoteContacts .list-footer {
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 4px;
     padding-bottom: 4px;
+    width: calc(100% - 20px);
 }
 .view-size-small #listRemoteContacts .content-header {
-    margin-top: -4px;
+    margin-top: -4px; 
 }
 
 
-.status-image {
+#listRemoteContacts .status-image {
     opacity: 0.6;
+}
+
+.view-size-bigger #listRemoteContacts .list-portrait-only,
+.view-size-medium-small #listRemoteContacts .list-landscape-only {
+    display: none;
+}
+
+.view-size-medium-small #listRemoteContacts .list-portrait-only {
+    display: block;
+}
+
+#listRemoteContacts .list-landscape-only > div:not(.row-bkg-gray):not(:last-child) {
+    border-right-style: solid;
+    border-right-color: gray;
+    border-right-width: 1px;
+}
+
+#listRemoteContacts .wrap-text {
+    white-space: pre-wrap;
+    word-break: normal;
+    overflow-wrap: normal;
+}
+
+#listRemoteContacts .list-field-small-fixed {
+    line-height: 1;
+    padding: 8px;
+}
+
+#listRemoteContacts .list-field-small-fixed > span {
+    display: inline-block;
+    height: auto;
+    width: auto;
 }
 
 #listRemoteContacts .action-image-container,
 #listRemoteContacts .incomplete-status-icon-container {
     float: left;
-    margin-top: -4px;
-    margin-right: 8px;
+    margin-top: -2px;
+    margin-right: 4px;
 }
 
 #listRemoteContacts .incomplete-status-icon {
