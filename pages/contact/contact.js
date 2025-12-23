@@ -26,7 +26,7 @@
             var commandList = [
                 { id: "clickBack", label: getResourceText("command.backward"), tooltip: getResourceText("tooltip.backward"), section: "primary", svg: "navigate_left" },
                 { id: "clickNew", label: getResourceText("command.new"), tooltip: getResourceText("tooltip.new"), section: "primary", svg: "user_plus" },
-                /*{ id: "clickOpen", label: getResourceText("command.open"), tooltip: getResourceText("tooltip.open"), section: "primary", svg: "id_card" },*/
+                //{ id: "clickOpen", label: getResourceText("command.open"), tooltip: getResourceText("tooltip.open"), section: "primary", svg: "id_card" },
                 { id: "clickShare", label: getResourceText("command.share"), tooltip: getResourceText("tooltip.share"), section: "primary", svg: "share" },
                 { id: "clickBarcodeEdit", label: getResourceText("command.barcodeEdit"), tooltip: getResourceText("tooltip.barcodeEdit"), section: "primary", svg: "barcode_hand_point_up" },
                 //{ id: "clickLinkedinOauth", label: getResourceText("command.linkedinOauth"), tooltip: getResourceText("tooltip.linkedinOauth"), section: "primary", svg: "linkedin" },
@@ -45,12 +45,28 @@
         canUnload: function (complete, error) {
             Log.call(Log.l.trace, pageName + ".");
             var ret;
+            var res = null;
+            var that = this;
             if (this.controller) {
+                var doReload = !!that.controller.delayedSaveDataPromise;
                 ret = this.controller.saveData(function (response) {
                     // called asynchronously if ok
-                    complete(response);
-                }, function(errorResponse) {
+                    if (!doReload) {
+                        complete(response);
+                    } else {
+                        res = response;
+                    }
+                }, function (errorResponse) {
+                    doReload = false;
                     error(errorResponse);
+                }).then(function() {
+                    if (res) {
+                        return that.controller.loadData().then(function() {
+                            complete(res);
+                        });
+                    } else {
+                        return WinJS.Promise.as();
+                    }
                 });
             } else {
                 ret = WinJS.Promise.as().then(function () {

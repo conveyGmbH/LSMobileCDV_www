@@ -33,10 +33,10 @@
             this.prevDataContact = getEmptyDefaultValue(Contact.contactView.defaultValue);
             this.prevDataContactNote = getEmptyDefaultValue(Contact.contactNoteView.defaultValue);
             this.updateIncompleteStatesPromise = null;
+            this.delayedSaveDataPromise = null;
 
             var that = this;
 
-            var delayedSaveDataPromise = null;
 
             // select combo
             var initAnrede = pageElement.querySelector("#InitAnrede");
@@ -318,7 +318,7 @@
                         }
                         if (valueHasChanged && AppBar.notifyModified) {
                             that.delayedSaveData();
-                        } else if (delayedSaveDataPromise) {
+                        } else if (that.delayedSaveDataPromise) {
                             that.delayedSaveData();
                         }
                     }
@@ -1181,15 +1181,15 @@
             this.saveData = saveData;
 
             var delayedSaveData = function () {
-                if (delayedSaveDataPromise) {
-                    delayedSaveDataPromise.cancel();
+                if (that.delayedSaveDataPromise) {
+                    that.delayedSaveDataPromise.cancel();
                 }
-                delayedSaveDataPromise = WinJS.Promise.timeout(2000).then(function() {
+                that.delayedSaveDataPromise = WinJS.Promise.timeout(150).then(function() {
                     that.saveData();
-                    that.removeDisposablePromise(delayedSaveDataPromise);
-                    delayedSaveDataPromise = null;
+                    that.removeDisposablePromise(that.delayedSaveDataPromise);
+                    that.delayedSaveDataPromise = null;
                 });
-                that.addDisposablePromise(delayedSaveDataPromise);
+                that.addDisposablePromise(that.delayedSaveDataPromise);
             }
             this.delayedSaveData = delayedSaveData;
 

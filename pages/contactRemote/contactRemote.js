@@ -25,7 +25,7 @@
                 { id: "clickNew", label: getResourceText("command.new"), tooltip: getResourceText("tooltip.new"), section: "primary", svg: "user_plus" },
                 { id: "clickForward", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check", key: WinJS.Utilities.Key.enter },
                 { id: "clickShare", label: getResourceText("command.share"), tooltip: getResourceText("tooltip.share"), section: "primary", svg: "share" }
-                /*{ id: "clickOpen", label: getResourceText("command.open"), tooltip: getResourceText("tooltip.open"), section: "primary", svg: "id_card" }*/
+                //{ id: "clickOpen", label: getResourceText("command.open"), tooltip: getResourceText("tooltip.open"), section: "primary", svg: "id_card" }
             ];
 
             this.controller = new ContactRemote.Controller(element, commandList);
@@ -39,12 +39,28 @@
         canUnload: function (complete, error) {
             Log.call(Log.l.trace, pageName + ".");
             var ret;
+            var res = null;
+            var that = this;
             if (this.controller) {
+                var doReload = !!that.controller.delayedSaveDataPromise;
                 ret = this.controller.saveData(function (response) {
                     // called asynchronously if ok
-                    complete(response);
-                }, function(errorResponse) {
+                    if (!doReload) {
+                        complete(response);
+                    } else {
+                        res = response;
+                    }
+                }, function (errorResponse) {
+                    doReload = false;
                     error(errorResponse);
+                }).then(function () {
+                    if (res) {
+                        return that.controller.loadData().then(function () {
+                            complete(res);
+                        });
+                    } else {
+                        return WinJS.Promise.as();
+                    }
                 });
             } else {
                 ret = WinJS.Promise.as().then(function () {

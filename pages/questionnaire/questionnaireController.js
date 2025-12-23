@@ -283,7 +283,15 @@
             var resultConverter = function (item, index) {
                 var keyValue, keyTitle, iStr, i;
 
-                that.binding.QuestionnaireIncomplete = item.QuestionnaireIncomplete;
+                if (!that.questions && index === 0 ||
+                    that.binding.QuestionnaireIncomplete !== item.QuestionnaireIncomplete) {
+                    that.binding.QuestionnaireIncomplete = item.QuestionnaireIncomplete;
+                    // add warning-background-color
+                    NavigationBar.changeNavigationBarSignalBkgColor("questionnaire", item.QuestionnaireIncomplete ? Colors.orange : "");
+                    // add warning-symbol
+                    var questionnaireLabel = getResourceText("label.questionnaire");
+                    NavigationBar.changeNavigationBarLabel("questionnaire", item.QuestionnaireIncomplete ? questionnaireLabel + " &#x26A0;" : questionnaireLabel);
+                }
                 if (item.SRMax) {
                     item.type = "single-rating";
                 } else if (item.MRShow01) {
@@ -1883,7 +1891,7 @@
             var loadData = function (recordId) {
                 Log.call(Log.l.trace, "Questionnaire.Controller.", "recordId=" + recordId);
                 AppData.setErrorMsg(that.binding);
-                that.binding.QuestionnaireIncomplete = null;
+
                 if (!recordId) {
                     if (that.questions) {
                         that.questions.length = 0;
@@ -2002,6 +2010,13 @@
                                     listView.winControl.itemTemplate = that.listQuestionnaireRenderer.bind(that);
                                     // add ListView dataSource
                                     listView.winControl.itemDataSource = that.questions && that.questions.dataSource;
+                                }
+                                if (!that.binding.count && that.binding.QuestionnaireIncomplete) {
+                                    that.binding.QuestionnaireIncomplete = null;
+                                    // remove warning-background-color
+                                    NavigationBar.changeNavigationBarSignalBkgColor("questionnaire", "");
+                                    // remove warning-symbol
+                                    NavigationBar.changeNavigationBarLabel("questionnaire", getResourceText("label.questionnaire"));
                                 }
                             }
                         }, function (errorResponse) {
