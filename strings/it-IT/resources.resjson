@@ -660,6 +660,7 @@
     "label.backup"			: "Backup",
 	"label.dash"			: "Dashboard",
     "label.logoff"          : "Logoff",
+    "label.userinfo"        : "Informazioni utente",
 
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Annulla",
