@@ -11,12 +11,14 @@
 (function () {
     "use strict";
 
-    WinJS.Namespace.define("AppHeader", {
+    var namespaceName = "AppHeader";
+
+    WinJS.Namespace.define(namespaceName, {
         controller: null
     });
-    WinJS.Namespace.define("AppHeader", {
+    WinJS.Namespace.define(namespaceName, {
         Controller: WinJS.Class.define(function Controller(pageElement) {
-            Log.call(Log.l.trace, "AppHeader.Controller.");
+            Log.call(Log.l.trace, namespaceName + ".Controller.");
             this.element = pageElement.querySelector("#appHeaderController.data-container");
             if (this.element) {
                 this.element.winControl = this;
@@ -38,7 +40,7 @@
             // show business card photo
             var userImageContainer = pageElement.querySelector(".user-image-container");
             var showPhoto = function () {
-                Log.call(Log.l.trace, "AppHeader.Controller.");
+                Log.call(Log.l.trace, namespaceName + ".Controller.");
                 var userImg;
                 if (that.binding.photoData) {
                     if (userImageContainer) {
@@ -90,8 +92,12 @@
             }
 
             var loadData = function () {
-                Log.call(Log.l.trace, "AppHeader.Controller.");
+                Log.call(Log.l.trace, namespaceName + ".Controller.");
                 var ret = new WinJS.Promise.as().then(function () {
+                    that.binding.userData = AppData._userData;
+                    that.binding.showNameInHeader = !!AppData._persistentStates.showNameInHeader;
+                    that.binding.replErrorFlag = AppRepl.replicator && AppRepl.replicator.state === "error" ? true : false;
+
                     var employeeId = AppData.getRecordId("Mitarbeiter");
                     if (employeeId) {
                         // todo: load image data and set src of img-element
@@ -127,6 +133,7 @@
                             // ignore that
                         }, employeeId);
                     } else {
+                        that.binding.photoData = "";
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
@@ -158,19 +165,63 @@
             }
             this.loadData = loadData;
 
+            var reloadMenu = function () {
+                Log.call(Log.l.trace, namespaceName + ".Controller.");
+                var menu1 = pageElement.querySelector("#menu1");
+                if (menu1) {
+                    var commands = menu1.querySelectorAll(".win-command");
+                    if (commands) for (var i = 0; i < commands.length; i++) {
+                        var command = commands[i];
+                        if (command && command.winControl) {
+                            var newLabel = getResourceText("label." + command.id);
+                            Log.print(Log.l.trace, "label[" + command.id + "]=" + newLabel);
+                            command.winControl.label = newLabel;
+                            var winToggleIcon = command.querySelector(".win-toggleicon");
+                            if (winToggleIcon) {
+                                if (command.id === "logoff") {
+                                    if (!WinJS.Utilities.hasClass(winToggleIcon.nextElementSibling, "win-toggleicon")) {
+                                        var clonedIcon = winToggleIcon.cloneNode();
+                                        if (clonedIcon) {
+                                            WinJS.Utilities.addClass(winToggleIcon, "red-icon");
+                                            clonedIcon.name = command.name;
+                                            WinJS.Utilities.addClass(clonedIcon, "white-icon");
+                                            if (clonedIcon.style) {
+                                                clonedIcon.style.display = "inline";
+                                            }
+                                            winToggleIcon.parentElement.insertBefore(clonedIcon, winToggleIcon.nextElementSibling);
+                                            WinJS.Promise.timeout(0).then(function () {
+                                                Colors.loadSVGImageElements(menu1, "white-icon", 24, "#ffffff", "name");
+                                                Colors.loadSVGImageElements(menu1, "win-toggleicon.red-icon", 24, Colors.offColor, "name");
+                                            });
+                                        }
+                                    }
+                                } else while (winToggleIcon.firstElementChild || winToggleIcon.firstChild) {
+                                    winToggleIcon.removeChild(winToggleIcon.firstElementChild || winToggleIcon.firstChild);
+                                }
+                                winToggleIcon.name = command.name;
+                            }
+                        }
+                        Colors.loadSVGImageElements(menu1, "win-toggleicon:not(.red-icon):not(.white-icon)", 24, Colors.isDarkTheme ? "#ffffff" : "#000000", "name");
+                    }
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.reloadMenu = reloadMenu;
+
             // Finally, wire up. don't call loadData() initial, db not open yet!
             WinJS.Resources.processAll(that.element).then(function () {
                 return WinJS.Binding.processAll(that.element, that.binding);
             }).then(function () {
+                that.reloadMenu();
                 Log.print(Log.l.trace, "Binding wireup page complete");
             });
             Log.ret(Log.l.trace);
         }, {
-                pageData: {
-                    generalData: AppData.generalData,
-                    appSettings: AppData.appSettings
-                }
-            })
+            pageData: {
+                generalData: AppData.generalData,
+                appSettings: AppData.appSettings
+            }
+        })
     });
 })();
 

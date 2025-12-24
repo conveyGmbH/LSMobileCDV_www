@@ -660,6 +660,7 @@
     "label.barcode"			: "Visitor Flow",
     "label.backup"			: "Backup",
 	"label.dash"			: "Dashboard",
+    "label.logoff"          : "Se déconnecter",
     
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Annuler",

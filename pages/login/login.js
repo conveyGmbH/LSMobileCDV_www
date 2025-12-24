@@ -19,6 +19,11 @@
         ready: function(element, options) {
             Log.call(Log.l.trace, pageName + ".");
             // TODO: Initialize the page here.
+            var splitviewPaneWrapper = document.querySelector(".win-splitview-panewrapper");
+            if (splitviewPaneWrapper && splitviewPaneWrapper.style) {
+                splitviewPaneWrapper.style.width = "0";
+                splitviewPaneWrapper.style.maxWidth = "0";
+            }
             NavigationBar.enablePage("start");
             NavigationBar.disablePage("settings");
             NavigationBar.disablePage("info");
@@ -41,6 +46,11 @@
             if (this.controller) {
                 ret = this.controller.saveData(function (response) {
                     // called asynchronously if ok
+                    var splitviewPaneWrapper = document.querySelector(".win-splitview-panewrapper");
+                    if (splitviewPaneWrapper && splitviewPaneWrapper.style) {
+                        splitviewPaneWrapper.style.width = "";
+                        splitviewPaneWrapper.style.maxWidth = "";
+                    }
                     complete(response);
                 }, function (errorResponse) {
                     error(errorResponse);

@@ -21,6 +21,51 @@
 
     var nav = WinJS.Navigation;
     var b64 = window.base64js;
+    // default values
+    var userDataDefault = {
+        VeranstaltungID: 0,
+        VeranstaltungName: "",
+        DatenschutzText: "",
+        Login: "",
+        Present: 0,
+        PublishFlag: null,
+        NotUploaded: 0,
+        Uploaded: 0,
+        AnzLokaleKontakte: 0,
+        AnzVersendeteKontakte: 0,
+        Enddatum: null,
+        TimeZoneAdjustment: 0,
+        Limit: null,
+        Bereich: null,
+        EinAusgang: null
+    };
+    var contactDataDefault = {
+        Titel: "",
+        Vorname: "",
+        Vorname2: "",
+        Name: "",
+        Position: "",
+        Branche: "",
+        Firmenname: "",
+        AbteilungText: "",
+        Strasse: "",
+        PLZ: "",
+        Stadt: "",
+        TelefonFestnetz: "",
+        TelefonMobil: "",
+        Fax: "",
+        EMail: "",
+        WebAdresse: "",
+        Kommentar: "", // new comment field
+        Bemerkungen: "", // nicht zugeordnete Felder
+        Freitext1: "",
+        HostName: (window.device && window.device.uuid),
+        INITAnredeID: 0,
+        INITLandID: 0,
+        CreatorSiteID: "",
+        CreatorRecID: ""
+    };
+    var contact
 
     WinJS.Namespace.define("AppData", {
         __generalUserRemoteView: null,
@@ -106,21 +151,24 @@
                 return ret;
             }
         },
+        _contactDataDefault: {
+            get: function () {
+                return getEmptyDefaultValue(contactDataDefault);
+            }
+        },
+        _userDataDefault: {
+            get: function () {
+                return getEmptyDefaultValue(userDataDefault);
+            }
+        },
+        _contactData: contactDataDefault,
+        _userData: userDataDefault,
         _userDataPromise: null,
         _userRemoteDataPromise: null,
         _curGetUserDataId: 0,
         _curGetRemoteUserDataId: 0,
         _curGetContactDataId: 0,
-        _contactData: {},
         _remoteContactData: {},
-        _userData: {
-            VeranstaltungName: "",
-            DatenschutzText: "",
-            Login: "",
-            Present: 0,//,
-            NotUploaded: 0,
-            Uploaded: 0
-        },
         _userRemoteData: {},
         _prcUserRemoteCallSucceeded: false,
         _photoData: null,
@@ -530,6 +578,7 @@
             return ret;
         },
         getCRVeranstOption: function () {
+            var err = null;
             Log.call(Log.l.trace, "AppData.");
             var ret = WinJS.Promise.as();
             if (AppData._inGetCRVeranstOption) {
@@ -583,16 +632,33 @@
                                 });
                             }
                             Application.pageframe.savePersistentStates();
-                            Colors.updateColors();
                         }
                     }
-                    AppData._inGetCRVeranstOption = false;
                 }, function (errorResponse) {
+                    err = errorResponse;
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                     // ignore error in app!
                     // AppData.setErrorMsg(that.binding, errorResponse);
                     AppData._inGetCRVeranstOption = false;
+                }).then(function () {
+                    if (!err) {
+                        var colors = Colors.updateColors();
+                        return (colors && colors._loadCssPromise) || WinJS.Promise.as();
+                    } else {
+                        return WinJS.Promise.as();
+                    }
+                }).then(function () {
+                    if (!err) {
+                        AppBar.loadIcons();
+                        NavigationBar.groups = Application.navigationBarGroups;
+                        if (AppHeader &&
+                            AppHeader.controller &&
+                            typeof AppHeader.controller.reloadMenu === "function") {
+                            AppHeader.controller.reloadMenu();
+                        }
+                        AppData._inGetCRVeranstOption = false;
+                    }
                 });
             });
             Log.ret(Log.l.trace);
@@ -1166,6 +1232,11 @@
                                 promise.then(function () {
                                     AppBar.loadIcons();
                                     NavigationBar.groups = Application.navigationBarGroups;
+                                    if (AppHeader &&
+                                        AppHeader.controller &&
+                                        typeof AppHeader.controller.reloadMenu === "function") {
+                                        AppHeader.controller.reloadMenu();
+                                    }
                                 });
                             });
                         }
@@ -1412,6 +1483,11 @@
                 case "navigationColor":
                     AppBar.loadIcons();
                     NavigationBar.groups = Application.navigationBarGroups;
+                    if (AppHeader &&
+                        AppHeader.controller &&
+                        typeof AppHeader.controller.reloadMenu === "function") {
+                        AppHeader.controller.reloadMenu();
+                    }
                     break;
             }
             Log.ret(Log.l.u1);

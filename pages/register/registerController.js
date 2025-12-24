@@ -172,17 +172,6 @@
                     confirm(confirmTitle, function (result) {
                         if (result) {
                             Log.print(Log.l.trace, "clickLogoff: user choice OK");
-                            AppData._persistentStates.veranstoption = {};
-                            AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
-                            AppData._persistentStates.individualColors = false;
-                            AppData._persistentStates.isDarkTheme = false;
-                            var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
-                            AppData._persistentStates.individualColors = false;
-                            AppData._persistentStates.isDarkTheme = false;
-                            Application.pageframe.savePersistentStates();
-                            that.binding.doEdit = false;
-                            that.binding.generalData.notAuthorizedUser = false;
-                            that.binding.enableChangePassword = false;
                             Application.navigateById("login", event);
                         } else {
                             Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");

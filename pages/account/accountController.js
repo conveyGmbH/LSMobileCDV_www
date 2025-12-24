@@ -116,16 +116,7 @@
                     confirm(confirmTitle, function (result) {
                         if (result) {
                             Log.print(Log.l.trace, "clickLogoff: user choice OK");
-                            AppData._persistentStates.veranstoption = {};
-                            AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
-                            AppData._persistentStates.individualColors = false;
-                            AppData._persistentStates.isDarkTheme = false;
-                            var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
-                            AppData._persistentStates.individualColors = false;
-                            AppData._persistentStates.isDarkTheme = false;
-                            Application.pageframe.savePersistentStates();
                             that.binding.doEdit = false;
-                            that.binding.generalData.notAuthorizedUser = false;
                             that.binding.enableChangePassword = false;
                             Application.navigateById("login", event);
                         } else {
@@ -183,7 +174,7 @@
                 },
                 clickPrivacyPolicy: function (event) {
                     Log.call(Log.l.trace, "Login.Controller.");
-                    that.binding.dataLogin.privacyPolicyFlag = event.currentTarget.checked;
+                    that.binding.dataLogin.PrivacyPolicyFlag = event.currentTarget.checked;
                     AppBar.triggerDisableHandlers();
                     Log.ret(Log.l.trace);
                 },
@@ -223,15 +214,15 @@
                         that.binding.dataLogin.PrivacyPolicyFlag = false;
                         that.binding.dataLogin.PrivacyPolicydisabled = false;
                     }*/
-                    if (AppBar.busy || (!that.binding.dataLogin.Login || !that.binding.dataLogin.Password || !that.binding.dataLogin.PrivacyPolicyFlag)) {
+                    var ret = AppBar.busy || !that.binding.dataLogin.Login || !that.binding.dataLogin.Password || !that.binding.dataLogin.PrivacyPolicyFlag;
+                    if (ret) {
                         NavigationBar.disablePage("start");
                         NavigationBar.disablePage("search");
-                        NavigationBar.disablePage("settings");
                         NavigationBar.disablePage("info");
                     } else {
                         NavigationBar.enablePage("start");
                     }
-                    return AppBar.busy || (!that.binding.dataLogin.Login || !that.binding.dataLogin.Password || !that.binding.dataLogin.PrivacyPolicyFlag);
+                    return ret;
                 },
                 clickLogoff: function () {
                     var logoffbutton = document.getElementById("logoffbutton");
@@ -518,7 +509,6 @@
                                             AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
                                             var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
                                             AppData._persistentStates.individualColors = false;
-                                            AppData._persistentStates.isDarkTheme = false;
                                             Colors.updateColors();
                                             AppData._userRemoteData = {};
                                             AppData._contactData = {};

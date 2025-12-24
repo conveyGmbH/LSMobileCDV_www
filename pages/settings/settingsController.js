@@ -97,6 +97,11 @@
                         case "navigationColor":
                             AppBar.loadIcons();
                             NavigationBar.groups = Application.navigationBarGroups;
+                            if (AppHeader &&
+                                AppHeader.controller &&
+                                typeof AppHeader.controller.reloadMenu === "function") {
+                                AppHeader.controller.reloadMenu();
+                            }
                             break;
                         }
                     });
@@ -155,6 +160,11 @@
                                 that.createColorPicker("navigationColor");
                                 AppBar.loadIcons();
                                 NavigationBar.groups = Application.navigationBarGroups;
+                                if (AppHeader &&
+                                    AppHeader.controller &&
+                                    typeof AppHeader.controller.reloadMenu === "function") {
+                                    AppHeader.controller.reloadMenu();
+                                }
                             });
                             Application.pageframe.savePersistentStates();
                         }
@@ -190,6 +200,11 @@
                             that.createColorPicker("dashboardColor");
                             AppBar.loadIcons();
                             NavigationBar.groups = Application.navigationBarGroups;
+                            if (AppHeader &&
+                                AppHeader.controller &&
+                                typeof AppHeader.controller.reloadMenu === "function") {
+                                AppHeader.controller.reloadMenu();
+                            }
                         });
                         Application.pageframe.savePersistentStates();
                     }
@@ -214,6 +229,11 @@
                                     that.createColorPicker("navigationColor");
                                     AppBar.loadIcons();
                                     NavigationBar.groups = Application.navigationBarGroups;
+                                    if (AppHeader &&
+                                        AppHeader.controller &&
+                                        typeof AppHeader.controller.reloadMenu === "function") {
+                                        AppHeader.controller.reloadMenu();
+                                    }
                                 });
                             }
                             that.binding.generalData.individualColors = toggle.checked;
@@ -263,6 +283,11 @@
                         WinJS.Promise.timeout(0).then(function () {
                             AppBar.loadIcons();
                             NavigationBar.groups = Application.navigationBarGroups;
+                            if (AppHeader &&
+                                AppHeader.controller &&
+                                typeof AppHeader.controller.reloadMenu === "function") {
+                                AppHeader.controller.reloadMenu();
+                            }
                             Application.pageframe.savePersistentStates();
                         });
                     }
@@ -316,17 +341,6 @@
                     confirm(confirmTitle, function (result) {
                         if (result) {
                             Log.print(Log.l.trace, "clickLogoff: user choice OK");
-                            AppData._persistentStates.veranstoption = {};
-                            AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
-                            AppData._persistentStates.individualColors = false;
-                            AppData._persistentStates.isDarkTheme = false;
-                            var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
-                            AppData._persistentStates.individualColors = false;
-                            AppData._persistentStates.isDarkTheme = false;
-                            Application.pageframe.savePersistentStates();
-                            that.binding.doEdit = false;
-                            that.binding.generalData.notAuthorizedUser = false;
-                            that.binding.enableChangePassword = false;
                             Application.navigateById("login", event);
                         } else {
                             Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");

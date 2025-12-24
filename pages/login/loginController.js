@@ -44,9 +44,9 @@
             AppData._persistentStates.veranstoption = {};
             AppData._persistentStates.allRestrictions = {};
             AppData._persistentStates.allRecIds = {};
-            AppData._userData = {};
+            AppData._userData = AppData._userDataDefault;
             AppData._userRemoteData = {};
-            AppData._contactData = {};
+            AppData._contactData = AppData._contactDataDefault;
             AppData._photoData = null;
             AppData._barcodeType = null;
             AppData._barcodeRequest = null;
@@ -101,9 +101,9 @@
                     Log.ret(Log.l.trace);
                 },
                 clickChangeUserState: function (event) {
-                    Log.call(Log.l.trace, "Account.Controller.");
+                    Log.call(Log.l.trace, "Login.Controller.");
                     //ignore that here!
-                    //Application.navigateById("userinfo", event);
+                    Application.navigateById("newAccount", event, true);
                     Log.ret(Log.l.trace);
                 },
                 clickPrivacyPolicy: function (event) {
@@ -145,15 +145,15 @@
 
             this.disableHandlers = {
                 clickOk: function () {
-                    that.binding.loginDisabled = AppBar.busy || 
-                        (that.binding.dataLogin.Login.length === 0 || that.binding.dataLogin.Password.length === 0 || !that.binding.dataLogin.privacyPolicyFlag) ||
-                        that.binding.progress.show;
-                    if (AppBar.busy || 
-                        (that.binding.dataLogin.Login.length === 0 || that.binding.dataLogin.Password.length === 0 || !that.binding.dataLogin.privacyPolicyFlag)) {
+                    var ret = AppBar.busy || !that.binding.dataLogin.Login || !that.binding.dataLogin.Password || !that.binding.dataLogin.privacyPolicyFlag;
+                    if (ret) {
                         NavigationBar.disablePage("start");
+                        NavigationBar.disablePage("search");
+                        NavigationBar.disablePage("info");
                     } else {
                         NavigationBar.enablePage("start");
                     }
+                    that.binding.loginDisabled = ret || that.binding.progress.show;
                     if (!that.binding.dataLogin.Login || !that.binding.dataLogin.Password) {
                         that.binding.dataLogin.privacyPolicyFlag = false;
                     }
@@ -280,10 +280,10 @@
                                 if (dataLogin.OK_Flag === "X" && dataLogin.MitarbeiterID) {
                                     AppData._persistentStates.odata.login = that.binding.dataLogin.Login;
                                     AppData._persistentStates.odata.password = that.binding.dataLogin.Password;
-                                    var prevMitarbeiterId = AppData.generalData.getRecordId("Mitarbeiter");
-                                    NavigationBar.enablePage("settings");
-                                    NavigationBar.enablePage("info");
+                                    NavigationBar.enablePage("start");
                                     NavigationBar.enablePage("search");
+                                    NavigationBar.enablePage("info");
+                                    var prevMitarbeiterId = AppData.generalData.getRecordId("Mitarbeiter");
                                     AppData.generalData.logOffOptionActive = false;
                                     var doReloadDb = false;
                                     if (!AppData._persistentStates.odata.dbSiteId ||
@@ -295,15 +295,14 @@
                                     if (doReloadDb) {
                                         AppData._persistentStates.allRestrictions = {};
                                         AppData._persistentStates.allRecIds = {};
-                                        AppData._userData = {};
+                                        AppData._userData = AppData._userDataDefault;
                                         AppData._persistentStates.veranstoption = {};
                                         AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
                                         var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
                                         AppData._persistentStates.individualColors = false;
-                                        AppData._persistentStates.isDarkTheme = false;
                                         Colors.updateColors();
                                         AppData._userRemoteData = {};
-                                        AppData._contactData = {};
+                                        AppData._contactData = AppData._contactDataDefault;
                                         AppData._photoData = null;
                                         AppData._barcodeType = null;
                                         AppData._barcodeRequest = null;
@@ -336,7 +335,9 @@
                                     if (dataLogin.Aktion &&
                                         dataLogin.Aktion.substr(0, 9).toUpperCase() === "DUPLICATE") {
                                         var confirmTitle = dataLogin.MessageText;
-                                        confirm(confirmTitle, function (result) {
+                                        return confirm(confirmTitle, function (result) {
+                                            return result;
+                                        }).then(function (result) {
                                             if (result) {
                                                 Log.print(Log.l.trace, "clickLogin: user choice OK");
                                                 bIgnoreDuplicate = true;
@@ -419,6 +420,22 @@
                     return WinJS.Promise.as();
                 }
             }).then(function () {
+                AppData.generalData.notAuthorizedUser = false;
+                AppData._persistentStates.veranstoption = {};
+                AppData._persistentStates.individualColors = false;
+                AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
+                //new Colors.ColorsClass(AppData._persistentStates.colorSettings);
+                var colors = Colors.updateColors();
+                Application.pageframe.savePersistentStates();
+                return (colors && colors._loadCssPromise) || WinJS.Promise.timeout(0);
+            }).then(function () {
+                AppBar.loadIcons();
+                NavigationBar.groups = Application.navigationBarGroups;
+                if (AppHeader &&
+                    AppHeader.controller &&
+                    typeof AppHeader.controller.reloadMenu === "function") {
+                    AppHeader.controller.reloadMenu();
+                }
                 Log.print(Log.l.trace, "Appheader refresh complete");
                 Application.pageframe.hideSplashScreen();
                 if (Login.nextLogin || Login.nextPassword) {

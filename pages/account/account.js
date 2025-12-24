@@ -61,40 +61,74 @@
             if (this.controller) {
                 if (this.controller.binding.doReloadDb) {
                     var confirmTitle = getResourceText("account.confirmLogOff");
-                    ret = confirm(confirmTitle,
-                        function (result) {
-                            return result;
-                        }).then(function(result) {
-                            Log.print(Log.l.trace, "clickLogoff: user choice OK");
-                            if (result) {
-                                ret = that.controller.saveData(function (response) {
-                                    // called asynchronously if ok
-                                        Application.pageframe.reCheckForLanguage(function () {
+                    ret = confirm(confirmTitle, function (result) {
+                        return result;
+                    }).then(function(result) {
+                        Log.print(Log.l.trace, "clickLogoff: user choice OK");
+                        if (result) {
+                            ret = that.controller.saveData(function (response) {
+                                // called asynchronously if ok
+                                var splitviewPaneWrapper = document.querySelector(".win-splitview-panewrapper");
+                                if (splitviewPaneWrapper && splitviewPaneWrapper.style) {
+                                    splitviewPaneWrapper.style.width = "";
+                                    splitviewPaneWrapper.style.maxWidth = "";
+                                }
+                                Application.pageframe.reCheckForLanguage(function () {
+                                    AppBar.loadIcons();
+                                    NavigationBar.groups = Application.navigationBarGroups;
+                                    if (NavigationBar.data) {
+                                        var curGroup = NavigationBar.curGroup;
+                                        NavigationBar.data.length = 0;
+                                        NavigationBar.curGroup = 0;
+                                        NavigationBar.setItemsForGroup(curGroup);
+                                    }
+                                    if (AppHeader &&
+                                        AppHeader.controller &&
+                                        typeof AppHeader.controller.reloadMenu === "function") {
+                                        AppHeader.controller.reloadMenu();
+                                    }
                                     complete(response);
-                                        }, function () {
-                                            var errorResponse = "Error: failed to switch language!";
-                                            error(errorResponse);
-                                        });
-                                },
-                                function (errorResponse) {
+                                }, function () {
+                                    var errorResponse = "Error: failed to switch language!";
                                     error(errorResponse);
                                 });
-                            } else {
-                                Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");
-                                error("canceled");
-                            }
-                        });
+                            },
+                            function (errorResponse) {
+                                error(errorResponse);
+                            });
+                        } else {
+                            Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");
+                            error("canceled");
+                        }
+                    });
                 } else {
                     ret = this.controller.saveData(function (response) {
                         // called asynchronously if ok
-                            Application.pageframe.reCheckForLanguage(function () {
-                        complete(response);
-                            }, function () {
-                                var errorResponse = "Error: failed to switch language!";
-                                error(errorResponse);
-                            });
-                    },
-                    function (errorResponse) {
+                        var splitviewPaneWrapper = document.querySelector(".win-splitview-panewrapper");
+                        if (splitviewPaneWrapper && splitviewPaneWrapper.style) {
+                            splitviewPaneWrapper.style.width = "";
+                            splitviewPaneWrapper.style.maxWidth = "";
+                        }
+                        Application.pageframe.reCheckForLanguage(function () {
+                            AppBar.loadIcons();
+                            NavigationBar.groups = Application.navigationBarGroups;
+                            if (NavigationBar.data) {
+                                var curGroup = NavigationBar.curGroup;
+                                NavigationBar.data.length = 0;
+                                NavigationBar.curGroup = 0;
+                                NavigationBar.setItemsForGroup(curGroup);
+                            }
+                            if (AppHeader &&
+                                AppHeader.controller &&
+                                typeof AppHeader.controller.reloadMenu === "function") {
+                                AppHeader.controller.reloadMenu();
+                            }
+                            complete(response);
+                        }, function () {
+                            var errorResponse = "Error: failed to switch language!";
+                            error(errorResponse);
+                        });
+                    }, function (errorResponse) {
                         error(errorResponse);
                     });
                 }

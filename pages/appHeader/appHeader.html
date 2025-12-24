@@ -33,9 +33,17 @@
                         </div>-->
                     </div>
 
-                    <div id="menu1" data-win-control="WinJS.UI.Menu">
-                        <button data-win-control="WinJS.UI.MenuCommand" onclick="AppBar.handleEvent('click', 'clickChangeUserState', event)" data-win-options="{id: 'accountbutton', type:'button'}" data-win-res="{textContent: 'userinfo.title'}"></button>
-                        <button data-win-control="WinJS.UI.MenuCommand" onclick="AppBar.handleEvent('click', 'clickLogoff', event)" data-win-options="{id: 'logoffbutton', type:'button'}" data-win-res="{textContent: 'account.logoff'}"></button>
+                    <div id="menu1" class="use-border-radius" data-win-control="WinJS.UI.Menu">
+	                    <button data-win-control="WinJS.UI.MenuCommand"
+	                            onclick="AppBar.handleEvent('click', 'clickChangeUserState', event)"
+	                            data-win-options="{id: 'account', type:'button', label: 'label.account'}"
+	                            name="konto">
+	                    </button>
+	                    <button data-win-control="WinJS.UI.MenuCommand"
+	                            onclick="AppBar.handleEvent('click', 'clickLogoff', event)"
+	                            data-win-options="{id: 'logoff', type:'button', label: 'label.logoff'}"
+	                            name="door_exit">
+	                    </button>
                     </div>
 
                     <button id="menuButton" class="win-button status-on-off titlearea-bkg"

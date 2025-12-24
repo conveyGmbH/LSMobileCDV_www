@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="580px" height="580px" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="nonzero" clip-rule="nonzero" viewBox="0 0 5800 5800" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>door_exit icon</title>
+	<desc>door_exit icon from the IconExperience.com I-Collection. Copyright by INCORS GmbH (www.incors.com).</desc>
+		<path id="curve29" fill="#000000" d="M1100 5300l400 0 0 -793 200 -200 0 993 200 0 0 -1193 200 -200 0 1393 800 0 0 -4200 -800 0 0 793 -200 -200 0 -793 1000 0 0 -200 -1200 0 0 793 -200 -200 0 -793 1400 0 0 -136 435 136 1765 0 0 4800 400 0 0 200 -892 0 -1708 320 0 -320 -1800 0 0 -200zm2875 -4600l725 227 0 4373 200 0 0 -4600 -925 0zm-875 -64l0 4944 1400 -263 0 -4244 -1400 -437zm450 2464c0,104 -59,190 -122,200l-103 0c-69,0 -125,-90 -125,-200 0,-110 56,-200 125,-200 138,0 275,0 412,0l0 200 -187 0z"/>
+	<path id="curve28" fill="#000000" d="M1271,1629 2541,2900 1271,4171 1129,4029 2159,3000 100,3000 100,2800 2159,2800 1129,1771z"/>
+</svg>
