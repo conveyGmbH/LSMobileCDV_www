@@ -117,8 +117,7 @@
                                     var recordId = null;
                                     if (that.controller.actualPfquestion && that.controller.actualPfquestion.ZeilenantwortVIEWID) {
                                         recordId = that.controller.actualPfquestion.ZeilenantwortVIEWID;
-                                    }
-                                    if (that.controller.actualquestion && that.controller.actualquestion.ZeilenantwortVIEWID) {
+                                    } else if (that.controller.actualquestion && that.controller.actualquestion.ZeilenantwortVIEWID) {
                                         recordId = that.controller.actualquestion.ZeilenantwortVIEWID;
                                     }
                                     that.controller.selectRecordId(recordId);
