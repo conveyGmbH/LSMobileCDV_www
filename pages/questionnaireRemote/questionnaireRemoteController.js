@@ -432,9 +432,9 @@
             var resultMandatoryConverter = function (item) {
                 if (item.INITOptionTypeID === 22) {
                     if (item.LocalValue === "1") {
-                        AppData._persistentStates.showConfirmQuestion = true;
+                        AppData._persistentStates.showAlertConfirmQuestion = true;
                     } else {
-                        AppData._persistentStates.showConfirmQuestion = false;
+                        AppData._persistentStates.showAlertConfirmQuestion = false;
                     }
                 }
             }
@@ -829,7 +829,7 @@
                     if (question &&
                         typeof question === "object" &&
                         question.PflichtFeld &&
-                        AppData._persistentStates.showConfirmQuestion) {
+                        AppData._persistentStates.showAlertConfirmQuestion) {
 
                         var curScope = question;
                         that.actualquestion = question;

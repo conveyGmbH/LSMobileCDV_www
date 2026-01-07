@@ -78,20 +78,20 @@
             var that = this;
             Log.call(Log.l.trace, pageName + ".");
             if (this.controller) {
-                var showconfirmbox = this.controller.showConfirmBoxMandatory();
-                var showConfirmBoxPflichtfeldAntwort = this.controller.showConfirmBoxPflichtfeldAntwort();
+                var isMandatoryQuestion = this.controller.isMandatoryQuestion();
+                var isPflichtfeldAntwort = this.controller.isPflichtfeldAntwort();
                 var confirmTitle = "";
-                if ((showconfirmbox && this.controller.actualquestion) ||
-                    (showConfirmBoxPflichtfeldAntwort && this.controller.actualPfquestion)) {
-                    if (showconfirmbox) {
+                if ((isMandatoryQuestion && this.controller.actualquestion) ||
+                    (isPflichtfeldAntwort && this.controller.actualPfquestion)) {
+                    if (isMandatoryQuestion) {
                         confirmTitle = getResourceText("questionnaire.labelConfirmMandatoryField") +
                             ":\n" +
                             this.controller.actualquestion.FRAGESTELLUNG;
-                        if (showConfirmBoxPflichtfeldAntwort) {
+                        if (isPflichtfeldAntwort) {
                             confirmTitle = confirmTitle + "\n";
                         }
                     }
-                    if (showConfirmBoxPflichtfeldAntwort) {
+                    if (isPflichtfeldAntwort) {
                         confirmTitle = confirmTitle + getResourceText("questionnaire.labelConfirmPflichtfeldAntwort") +
                             ": " +
                             this.controller.pflichtfeldName +
@@ -101,7 +101,8 @@
                             confirmTitle = confirmTitle + "\n" + getResourceText("questionnaire.labelNoEditPflichtfeldAntwort");
                         }
                     }
-                    if (showconfirmbox && AppData._persistentStates.showConfirmQuestion) {
+                    // Soll PflichtfeldAntwort auch hart geprüft werden? Wenn ja, dann ist das Problem das ich nicht von der Seite wegkomme..
+                    if (isMandatoryQuestion && AppData._persistentStates.showAlertConfirmQuestion) {
                         ret = alert(confirmTitle,
                             function (result) {
                                 that.controller.selectRecordId(that.controller.actualquestion.ZeilenantwortVIEWID);
@@ -109,7 +110,7 @@
                                 error(result);
                             });
                     } else {
-                        var styleClass = showConfirmBoxPflichtfeldAntwort ? "alertPflichtfeld" : null;
+                        var styleClass = isPflichtfeldAntwort ? "alertPflichtfeld" : null;
                         ret = confirm(confirmTitle,
                             function (result) {
                                 if (!result) {

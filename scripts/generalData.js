@@ -602,9 +602,9 @@
                     function resultMandatoryConverter(item) {
                         if (item.INITOptionTypeID === 22) {
                             if (item.LocalValue === "1") {
-                                AppData._persistentStates.showConfirmQuestion = true;
+                                AppData._persistentStates.showAlertConfirmQuestion = true;
                             } else {
-                                AppData._persistentStates.showConfirmQuestion = false;
+                                AppData._persistentStates.showAlertConfirmQuestion = false;
                             }
                         }
                     }
@@ -626,7 +626,7 @@
                                 results.forEach(function (item, index) {
                                     resultConverter(item, index);
                                 });
-                                AppData._persistentStates.showConfirmQuestion = false;
+                                AppData._persistentStates.showAlertConfirmQuestion = false;
                                 results.forEach(function (item) {
                                     resultMandatoryConverter(item);
                                 });

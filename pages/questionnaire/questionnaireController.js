@@ -438,9 +438,9 @@
             var resultMandatoryConverter = function (item) {
                 if (item.INITOptionTypeID === 22) {
                     if (item.LocalValue === "1") {
-                        AppData._persistentStates.showConfirmQuestion = true;
+                        AppData._persistentStates.showAlertConfirmQuestion = true;
                     } else {
-                        AppData._persistentStates.showConfirmQuestion = false;
+                        AppData._persistentStates.showAlertConfirmQuestion = false;
                     }
                 }
             }
@@ -886,7 +886,7 @@
             };
             this.saveData = saveData;
 
-            var showConfirmBoxMandatory = function () {
+            var isMandatoryQuestion = function () {
                 var ret = false;
                 Log.call(Log.l.trace, "Questionnaire.Controller.");
                 if (that.questions) {
@@ -894,8 +894,7 @@
                         var question = that.questions.getAt(i);
                         if (question &&
                             typeof question === "object" &&
-                            question.PflichtFeld &&
-                            AppData._persistentStates.showConfirmQuestion) {
+                            question.PflichtFeld) {
 
                             var curScope = question;
                             that.actualquestion = question;
@@ -948,9 +947,9 @@
                 Log.ret(Log.l.u1);
                 return ret;
             };
-            this.showConfirmBoxMandatory = showConfirmBoxMandatory;
+            this.isMandatoryQuestion = isMandatoryQuestion;
 
-            var showConfirmBoxPflichtfeldAntwort = function() {
+            var isPflichtfeldAntwort = function() {
                 var ret = false;
                 Log.call(Log.l.trace, "Questionnaire.Controller.");
                 if (that.questions) {
@@ -1039,7 +1038,7 @@
                 Log.ret(Log.l.u1);
                 return ret;
             };
-            this.showConfirmBoxPflichtfeldAntwort = showConfirmBoxPflichtfeldAntwort;
+            this.isPflichtfeldAntwort = isPflichtfeldAntwort;
 
             var getNextDocId = function () {
                 var ret = null;
