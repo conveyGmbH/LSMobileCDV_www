@@ -81,8 +81,8 @@
                 var isMandatoryQuestion = this.controller.isMandatoryQuestion();
                 var isPflichtfeldAntwort = this.controller.isPflichtfeldAntwort();
                 var confirmTitle = "";
-                if ((isMandatoryQuestion && this.controller.actualquestion) ||
-                    (isPflichtfeldAntwort && this.controller.actualPfquestion)) {
+                if (!Barcode.listening && ((isMandatoryQuestion && this.controller.actualquestion) ||
+                    (isPflichtfeldAntwort && this.controller.actualPfquestion))) {
                     if (isMandatoryQuestion) {
                         confirmTitle = getResourceText("questionnaire.labelConfirmMandatoryField") +
                             ":\n" +

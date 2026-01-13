@@ -1940,7 +1940,7 @@
                                 // when the response is available
                                 Log.print(Log.l.trace, "Questionnaire.questionnaireView: success!");
                                 // startContact returns object already parsed from json file in response
-                                if (json && json.d) {
+                                if (json && json.d && that.questions) {
                                     var item = json.d;
                                     that.resultConverter(item, index);
                                     that.questions.setAt(index, item);
