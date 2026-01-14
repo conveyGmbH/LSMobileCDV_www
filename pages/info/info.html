@@ -24,7 +24,7 @@
                     <div class="field_line field_line_odd">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.cameraQuality'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.cameraQuality'}"></span>
-                        <span  data-win-bind="textContent: generalData.cameraQuality"></span>
+                        <span class="input_field" data-win-bind="textContent: generalData.cameraQuality"></span>
                         <input id="cameraQuality" class="input_field win-range"
                                type="range" min="0" max="100" step="1"
                                data-win-bind="value: generalData.cameraQuality"
@@ -46,7 +46,7 @@
                     <div class="field_line field_line_odd">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.cameraMegapixel'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.cameraMegapixel'}"></span>
-                        <span data-win-bind="textContent: generalData.cameraMegapixel"></span>
+                        <span class="input_field" data-win-bind="textContent: generalData.cameraMegapixel"></span>
                         <input id="cameraMegapixel" class="input_field win-range"
                                type="range" min="1" max="25" step="0.1"
                                data-win-bind="value: generalData.cameraMegapixel"
@@ -79,7 +79,7 @@
                     <div class="field_line field_line_even" data-win-bind="style.display: generalData.useClippingCamera Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.autoShutterTime'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.autoShutterTime'}"></span>
-                        <span  data-win-bind="textContent: generalData.autoShutterTime"></span>
+                        <span class="input_field" data-win-bind="textContent: generalData.autoShutterTime"></span>
                         <input id="autoShutterTime" class="input_field win-range"
                                type="range" min="0" max="10000" step="100"
                                data-win-bind="value: generalData.autoShutterTime"
@@ -143,12 +143,12 @@
                     <div class="field_line field_line_odd" data-win-bind="style.display: hasSerialDevice Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.barcodeDeviceId'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.barcodeDeviceId'}"></span>
-                        <span  data-win-bind="textContent: generalData.barcodeDevice"></span>
+                        <span class="input_field" data-win-bind="textContent: generalData.barcodeDevice"></span>
                     </div>
                     <div class="field_line field_line_even" data-win-bind="style.display: hasSerialDevice Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.barcodeDeviceStatus'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.barcodeDeviceStatus'}"></span>
-                        <span  data-win-bind="textContent: barcodeDeviceStatus"></span>
+                        <span class="input_field" data-win-bind="textContent: barcodeDeviceStatus"></span>
                     </div>
                     <div class="line-separator" data-win-bind="style.display: isAndroid Binding.Converter.toDisplay"></div>
                     <div class="field_line field_line_odd" data-win-bind="style.display: isAndroid Binding.Converter.toDisplay">
@@ -185,7 +185,7 @@
                     <div class="field_line field_line_even" data-win-bind="style.display: appSettings.odata.replActive Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.replIntervalFastReqs'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.replIntervalFastReqs'}"></span>
-                        <span  data-win-bind="textContent: appSettings.odata.replIntervalFastReqs"></span>
+                        <span class="input_field" data-win-bind="textContent: appSettings.odata.replIntervalFastReqs"></span>
                         <input id="replIntervalFastReqs" class="input_field win-range"
                                type="range" min="0.15" max="1" step="0.05"
                                data-win-bind="value: appSettings.odata.replIntervalFastReqs"
@@ -196,7 +196,7 @@
                     <div class="field_line field_line_odd" data-win-bind="style.display: appSettings.odata.replActive Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.numFastReqs'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.numFastReqs'}"></span>
-                        <span  data-win-bind="textContent: appSettings.odata.numFastReqs"></span>
+                        <span class="input_field" data-win-bind="textContent: appSettings.odata.numFastReqs"></span>
                         <input id="numFastReqs" class="input_field win-range"
                                type="range" min="5" max="100" step="1"
                                data-win-bind="value: appSettings.odata.numFastReqs"
@@ -206,7 +206,7 @@
                     <div class="field_line field_line_even" data-win-bind="style.display: appSettings.odata.replActive Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.replInterval'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.replInterval'}"></span>
-                        <span  data-win-bind="textContent: appSettings.odata.replInterval"></span>
+                        <span class="input_field" data-win-bind="textContent: appSettings.odata.replInterval"></span>
                         <input id="replInterval" class="input_field win-range"
                                type="range" min="5" max="120" step="1"
                                data-win-bind="value: appSettings.odata.replInterval"
@@ -222,7 +222,7 @@
                               data-win-res="{textContent: 'info.upload'}"></span>
                         <span class="label landscape_only"
                               data-win-res="{textContent: 'info.upload'}"></span>
-                        <span 
+                        <span class="input_field"
                               data-win-bind="textContent: uploadTS Binding.Converter.toDateString"></span>
                     </div>
                     <div class="field_line field_line_even">
@@ -230,7 +230,7 @@
                               data-win-res="{textContent: 'info.download'}"></span>
                         <span class="label landscape_only"
                               data-win-res="{textContent: 'info.download'}"></span>
-                        <span 
+                        <span class="input_field"
                               data-win-bind="textContent: downloadTS Binding.Converter.toDateString"></span>
                     </div>
                     <div class="line-separator"></div>
@@ -341,7 +341,7 @@
                     <div class="field_line field_line_even" data-win-bind="style.display: generalData.logEnabled Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.loglevel'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.loglevel'}"></span>
-                        <span data-win-bind="textContent: generalData.logLevel Binding.Converter.toLogLevelName"></span>
+                        <span class="input_field" data-win-bind="textContent: generalData.logLevel Binding.Converter.toLogLevelName"></span>
                         <input id="logLevel" class="input_field win-range"
                                type="range" min="1" max="6" step="1"
                                data-win-bind="value: generalData.logLevel"
