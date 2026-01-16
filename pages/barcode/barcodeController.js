@@ -474,6 +474,7 @@
                             resultDisplayDuration: 0,
                             disableAnimations: true,
                             TRY_HARDER: "1",
+                            showTorchButton: true,
                             legacyBarcodescan: AppData.generalData.legacyBarcodescan
                         });
                     } else if (typeof device === "object" &&
@@ -481,6 +482,7 @@
                         AppData.generalData.useBinaryQrCode) {
                         Log.print(Log.l.trace, "iOS && useBinaryQrCode: calling barcodeScanner.scan...");
                         cordova.plugins.barcodeScanner.scan(onBarcodeSuccess, onBarcodeError, {
+                            showTorchButton: true,
                             useBinaryQrCode: AppData.generalData.useBinaryQrCode
                         });
                     } else {
