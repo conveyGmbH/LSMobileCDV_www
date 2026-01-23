@@ -291,6 +291,13 @@
                                     actionLine.button0.Firmenname = dataContact.Firmenname;
                                     actionLine.button0.EMail = dataContact.EMail;
                                     actionLine.button0.content = dataContact.CreatorSiteID + "/" + dataContact.CreatorRecID;
+                                    if (dataContact.IsIncomplete || dataContact.QuestionnaireIncomplete) {
+                                        actionLine.button0.signalBkgColor = Colors.orange;
+                                    } else {
+                                        actionLine.button0.signalBkgColor = "";
+                                    }
+                                    actionLine.button0.IsIncomplete = dataContact.IsIncomplete;
+                                    actionLine.button0.QuestionnaireIncomplete = dataContact.QuestionnaireIncomplete;
                                     if (dataContact.Erfassungsdatum && dataContact.ModifiedTS) {
                                         if (dataContact.Erfassungsdatum === actionLine.button0.ModifiedTS) {
                                             actionLine.button0.modifiedOn = getResourceText("contact.editedOn");
@@ -365,6 +372,9 @@
                                 actionLine.button0.showModified = false;
                                 actionLine.button0.modifiedOn = "";
                                 actionLine.button0.editedOn = "";
+                                actionLine.button0.signalBkgColor = "";
+                                actionLine.button0.IsIncomplete = false;
+                                actionLine.button0.QuestionnaireIncomplete = false;
                                 changed = true;
                             }
                         } else if (actionLine.id === "list") {
@@ -685,6 +695,7 @@
                             };
                             resetSvgLoaded();
                             var js = {};
+                            js.status = Colors.loadSVGImageElements(listView, "incomplete-status-icon", 20, Colors.pauseColor, "name");
                             js.recent = Colors.loadSVGImageElements(listView, "action-image-right", 80, Colors.textColor, "name", showTileButton);
                             js.list = Colors.loadSVGImageElements(listView, "action-image-list", 40, "#f0f0f0", "name", showTileButton);
                             js.new = Colors.loadSVGImageElements(listView, "action-image-new", 40, "#f0f0f0", "name", showTileButton, {

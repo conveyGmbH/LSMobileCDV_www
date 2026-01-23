@@ -209,3 +209,18 @@
     margin-right: 4px;
     float: right;
 }
+
+.start .warning-icon {
+    position: relative;
+    top: -4px;
+}
+
+.start .warning-icon::after {
+    content: "\26A0";
+}
+
+.start .incomplete-status-icon-container {
+    float: left;
+    margin-top: -2px;
+    margin-right: 4px;
+}

@@ -82,7 +82,10 @@
                                 EMail: "",
                                 modifiedOn: "",
                                 editedOn: "",
-                                showModified: false
+                                showModified: false,
+                                IsIncomplete: false,
+                                QuestionnaireIncomplete: false,
+                                signalBkgColor: ""
                             }
                         }, {
                             id: "list",

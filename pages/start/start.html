@@ -34,6 +34,15 @@
                                                 <div class="list-item-label-left win-type-caption">
                                                     <span data-win-bind="textContent: button0.content"></span>
                                                 </div>
+                                                <div class="incomplete-status-icon-container" data-win-bind="style.display: button0.signalBkgColor Binding.Converter.toDisplay">
+                                                    <span class="warning-icon"></span>
+                                                </div>
+                                                <div class="incomplete-status-icon-container" data-win-bind="style.display: button0.IsIncomplete Binding.Converter.toDisplay">
+                                                    <div name="contact_Ereignis" class="incomplete-status-icon"></div>
+                                                </div>
+                                                <div class="incomplete-status-icon-container" data-win-bind="style.display: button0.QuestionnaireIncomplete Binding.Converter.toDisplay">
+                                                    <div name="pflichtFelder" class="incomplete-status-icon"></div>
+                                                </div>
                                                 <div class="list-item-label-right win-type-caption">
                                                     <span class="list-date-label" data-win-bind="textContent: button0.editedOn"></span><br />
                                                     <span class="list-date-value" data-win-bind="textContent: button0.Erfassungsdatum Binding.Converter.toDateString"></span>
