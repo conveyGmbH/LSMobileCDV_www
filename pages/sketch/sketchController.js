@@ -37,6 +37,10 @@
                 hideAddImg: !AppData._persistentStates.cameraFeatureSupported
             }, commandList]);
 
+            this.contactReloadPromise = null;
+            this.dataContact = getEmptyDefaultValue(Privacy.contactView.defaultValue);
+            this.prevDataContact = getEmptyDefaultValue(Privacy.contactView.defaultValue);
+
             this.pageElement = pageElement;
             this.docViewer = null;
             this.toolboxIds = ['addNotesToolbar'];
@@ -113,6 +117,27 @@
                 Log.ret(Log.l.trace);
                 return docViewer;
             }
+
+            var updateIncompleteStates = function (data) {
+                Log.call(Log.l.trace, ".Controller.", "IsIncomplete=" + (data && data.IsIncomplete) + " QuestionnaireIncomplete=" + (data && data.QuestionnaireIncomplete));
+                if (data) {
+                    if (!that.prevDataContact || that.prevDataContact.IsIncomplete !== data.IsIncomplete) {
+                        // add warning-background-color
+                        NavigationBar.changeNavigationBarSignalBkgColor("contact", data.IsIncomplete ? Colors.orange : "");
+                        // add warning-symbol
+                        var contactLabel = getResourceText("label.contact");
+                        NavigationBar.changeNavigationBarLabel("contact", data.IsIncomplete ? contactLabel + " &#x26A0;" : contactLabel);
+                    }
+                }
+                Log.ret(Log.l.trace);
+            };
+
+            var setDataContact = function (newDataContact) {
+                that.prevDataContact = copyByValue(that.dataContact);
+                that.dataContact = newDataContact;
+                updateIncompleteStates(that.dataContact);
+            }
+            this.setDataContact = setDataContact;
 
             var prevNoteId;
             var inLoadDoc = false;
@@ -229,6 +254,42 @@
             }
             this.isModified = isModified;
 
+            var reloadData = function (prevModifiedTs) {
+                Log.call(Log.l.trace, "Sketch.Controller.");
+                if (that.contactReloadPromise) {
+                    that.contactReloadPromise.cancel();
+                    that.removeDisposablePromise(that.contactReloadPromise);
+                }
+                AppData.setErrorMsg(that.binding);
+                var ret = new WinJS.Promise.as().then(function () {
+                    var contactId = AppData.getRecordId("Kontakt");
+                    if (contactId) {
+                        //load of format relation record data
+                        Log.print(Log.l.trace, "calling select contactView...");
+                        that.contactReloadPromise = Sketch.contactView.select(function (json) {
+                            that.removeDisposablePromise(that.contactReloadPromise);
+                            AppData.setErrorMsg(that.binding);
+                            Log.print(Log.l.trace, "contactView: success!");
+                            if (json && json.d) {
+                                var modifiedTs = json.d.ModifiedTS;
+                                if (!(prevModifiedTs === modifiedTs)) {
+                                    that.setDataContact(json.d);
+                                }
+                            }
+                        }, function (errorResponse) {
+                            that.removeDisposablePromise(that.contactReloadPromise);
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        }, contactId);
+                        return that.addDisposablePromise(that.contactReloadPromise);
+                    } else {
+                        return WinJS.Promise.as();
+                    }
+                });
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+            this.reloadData = reloadData;
+
             var loadData = function (noteId, docGroup, docFormat) {
                 Log.call(Log.l.trace, "Sketch.Controller.", "noteId=" + noteId + " docGroup=" + docGroup + " docFormat=" + docFormat);
                 AppData.setErrorMsg(that.binding);
@@ -270,6 +331,25 @@
                     } else {
                         //load doc then if noteId is set
                         return loadDoc(noteId, docGroup, docFormat);
+                    }
+                }).then(function () {
+                    if (that.binding.contactId) {
+                        //load of format relation record data
+                        Log.print(Log.l.trace, "calling select contactView...");
+                        var contactSelectPromise = Sketch.contactView.select(function (json) {
+                            AppData.setErrorMsg(that.binding);
+                            Log.print(Log.l.trace, "contactView: success!");
+                            if (json && json.d) {
+                                that.setDataContact(json.d);
+                            }
+                            that.removeDisposablePromise(contactSelectPromise);
+                        }, function (errorResponse) {
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                            that.removeDisposablePromise(contactSelectPromise);
+                        }, that.binding.contactId);
+                        return that.addDisposablePromise(contactSelectPromise);
+                    } else {
+                        return WinJS.Promise.as();
                     }
                 });
                 Log.ret(Log.l.trace);
