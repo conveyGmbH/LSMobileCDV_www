@@ -61,7 +61,10 @@
 
             var that = this;
 
-            var delayedSaveDataPromise = null;
+            this.contactReloadPromise = null;
+            this.dataContact = getEmptyDefaultValue(Questionnaire.contactView.defaultValue);
+            this.prevDataContact = getEmptyDefaultValue(Questionnaire.contactView.defaultValue);
+            this.delayedSaveDataPromise = null;
 
             // ListView control
             var listView = pageElement.querySelector("#listQuestionnaire.listview");
@@ -272,6 +275,27 @@
                 });
             }
             this.listQuestionnaireRenderer = listQuestionnaireRenderer;
+
+            var updateIncompleteStates = function (data) {
+                Log.call(Log.l.trace, ".Controller.", "IsIncomplete=" + (data && data.IsIncomplete) + " QuestionnaireIncomplete=" + (data && data.QuestionnaireIncomplete));
+                if (data) {
+                    if (!that.prevDataContact || that.prevDataContact.IsIncomplete !== data.IsIncomplete) {
+                        // add warning-background-color
+                        NavigationBar.changeNavigationBarSignalBkgColor("contact", data.IsIncomplete ? Colors.orange : "");
+                        // add warning-symbol
+                        var contactLabel = getResourceText("label.contact");
+                        NavigationBar.changeNavigationBarLabel("contact", data.IsIncomplete ? contactLabel + " &#x26A0;" : contactLabel);
+                    }
+                }
+                Log.ret(Log.l.trace);
+            };
+
+            var setDataContact = function (newDataContact) {
+                that.prevDataContact = copyByValue(that.dataContact);
+                that.dataContact = newDataContact;
+                updateIncompleteStates(that.dataContact);
+            }
+            this.setDataContact = setDataContact;
 
             var progress = null;
             var counter = null;
@@ -723,7 +747,7 @@
                                     if (question.CurrentQuestionIncomplete && newValues ||
                                         !question.CurrentQuestionIncomplete && !newValues) {
                                         that.delayedSaveData();
-                                    } else if (delayedSaveDataPromise) {
+                                    } else if (that.delayedSaveDataPromise) {
                                         that.delayedSaveData();
                                     }
                                 }
@@ -1876,6 +1900,42 @@
             }
             this.loadPicture = loadPicture;
 
+            var reloadData = function (prevModifiedTs) {
+                Log.call(Log.l.trace, "Questionnaire.Controller.");
+                if (that.contactReloadPromise) {
+                    that.contactReloadPromise.cancel();
+                    that.removeDisposablePromise(that.contactReloadPromise);
+                }
+                AppData.setErrorMsg(that.binding);
+                var ret = new WinJS.Promise.as().then(function () {
+                    var contactId = AppData.getRecordId("Kontakt");
+                    if (contactId) {
+                        //load of format relation record data
+                        Log.print(Log.l.trace, "calling select contactView...");
+                        that.contactReloadPromise = Questionnaire.contactView.select(function (json) {
+                            that.removeDisposablePromise(that.contactReloadPromise);
+                            AppData.setErrorMsg(that.binding);
+                            Log.print(Log.l.trace, "contactView: success!");
+                            if (json && json.d) {
+                                var modifiedTs = json.d.ModifiedTS;
+                                if (!(prevModifiedTs === modifiedTs)) {
+                                    that.setDataContact(json.d);
+                                }
+                            }
+                        }, function (errorResponse) {
+                            that.removeDisposablePromise(that.contactReloadPromise);
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        }, contactId);
+                        return that.addDisposablePromise(that.contactReloadPromise);
+                    } else {
+                        return WinJS.Promise.as();
+                    }
+                });
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+            this.reloadData = reloadData;
+
             var loadData = function (recordId) {
                 Log.call(Log.l.trace, "Questionnaire.Controller.", "recordId=" + recordId);
                 AppData.setErrorMsg(that.binding);
@@ -1921,6 +1981,25 @@
                         }, newContact);
                     } else {
                         Log.print(Log.l.trace, "use existing contactID=" + contactId);
+                        return WinJS.Promise.as();
+                    }
+                }).then(function () {
+                    if (!recordId && contactId) {
+                        //load of format relation record data
+                        Log.print(Log.l.trace, "calling select contactView...");
+                        var contactSelectPromise = Questionnaire.contactView.select(function (json) {
+                            AppData.setErrorMsg(that.binding);
+                            Log.print(Log.l.trace, "contactView: success!");
+                            if (json && json.d) {
+                                that.setDataContact(json.d);
+                            }
+                            that.removeDisposablePromise(contactSelectPromise);
+                        }, function (errorResponse) {
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                            that.removeDisposablePromise(contactSelectPromise);
+                        }, contactId);
+                        return that.addDisposablePromise(contactSelectPromise);
+                    } else {
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
@@ -2024,15 +2103,15 @@
             this.loadData = loadData;
 
             var delayedSaveData = function () {
-                if (delayedSaveDataPromise) {
-                    delayedSaveDataPromise.cancel();
+                if (that.delayedSaveDataPromise) {
+                    that.delayedSaveDataPromise.cancel();
                 }
-                delayedSaveDataPromise = WinJS.Promise.timeout(150).then(function () {
+                that.delayedSaveDataPromise = WinJS.Promise.timeout(150).then(function () {
                     that.saveData();
-                    that.removeDisposablePromise(delayedSaveDataPromise);
-                    delayedSaveDataPromise = null;
+                    that.removeDisposablePromise(that.delayedSaveDataPromise);
+                    that.delayedSaveDataPromise = null;
                 });
-                that.addDisposablePromise(delayedSaveDataPromise);
+                that.addDisposablePromise(that.delayedSaveDataPromise);
             }
             this.delayedSaveData = delayedSaveData;
 
