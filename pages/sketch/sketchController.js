@@ -38,8 +38,8 @@
             }, commandList]);
 
             this.contactReloadPromise = null;
-            this.dataContact = getEmptyDefaultValue(Privacy.contactView.defaultValue);
-            this.prevDataContact = getEmptyDefaultValue(Privacy.contactView.defaultValue);
+            this.dataContact = getEmptyDefaultValue(Sketch.contactView.defaultValue);
+            this.prevDataContact = getEmptyDefaultValue(Sketch.contactView.defaultValue);
 
             this.pageElement = pageElement;
             this.docViewer = null;
