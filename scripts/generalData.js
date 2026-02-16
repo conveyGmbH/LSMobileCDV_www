@@ -717,7 +717,7 @@
                                     NavigationBar.enablePage("search");
                                     doUpdate = true;
                                 }
-                                if (json && json.d && json.d.results.length === 1) {
+                                if (json && json.d && json.d.results && json.d.results.length === 1) {
                                     var prevUserRemoteData = AppData._userRemoteData;
                                     AppData._userRemoteData = json.d.results[0];
                                     AppData.appSettings.odata.timeZoneRemoteAdjustment = AppData._userRemoteData.TimeZoneAdjustment || 0;
