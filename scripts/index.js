@@ -221,16 +221,18 @@
         Log.call(Log.l.trace, "Application.");
         if (fetchRequests) for (var i = 0; i < fetchRequests.length; i++) {
             var fetchRequest = fetchRequests[i];
-            if (fetchRequest && fetchRequest.relationName === "Kontakt") {
-                if (typeof AppBar.scope.reloadData === "function" && !AppBar.modified) {
-                    AppBar.scope.reloadData(AppBar.scope.binding.dataContact && AppBar.scope.binding.dataContact.ModifiedTS);
+            if (fetchRequest && fetchRequest.relationName === "Kontakt" && fetchRequest.replicationDone && fetchRequest.recordIds) {
+                for (var j = 0; j < fetchRequest.replicationDone.length && j < fetchRequest.recordIds.length; j++) {
+                    if (fetchRequest.replicationDone[j] && fetchRequest.recordIds[j]) {
+                        Log.print(Log.l.info, "fetched KontaktId=" + fetchRequest.recordIds[j]);
+                        if (typeof AppBar.scope.reloadData === "function" && !AppBar.modified) {
+                            AppBar.scope.reloadData(AppBar.scope.binding.dataContact && AppBar.scope.binding.dataContact.ModifiedTS);
+                        }
+                        AppData.getUserData();
+                        AppData.getContactData();
+                        break;
+                    }
                 }
-                AppData.getUserData();
-                AppData.getContactData();
-                /*if (!AppData._alternativeTimeout) {
-                    AppData._curGetUserRemoteDataId = 0;
-                    AppData.getUserRemoteData();
-                }*/
                 break;
             }
         }
