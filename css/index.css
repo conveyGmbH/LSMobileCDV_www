@@ -849,6 +849,7 @@ event name
     width: calc(100% - 278px);
     float: right;
     margin-top: 8px;
+    line-height: 1.25;
 }
 
 .event-name {

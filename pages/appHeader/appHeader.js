@@ -101,43 +101,20 @@
                     }
                     var eventLine = document.querySelector(".event-line");
                     var menuButton = document.querySelector("#menuButton");
+                    if (eventLine && eventLine.style) {
+                        eventLine.style.width = "calc(100% - " + ((menuButton && menuButton.clientWidth) + 48).toString() + "px)";
+                    }
                     var eventField = document.querySelector(".event-field");
-                    eventLine.style.width = "calc(100% - " + (menuButton.getBoundingClientRect().width + 48).toString() + "px)";
-
-                    if (eventField && eventField.style) {
+                    if (eventLine && eventField && eventField.style) {
                         eventField.style.width = strStyleWidth;
                         eventField.style.float = strStyleFloat;
-                    }
-                    var eventField = document.querySelector(".event-field");
-
-                    function resize2fit(container) {
-                        var child = container.children[0];
-                        if (!container.parentElement || child.offsetWidth === 0) return;
-                        child.style.fontSize = "1em";
-                        var containerRect = {
-                            max_width: container.getBoundingClientRect().width + 48,
-                            max_height: container.getBoundingClientRect().height + 4
-                        };
-                        var childRect = {
-                            width: child.getBoundingClientRect().width,
-                            height: child.getBoundingClientRect().height
+                        eventField.style.fontSize = "";
+                        if (eventField.clientHeight > 40) {
+                            eventField.style.fontSize = "12px";
                         }
-                        if (child && child.style) {
-                            child.style.fontSize = Math.min(Math.min(containerRect.max_width / childRect.width, containerRect.max_height / childRect.height), 1.32) + "em";
-                            while (container.getBoundingClientRect().height / (1.5 * 14) >= 3) {
-                                    child.innerText = child.innerText.replace(/\W*\s(\S)*$/, '...');
-                            }
-                            if ((child.getBoundingClientRect().height / (1.5 * 14)) >= 2) {
-                                container.style.marginTop = "-2px";
-                                container.style.lineHeight = "normal";
-                            } else {
-                                container.style.marginTop = "8px";
-                                container.style.lineHeight = "1.5";
-                            }
-                        }
-                    }
-                    if (eventField) {
-                        resize2fit(eventField);
+                        var height = eventField.clientHeight;
+                        var marginTop = (eventLine.clientHeight - 8 - height) / 2;
+                        eventField.style.marginTop = marginTop.toString() + "px";
                     }
                     that.inResize = 0;
                 });
