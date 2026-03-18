@@ -133,7 +133,7 @@
         //if (!AppData._persistentStates.showvisitorFlow) {
         if (AppData._persistentStates.odata.serverFailure) {
             AppData.startReplicationHelper();
-            if (id === "login" && !AppData.generalData.logOffOptionActive) {
+            if (id === "login") {
                 Log.print(Log.l.error, "because of serverFailure navigate to account page");
                 id = "account";
             }
