@@ -272,36 +272,44 @@
                                 }
                             }
                             WinJS.Utilities.removeClass(element, "view-size-small");
-                            WinJS.Utilities.removeClass(element, "view-size-medium-small");
+                            WinJS.Utilities.removeClass(element, "view-size-medium");
                             WinJS.Utilities.removeClass(element, "view-size-medium");
                             WinJS.Utilities.removeClass(element, "view-size-bigger");
-                            if (fieldWidth > 499) {
+                            WinJS.Utilities.removeClass(element, "view-size-biggest");
+                            if (fieldWidth > Application.maxViewSize.small) {
                                 // remove class: view-size-small  
                                 WinJS.Utilities.removeClass(fieldsContainer, "view-size-small");
                             } else {
                                 // add class: view-size-small    
                                 WinJS.Utilities.addClass(fieldsContainer, "view-size-small");
                             }
-                            if (fieldWidth > 699) {
+                            if (fieldWidth > Application.maxViewSize.mediumSmall) {
                                 // remove class: view-size-medium-small  
-                                WinJS.Utilities.removeClass(fieldsContainer, "view-size-medium-small");
+                                WinJS.Utilities.removeClass(fieldsContainer, "view-size-medium");
                             } else {
                                 // add class: view-size-medium-small    
-                                WinJS.Utilities.addClass(fieldsContainer, "view-size-medium-small");
+                                WinJS.Utilities.addClass(fieldsContainer, "view-size-medium");
                             }
-                            if (fieldWidth > 899) {
+                            if (fieldWidth > Application.maxViewSize.medium) {
                                 // remove class: view-size-medium    
                                 WinJS.Utilities.removeClass(fieldsContainer, "view-size-medium");
                             } else {
                                 // add class: view-size-medium
                                 WinJS.Utilities.addClass(fieldsContainer, "view-size-medium");
                             }
-                            if (fieldWidth > 1099) {
+                            if (fieldWidth > Application.maxViewSize.bigger) {
                                 // remove class: view-size-bigger
                                 WinJS.Utilities.removeClass(fieldsContainer, "view-size-bigger");
                             } else {
                                 // add class: view-size-bigger
                                 WinJS.Utilities.addClass(fieldsContainer, "view-size-bigger");
+                            }
+                            if (fieldWidth > Application.maxViewSize.biggest) {
+                                // remove class: view-size-bigger
+                                WinJS.Utilities.removeClass(fieldsContainer, "view-size-biggest");
+                            } else {
+                                // add class: view-size-bigger
+                                WinJS.Utilities.addClass(fieldsContainer, "view-size-biggest");
                             }
                         }
                     }

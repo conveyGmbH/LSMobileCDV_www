@@ -37,9 +37,16 @@
 #listLocalContacts .win-viewport {
     overflow-x: auto;
 }
-
+/*
 .view-size-medium-small #listLocalContacts .win-viewport {
     overflow-x: hidden;
+}
+*/
+.view-size-medium #listLocalContacts .win-viewport {
+    overflow-x: hidden;
+}
+.pagecontrol:not(.view-size-medium) #listLocalContacts .win-viewport {
+    touch-action: pan-x pan-y !important;
 }
 
 .listLocal .list-div-right {
@@ -82,10 +89,17 @@
 #listLocalContacts .win-footercontainer {
     min-width: 1796px;
 }
-
+/*
 .view-size-medium-small #listLocalContacts .win-headercontainer,
 .view-size-medium-small #listLocalContacts .win-surface,
 .view-size-medium-small #listLocalContacts .win-footercontainer {
+    min-width: inherit;
+    width: 100% !important;
+}
+*/
+.view-size-medium #listLocalContacts .win-headercontainer,
+.view-size-medium #listLocalContacts .win-surface,
+.view-size-medium #listLocalContacts .win-footercontainer {
     min-width: inherit;
     width: 100% !important;
 }
@@ -214,9 +228,9 @@
     /* margin-top: -8px; */
 }
 
-.view-size-medium-small #listLocalContacts .win-item,
-.view-size-medium-small #listLocalContacts .list-header,
-.view-size-medium-small #listLocalContacts .list-footer {
+.view-size-medium #listLocalContacts .win-item,
+.view-size-medium #listLocalContacts .list-header,
+.view-size-medium #listLocalContacts .list-footer {
     padding-top: 8px;
     padding-bottom: 8px;
     border: none;
@@ -249,13 +263,22 @@
 #listLocalContacts .status-image {
     opacity: 0.6;
 }
-
-.view-size-bigger #listLocalContacts .list-portrait-only,
+/*
+.view-size-medium #listLocalContacts .list-portrait-only,
 .view-size-medium-small #listLocalContacts .list-landscape-only {
     display: none;
 }
 
 .view-size-medium-small #listLocalContacts .list-portrait-only {
+    display: block;
+}
+*/
+.view-size-bigger #listLocalContacts .list-portrait-only,
+.view-size-medium #listLocalContacts .list-landscape-only {
+    display: none;
+}
+
+.view-size-medium #listLocalContacts .list-portrait-only {
     display: block;
 }
 

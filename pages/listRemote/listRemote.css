@@ -31,9 +31,16 @@
 #listRemoteContacts .win-viewport {
     overflow-x: auto;
 }
-
+/*
 .view-size-medium-small #listRemoteContacts .win-viewport {
     overflow-x: hidden;
+}
+*/
+.view-size-medium #listRemoteContacts .win-viewport {
+    overflow-x: hidden;
+}
+.pagecontrol:not(.view-size-medium) #listRemoteContacts .win-viewport {
+    touch-action: pan-x pan-y !important;
 }
 
 .pagecontrol:not(.view-size-bigger) #listRemoteContacts .win-headercontainer {
@@ -72,10 +79,17 @@
 #listRemoteContacts .win-footercontainer {
     min-width: 1796px;
 }
-
+/*
 .view-size-medium-small #listRemoteContacts .win-headercontainer,
 .view-size-medium-small #listRemoteContacts .win-surface,
 .view-size-medium-small #listRemoteContacts .win-footercontainer {
+    min-width: inherit;
+    width: 100% !important;
+}
+*/
+.view-size-medium #listRemoteContacts .win-headercontainer,
+.view-size-medium #listRemoteContacts .win-surface,
+.view-size-medium #listRemoteContacts .win-footercontainer {
     min-width: inherit;
     width: 100% !important;
 }
@@ -203,9 +217,9 @@
     /* margin-top: -8px; */
 }
 
-.view-size-medium-small #listRemoteContacts .win-item,
-.view-size-medium-small #listRemoteContacts .list-header,
-.view-size-medium-small #listRemoteContacts .list-footer {
+.view-size-medium #listRemoteContacts .win-item,
+.view-size-medium #listRemoteContacts .list-header,
+.view-size-medium #listRemoteContacts .list-footer {
     padding-top: 8px;
     padding-bottom: 8px;
     border: none;
@@ -238,13 +252,22 @@
 #listRemoteContacts .status-image {
     opacity: 0.6;
 }
-
-.view-size-bigger #listRemoteContacts .list-portrait-only,
+/*
+.view-size-medium #listRemoteContacts .list-portrait-only,
 .view-size-medium-small #listRemoteContacts .list-landscape-only {
     display: none;
 }
 
 .view-size-medium-small #listRemoteContacts .list-portrait-only {
+    display: block;
+}
+*/
+.view-size-bigger #listRemoteContacts .list-portrait-only,
+.view-size-medium #listRemoteContacts .list-landscape-only {
+    display: none;
+}
+
+.view-size-medium #listRemoteContacts .list-portrait-only {
     display: block;
 }
 
