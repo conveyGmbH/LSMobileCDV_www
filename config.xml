@@ -1,16 +1,88 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="de.convey.LSMobileCDV" version="2.9.1729" ios-CFBundleVersion="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>LeadSuccess</name>
+<widget id="de.convey.LSKioskCDV" version="2.9.1729" ios-CFBundleVersion="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>LeadSuccess Kiosk</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        The lead management kiosk to present product shows in LeadSuccess.
     </description>
-    <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
-        Apache Cordova Team
+    <author email="leadsuccess@convey.de" href="http://convey.de">
+        convey Information Systems GmbH
     </author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <platform name="windows">
+        <hook src="hooks/winjs.js" type="after_platform_add" />
+    </platform>
+    <platform name="windows">
+        <config-file parent="/Package/Capabilities" target="package.appxmanifest">
+            <Capability Name="picturesLibrary" />
+        </config-file>
+    </platform>
+    <platform name="android">
+        <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+        <preference name="AndroidExtraFilesystems" value="files, cache, sdcard, cache-external, files-external" />
+        <preference name="android-minSdkVersion" value="25" />
+        <preference name="android-targetSdkVersion" value="35" />
+        <preference name="AndroidInsecureFileModeEnabled" value="true" />
+		<edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android"> 
+			<application android:requestLegacyExternalStorage="true" /> 
+			<!--Make apk file small-->
+			<application android:extractNativeLibs="true" />
+		</edit-config>
+		<edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application/activity" mode="merge" xmlns:android="http://schemas.android.com/apk/res/android">
+			<activity android:exported="true"/>
+		</edit-config>  
+		<!--<edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application/meta-data" mode="merge" xmlns:android="http://schemas.android.com/apk/res/android">
+			<meta-data android:name="com.google.mlkit.vision.DEPENDENCIES" android:value="barcode_ui"/>
+		</edit-config>-->
+		<config-file target="AndroidManifest.xml" parent="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
+			<meta-data android:name="com.google.mlkit.vision.DEPENDENCIES" android:value="barcode_ui"/>
+		</config-file>
+        <preference name="AndroidWindowSplashScreenBackground" value="#c66145" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screens/android/leadsuccess_bkg.png" />
+    </platform>
+    <platform name="android">
+        <allow-intent href="market:*" />
+    </platform>
+    <platform name="ios">
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+		<allow-intent href="myapp:*" />
+		<edit-config target="NSAppTransportSecurity" file="*-Info.plist" mode="merge">
+			<dict>
+				<key>NSAllowsArbitraryLoads</key>
+				<true/>
+			</dict>
+		</edit-config>
+		<edit-config file="*-Info.plist" mode="merge" target="CFBundleURLTypes">
+		  <array>
+			<dict>
+			  <key>CFBundleURLSchemes</key>
+			  <array>
+				<string>myapp</string>
+			  </array>
+			</dict>
+		  </array>
+		</edit-config>
+		<edit-config file="*-Info.plist" mode="merge" target="LSApplicationQueriesSchemes">
+		  <array>
+			<string>myapp</string>
+		  </array>
+		</edit-config>
+    </platform>
+    <preference name="windows-target-version" value="10.0" />
+    <preference name="windows-phone-target-version" value="10.0" />
+    <platform name="android">
+        <icon density="ldpi" src="res/icons/android/icon-36-ldpi.png" />
+        <icon density="mdpi" src="res/icons/android/icon-48-mdpi.png" />
+        <icon density="hdpi" src="res/icons/android/icon-72-hdpi.png" />
+        <icon density="xhdpi" src="res/icons/android/icon-96-xhdpi.png" />
+    </platform>
     <platform name="ios">
         <icon src="res/icon/ios/icon.png" />
         <splash src="res/splash/ios/splash.png" />
