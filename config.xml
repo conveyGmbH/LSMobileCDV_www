@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="de.convey.LSMobileCDV" version="2.9.1729" ios-CFBundleVersion="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>LeadSuccess</name>
+    <description>
+        A sample Apache Cordova application that responds to the deviceready event.
+    </description>
+    <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
+        Apache Cordova Team
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <platform name="ios">
+        <icon src="res/icon/ios/icon.png" />
+        <splash src="res/splash/ios/splash.png" />
+    </platform>
+    <preference name="SplashScreen" value="screen" />
+    <preference name="SplashScreenBackgroundColor" value="#c66145" />
+    <preference name="FadeSplashScreen" value="true" />
+    <preference name="FadeSplashScreenDuration" value="300" />
+    <preference name="SplashScreenDelay" value="5000" />
+</widget>
