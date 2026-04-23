@@ -38,9 +38,13 @@
       "android"
     ],
     "plugins": {
-      "cordova-plugin-camera": {},
+      "cordova-plugin-camera": {
+        "ANDROIDX_CORE_VERSION": "1.6.+"
+      },
       "cordova-plugin-device": {},
-      "cordova-plugin-file": {},
+      "cordova-plugin-file": {
+        "ANDROIDX_WEBKIT_VERSION": "1.4.0"
+      },
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-statusbar": {},
@@ -62,7 +66,9 @@
       "cordova-plugin-network-information": {},
       "cordova-plugin-customurlscheme": {
         "URL_SCHEME": "myapp",
-        "ANDROID_HOST": "auth"
+        "ANDROID_HOST": "auth",
+        "ANDROID_SCHEME": " ",
+        "ANDROID_PATHPREFIX": "/"
       }
     }
   }
