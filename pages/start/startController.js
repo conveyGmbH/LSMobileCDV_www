@@ -776,7 +776,7 @@
                 // add ListView event handler
                 this.addRemovableEventListener(listView, "loadingstatechanged", this.eventHandlers.onLoadingStateChanged.bind(this));
             }
-
+            // navigator.camera prüfen 
             if (device && device.platform === "Android" &&
                 cordova && cordova.plugins &&
                 cordova.plugins.featureDetection &&

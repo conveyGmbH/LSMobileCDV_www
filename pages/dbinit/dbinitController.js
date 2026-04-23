@@ -291,13 +291,7 @@
                                     // user is not authorized to access this service
                                     AppBar.scope.binding.generalData.notAuthorizedUser = true;
                                     AppBar.scope.binding.generalData.oDataErrorMsg = err;
-                                    //var errorMessage = getResourceText("general.unauthorizedUser");
-                                    //alert(errorMessage);
-                                    //AppData.setErrorMsg(AppBar.scope.binding, err);
-                                    // user is not authorized to access this service
-                                    WinJS.Promise.timeout(1000).then(function () {
-                                        Application.navigateById("account");
-                                    });
+                                    AppData.checkForNavigateToLogin(err);
                                 }
                             });
                         } else {
@@ -407,13 +401,7 @@
                                     // user is not authorized to access this service
                                     AppBar.scope.binding.generalData.notAuthorizedUser = true;
                                     AppBar.scope.binding.generalData.oDataErrorMsg = err;
-                                    //var errorMessage = getResourceText("general.unauthorizedUser");
-                                    //alert(errorMessage);
-                                    //AppData.setErrorMsg(AppBar.scope.binding, err);
-                                    // user is not authorized to access this service
-                                    WinJS.Promise.timeout(1000).then(function () {
-                                        Application.navigateById("account");
-                                    });
+                                    AppData.checkForNavigateToLogin(err);
                                 }
                             });
                         } else {

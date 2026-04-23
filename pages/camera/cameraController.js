@@ -346,7 +346,7 @@
                     var now = new Date();
                     var dateStringUtc = now.toUTCString();
 
-                    // decodierte Dateigr��e
+                    // decodierte Dateigröße
                     var contentLength = Math.floor(imageData.length * 3 / 4);
 
                     var newPicture = {
@@ -579,7 +579,6 @@
             AppData.setErrorMsg(that.binding);
             var takePhoto = function () {
                 Log.call(Log.l.trace, "Camera.Controller.");
-                var autoShutterTime = 0;
                 var cameraQuality = 0;
                 var cameraMegapixel = 0;
                 if (typeof AppData.generalData.cameraQuality === "string") {
@@ -596,6 +595,12 @@
                     typeof scan === "object" &&
                     typeof scan.scanDoc === "function") {
                     AppBar.busy = true;
+                    var autoShutterTime = 0;
+                    if (typeof that.binding.generalData.autoShutterTime === "string") {
+                        autoShutterTime = parseInt(that.binding.generalData.autoShutterTime);
+                    } else if (typeof that.binding.generalData.autoShutterTime === "number") {
+                        autoShutterTime = that.binding.generalData.autoShutterTime;
+                    }
                     scan.scanDoc(onPhotoDataSuccess, onPhotoDataFail, {
                         sourceType: 1,
                         returnBase64: true,
@@ -648,10 +653,10 @@
                             convertToGrayscale: AppData.generalData.cameraUseGrayscale,
                             variableEditRect: true
                         });
-                    } else {
+                      } else {
                         Log.print(Log.l.error, "camera.getPicture not supported...");
                         that.updateStates({ errorMessage: "Camera plugin not supported" });
-                    }
+                      }
                 }
                 Log.ret(Log.l.trace);
             }

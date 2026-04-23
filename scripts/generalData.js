@@ -285,23 +285,203 @@
             }
             Log.ret(Log.l.trace);
         },
+        _inCheckForNavigateToLogin: false,
         checkForNavigateToLogin: function (errorResponse) {
             Log.call(Log.l.trace, "AppData.");
-            if (errorResponse && (errorResponse.status === 401 || errorResponse.status === 404)) {
+            if (AppData._inCheckForNavigateToLogin) {
+                Log.ret(Log.l.trace, "Semaphore set - ignore");
+                return;
+            }
+            if (errorResponse && (errorResponse.status === 401 || errorResponse.status === 404) &&
+                AppData._persistentStates.odata.login &&
+                AppData._persistentStates.odata.password) {
+                Log.print(Log.l.error, "print in checkfornavigate error=" + JSON.stringify(errorResponse) + "errorResponse.status=" + errorResponse.status);
+                AppData._inCheckForNavigateToLogin = true;
                 var curPageId = Application.getPageId(Application.navigator._lastPage);
                 var onLoginPage = curPageId === "dbinit" || curPageId === "login" || curPageId === "account";
+                AppData.cancelPromises();
                 if (errorResponse.status === 401 && !onLoginPage) {
                     // user is not authorized to access this service
                     AppBar.scope.binding.generalData.notAuthorizedUser = true;
                     //var errorMessage = getResourceText("general.unauthorizedUser");
-                    AppBar.scope.binding.generalData.oDataErrorMsg = getResourceText("general.unauthorizedUser") + "\n\nError: " + (errorResponse && errorResponse.statusText);
-                    alert(AppBar.scope.binding.generalData.oDataErrorMsg);
-                }
-                AppData.cancelPromises();
-                if (!onLoginPage) {
+                    //AppBar.scope.binding.generalData.oDataErrorMsg = getResourceText("general.unauthorizedUser") + "\n\nError: " + (errorResponse && errorResponse.statusText);
+                    //alert(AppBar.scope.binding.generalData.oDataErrorMsg);
+                    if (AppData._prcUserRemoteCallSucceeded || AppData._persistentStates.odata.dbSiteId) {
+                        var err = "";
+                        if (!AppData.appSettings.odata.serverFailure) {
+                            AppData.appSettings.odata.serverFailure = true;
+                            NavigationBar.disablePage("listRemote");
+                            NavigationBar.disablePage("search");
+                            if (AppBar.scope && typeof AppBar.scope.checkListButtonStates === "function") {
+                                AppBar.scope.checkListButtonStates();
+                            }
+                            if (AppRepl.replicator &&
+                                AppRepl.replicator.networkState !== "Offline" &&
+                                AppRepl.replicator.networkState !== "Unknown" &&
+                                DBInit &&
+                                DBInit.loginRequest) {
+                                var prevRegisterPath = AppData._persistentStates.odata.registerPath;
+                                AppData._persistentStates.odata.registerPath =
+                                    AppData._persistentStatesDefaults.odata.registerPath;
+                                var userUnknown = false;
+                                DBInit.loginRequest.insert(function (json) {
+                                    // this callback will be called asynchronously
+                                    // when the response is available
+                                    Log.print(Log.l.trace, "loginRequest: success!");
+                                    AppData._persistentStates.odata.registerPath = prevRegisterPath;
+                                    // loginData returns object already parsed from json file in response
+                                    if (json && json.d && json.d.ODataLocation) {
+                                        if (json.d.InactiveFlag) {
+                                            if (AppBar.scope) {
+                                                err = {
+                                                    status: 503,
+                                                    statusText: getResourceText("login.inactive") +
+                                                        "\n\n" +
+                                                        AppData._persistentStates.odata.login
+                                                };
+                                                AppData.setErrorMsg(AppBar.scope.binding, err);
+                                                alert(err.statusText);
+                                            }
+                                        } else if (json.d.ODataLocation +
+                                            AppData._persistentStatesDefaults.odata.onlinePath !==
+                                            AppData._persistentStates.odata.onlinePath) {
+                                            if (AppBar.scope) {
+                                                err = {
+                                                    status: 404,
+                                                    statusText: getResourceText("login.modified") +
+                                                        "\n\n" +
+                                                        AppData._persistentStates.odata.login
+                                                };
+                                                AppData.setErrorMsg(AppBar.scope.binding, err);
+                                                alert(err.statusText);
+                                            }
+                                        }
+                                    } else {
+                                        if (AppBar.scope) {
+                                            err = {
+                                                status: 404,
+                                                statusText: getResourceText("login.unknown") +
+                                                    "\n\n" +
+                                                    AppData._persistentStates.odata.login
+                                            };
+                                            AppData.setErrorMsg(AppBar.scope.binding, err);
+                                            userUnknown = true;
+                                            alert(err.statusText);
+                                        }
+                                    }
+                                }, function (errorResponse) {
+                                        // called asynchronously if an error occurs
+                                        // or server returns response with an error status.
+                                        Log.print(Log.l.error,
+                                            "loginRequest error: " +
+                                            AppData.getErrorMsgFromResponse(errorResponse));
+                                        AppData._persistentStates.odata.registerPath = prevRegisterPath;
+                                        // ignore this error here for compatibility!
+                                        // stop replication and so on
+                                        if (AppData._userRemoteDataPromise) {
+                                            Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                                            AppData._userRemoteDataPromise.cancel();
+                                        }
+                                        if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
+                                            AppRepl.replicator.stop();
+                                        }
+                                        if (!AppData.appSettings.odata.serverFailure) {
+                                            AppData.appSettings.odata.serverFailure = true;
+                                            NavigationBar.disablePage("listRemote");
+                                            NavigationBar.disablePage("search");
+                                            if (AppBar.scope &&
+                                                typeof AppBar.scope.checkListButtonStates === "function") {
+                                                AppBar.scope.checkListButtonStates();
+                                            }
+                                        }
+                                    }, {
+                                        LoginName: AppData._persistentStates.odata.login
+                                    }).then(function () {
+                                        if (userUnknown) {
+                                            Log.print(Log.l.error, "print userUnknown status: " + userUnknown);
+                                            AppData._persistentStates.odata.login = null;
+                                            AppData._persistentStates.odata.password = null;
+                                            Application.navigateById("login");
+                                        } else {
+                                            Application.navigateById("account");
+                                        }
+                                        AppData._inCheckForNavigateToLogin = false;
+                                });
+                            } else {
+                                AppData._inCheckForNavigateToLogin = false;
+                            }
+                        } else {
+                            AppData._inCheckForNavigateToLogin = false;
+                        }
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        Log.print(Log.l.error, "error in select generalUserRemoteView statusText=" + errorResponse.statusText);
+                        // ignore this error here!
+                        //if (AppBar.scope && errorResponse.statusText === "") {
+                        //    AppData.setErrorMsg(AppBar.scope.binding,
+                        //        { status: 404, statusText: getResourceText("general.internet") });
+                        //} else {
+                        //    AppData.setErrorMsg(AppBar.scope.binding,
+                        //        { status: 404, statusText: errorResponse.statusText });
+                        //}
+                    } else if (AppRepl.replicator &&
+                        AppRepl.replicator.networkState !== "Offline" &&
+                        AppRepl.replicator.networkState !== "Unknown") {
+                        // metadata try connect with vpn 
+                        var user = AppData.getOnlineLogin(true);
+                        var password = AppData.getOnlinePassword(true);
+                        var url = AppData.getBaseURL(AppData.appSettings.odata.onlinePort) + "/" + AppData.getOnlinePath(true) + "/$metadata";
+                        var options = {
+                            type: "GET",
+                            url: url,
+                            user: user,
+                            password: password,
+                            customRequestInitializer: function (req) {
+                                if (typeof req.withCredentials !== "undefined") {
+                                    req.withCredentials = true;
+                                }
+                            },
+                            headers: {
+                                "Authorization": "Basic " + btoa(user + ":" + password)
+                            }
+                        };
+                        Log.print(Log.l.trace, "calling metadata..." + options.url);
+                        WinJS.xhr(options).then(function xhrSuccess(response) {
+                            Log.print(Log.l.info, "AppData.call xhr metadata.", "method=GET" + options.url);
+                            AppData._inCheckForNavigateToLogin = false;
+                        }, function (errorResponse) {
+                            Log.print(Log.l.error, "error=" + AppData.getErrorMsgFromResponse(errorResponse));
+                            alert(AppData.getErrorMsgFromResponse(errorResponse));
+                            //AppData.setErrorMsg(AppBar.scope.binding, errorResponse);
+                            if (AppData._userRemoteDataPromise) {
+                                Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                                AppData._userRemoteDataPromise.cancel();
+                            }
+                            if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
+                                AppRepl.replicator.stop();
+                            }
+                            AppData.appSettings.odata.serverFailure = true;
+                            NavigationBar.disablePage("listRemote");
+                            NavigationBar.disablePage("search");
+                            if (AppBar.scope && typeof AppBar.scope.checkListButtonStates === "function") {
+                                AppBar.scope.checkListButtonStates();
+                            }
+                            AppData._inCheckForNavigateToLogin = false;
+                        });
+                    } else {
+                        AppData._inCheckForNavigateToLogin = false;
+                        if (!AppData.appSettings.odata.serverFailure) {
+                            AppData.appSettings.odata.serverFailure = true;
+                        }
+                    }
+                } else if (!onLoginPage) {
                     WinJS.Promise.timeout(0).then(function () {
                         Application.navigateById("account");
+                        AppData._inCheckForNavigateToLogin = false;
+
                     });
+                } else {
+                    AppData._inCheckForNavigateToLogin = false;
                 }
             }
             Log.ret(Log.l.trace);
@@ -500,7 +680,7 @@
                         result = json.d.results[0];
                     }
                 }, function (err) {
-                    Log.print(Log.l.error, "PRC_CheckMobileVersion call error - ignore that!");
+                    Log.print(Log.l.error, "PRC_CheckMobileVersion call error - ignore that!" + JSON.stringify(err));
                     AppData._inGetMobileVersion = false;
                     AppData.checkForNavigateToLogin(err);
                 });
@@ -791,164 +971,6 @@
                             }, function (errorResponse) {
                                 Log.print(Log.l.error, "call error=" + JSON.stringify(errorResponse));
                                 AppData.checkForNavigateToLogin(errorResponse);
-                                //if (errorResponse.response["\n\'error'"].code)
-                                if (AppData._prcUserRemoteCallSucceeded) {
-                                    var err = "";
-                                    if (!AppData.appSettings.odata.serverFailure) {
-                                        AppData.appSettings.odata.serverFailure = true;
-                                        NavigationBar.disablePage("listRemote");
-                                        NavigationBar.disablePage("search");
-                                        if (AppBar.scope && typeof AppBar.scope.checkListButtonStates === "function") {
-                                            AppBar.scope.checkListButtonStates();
-                                        }
-                                        if (AppRepl.replicator &&
-                                            AppRepl.replicator.networkState !== "Offline" &&
-                                            AppRepl.replicator.networkState !== "Unknown" &&
-                                            DBInit &&
-                                            DBInit.loginRequest) {
-                                            var prevRegisterPath = AppData._persistentStates.odata.registerPath;
-                                            AppData._persistentStates.odata.registerPath =
-                                                AppData._persistentStatesDefaults.odata.registerPath;
-                                            DBInit.loginRequest.insert(function (json) {
-                                                // this callback will be called asynchronously
-                                                // when the response is available
-                                                Log.print(Log.l.trace, "loginRequest: success!");
-                                                AppData._persistentStates.odata.registerPath = prevRegisterPath;
-                                                // loginData returns object already parsed from json file in response
-                                                if (json && json.d && json.d.ODataLocation) {
-                                                    if (json.d.InactiveFlag) {
-                                                        if (AppBar.scope) {
-                                                            err = {
-                                                                status: 503,
-                                                                statusText: getResourceText("login.inactive") +
-                                                                    "\n\n" +
-                                                                    AppData._persistentStates.odata.login
-                                                            };
-                                                            AppData.setErrorMsg(AppBar.scope.binding, err);
-                                                            alert(err.statusText);
-                                                        }
-                                                    } else if (json.d.ODataLocation +
-                                                        AppData._persistentStatesDefaults.odata.onlinePath !==
-                                                        AppData._persistentStates.odata.onlinePath) {
-                                                        if (AppBar.scope) {
-                                                            err = {
-                                                                status: 404,
-                                                                statusText: getResourceText("login.modified") +
-                                                                    "\n\n" +
-                                                                    AppData._persistentStates.odata.login
-                                                            };
-                                                            AppData.setErrorMsg(AppBar.scope.binding, err);
-                                                            alert(err.statusText);
-                                                        }
-                                                    }
-                                                } else {
-                                                    if (AppBar.scope) {
-                                                        err = {
-                                                            status: 404,
-                                                            statusText: getResourceText("login.unknown") +
-                                                                "\n\n" +
-                                                                AppData._persistentStates.odata.login
-                                                        };
-                                                        AppData.setErrorMsg(AppBar.scope.binding, err);
-                                                        alert(err.statusText);
-                                                    }
-                                                }
-                                            }, function (errorResponse) {
-                                                // called asynchronously if an error occurs
-                                                // or server returns response with an error status.
-                                                Log.print(Log.l.error,
-                                                    "loginRequest error: " +
-                                                    AppData.getErrorMsgFromResponse(errorResponse));
-                                                AppData._persistentStates.odata.registerPath = prevRegisterPath;
-                                                // ignore this error here for compatibility!
-                                                // stop replication and so on
-                                                if (AppData._userRemoteDataPromise) {
-                                                    Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
-                                                    AppData._userRemoteDataPromise.cancel();
-                                                }
-                                                if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
-                                                    AppRepl.replicator.stop();
-                                                }
-                                                if (!AppData.appSettings.odata.serverFailure) {
-                                                    AppData.appSettings.odata.serverFailure = true;
-                                                    NavigationBar.disablePage("listRemote");
-                                                    NavigationBar.disablePage("search");
-                                                    if (AppBar.scope && typeof AppBar.scope.checkListButtonStates === "function") {
-                                                        AppBar.scope.checkListButtonStates();
-                                                    }
-                                                }
-                                            }, {
-                                                    LoginName: AppData._persistentStates.odata.login
-                                                });
-                                        }
-                                    }
-                                    // called asynchronously if an error occurs
-                                    // or server returns response with an error status.
-                                    Log.print(Log.l.error, "error in select generalUserRemoteView statusText=" + errorResponse.statusText);
-                                    // ignore this error here!
-                                    //if (AppBar.scope && errorResponse.statusText === "") {
-                                    //    AppData.setErrorMsg(AppBar.scope.binding,
-                                    //        { status: 404, statusText: getResourceText("general.internet") });
-                                    //} else {
-                                    //    AppData.setErrorMsg(AppBar.scope.binding,
-                                    //        { status: 404, statusText: errorResponse.statusText });
-                                    //}
-                                } else if (AppRepl.replicator &&
-                                    AppRepl.replicator.networkState !== "Offline" &&
-                                    AppRepl.replicator.networkState !== "Unknown") {
-                                    // metadata try connect with vpn 
-                                    var user = AppData.getOnlineLogin(true);
-                                    var password = AppData.getOnlinePassword(true);
-                                    var url = AppData.getBaseURL(AppData.appSettings.odata.onlinePort) + "/" + AppData.getOnlinePath(true) + "/$metadata";
-                                    var options = {
-                                        type: "GET",
-                                        url: url,
-                                        user: user,
-                                        password: password,
-                                        customRequestInitializer: function (req) {
-                                            if (typeof req.withCredentials !== "undefined") {
-                                                req.withCredentials = true;
-                                            }
-                                        },
-                                        headers: {
-                                            "Authorization": "Basic " + btoa(user + ":" + password)
-                                        }
-                                    };
-                                    Log.print(Log.l.trace, "calling metadata..." + options.url);
-                                    var ret = WinJS.xhr(options).then(function xhrSuccess(response) {
-                                        Log.print(Log.l.info, "AppData.call xhr metadata.", "method=GET" + options.url);
-                                        try {
-                                            var result = response.responseText;
-                                            Log.call(Log.l.info, "AppData.call dummy Test xhr metadata.", "method=GET " + result);
-                                            return WinJS.Promise.as();
-                                        } catch (exception) {
-                                            Log.print(Log.l.error, "resource parse error " + (exception && exception.message));
-                                        }
-                                        Log.ret(Log.l.info);
-                                        return WinJS.Promise.as();
-                                    }, function (errorResponse) {
-                                        Log.print(Log.l.error, "error=" + AppData.getErrorMsgFromResponse(errorResponse));
-                                        //AppData.setErrorMsg(AppBar.scope.binding, errorResponse);
-                                        if (AppData._userRemoteDataPromise) {
-                                            Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
-                                            AppData._userRemoteDataPromise.cancel();
-                                        }
-                                        if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
-                                            AppRepl.replicator.stop();
-                                        }
-                                        AppData.appSettings.odata.serverFailure = true;
-                                        NavigationBar.disablePage("listRemote");
-                                        NavigationBar.disablePage("search");
-                                        if (AppBar.scope && typeof AppBar.scope.checkListButtonStates === "function") {
-                                            AppBar.scope.checkListButtonStates();
-                                        }
-                                        return WinJS.Promise.as();
-                                    });
-                                } else {
-                                    if (!AppData.appSettings.odata.serverFailure) {
-                                        AppData.appSettings.odata.serverFailure = true;
-                                    }
-                                }
                                 AppData._curGetUserRemoteDataId = 0;
                                 AppData._inGetUserRemotedata = false;
                                 if (AppData._userRemoteDataPromise) {

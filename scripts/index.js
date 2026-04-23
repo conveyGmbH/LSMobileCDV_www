@@ -131,7 +131,9 @@
         var i;
         Log.call(Log.l.trace, "Application.", "id=" + id);
         //if (!AppData._persistentStates.showvisitorFlow) {
-        if (AppData._persistentStates.odata.serverFailure) {
+        if (AppData._persistentStates.odata.serverFailure &&
+            AppData._persistentStates.odata.login &&
+            AppData._persistentStates.odata.password) {
             AppData.startReplicationHelper();
             if (id === "login") {
                 Log.print(Log.l.error, "because of serverFailure navigate to account page");
