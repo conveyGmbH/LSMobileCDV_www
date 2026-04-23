@@ -1,23 +1,173 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="de.convey.LSMobileCDV" version="2.9.1729" ios-CFBundleVersion="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="de.convey.LSMobileCDV" version="2.9.1733" android-versionCode="291733" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>LeadSuccess</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        The comfortable way to collect your leads on Android, iOS and Windows devices.
     </description>
-    <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
-        Apache Cordova Team
+    <author email="leadsuccess@convey.de" href="http://convey.de">
+	    convey Information Systems GmbH
     </author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
-    <platform name="ios">
-        <icon src="res/icon/ios/icon.png" />
-        <splash src="res/splash/ios/splash.png" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <platform name="windows">
+        <hook src="hooks/winjs.js" type="after_platform_add" />
     </platform>
-    <preference name="SplashScreen" value="screen" />
+    <platform name="windows">
+        <config-file parent="/Package/Capabilities" target="package.appxmanifest">
+            <Capability Name="picturesLibrary" />
+        </config-file>
+    </platform>
+    <platform name="android">
+        <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+        <preference name="AndroidExtraFilesystems" value="files, cache, sdcard, cache-external, files-external" />
+        <preference name="android-minSdkVersion" value="25" />
+        <preference name="android-targetSdkVersion" value="35" />
+        <preference name="AndroidInsecureFileModeEnabled" value="true" />
+		<edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android"> 
+			<application android:requestLegacyExternalStorage="true" /> 
+			<!--Make apk file small-->
+			<application android:extractNativeLibs="true" />
+		</edit-config>
+		<edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application/activity" mode="merge" xmlns:android="http://schemas.android.com/apk/res/android">
+			<activity android:exported="true"/>
+		</edit-config>  
+		<!--<edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application/meta-data" mode="merge" xmlns:android="http://schemas.android.com/apk/res/android">
+			<meta-data android:name="com.google.mlkit.vision.DEPENDENCIES" android:value="barcode_ui"/>
+		</edit-config>-->
+		<config-file target="AndroidManifest.xml" parent="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
+			<meta-data android:name="com.google.mlkit.vision.DEPENDENCIES" android:value="barcode_ui"/>
+		</config-file>
+        <preference name="AndroidWindowSplashScreenBackground" value="#c66145" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screens/android/leadsuccess_bkg.png" />
+    </platform>
+    <platform name="android">
+        <allow-intent href="market:*" />
+    </platform>
+    <platform name="ios">
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+		<allow-intent href="myapp:*" />
+		<edit-config target="NSAppTransportSecurity" file="*-Info.plist" mode="merge">
+			<dict>
+				<key>NSAllowsArbitraryLoads</key>
+				<true/>
+			</dict>
+		</edit-config>
+		<edit-config file="*-Info.plist" mode="merge" target="CFBundleURLTypes">
+		  <array>
+			<dict>
+			  <key>CFBundleURLSchemes</key>
+			  <array>
+				<string>myapp</string>
+			  </array>
+			</dict>
+		  </array>
+		</edit-config>
+		<edit-config file="*-Info.plist" mode="merge" target="LSApplicationQueriesSchemes">
+		  <array>
+			<string>myapp</string>
+		  </array>
+		</edit-config>
+    </platform>
+    <preference name="windows-target-version" value="10.0" />
+    <preference name="windows-phone-target-version" value="10.0" />
+    <platform name="android">
+        <!-- <icon density="ldpi" src="res/icons/android/icon-36-ldpi.png" />
+        <icon density="mdpi" src="res/icons/android/icon-48-mdpi.png" />
+        <icon density="hdpi" src="res/icons/android/icon-72-hdpi.png" />
+        <icon density="xhdpi" src="res/icons/android/icon-96-xhdpi.png" /> -->
+    </platform>
+    <platform name="ios">
+        <!-- <icon height="40" src="res/icons/ios/icon-40.png" width="40" />
+        <icon height="80" src="res/icons/ios/icon-40-2x.png" width="80" />
+        <icon height="50" src="res/icons/ios/icon-50.png" width="50" />
+        <icon height="100" src="res/icons/ios/icon-50-2x.png" width="100" />
+        <icon height="57" src="res/icons/ios/icon-57.png" width="57" />
+        <icon height="114" src="res/icons/ios/icon-57-2x.png" width="114" />
+        <icon height="180" src="res/icons/ios/icon-60-3x.png" width="180" />
+        <icon height="60" src="res/icons/ios/icon-60.png" width="60" />
+        <icon height="120" src="res/icons/ios/icon-60-2x.png" width="120" />
+        <icon height="180" src="res/icons/ios/icon-60-3x.png" width="180" />
+        <icon height="72" src="res/icons/ios/icon-72.png" width="72" />
+        <icon height="144" src="res/icons/ios/icon-72-2x.png" width="144" />
+        <icon height="76" src="res/icons/ios/icon-76.png" width="76" />
+        <icon height="152" src="res/icons/ios/icon-76-2x.png" width="152" />
+        <icon height="167" src="res/icons/ios/icon-83.5-2x.png" width="167" />
+        <icon height="29" src="res/icons/ios/icon-small.png" width="29" />
+        <icon height="58" src="res/icons/ios/icon-small-2x.png" width="58" />
+        <icon height="87" src="res/icons/ios/icon-small-3x.png" width="87" /> -->
+    </platform>
+    <platform name="windows">
+        <icon src="res/icons/windows/Square30x30Logo.png" target="Square30x30Logo" />
+        <icon src="res/icons/windows/Square44x44Logo.png" target="Square44x44Logo" />
+        <icon src="res/icons/windows/Square70x70Logo.png" target="Square70x70Logo" />
+        <icon src="res/icons/windows/Square71x71Logo.png" target="Square71x71Logo" />
+        <icon src="res/icons/windows/StoreLogo.png" target="StoreLogo" />
+        <icon src="res/icons/windows/Square150x150Logo.png" target="Square150x150Logo" />
+        <icon src="res/icons/windows/Wide310x150Logo.png" target="Wide310x150Logo" />
+        <icon src="res/icons/windows/Square310x310Logo.png" target="Square310x310Logo" />
+    </platform>
+    <platform name="wp8">
+        <icon height="99" src="res/icons/wp8/ApplicationIcon.png" width="99" />
+        <icon height="159" src="res/icons/wp8/Background.png" width="159" />
+    </platform>
+    <platform name="android">
+        <!--<splash density="land-hdpi" src="res/screens/android/screen-hdpi-landscape.png" />
+        <splash density="land-ldpi" src="res/screens/android/screen-ldpi-landscape.png" />
+        <splash density="land-mdpi" src="res/screens/android/screen-mdpi-landscape.png" />
+        <splash density="land-xhdpi" src="res/screens/android/screen-xhdpi-landscape.png" />
+        <splash density="port-hdpi" src="res/screens/android/screen-hdpi-portrait.png" />
+        <splash density="port-ldpi" src="res/screens/android/screen-ldpi-portrait.png" />
+        <splash density="port-mdpi" src="res/screens/android/screen-mdpi-portrait.png" />
+        <splash density="port-xhdpi" src="res/screens/android/screen-xhdpi-portrait.png" />-->
+        <!--<preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screens/android/screen-hdpi-landscape.png" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screens/android/screen-ldpi-landscape.png" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screens/android/screen-mdpi-landscape.png" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screens/android/screen-xhdpi-landscape.png" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screens/android/screen-hdpi-portrait.png" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screens/android/screen-ldpi-portrait.png" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screens/android/screen-mdpi-portrait.png" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screens/android/screen-xhdpi-portrait.png" />-->
+    </platform>
+    <platform name="ios">
+        <splash height="480" src="res/screens/ios/screen~iphone.png" width="320" />
+        <splash height="960" src="res/screens/ios/screen@2x~iphone.png" width="640" />
+        <splash height="1024" src="res/screens/ios/screen-portrait~ipad.png" width="768" />
+        <splash height="768" src="res/screens/ios/screen-landscape~ipad.png" width="1024" />
+        <splash height="2048" src="res/screens/ios/screen-portrait@2x~ipad.png" width="1536" />
+        <splash height="1536" src="res/screens/ios/screen-landscape@2x~ipad.png" width="2048" />
+        <splash height="1136" src="res/screens/ios/screen-portrait-568h@2x~iphone.png" width="640" />
+        <splash height="1334" src="res/screens/ios/screen-portrait-667h.png" width="750" />
+        <splash height="2208" src="res/screens/ios/screen-portrait-736h.png" width="1242" />
+        <splash height="1242" src="res/screens/ios/screen-landscape-736h.png" width="2208" />
+        <splash height="2436" src="res/screens/ios/screen-portrait-812h.png" width="1125" />
+        <splash height="1125" src="res/screens/ios/screen-landscape-812h.png" width="2436" />
+        <splash height="1792" src="res/screens/ios/screen-portrait-896h@2x~iphone.png" width="828" />
+        <splash height="828" src="res/screens/ios/screen-landscape-896h@2x~iphone.png" width="1792" />
+        <splash height="2688" src="res/screens/ios/screen-portrait-896h@3x~iphone.png" width="1242" />
+        <splash height="1242" src="res/screens/ios/screen-landscape-896h@3x~iphone.png" width="2688" />
+        <splash height="2796" src="res/screens/ios/screen-portrait-2796h.png" width="1290" />
+        <splash height="1290" src="res/screens/ios/screen-landscape-1290h.png" width="2796" />
+    </platform>
+    <platform name="windows">
+        <splash src="res/screens/windows/splashscreen.png" target="splashscreen" />
+        <splash src="res/screens/windows/splashscreenphone.png" target="splashscreenphone" />
+    </platform>
     <preference name="SplashScreenBackgroundColor" value="#c66145" />
-    <preference name="FadeSplashScreen" value="true" />
-    <preference name="FadeSplashScreenDuration" value="300" />
     <preference name="SplashScreenDelay" value="5000" />
+	<preference name="FadeSplashScreenDuration" value="1000" />
+	<!--<plugin name="cordova-plugin-camera" version="2.3.2-dev" src="https://github.com/conveyGmbH/cordova-plugin-camera">
+		<variable name="CAMERA_USAGE_DESCRIPTION" value="take picture" />
+		<variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="save picture" />
+	</plugin>-->
+	<plugin name="cordova-plugin-customurlscheme" spec="^5.0.2">
+		<variable name="URL_SCHEME" value="myapp" />
+		<variable name="ANDROID_HOST" value="auth" />
+	</plugin>
 </widget>

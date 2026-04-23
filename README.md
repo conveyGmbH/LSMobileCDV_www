@@ -23,7 +23,7 @@ Cordova-based mobile app for the LeadSuccess lead management platform. Targets i
 - **Gradle** - install standalone from [gradle.org/releases](https://gradle.org/releases)
   - Bundled (with android Studio) Gradle did not work for me
 
-### Windows-specific environment variables
+### Environment variables
 After installing the above, there might be environment variables that need adjustment or need to be added (e.g. JAVA_HOME, ANDROID_HOME, PATH)
 
 ## Setup
@@ -38,7 +38,7 @@ npm install
 
 # 3. Add platforms (not stored in git)
 cordova platform add ios      # Mac only
-cordova platform add android
+cordova platform add android@14.0.1
 ```
 
 ## Running the App
@@ -57,9 +57,8 @@ cordova build ios
 
 ## Known Issues
 
-### Android emulator CORS error
-When running in the Android emulator, login requests will fail with a CORS error. The emulator serves the app from `https://localhost`, which the backend server does not allow. This is an emulator-only issue — the app works correctly on real devices. Fix requires adding `Access-Control-Allow-Origin: https://localhost` to the response headers on the backend.
-
 ### JDK version sensitivity
 The Android build will fail with `Unsupported class file major version` if you use JDK 25 or higher. Stick to JDK 21.
 
+### Pinned Android Version
+Android Version 15+ seem to introduce new Problems (e.g. different file serving, causing CORS Errors) - Stick to 14.0.1
