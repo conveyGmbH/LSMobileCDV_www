@@ -14,7 +14,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@thegrizzlylabs/cordova-plugin-genius-scan": "^5.17.4",
-    "cordova-android": "^15.0.0",
+    "cordova-android": "^14.0.1",
     "cordova-ios": "^8.0.0",
     "cordova-plugin-appinfo": "^2.1.2",
     "cordova-plugin-camera": "^8.0.0",
