@@ -19,7 +19,6 @@ Cordova-based mobile app for the LeadSuccess lead management platform. Targets i
 ### Android (Mac or Windows)
 - **Android Studio** - 
   - During setup, install: Android SDK, Android SDK Platform-Tools, Android SDK Command-line Tools
-  - Install at least one Android platform (API 34 / Android 14 recommended)
 - **Gradle** - install standalone from [gradle.org/releases](https://gradle.org/releases)
   - Bundled (with android Studio) Gradle did not work for me
 
@@ -62,3 +61,6 @@ The Android build will fail with `Unsupported class file major version` if you u
 
 ### Pinned Android Version
 Android Version 15+ seem to introduce new Problems (e.g. different file serving, causing CORS Errors) - Stick to 14.0.1
+
+### Android Build fails with "No installed build-tools found"
+Make sure you have the correct Version of the build-tools installed; On Android Studio Panda 3 this requires the extra "Show package details" checkmark
