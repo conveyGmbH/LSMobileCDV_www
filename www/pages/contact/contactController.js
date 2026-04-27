@@ -163,6 +163,9 @@
                     newDataContact.Bemerkungen = "";
                 }
                 newDataContact.Flag_NoEdit = !!newDataContact.Flag_NoEdit;
+                if (newDataContact.OcrButton) {
+                    newDataContact.OcrButton = getResourceText("contact.ocrStatus_" + newDataContact.OcrButton.toLowerCase()) || newDataContact.OcrButton;
+                }
                 that.binding.dataContact = newDataContact;
                 if (!that.binding.dataContact.KontaktVIEWID) {
                     that.binding.dataContact.Nachbearbeitet = 1;
@@ -393,7 +396,12 @@
                 },
                 clickShare: function (event) {
                     Log.call(Log.l.trace, "Contact.Controller.");
-                    that.saveData();
+                    that.saveData(function (response) {
+                        // called asynchronously if ok
+                        AppData.shareContact(that.binding.dataContact, that.binding.InitLandItem.Alpha3_ISOCode);
+                    }, function (errorResponse) {
+                        // error occured...
+                    });
                     Log.ret(Log.l.trace);
                 },
                 clickTopButton: function (event) {

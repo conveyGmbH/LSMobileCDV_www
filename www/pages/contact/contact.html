@@ -236,6 +236,11 @@
                             <span class="label landscape_only" data-win-res="{textContent: 'contact.barcodeState'}"></span>
                             <span class="input_field" data-win-bind="textContent: dataContact.Freitext3 "></span>
                         </div>
+                        <div class="field_line field_line_odd" data-win-bind="style.display: dataContact.OcrButton Binding.Converter.toDisplay">
+                            <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.ocrStatus'}"></span>
+                            <span class="label landscape_only" data-win-res="{textContent: 'contact.ocrStatus'}"></span>
+                            <span class="input_field" data-win-bind="textContent: dataContact.OcrButton"></span>
+                        </div>
                         <div class="line-separator"></div>
                         <div class="field_line field_line_odd photo-container"
                              data-win-bind="style.display: showPhoto Binding.Converter.toDisplay"

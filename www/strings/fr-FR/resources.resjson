@@ -180,6 +180,13 @@
     "contact.comment2" : "Freitext",
     "contact.waitCircleMessage" : "Veuillez patienter, les données sont en cours de traitement.\nSi vous avez scanné un billet valide pour votre événement actuel ou une carte de visite, vous pouvez continuer à travailler et à collecter des informations. Les données relatives au code QR scanné ou à la carte de visite seront transmises dès que possible et ne seront pas perdues.",
     "contact.mandatoryEmpty": "Champs obligatoires non remplis",
+    "contact.ocrStatus": "OCR Status",
+    "contact.ocrStatus_ocr_todo" : "OCR pending",
+    "contact.ocrStatus_ocr_done" : "Remap pending",
+    "contact.ocrStatus_bci_todo" : "AI Reprocessing pending",
+    "contact.ocrStatus_bci_done" : "Processing complete",
+    "contact.ocrStatus_ocr_error": "OCR Error",
+    "contact.ocrStatus_bci_error": "AI Error",
 
     "contactRemote.title"   : "Contact déjà téléchargé",
 	"contactRemote.comment"       : "Utilisez le bouton Retour sur cette page pour y retourner!",
