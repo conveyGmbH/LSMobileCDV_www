@@ -180,7 +180,6 @@
 	"contact.comment2" : "Freitext",
 	"contact.waitCircleMessage" : "Bitte warten Sie, die Daten werden verarbeitet.\nWenn Sie ein gültiges Ticket für Ihre aktuelle Veranstaltung oder eine Visitenkarte eingescannt haben, können Sie weiterarbeiten und Informationen sammeln. Die Daten des gescannten QR-Codes/der gescannten Visitenkarte werden so schnell wie möglich übermittelt und gehen nicht verloren.",
     "contact.mandatoryEmpty": "Pflichtfelder nicht vollständig ausgefüllt",
-    "contact.ocrStatus": "OCR Status",
     "contact.ocrStatus"          : "OCR Prozessstatus",
     "contact.ocrStatus_ocr_todo" : "OCR Ausstehend",
     "contact.ocrStatus_ocr_done" : "Remap Ausstehend",
