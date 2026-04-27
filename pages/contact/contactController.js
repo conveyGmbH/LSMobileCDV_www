@@ -163,6 +163,9 @@
                     newDataContact.Bemerkungen = "";
                 }
                 newDataContact.Flag_NoEdit = !!newDataContact.Flag_NoEdit;
+                if (newDataContact.OcrButton) {
+                    newDataContact.OcrButton = getResourceText("contact.ocrStatus_" + newDataContact.OcrButton.toLowerCase()) || newDataContact.OcrButton;
+                }
                 that.binding.dataContact = newDataContact;
                 if (!that.binding.dataContact.KontaktVIEWID) {
                     that.binding.dataContact.Nachbearbeitet = 1;

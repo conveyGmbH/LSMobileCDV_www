@@ -180,6 +180,13 @@
     "contact.comment2" : "Freitext",
     "contact.waitCircleMessage" : "Please wait, data is being processed.\nIf you scanned a valid ticket for your current event or a business card, you can keep on working and collecting information. The data about the scanned QR-code/business card will be delivered as soon as possible and it won't be lost.",
     "contact.mandatoryEmpty": "Mandatory fields not completely filled in",
+    "contact.ocrStatus": "OCR Status",
+    "contact.ocrStatus_ocr_todo" : "OCR pending",
+    "contact.ocrStatus_ocr_done" : "Remap pending",
+    "contact.ocrStatus_bci_todo" : "AI Reprocessing pending",
+    "contact.ocrStatus_bci_done" : "Processing complete",
+    "contact.ocrStatus_ocr_error": "OCR Error",
+    "contact.ocrStatus_bci_error": "AI Error",
 
     "contactRemote.title"   : "Already uploaded Contact",
 	"contactRemote.comment"       : "On this page, use the Back button to go back!",
