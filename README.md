@@ -1,8 +1,10 @@
 # LSMobile - LeadSuccess Mobile App
 
-Cordova-based mobile app for the LeadSuccess lead management platform. Targets iOS and Android. (And Windows-app?)
+Cordova-based mobile app for the LeadSuccess lead management platform. Targets iOS and Android, Windows / Electron port unfinished.
 
 **Note:** The `platforms/` and `plugins/` folders are generated automatically and are gitignored. Never edit them directly.
+
+**Note:** DO NOT switch to this branch from a branch that tracks only the www (content) directory - Switching back will introduce residual files and contamination of the other branch. Instead, do a fresh clone of this branch.
 
 ## Prerequisites
 
@@ -23,14 +25,26 @@ Cordova-based mobile app for the LeadSuccess lead management platform. Targets i
   - Bundled (with android Studio) Gradle did not work for me
 
 ### Environment variables
-After installing the above, there might be environment variables that need adjustment or need to be added (e.g. JAVA_HOME, ANDROID_HOME, PATH)
+Environment Variables are necessary for the build tools to find your installation(s) - If a build step says something "is not found" or "is not recognized", this is usually why.
+
+- **JAVA_HOME**: Points to your JDK installation
+ - Windows default: `C:\Program Files\Java\jdk-21`
+ - MacOS default: Homebrew install: `/opt/homebrew/opt/openjdk@21/`
+
+- **ANDROID_HOME**: Points to your Android SDK Installation
+ - Windows default: `C:\Users\<you>\AppData\Local\Android\Sdk`
+ - MacOS default: `~/Library/Android/sdk`
+
+- **PATH**: Make sure these are in your PATH
+ `%ANDROID_HOME%\platform-tools` (Windows) / `$ANDROID_HOME/platform-tools` (Mac)  
+ Your standalone Gradle `bin` folder (wherever you extracted it)
 
 ## Setup
 
 ```bash
 # 1. Clone the repo
 git clone https://github.com/conveyGmbH/LSMobileCDV_www
-cd LSMobile_www
+cd LSMobileCDV_www
 
 # 2. Install dependencies
 npm install
