@@ -165,7 +165,7 @@
                 newDataContact.Flag_NoEdit = !!newDataContact.Flag_NoEdit;
                 if (newDataContact.OcrButton) {
                     var baseStatus = newDataContact.OcrButton.split('-')[0];
-                    newDataContact.OcrButton = getResourceText("contact.ocrStatus_" + baseStatus.toLowerCase()) || newDataContact.OcrButton;
+                    newDataContact.OcrButton = getResourceText("contact.ocrStatus_" + baseStatus.toLowerCase()) || getResourceText("contact.ocrStatus_ocr_done");
                 }
                 that.binding.dataContact = newDataContact;
                 if (!that.binding.dataContact.KontaktVIEWID) {
