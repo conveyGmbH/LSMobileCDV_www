@@ -24,26 +24,41 @@
                     </div>
                     <div class="line-separator"></div>
                     <div class="field_line field_line_odd">
-                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'userinfo.presence'}"></span>
-                        <span class="label landscape_only" data-win-res="{textContent: 'userinfo.presence'}"></span>
+                        <!--
+					    <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'userinfo.presence'}"></span>
+					    <span class="label landscape_only" data-win-res="{textContent: 'userinfo.presence'}"></span>
                         <div class="input_field toggle-switch-parent">
-                            <div id="presentSwitch" class="input_field"
-                                 data-win-control="WinJS.UI.ToggleSwitch"
-                                 data-win-options="{labelOn : '', labelOff: ''}"
-                                 data-win-bind="winControl.checked: dataBenutzer.Present Binding.Converter.toBoolean"
-                                 onchange="AppBar.handleEvent('change', 'clickChangeState', event)">
-                            </div>
+	                        <div id="presentSwitch" class="input_field"
+	                             data-win-control="WinJS.UI.ToggleSwitch"
+	                             data-win-options="{labelOn : '', labelOff: ''}"
+	                             data-win-bind="winControl.checked: dataBenutzer.Present Binding.Converter.toBoolean"
+	                             onchange="AppBar.handleEvent('change', 'clickChangeState', event)">
+	                        </div>
                         </div>
+					    -->
+
+					    <label class="radio input_half_left">
+						    <input type="radio" class="win-radio radio" value="onSite"
+						           data-win-bind="checked: dataBenutzer.Present"
+						           onchange="AppBar.handleEvent('change', 'clickChangeState', event)" />
+						    <span class="radio" data-win-res="{textContent: 'start.onSite'}"></span>
+					    </label>
+					    <label class="radio input_half_right">
+						    <input type="radio" class="win-radio radio" value="notOnSite" 
+						           data-win-bind="checked: notPresent"
+						           onchange="AppBar.handleEvent('change', 'clickChangeState', event)" />
+						    <span class="radio" data-win-res="{textContent: 'start.notOnSite'}"></span>
+					    </label>
                         <div class="input_field userState_field">
                             <span class="win-type-subtitle portrait_only statusOn" data-win-bind="textContent: generalData.present; style.display: dataBenutzer.Present Binding.Converter.toDisplay"></span>
-                            <span class="win-type-subtitle portrait_only statusOff" data-win-bind="textContent: generalData.absend; style.display: dataBenutzer.Present Binding.Converter.toDisplayNone"></span>
-                            <span class="win-type-subtitle landscape_only statusOff" data-win-bind="textContent: generalData.absend; style.display: dataBenutzer.Present Binding.Converter.toDisplayNone"></span>
+                            <span class="win-type-subtitle portrait_only statusOff" data-win-bind="textContent: generalData.absend; style.display: notPresent Binding.Converter.toDisplay"></span>
                             <span class="win-type-subtitle landscape_only statusOn" data-win-bind="textContent: generalData.present; style.display: dataBenutzer.Present Binding.Converter.toDisplay"></span>
+                            <span class="win-type-subtitle landscape_only statusOff" data-win-bind="textContent: generalData.absend; style.display: notPresent Binding.Converter.toDisplay"></span>
                         </div>
                         <select id="InitBenAnw"
                                 class="input_field win-dropdown"
                                 data-win-control="WinJS.UI.Repeater"
-                                data-win-bind="value: dataBenutzer.INITBenAnwID Binding.Mode.twoway style.display: dataBenutzer.Present Binding.Converter.toDisplayNone">
+                                data-win-bind="value: dataBenutzer.INITBenAnwID Binding.Mode.twoway style.display: notPresent Binding.Converter.toDisplay">
                             <option data-win-bind="value: INITBenAnwID; textContent: TITLE"></option>
                         </select>
                     </div>

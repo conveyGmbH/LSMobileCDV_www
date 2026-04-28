@@ -188,6 +188,10 @@
                                     }
                                 }
                             }
+                            if (typeof AppHeader === "object" &&
+                                AppHeader.controller) {
+                                AppHeader.controller.loadData();
+                            }
                         }
                     }
                     Log.ret(Log.l.trace);

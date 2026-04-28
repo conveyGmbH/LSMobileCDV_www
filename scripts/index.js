@@ -221,6 +221,10 @@
 
     Application.refreshAfterFetchOverride = function (fetchRequests) {
         Log.call(Log.l.trace, "Application.");
+        if (typeof AppHeader === "object" &&
+            AppHeader.controller) {
+            AppHeader.controller.loadData();
+        }
         if (fetchRequests) for (var i = 0; i < fetchRequests.length; i++) {
             var fetchRequest = fetchRequests[i];
             if (fetchRequest && fetchRequest.relationName === "Kontakt" && fetchRequest.replicationDone && fetchRequest.recordIds) {

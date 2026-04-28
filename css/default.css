@@ -1756,13 +1756,13 @@ view-size-smallest .win-container {
 }
 */
 
-.view-size-medium-small .input_big_left,
+.view-size-medium .input_big_left,
 .view-size-small .input_big_left {
     float: left;
     width: 100%;
     margin-top: 0;
 }
-.view-size-medium-small .input_big_right,
+.view-size-medium .input_big_right,
 .view-size-small .input_big_right {
     float: left;
     width: 100%;
@@ -1900,7 +1900,7 @@ view-size-smallest .win-container {
     display: none;
 }
 
-.view-size-medium-small .img-footer-container {
+.view-size-medium .img-footer-container {
     display: inline;
 }
 

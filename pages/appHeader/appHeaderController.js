@@ -29,6 +29,10 @@
             this.pageData.curFastReqs = 0;
             this.pageData.hasContactData = null;
             this.pageData.replErrorFlag = AppRepl.replicator && AppRepl.replicator.state === "error" ? true : false;
+            this.pageData.showNew = false;
+            this.pageData.showNotNew = false;
+            this.pageData.showNotPresent = false;
+            this.pageData.LastCallTS = null;
 
             AppHeader.controller = this;
 
@@ -97,7 +101,18 @@
                     that.binding.userData = AppData._userData;
                     that.binding.showNameInHeader = !!AppData._persistentStates.showNameInHeader;
                     that.binding.replErrorFlag = AppRepl.replicator && AppRepl.replicator.state === "error" ? true : false;
-
+                    that.binding.showNotPresent = (that.binding.userData.Present === 0 || that.binding.userData.Present === "0");
+                    if (that.binding.showNotPresent) {
+                        that.binding.showNew = false;
+                        that.binding.showNotNew = false;
+                    } else {
+                        that.binding.showNew = !that.binding.userData.AnzLokaleKontakte;
+                        that.binding.showNotNew = !that.binding.showNew;
+                    }
+                    if (AppData.appSettings.odata.replSuccessTimestamp) {
+                        var dateObj = new Date(AppData.appSettings.odata.replSuccessTimestamp);
+                        that.binding.LastCallTS = getDateData(dateObj);
+                    }
                     var employeeId = AppData.getRecordId("Mitarbeiter");
                     if (employeeId) {
                         // todo: load image data and set src of img-element

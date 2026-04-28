@@ -27,7 +27,8 @@
                 visitorFlowFeature: AppData._persistentStates.showvisitorFlow === 1 ||
                     AppData._persistentStates.showvisitorFlow === 2
                     ? true
-                    : false
+                    : false,
+                notPresent: null
             }, commandList]);
             this.img = null;
 
@@ -657,28 +658,38 @@
                     Log.ret(Log.l.trace);
                 },
                 clickChangeState: function (event) {
+                    var newPresent;
                     Log.call(Log.l.trace, "UserInfo.Controller.");
                     if (event.currentTarget && AppBar.notifyModified) {
-                        var toggle = event.currentTarget.winControl;
-                        if (toggle) {
-                            var newPresent;
-                            if (toggle.checked === true) {
+                        if (event.currentTarget.value === "onSite") {
+                            if (event.currentTarget.checked) {
                                 newPresent = 1;
-                            } else {
+                            }
+                        } else if (event.currentTarget.value === "notOnSite") {
+                            if (event.currentTarget.checked) {
                                 newPresent = 0;
                             }
-                            if (typeof that.binding.dataBenutzer.Present === "undefined" ||
-                                that.binding.dataBenutzer.Present !== newPresent) {
-                                that.binding.dataBenutzer.Present = newPresent;
-                                if (!AppBar.modified) {
-                                    AppBar.modified = true;
-                                    that.saveData(function (response) {
-                                        // called asynchronously if ok
-                                        Log.print(Log.l.trace, "saveData succeed");
-                                    }, function (errorResponse) {
-                                        Log.print(Log.l.error, "saveData error");
-                                    });
+                        } else {
+                            var toggle = event.currentTarget.winControl;
+                            if (toggle) {
+                                if (toggle.checked === true) {
+                                    newPresent = 1;
+                                } else {
+                                    newPresent = 0;
                                 }
+                            }
+                        }
+                        if (typeof newPresent !== "undefined") {
+                            that.binding.dataBenutzer.Present = newPresent;
+                            that.binding.notPresent = !newPresent;
+                            if (!AppBar.modified) {
+                                AppBar.modified = true;
+                                that.saveData(function (response) {
+                                    // called asynchronously if ok
+                                    Log.print(Log.l.trace, "saveData succeed");
+                                }, function (errorResponse) {
+                                    Log.print(Log.l.error, "saveData error");
+                                });
                             }
                         }
                     }

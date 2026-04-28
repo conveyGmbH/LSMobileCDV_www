@@ -35,6 +35,16 @@
 .appHeader .warning-symbol {
     display: inline;
 }
+.appHeader .onsite-offsite {
+    left: 24px;
+    top: 22px;
+}
+.cnv-ui-dark .appHeader .onsite-offsite {
+    border-color: #e6e6e6;
+}
+.appHeader .new-message {
+    left: 24px;
+}
 #logoffbutton:disabled,
 #logoffbutton[disabled] {
     border: 1px solid #999999;
