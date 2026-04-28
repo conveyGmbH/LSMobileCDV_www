@@ -123,7 +123,15 @@
                     that.binding.newInfo2Flag = 0;
                 }
                 that.binding.dataBenutzer = newDataBenutzer;
-                that.binding.notPresent = !that.binding.dataBenutzer.Present;
+                if (that.binding.dataBenutzer.Present === 0 ||
+                    that.binding.dataBenutzer.Present === "0") {
+                    that.binding.notPresent = 1;
+                } else if (that.binding.dataBenutzer.Present === 1 ||
+                    that.binding.dataBenutzer.Present === "1") {
+                    that.binding.notPresent = 0;
+                } else {
+                    that.binding.notPresent = null;
+                }
                 AppBar.modified = false;
                 AppBar.notifyModified = prevNotifyModified;
                 AppBar.triggerDisableHandlers();
@@ -682,7 +690,7 @@
                         }
                         if (typeof newPresent !== "undefined") {
                             that.binding.dataBenutzer.Present = newPresent;
-                            that.binding.notPresent = !newPresent;
+                            that.binding.notPresent = newPresent ? 0 : 1;
                             if (!AppBar.modified) {
                                 AppBar.modified = true;
                                 that.saveData(function (response) {
