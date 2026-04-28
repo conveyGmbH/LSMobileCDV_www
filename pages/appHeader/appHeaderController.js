@@ -112,6 +112,8 @@
                     if (AppData.appSettings.odata.replSuccessTimestamp) {
                         var dateObj = new Date(AppData.appSettings.odata.replSuccessTimestamp);
                         that.binding.LastCallTS = getDateData(dateObj);
+                    } else {
+                        that.binding.LastCallTS = null;
                     }
                     var employeeId = AppData.getRecordId("Mitarbeiter");
                     if (employeeId) {
