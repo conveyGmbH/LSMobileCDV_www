@@ -1,0 +1,25 @@
+{
+  "android": {
+    "release": {
+      "alias": "LSMobile",
+      "keystore": "C://LSMobile.keystore",
+      "keystoreType": "",
+      "password": PASSWORD,
+      "storePassword": PASSWORD
+    }
+  },
+  "ios": {
+    "debug": {
+      "developmentTeam": DEVELOPMENTTEAM
+    },
+    "release": {
+      "developmentTeam": DEVELOPMENTTEAM
+    }
+  },
+  "windows": {
+      "release": {
+        "packageCertificateKeyFile": "res\\native\\windows\\CordovaApp.pfx",
+        "publisherId": PUBLISHERID
+      }
+  }
+}
