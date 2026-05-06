@@ -188,6 +188,7 @@
     "contact.ocrStatus_bci_done"    : "Processing complete – OCR & AI remapping done",
     "contact.ocrStatus_vcard_done"  : "Processing complete",
     "contact.ocrStatus_vcard_start" : "Processing...",
+    "contact.ocrStatus_vcard_todo"  : "Processing pending",
     "contact.ocrStatus_ocr_error"   : "Error",
     "contact.ocrStatus_bci_error"   : "Error",
     "contact.ocrStatus_vcard_error" : "Error",

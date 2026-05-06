@@ -189,6 +189,7 @@
     "contact.ocrStatus_bci_done"    : "Verarbeitung abgeschlossen – OCR & KI-Remapping fertig",
     "contact.ocrStatus_vcard_done"  : "Verarbeitung abgeschlossen",
     "contact.ocrStatus_vcard_start" : "Verarbeitung läuft",
+    "contact.ocrStatus_vcard_todo"  : "Verarbeitung Ausstehend",
     "contact.ocrStatus_ocr_error"   : "Error",
     "contact.ocrStatus_bci_error"   : "Error",
     "contact.ocrStatus_vcard_error" : "Error",
