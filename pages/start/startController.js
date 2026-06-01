@@ -332,19 +332,19 @@
                                     }
                                     changed = true;
                                 }
-                                if (AppData._photoData) {
-                                    if (!actionLine.button0.showBusinessCard ||
-                                        actionLine.button0.svg) {
-                                        actionLine.button0.showBusinessCard = true;
-                                        actionLine.button0.svg = "";
-                                        changed = true;
-                                    }
-                                } else if (AppData._barcodeRequest) {
+                                if (AppData._barcodeRequest) {
                                     var newSvg = "barcode-qr"; //(AppData._barcodeType === "barcode") ? "barcode" : "barcode-qr"
                                     if (actionLine.button0.showBusinessCard ||
                                         actionLine.button0.svg !== newSvg) {
                                         actionLine.button0.showBusinessCard = false;
                                         actionLine.button0.svg = newSvg;
+                                        changed = true;
+                                    }
+                                } else if (AppData._photoData) {
+                                    if (!actionLine.button0.showBusinessCard ||
+                                        actionLine.button0.svg) {
+                                        actionLine.button0.showBusinessCard = true;
+                                        actionLine.button0.svg = "";
                                         changed = true;
                                     }
                                 } else {
