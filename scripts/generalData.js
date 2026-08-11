@@ -1034,11 +1034,14 @@
                                 (!prevContactData ||
                                     !equals(prevContactData, AppData._contactData))) {
                                 if (parseInt(AppHeader.controller.binding.curFastReqs)) {
-                                    AppHeader.controller.binding.hasContactData = 1;
-                                    Log.print(Log.l.info, "generalContactView: contactdata changed!");
+                                    if (!json.d.Flag_NoEdit) {
+                                        AppHeader.controller.binding.hasContactData = 1;
+                                        Log.print(Log.l.info, "generalContactView: contactdata changed!");
+                                    }
                                     if (AppRepl.replicator && AppRepl.replicator.inFastRepl) {
+                                        var numFastReqs = json.d.Flag_NoEdit ? (AppData._persistentStates.odata.numFastReqs || 10) : 1;
                                         // reset numFastReqs to 0!
-                                        AppRepl.replicator.run(1);
+                                        AppRepl.replicator.run(numFastReqs);
                                     }
                                 } else {
                                     AppHeader.controller.binding.hasContactData = null;
