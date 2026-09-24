@@ -937,6 +937,8 @@
                                     var current = dateCombobox.winControl.current;
                                     if (curScope.Freitext && curScope.Freitext.length > 0) {
                                         curScope.Freitext += " ";
+                                    } else {
+                                        curScope.Freitext = "";
                                     }
                                     curScope.Freitext += current.getDate().toString() +
                                         "." +
