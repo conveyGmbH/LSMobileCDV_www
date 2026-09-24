@@ -227,11 +227,11 @@
         }
         if (fetchRequests) for (var i = 0; i < fetchRequests.length; i++) {
             var fetchRequest = fetchRequests[i];
-            if (fetchRequest && fetchRequest.relationName === "Kontakt" && fetchRequest.replicationDone && fetchRequest.recordIds) {
+            if (fetchRequest && fetchRequest.relationName === "Kontakt" && fetchRequest.replicationDone && fetchRequest.localRecIds) {
                 for (var j = 0; j < fetchRequest.replicationDone.length && j < fetchRequest.recordIds.length; j++) {
-                    if (fetchRequest.replicationDone[j] && fetchRequest.recordIds[j] &&
-                        fetchRequest.recordIds[j] === AppData.generalData.getRecordId("Kontakt")) {
-                        Log.print(Log.l.info, "fetched KontaktId=" + fetchRequest.recordIds[j]);
+                    if (fetchRequest.replicationDone[j] && fetchRequest.localRecIds[j] &&
+                        fetchRequest.localRecIds[j] === AppData.generalData.getRecordId("Kontakt")) {
+                        Log.print(Log.l.info, "fetched KontaktId=" + fetchRequest.localRecIds[j]);
                         if (typeof AppBar.scope.reloadData === "function" && !AppBar.modified) {
                             AppBar.scope.reloadData(AppBar.scope.binding.dataContact && AppBar.scope.binding.dataContact.ModifiedTS);
                         }
