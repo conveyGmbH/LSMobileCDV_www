@@ -435,7 +435,7 @@
                 Log.call(Log.l.trace, "Camera.Controller.");
                 if (imageData && imageData.length > 0) {
                     var promise;
-                    if (isAppleDevice || that.binding.generalData.useClippingCamera || CameraGlobals.dontCapture) {
+                    if (that.binding.generalData.useClippingCamera || CameraGlobals.dontCapture) {
                         promise = WinJS.Promise.as();
                     } else {
                         promise = ImgTools.crop(imageData);
@@ -455,8 +455,9 @@
                             var height = cameraImage.height;
                             Log.print(Log.l.trace, "width=" + width + " height=" + height);
 
-                            // todo: create preview from imageData
-                            that.insertCameradata(imageData, width, height);
+                            // Sicherheit nur den base64 String ohne den vorderen Teil 
+                            var base64String = imageData.split(';base64,')[1] || imageData;
+                            that.insertCameradata(base64String, width, height);
                         }
                         var dataURLMimeType = "data:image/jpeg;base64,";
                         if (imageData.substr(0, dataURLMimeType.length) === dataURLMimeType) {
@@ -643,7 +644,7 @@
                             destinationType: Camera.DestinationType.DATA_URL,
                             sourceType: Camera.PictureSourceType.CAMERA,
                             correctOrientation: true,
-                            allowEdit: isAppleDevice, //!isWindows10
+                            allowEdit: false, 
                             quality: typeof AppData.generalData.cameraQuality === "string" ? parseInt(AppData.generalData.cameraQuality) : AppData.generalData.cameraQuality,
                             targetWidth: -1,
                             targetHeight: -1,
