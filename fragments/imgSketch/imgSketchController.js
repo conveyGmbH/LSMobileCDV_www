@@ -559,12 +559,7 @@
             var onPhotoDataSuccess = function(imageData) {
                 Log.call(Log.l.trace, "Camera.Controller.");
                 if (imageData && imageData.length > 0) {
-                    var promise;
-                    if (isAppleDevice) {
-                        promise = WinJS.Promise.as();
-                    } else {
-                        promise = ImgTools.crop(imageData);
-                    }
+                    var promise = ImgTools.crop(imageData);
                     promise.then(function(cropImageData) {
                         if (cropImageData) {
                             imageData = cropImageData;
@@ -581,9 +576,10 @@
                             var width = cameraImage.width;
                             var height = cameraImage.height;
                             Log.print(Log.l.trace, "width=" + width + " height=" + height);
-
+                            // Sicherheit nur den base64 String ohne den vorderen Teil 
+                            var base64String = imageData.split(';base64,')[1] || imageData;
                             // todo: create preview from imageData
-                            that.insertCameradata(imageData, width, height);
+                            that.insertCameradata(base64String, width, height);
                         }
                         var dataURLMimeType = "data:image/jpeg;base64,";
                         if (imageData.substr(0, dataURLMimeType.length) === dataURLMimeType) {
@@ -752,7 +748,7 @@
                         destinationType: Camera.DestinationType.DATA_URL,
                         sourceType: Camera.PictureSourceType.CAMERA,
                         correctOrientation: true,
-                        allowEdit: isAppleDevice, //!isWindows10
+                        allowEdit: false, //!isWindows10
                         quality: AppData.generalData.cameraQuality,
                         targetWidth: -1,
                         targetHeight: -1,
