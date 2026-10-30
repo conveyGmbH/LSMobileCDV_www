@@ -1,0 +1,52 @@
+﻿/**
+    userMessages fragment styles
+*/
+.userMessages .win-itembox {
+    background: none;
+}
+.userMessages .message-item {
+    width: 100%;
+}
+.user-message-item {
+    float: left;
+    width: auto;
+    max-width: calc(100% - 48px);
+    min-height: 40px;
+    border-top-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+.desk-message-item {
+    float: right;
+    width: auto;
+    max-width: calc(100% - 48px);
+    min-height: 40px;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    color: #fff;
+}
+.user-message-title {
+    min-height: 12px;
+}
+.desk-message-item .user-message-title {
+    text-align: right;
+}
+.user-message-title > span {
+    margin: 6px;
+}
+
+.user-message-body {
+    margin: 0 6px;
+    min-height: 12px;
+}
+#userMessageList.listview {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: calc(100% - 166px);
+}
+.page-has-comment-big #userMessageList.listview {
+    height: calc(100% - 310px);
+}

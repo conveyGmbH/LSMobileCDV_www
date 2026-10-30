@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<link href="userMessages.css" rel="stylesheet" />
+	<script type="text/javascript" src="userMessages.js"></script>
+	<script type="text/javascript" src="userMessagesController.js"></script>
+	<script type="text/javascript" src="userMessagesService.js"></script>
+</head>
+
+<body class="win-type-body">
+    <div class="userMessages fragment">
+        <div id="userMessagesController" class="data-container">
+            <section aria-label="Main content" role="main" class="animationElement">
+                <div class="contentarea win-type-body">
+                    <div class="userMessageList-template"
+                         data-win-control="WinJS.Binding.Template" style="display: none">
+                        <div class="message-item">
+                            <div class="user-message-item box-bkg"
+                                 data-win-bind="style.display: EmpfaengerID Binding.Converter.toDisplay">
+                                <div class="user-message-title win-type-caption">
+                                    <span data-win-bind="textContent: AbsenderLogin"></span>
+                                    <span data-win-bind="textContent: SendTS Binding.Converter.toDateString"></span>
+                                </div>
+                                <div class="user-message-body" data-win-bind="textContent: InfoText; style.fontWeight: newInfo1Flag Binding.Converter.toBold"></div>
+                            </div>
+                            <div class="desk-message-item navigation-background-color"
+                                 data-win-bind="style.display: EmpfaengerID Binding.Converter.toDisplayNone">
+                                <div class="user-message-title win-type-caption">
+                                    <span data-win-bind="textContent: SendTS Binding.Converter.toDateString"></span>
+                                </div>
+                                <div class="user-message-body" data-win-bind="textContent: InfoText; style.fontWeight: newInfo1Flag Binding.Converter.toBold"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="headerFooterPlaceholder">
+                        <div class="list-footer">
+                            <div class="status">
+                                <div class="progress"
+                                     data-win-bind="style.display: loading Binding.Converter.toDisplay">
+                                    <progress class="win-ring win-medium wait-circle"></progress>
+                                </div>
+                                <div class="counter"
+                                     data-win-bind="style.display: loading Binding.Converter.toDisplayNone">
+                                    <span data-win-res="{textContent: 'userMessages.count'}"></span><span>: </span>
+                                    <span data-win-bind="textContent: count"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-separator"></div>
+                    <div class="content-header">
+                        <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                        <div class="content-header-line win-type-caption">
+                            <span class="id-field"></span>
+                            <span class="caption-field" data-win-res="{textContent: 'userMessages.conversation'}"></span>
+                            <span class="date-field"></span>
+                        </div>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="field_line">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'userMessages.message1'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'userMessages.message1'}"></span>
+                        <textarea class="input_field win-textarea input_text_comment"
+                                  data-win-bind="value: message Binding.Mode.twoway"
+                                  data-win-bind-onevent="oninput"
+                                  onblur="AppBar.handleEvent('blur', 'activateEnterKey', event)"
+                                  onfocus="AppBar.handleEvent('focus', 'deactivateEnterKey', event)"
+                                  onkeydown="AppBar.handleEvent('keydown', 'pressEnterKey', event)"></textarea>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div id="userMessageList"
+                         class="listview win-selectionstylefilled"
+                         data-win-control="WinJS.UI.ListView"
+                         data-win-options="{
+                            itemTemplate: select('.userMessageList-template'),
+                            footer: select('.list-footer'),
+                            tapBehavior: 'none',
+                            selectionMode: 'none'
+                         }">
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

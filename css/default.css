@@ -2076,3 +2076,8 @@ html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-container.win
 .win-button, .win-textarea, .win-textbox {
     line-height: normal;
 }
+html.win-hoverable .win-listview.win-selectionstylefilled .win-container:hover .win-itembox.win-nonselectable,
+html.win-hoverable .win-itemcontainer.win-selectionstylefilled.win-container:hover .win-itembox.win-nonselectable {
+    background-color: inherit;
+    color: inherit;
+}

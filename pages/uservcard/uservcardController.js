@@ -254,6 +254,11 @@
                     }
                     Log.ret(Log.l.trace);
                 },
+                clickChangeUserState: function (event) {
+                    Log.call(Log.l.trace, "Start.Controller.");
+                    Application.navigateById("userinfo", event);
+                    Log.ret(Log.l.trace);
+                },
                 clickLogoff: function (event) {
                     Log.call(Log.l.trace, "Start.Controller.");
                     var confirmTitle = getResourceText("account.confirmLogOff");

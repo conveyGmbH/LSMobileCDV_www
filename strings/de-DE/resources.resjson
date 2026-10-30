@@ -612,6 +612,10 @@
     "userinfo.notice"       : "Bemerkung",
     "userinfo.questionDelete": "Möchten Sie das aktuelle Bild löschen?",
 
+    "userMessages.count"    : "Anzahl",
+    "userMessages.conversation"	: "Unterhaltung",
+    "userMessages.message1" : "Meine Nachricht",
+
     "uservcard.title"       : "Meine Kontaktinfo als QR-Code",
 	"uservcard.firstName"    : "Vorname",
     "uservcard.name"         : "Name",
@@ -673,7 +677,9 @@
 	"label.backup"			: "Backup",
 	"label.dash"			: "Dashboard",
     "label.logoff"          : "Abmelden",
-    "label.userinfo"        : "Benutzerinfo",
+    "label.userinfo"        : "Mein Profil",
+    "label.userMessages"    : "Chat",
+    "label.uservcard"       : "Mein QR-Code",
 
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Abbrechen",

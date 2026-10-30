@@ -81,6 +81,7 @@
 
 #userInfoController .label-info2 {
     display: block;
+    font-weight: bold;
 }
 #userInfoController .label.label-big {
     font-size: 16px;

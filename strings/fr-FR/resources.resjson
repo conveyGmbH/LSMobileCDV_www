@@ -613,6 +613,10 @@
     "userinfo.notice"       : "Préavis",
     "userinfo.questionDelete" : "Souhaitez-vous supprimer l'image actuelle ?",
 
+    "userMessages.count"    : "Nombre",
+    "userMessages.conversation" : "Conversation",
+    "userMessages.message1"     : "Mon message",
+
     "uservcard.title"       : "Mes coordonnées en tant que QR-Code",
 	"uservcard.firstName"    : "Prénom",
     "uservcard.name"         : "Nom",
@@ -674,7 +678,9 @@
     "label.backup"			: "Backup",
 	"label.dash"			: "Dashboard",
     "label.logoff"          : "Se déconnecter",
-    "label.userinfo"        : "Données d'utilisateur",
+    "label.userinfo"        : "Mon Profil",
+    "label.userMessages"    : "Chat",
+    "label.uservcard"       : "Mon code QR",
     
     "flyout.ok"             : "OK",
     "flyout.cancel"         : "Annuler",

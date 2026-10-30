@@ -116,7 +116,10 @@
         { id: "questionnaireRemote", group: 5, disabled: false },
         { id: "sketchRemote", group: 5, disabled: false },
         { id: "support", group: -7, disabled: false },
-        { id: "barcode", group: -8, disabled: false }
+        { id: "barcode", group: -8, disabled: false },
+        { id: "userinfo", group: 9, disabled: false },
+        { id: "uservcard", group: 9, disabled: false },
+        { id: "userMessages", group: 9, disabled: false }
     ];
 
     // init page for app startup
